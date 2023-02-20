@@ -2,8 +2,10 @@
   {
     "listing": "/index.html",
     "items": [
+      "/posts/tips/2023-02-20-tips.html",
       "/posts/post-with-code/index.html",
-      "/posts/welcome/index.html"
+      "/posts/welcome/index.html",
+      "/posts/STGCN/2022-12-29-STGCN-tutorial.html"
     ]
   }
 ]
