@@ -9,7 +9,7 @@
   {
     "objectID": "Tip/2023-02-20-tips.html",
     "href": "Tip/2023-02-20-tips.html",
-    "title": "download Jupiter Notebook from Github",
+    "title": "download files from Github",
     "section": "",
     "text": "- Github에 주피터노트북 파일 다운로드 받는 법\n\n!wget https://raw.githubusercontent.com/miruetoto/yechan3/main/posts/3_Researches/STGCN/2022-12-29-STGCN-tutorial.ipynb\n\n--2023-02-20 22:35:38--  https://raw.githubusercontent.com/miruetoto/yechan3/main/posts/3_Researches/STGCN/2022-12-29-STGCN-tutorial.ipynb\nResolving raw.githubusercontent.com (raw.githubusercontent.com)... 185.199.110.133, 185.199.108.133, 185.199.111.133, ...\nConnecting to raw.githubusercontent.com (raw.githubusercontent.com)|185.199.110.133|:443... connected.\nHTTP request sent, awaiting response... 200 OK\nLength: 1184264 (1.1M) [text/plain]\nSaving to: ‘2022-12-29-STGCN-tutorial.ipynb’\n\n2022-12-29-STGCN-tu 100%[===================>]   1.13M  --.-KB/s    in 0.03s   \n\n2023-02-20 22:35:39 (42.5 MB/s) - ‘2022-12-29-STGCN-tutorial.ipynb’ saved [1184264/1184264]\n\n\n\n좌측 사이드바를 확인해보면 원하는 주피터 파일 (2022-12-29-STGCN-tutorial.ipynb) 이 잘 다운받아진 것을 확인해볼 수 있다."
   },
