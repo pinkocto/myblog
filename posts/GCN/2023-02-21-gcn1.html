@@ -246,17 +246,19 @@ ul.task-list li input[type="checkbox"] {
   <ul class="collapse">
   <li><a href="#what-is-graph" id="toc-what-is-graph" class="nav-link" data-scroll-target="#what-is-graph">What is Graph?</a>
   <ul class="collapse">
-  <li><a href="#data-representation---graph" id="toc-data-representation---graph" class="nav-link" data-scroll-target="#data-representation---graph">Data Representation - Graph</a></li>
+  <li><a href="#graph-data" id="toc-graph-data" class="nav-link" data-scroll-target="#graph-data">Graph Data</a></li>
   <li><a href="#graph-structure" id="toc-graph-structure" class="nav-link" data-scroll-target="#graph-structure">Graph Structure</a></li>
   </ul></li>
-  <li><a href="#convolutional-layer" id="toc-convolutional-layer" class="nav-link" data-scroll-target="#convolutional-layer">Convolutional Layer</a>
+  <li><a href="#gcn-graph-convolutional-network" id="toc-gcn-graph-convolutional-network" class="nav-link" data-scroll-target="#gcn-graph-convolutional-network">GCN (Graph Convolutional Network)</a>
   <ul class="collapse">
-  <li><a href="#weight-sharing" id="toc-weight-sharing" class="nav-link" data-scroll-target="#weight-sharing">Weight sharing</a></li>
-  </ul></li>
+  <li><a href="#convolutional-layer" id="toc-convolutional-layer" class="nav-link" data-scroll-target="#convolutional-layer">Convolutional Layer</a></li>
   <li><a href="#what-should-we-update" id="toc-what-should-we-update" class="nav-link" data-scroll-target="#what-should-we-update">What should we update?</a></li>
-  <li><a href="#how-to-update-hidden-states-in-gcn" id="toc-how-to-update-hidden-states-in-gcn" class="nav-link" data-scroll-target="#how-to-update-hidden-states-in-gcn">How to update hidden states in GCN</a>
-  <ul class="collapse">
+  <li><a href="#how-to-update-hidden-states-in-gcn" id="toc-how-to-update-hidden-states-in-gcn" class="nav-link" data-scroll-target="#how-to-update-hidden-states-in-gcn">How to update hidden states in GCN</a></li>
   <li><a href="#permutation-invariance" id="toc-permutation-invariance" class="nav-link" data-scroll-target="#permutation-invariance">Permutation Invariance</a></li>
+  </ul></li>
+  <li><a href="#구현" id="toc-구현" class="nav-link" data-scroll-target="#구현">구현</a>
+  <ul class="collapse">
+  <li><a href="#ref" id="toc-ref" class="nav-link" data-scroll-target="#ref">ref</a></li>
   </ul></li>
   </ul></li>
   </ul>
@@ -275,50 +277,61 @@ ul.task-list li input[type="checkbox"] {
 </blockquote>
 <section id="what-is-graph" class="level2">
 <h2 class="anchored" data-anchor-id="what-is-graph">What is Graph?</h2>
-<section id="data-representation---graph" class="level3">
-<h3 class="anchored" data-anchor-id="data-representation---graph">Data Representation - Graph</h3>
+<section id="graph-data" class="level3">
+<h3 class="anchored" data-anchor-id="graph-data">Graph Data</h3>
 <p><img src="2023-02-21-gcn1_files/figure-html/6225f583-079d-4e7a-be03-2938c88b02cc-1-4481fbea-4a7b-4758-9714-b8cdf20c47da.png" class="img-fluid"></p>
+<p>대부분의 머신러닝 알고리즘은 입력 데이터가 유클리디안 공간 (Euclidean space)에 존재함을 가정하고 있다. 즉, 통계 데이터나 이미지처럼 입력 데이터가 벡터의 형태로 표현될 수 있어야 한다. 그러나 소셜 네트워크, 관계형 데이터베이스, 분자 구조 등과 같이 객체들과 그 객체들 간의 관계로 표현되는 데이터는 기본적으로 위와 같은 그래프로 표현된다.</p>
+<p>또한, 만약 사용자나 원자의 속성, 연결의 종류 등을 고려해야하는 경우에는 단순히 node와 edge로 이루어진 그래프가 아니라, node faeture matrix와 edge feature matrix가 추가된 속성 그래프 (attributed graph)로 데이터를 표현해야 한다. 이러한 형태의 그래프 데이터는 유클리드 공간에 존재하지 않으며, 직접적인 방식으로 벡터의 형태로 변환하는 것 또한 불가능하다. 따라서, 벡터 형태의 입력 데이터를 가정하는 기존의 인공신경망 (Artificial Neural Network, ANN)으로는 분자 구조와 같은 그래프 형태의 데이터를 처리할 수 없다는 문제점이 존재한다.</p>
 <p>Many important real-world datasets come in the form of graphs or networks: social networks, knowledge graphs, protein-interaction networks, the World Wide Web, etc. (just to name a few).</p>
 </section>
 <section id="graph-structure" class="level3">
 <h3 class="anchored" data-anchor-id="graph-structure">Graph Structure</h3>
 <p><img src="2023-02-21-gcn1_files/figure-html/6f07fe99-c4c6-4e0d-a7b4-88b3b395ac51-1-f3d25394-8335-4146-bd6d-48facedae75d.png" class="img-fluid"></p>
 <ul>
-<li>Vertex set과 Edge set을 Graph라고 정의한다.</li>
+<li>Graph는 vertex(node)와 edge로 이루어져있다. 이 때 node는 한 input data를 의미하고 edge는 두 데이터 간의 relationship을 의미한다. (어짜피 같은 의미이지만 앞으로는 vertex 대신 node라는 표현을 많이 사용할 것이다.)
+<ul>
+<li>소셜 그래프에서 node는 사람, edge는 두 사람 사이의 관계를 의미한다.</li>
 <li>Weighted Grapgh vs.&nbsp;Unweighted Graph</li>
 <li>Directed Graph vs.&nbsp;Undirected Graph</li>
+<li>(참고) 위의 그래프의 경우 방향성이 존재하지 않는 undirected Graph이다.</li>
+</ul></li>
 </ul>
+<section id="adgacency-matrix-feature-matrix" class="level4">
+<h4 class="anchored" data-anchor-id="adgacency-matrix-feature-matrix">Adgacency matrix &amp; Feature matrix</h4>
+<p>모든 노드간의 relationship 정보를 담고있도록 data를 표현해야하므로 이 정보들은 <strong>1. Adgacency matrix</strong>로 나타낼 수 있다. 또한 노드간의 relationship정보 말고도 node 자체가 가지고 있는 feature 정보가 있으므로 이는 <strong>2. Feature matrix</strong>로 나타낸다.</p>
 <p><img src="2023-02-21-gcn1_files/figure-html/e8111d38-d5a8-46e1-b632-7b87c969a324-1-e62f5696-911f-42a8-9d30-8a39473ee91d.png" class="img-fluid"></p>
+<p><code>-</code> <strong>Network(Graph data) <span class="math inline">\(\to\)</span> Adjacency matrix</strong></p>
+<p>위의 그림의 가장 좌측의 Network 그림을 보자. 5개의 노드가 존재하는 것을 볼 수 있다.</p>
 <ul>
 <li><span class="math inline">\(n\)</span> 개의 노드가 있다면 Adjacency matrix는 <span class="math inline">\(n\times n\)</span> 크기를 갖게 된다.
 <ul>
 <li>5개의 노드가 있으므로 <span class="math inline">\(5\times 5\)</span> Adjacency matrix</li>
 </ul></li>
-<li><span class="math inline">\(\bf{A}_{ij}\)</span> : Adjacency matrix의 i번째 row와 j번째 컬럼에 있는 값을 나타내며, i번째 노드와 j번째 노드가 서로 연결이 되어 있는지를 나타낸다.
+<li><span class="math inline">\(\bf{A}_{ij}\)</span> : Adjacency matrix의 <span class="math inline">\(i\)</span>번째 row와 <span class="math inline">\(j\)</span>번째 컬럼에 있는 값을 나타내며, <span class="math inline">\(i\)</span>번째 노드와 <span class="math inline">\(j\)</span>번째 노드가 서로 연결이 되어 있는지를 나타낸다.
 <ul>
 <li>노드 사이에 엣지가 있는지? (있으면 <span class="math inline">\(1\)</span>, 없으면 <span class="math inline">\(0\)</span>)</li>
 </ul></li>
-<li>Feature matirx로 각 노드의 정보를 나타낸다.
-<ul>
-<li>Feature matrix의 크기는 <span class="math inline">\(n(\text{노드의 수}) \times f(\text{feature 개수})\)</span> 이며, <span class="math inline">\(f\)</span>는 설정함에 따라서 많아질 수도 있고 적어질 수도 있는 값이다.</li>
-<li>feature matrix를 <span class="math inline">\(\bf{X}\)</span> 라고 부른다면, <span class="math inline">\(\bf{X}_{ij}\)</span> 가 의미하는 것은 i번째 노드에 j번째 feature가 무엇인지 나타내는 것이다.</li>
-</ul></li>
 </ul>
+<p><code>-</code> <strong>Feature matrix</strong> - Feature matirx로 각 노드의 정보를 나타낸다. - Feature matrix의 크기는 <span class="math inline">\(n(\text{노드의 수}) \times f(\text{feature 개수})\)</span> 이며, <span class="math inline">\(f\)</span>는 설정함에 따라서 많아질 수도 있고 적어질 수도 있는 값이다. - feature matrix를 <span class="math inline">\(\bf{X}\)</span> 라고 부른다면, <span class="math inline">\(\bf{X}_{ij}\)</span> 가 의미하는 것은 i번째 노드에 j번째 feature가 무엇인지 나타내는 것이다.</p>
 </section>
 </section>
-<section id="convolutional-layer" class="level2">
-<h2 class="anchored" data-anchor-id="convolutional-layer">Convolutional Layer</h2>
+</section>
+<section id="gcn-graph-convolutional-network" class="level2">
+<h2 class="anchored" data-anchor-id="gcn-graph-convolutional-network">GCN (Graph Convolutional Network)</h2>
+<section id="convolutional-layer" class="level3">
+<h3 class="anchored" data-anchor-id="convolutional-layer">Convolutional Layer</h3>
 <blockquote class="blockquote">
 <p>Preserve the spatial structure</p>
 </blockquote>
+<p>GCN은 Graph network에 CNN에서의 Convolution 개념을 적용한 것이다.</p>
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
 <p><img src="2023-02-21-gcn1_files/figure-html/69fad9c5-7fa3-44e4-a8a1-565bd3e39ef9-1-0b411aaa-4a40-48ca-abec-1732d7642a02.png" class="img-fluid figure-img"></p>
 <p></p><figcaption class="figure-caption">Stanford, cs231n 2017</figcaption><p></p>
 </figure>
 </div>
-<section id="weight-sharing" class="level3">
-<h3 class="anchored" data-anchor-id="weight-sharing">Weight sharing</h3>
+<section id="weight-sharing" class="level4">
+<h4 class="anchored" data-anchor-id="weight-sharing"><code>-</code> Weight sharing</h4>
 <ul>
 <li>Reduce the number of parameters <span class="math inline">\(\to\)</span> less overfitting, low computational cost</li>
 <li>Learn local features</li>
@@ -326,8 +339,8 @@ ul.task-list li input[type="checkbox"] {
 </ul>
 </section>
 </section>
-<section id="what-should-we-update" class="level2">
-<h2 class="anchored" data-anchor-id="what-should-we-update">What should we update?</h2>
+<section id="what-should-we-update" class="level3">
+<h3 class="anchored" data-anchor-id="what-should-we-update">What should we update?</h3>
 <p>이미지가 아닌 그래프에 적용시키려면 구조를 어떻게 바꿔야할지 생각해보자.</p>
 <ul>
 <li><p>CNN updates values in activation map in each layer. Values of activation map determine the state of image.</p></li>
@@ -337,11 +350,18 @@ ul.task-list li input[type="checkbox"] {
 <p>그렇다면 어떤 방식으로 업데이트를 해야 타당할까?</p>
 <p>어쨌든 이것도 컨볼루션인데.. 컨볼루션은 어떤 웨이트를 쭉 이동시키는 연산이었는데 중요한 특성은 Weight sharing을 한다는 것이었고, 로컬한 피처를 배운다는 것이 또 하나의 특징이었다.</p>
 </section>
-<section id="how-to-update-hidden-states-in-gcn" class="level2">
-<h2 class="anchored" data-anchor-id="how-to-update-hidden-states-in-gcn">How to update hidden states in GCN</h2>
+<section id="how-to-update-hidden-states-in-gcn" class="level3">
+<h3 class="anchored" data-anchor-id="how-to-update-hidden-states-in-gcn">How to update hidden states in GCN</h3>
 <p>Convolutional network와 같이 그 주변에 있는 애들의 정보를 받아서 업데이트를 하자라고 생각해볼 수 있을 것 같다.</p>
 <p><span class="math display">\[H_1^{(l+1)} = \sigma(H_1^{(l)}W^{(l)} + H_2^{(l)}W^{(l)} + H_3^{(l)}W^{(l)} + H_4^{(l)}W^{(l)} + b^{(l)})\]</span></p>
 <p><span class="math display">\[\Rightarrow H_i^{(l+1)} = \sigma\Big(\sum_{j\in N(i)} H_j^{(l)}W^{(l)} + b^{(l)} \Big)\]</span></p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="2023-02-21-gcn1_files/figure-html/80f1ef85-4041-4a45-a090-7297da9cb365-1-837f45f9-63a1-4f23-bd2f-da763e028715.png" class="img-fluid figure-img"></p>
+<p></p><figcaption class="figure-caption">image.png</figcaption><p></p>
+</figure>
+</div>
+</section>
 <section id="permutation-invariance" class="level3">
 <h3 class="anchored" data-anchor-id="permutation-invariance">Permutation Invariance</h3>
 <blockquote class="blockquote">
@@ -350,6 +370,23 @@ ul.task-list li input[type="checkbox"] {
 <p><span class="math display">\[f(PAP^{T}) = f(A)\]</span></p>
 <p>위 식에서 <span class="math inline">\(\bf{A}\)</span>는 adjacency matrix, <span class="math inline">\(\bf{P}\)</span>는 행과 열의 순서를 바꾸는 permutation matrix이다. 위 식은 위에서 설명한 것처럼 adjacency matrix 내의 노드의 순서가 바뀌어도 함수의 결과는 바뀌지 않는다.</p>
 <p><img src="2023-02-21-gcn1_files/figure-html/a6628a04-40cf-493a-84ad-2fbc29568793-1-48bac775-7744-47a9-b97f-369c3ef4e481.png" class="img-fluid"></p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="2023-02-21-gcn1_files/figure-html/d54cc8fa-a892-4c16-9b28-93ba3a21de0b-1-5257e56e-d600-4962-9f93-187206e0fc5b.png" class="img-fluid figure-img"></p>
+<p></p><figcaption class="figure-caption">image.png</figcaption><p></p>
+</figure>
+</div>
+</section>
+</section>
+<section id="구현" class="level2">
+<h2 class="anchored" data-anchor-id="구현">구현</h2>
+<p>GCN을 비롯한 graph neural network (GNN)을 직접 구현하는 것은 인접 행렬과 node feature matrix를 추출하는 것부터 여러 그래프의 batch를 만드는 것 까지 많은 어려움이 따른다. PyTorch를 기준으로는 Deep Graph Library (DGL)와 PyTorch Geometric이라는 라이브러리가 GNN과 이를 이용한 딥 러닝에 관한 여러 구현을 제공하고 있다.</p>
+<section id="ref" class="level3">
+<h3 class="anchored" data-anchor-id="ref">ref</h3>
+<ul>
+<li>https://tkipf.github.io/graph-convolutional-networks/</li>
+<li>https://untitledtblog.tistory.com/152</li>
+</ul>
 
 
 </section>
