@@ -3,11 +3,10 @@
     "listing": "/index.html",
     "items": [
       "/posts/STGCN/traffic_prediction.html",
-      "/posts/STGCN/2022-12-30-STGCN-Toy Example.html",
       "/posts/STGCN/2023-02-21-SGGCN-study1.html",
+      "/posts/STGCN/2022-12-30-STGCN-Toy Example.html",
       "/posts/GCN/2023-02-21-gcn1.html",
-      "/posts/STGCN/2022-12-29-STGCN-tutorial.html",
-      "/posts/STGCN/2023-02-14-Tables.html"
+      "/posts/STGCN/2022-12-29-STGCN-tutorial.html"
     ]
   }
 ]
