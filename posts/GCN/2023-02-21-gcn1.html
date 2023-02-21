@@ -245,8 +245,10 @@ ul.task-list li input[type="checkbox"] {
   <li><a href="#data-representation---graph" id="toc-data-representation---graph" class="nav-link" data-scroll-target="#data-representation---graph">Data Representation - Graph</a></li>
   <li><a href="#graph-structure" id="toc-graph-structure" class="nav-link" data-scroll-target="#graph-structure">Graph Structure</a></li>
   </ul></li>
-  <li><a href="#convolutional-layer" id="toc-convolutional-layer" class="nav-link" data-scroll-target="#convolutional-layer">Convolutional Layer</a></li>
+  <li><a href="#convolutional-layer" id="toc-convolutional-layer" class="nav-link" data-scroll-target="#convolutional-layer">Convolutional Layer</a>
+  <ul class="collapse">
   <li><a href="#weight-sharing" id="toc-weight-sharing" class="nav-link" data-scroll-target="#weight-sharing">Weight sharing</a></li>
+  </ul></li>
   <li><a href="#what-should-we-update" id="toc-what-should-we-update" class="nav-link" data-scroll-target="#what-should-we-update">What should we update?</a></li>
   <li><a href="#how-to-update-hidden-states-in-gcn" id="toc-how-to-update-hidden-states-in-gcn" class="nav-link" data-scroll-target="#how-to-update-hidden-states-in-gcn">How to update hidden states in GCN</a></li>
   </ul></li>
@@ -313,14 +315,20 @@ ul.task-list li input[type="checkbox"] {
 <blockquote class="blockquote">
 <p>Preserve the spatial structure</p>
 </blockquote>
-</section>
-<section id="weight-sharing" class="level2">
-<h2 class="anchored" data-anchor-id="weight-sharing">Weight sharing</h2>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="2023-02-21-gcn1_files/figure-html/69fad9c5-7fa3-44e4-a8a1-565bd3e39ef9-1-0b411aaa-4a40-48ca-abec-1732d7642a02.png" class="img-fluid figure-img"></p>
+<p></p><figcaption class="figure-caption">image.png</figcaption><p></p>
+</figure>
+</div>
+<section id="weight-sharing" class="level3">
+<h3 class="anchored" data-anchor-id="weight-sharing">Weight sharing</h3>
 <ul>
 <li>Reduce the number of parameters <span class="math inline">\(\to\)</span> less overfitting, low computational cost</li>
 <li>Learn local features</li>
 <li>Translation invariance</li>
 </ul>
+</section>
 </section>
 <section id="what-should-we-update" class="level2">
 <h2 class="anchored" data-anchor-id="what-should-we-update">What should we update?</h2>
@@ -329,13 +337,13 @@ ul.task-list li input[type="checkbox"] {
 <li><p>CNN updates values in activation map in each layer. Values of activation map determine the state of image.</p></li>
 <li><p>Values of each node feature determine the state of graph. <span class="math inline">\(\to\)</span> Make each layer of network update values of each node feature</p></li>
 </ul>
-<p>결국 중요한 것은 Graph Convolutional Layer를 거치게 되면 노드 피처에 담긴 값이 업데이트가 되어야 되겠다.</p>
+<p>결국 중요한 것은 Graph Convolutional Layer를 거치게 되면 노드 피처에 담긴 값이 업데이트가 되어야 한다는 것이다.</p>
 <p>그렇다면 어떤 방식으로 업데이트를 해야 타당할까?</p>
 <p>어쨌든 이것도 컨볼루션인데.. 컨볼루션은 어떤 웨이트를 쭉 이동시키는 연산이었는데 중요한 특성은 Weight sharing을 한다는 것이었고, 로컬한 피처를 배운다는 것이 또 하나의 특징이었다.</p>
 </section>
 <section id="how-to-update-hidden-states-in-gcn" class="level2">
 <h2 class="anchored" data-anchor-id="how-to-update-hidden-states-in-gcn">How to update hidden states in GCN</h2>
-<p>Convolutional network와 같이 그 주변에 있는 애들의 정보를 받아서 업데이트를 하자라고 생각할 수 있다.</p>
+<p>Convolutional network와 같이 그 주변에 있는 애들의 정보를 받아서 업데이트를 하자라고 생각해볼 수 있을 것 같다.</p>
 
 
 </section>
