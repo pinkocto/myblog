@@ -250,7 +250,10 @@ ul.task-list li input[type="checkbox"] {
   <li><a href="#weight-sharing" id="toc-weight-sharing" class="nav-link" data-scroll-target="#weight-sharing">Weight sharing</a></li>
   </ul></li>
   <li><a href="#what-should-we-update" id="toc-what-should-we-update" class="nav-link" data-scroll-target="#what-should-we-update">What should we update?</a></li>
-  <li><a href="#how-to-update-hidden-states-in-gcn" id="toc-how-to-update-hidden-states-in-gcn" class="nav-link" data-scroll-target="#how-to-update-hidden-states-in-gcn">How to update hidden states in GCN</a></li>
+  <li><a href="#how-to-update-hidden-states-in-gcn" id="toc-how-to-update-hidden-states-in-gcn" class="nav-link" data-scroll-target="#how-to-update-hidden-states-in-gcn">How to update hidden states in GCN</a>
+  <ul class="collapse">
+  <li><a href="#permutation-invariance" id="toc-permutation-invariance" class="nav-link" data-scroll-target="#permutation-invariance">Permutation Invariance</a></li>
+  </ul></li>
   </ul></li>
   </ul>
 </nav>
@@ -273,6 +276,7 @@ ul.task-list li input[type="checkbox"] {
 <p></p><figcaption class="figure-caption">image.png</figcaption><p></p>
 </figure>
 </div>
+<p>Many important real-world datasets come in the form of graphs or networks: social networks, knowledge graphs, protein-interaction networks, the World Wide Web, etc. (just to name a few).</p>
 </section>
 <section id="graph-structure" class="level3">
 <h3 class="anchored" data-anchor-id="graph-structure">Graph Structure</h3>
@@ -344,8 +348,24 @@ ul.task-list li input[type="checkbox"] {
 <section id="how-to-update-hidden-states-in-gcn" class="level2">
 <h2 class="anchored" data-anchor-id="how-to-update-hidden-states-in-gcn">How to update hidden states in GCN</h2>
 <p>Convolutional network와 같이 그 주변에 있는 애들의 정보를 받아서 업데이트를 하자라고 생각해볼 수 있을 것 같다.</p>
+<p><span class="math display">\[H_1^{(l+1)} = \sigma(H_1^{(l)}W^{(l)} + H_2^{(l)}W^{(l)} + H_3^{(l)}W^{(l)} + H_4^{(l)}W^{(l)} + b^{(l)})\]</span></p>
+<p><span class="math display">\[\Rightarrow H_i^{(l+1)} = \sigma\Big(\sum_{j\in N(i)} H_j^{(l)}W^{(l)} + b^{(l)} \Big)\]</span></p>
+<section id="permutation-invariance" class="level3">
+<h3 class="anchored" data-anchor-id="permutation-invariance">Permutation Invariance</h3>
+<blockquote class="blockquote">
+<p>Permutation invariance는 adjency matrix의 순서가 바뀌더라도 그 output이 변하지 않는 함수의 특성을 말한다.</p>
+</blockquote>
+<p><span class="math display">\[f(PAP^{T}) = f(A)\]</span></p>
+<p>위 식에서 <span class="math inline">\(\bf{A}\)</span>는 adjacency matrix, <span class="math inline">\(\bf{P}\)</span>는 행과 열의 순서를 바꾸는 permutation matrix이다. 위 식은 위에서 설명한 것처럼 adjacency matrix 내의 노드의 순서가 바뀌어도 함수의 결과는 바뀌지 않는다.</p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="2023-02-21-gcn1_files/figure-html/a6628a04-40cf-493a-84ad-2fbc29568793-1-48bac775-7744-47a9-b97f-369c3ef4e481.png" class="img-fluid figure-img"></p>
+<p></p><figcaption class="figure-caption">image.png</figcaption><p></p>
+</figure>
+</div>
 
 
+</section>
 </section>
 </section>
 
