@@ -14,6 +14,13 @@
     "text": "- Github에 주피터노트북 파일 다운로드 받는 법\n\n!wget https://raw.githubusercontent.com/miruetoto/yechan3/main/posts/3_Researches/STGCN/2022-12-29-STGCN-tutorial.ipynb\n\n--2023-02-20 22:35:38--  https://raw.githubusercontent.com/miruetoto/yechan3/main/posts/3_Researches/STGCN/2022-12-29-STGCN-tutorial.ipynb\nResolving raw.githubusercontent.com (raw.githubusercontent.com)... 185.199.110.133, 185.199.108.133, 185.199.111.133, ...\nConnecting to raw.githubusercontent.com (raw.githubusercontent.com)|185.199.110.133|:443... connected.\nHTTP request sent, awaiting response... 200 OK\nLength: 1184264 (1.1M) [text/plain]\nSaving to: ‘2022-12-29-STGCN-tutorial.ipynb’\n\n2022-12-29-STGCN-tu 100%[===================>]   1.13M  --.-KB/s    in 0.03s   \n\n2023-02-20 22:35:39 (42.5 MB/s) - ‘2022-12-29-STGCN-tutorial.ipynb’ saved [1184264/1184264]\n\n\n\n좌측 사이드바를 확인해보면 원하는 주피터 파일 (2022-12-29-STGCN-tutorial.ipynb) 이 잘 다운받아진 것을 확인해볼 수 있다."
   },
   {
+    "objectID": "posts/STGCN/2023-02-20-note.html",
+    "href": "posts/STGCN/2023-02-20-note.html",
+    "title": "ex",
+    "section": "",
+    "text": "- 연습장\n\n!wget https://raw.githubusercontent.com/miruetoto/yechan3/main/posts/3_Researches/STGCN/2022-12-30-STGCN-Toy%20Example.ipynb\n\n--2023-02-21 12:34:48--  https://raw.githubusercontent.com/miruetoto/yechan3/main/posts/3_Researches/STGCN/2022-12-30-STGCN-Toy%20Example.ipynb\nResolving raw.githubusercontent.com (raw.githubusercontent.com)... 185.199.111.133, 185.199.108.133, 185.199.110.133, ...\nConnecting to raw.githubusercontent.com (raw.githubusercontent.com)|185.199.111.133|:443... connected.\nHTTP request sent, awaiting response... 200 OK\nLength: 193390 (189K) [text/plain]\nSaving to: ‘2022-12-30-STGCN-Toy Example.ipynb’\n\n2022-12-30-STGCN-To 100%[===================>] 188.86K  --.-KB/s    in 0.01s   \n\n2023-02-21 12:34:49 (17.6 MB/s) - ‘2022-12-30-STGCN-Toy Example.ipynb’ saved [193390/193390]\n\n\n\n\n!wget https://raw.githubusercontent.com/miruetoto/yechan3/main/posts/3_Researches/STGCN/2023-02-14-Tables.ipynb\n\n--2023-02-21 12:35:38--  https://raw.githubusercontent.com/miruetoto/yechan3/main/posts/3_Researches/STGCN/2023-02-14-Tables.ipynb\nResolving raw.githubusercontent.com (raw.githubusercontent.com)... 185.199.109.133, 185.199.110.133, 185.199.108.133, ...\nConnecting to raw.githubusercontent.com (raw.githubusercontent.com)|185.199.109.133|:443... connected.\nHTTP request sent, awaiting response... 200 OK\nLength: 9073 (8.9K) [text/plain]\nSaving to: ‘2023-02-14-Tables.ipynb’\n\n2023-02-14-Tables.i 100%[===================>]   8.86K  --.-KB/s    in 0s      \n\n2023-02-21 12:35:39 (162 MB/s) - ‘2023-02-14-Tables.ipynb’ saved [9073/9073]"
+  },
+  {
     "objectID": "posts/STGCN/2022-12-29-STGCN-tutorial.html#pyg-의-data-자료형",
     "href": "posts/STGCN/2022-12-29-STGCN-tutorial.html#pyg-의-data-자료형",
     "title": "STGCN 튜토리얼",
@@ -49,6 +56,83 @@
     "text": "visualization\n\nmodel.eval()\n\nRecurrentGCN(\n  (recurrent): GConvGRU(\n    (conv_x_z): ChebConv(4, 32, K=2, normalization=sym)\n    (conv_h_z): ChebConv(32, 32, K=2, normalization=sym)\n    (conv_x_r): ChebConv(4, 32, K=2, normalization=sym)\n    (conv_h_r): ChebConv(32, 32, K=2, normalization=sym)\n    (conv_x_h): ChebConv(4, 32, K=2, normalization=sym)\n    (conv_h_h): ChebConv(32, 32, K=2, normalization=sym)\n  )\n  (linear): Linear(in_features=32, out_features=1, bias=True)\n)\n\n\n\nyhat_train = torch.stack([model(snapshot.x,snapshot.edge_index, snapshot.edge_attr) for snapshot in train_dataset]).detach().numpy()\nyhat_test = torch.stack([model(snapshot.x,snapshot.edge_index, snapshot.edge_attr) for snapshot in test_dataset]).detach().numpy()\n\n\nV = list(data_dict['node_ids'].keys())\n\n\nfig,ax = plt.subplots(20,1,figsize=(10,50))\nfor k in range(20):\n    ax[k].plot(f[:,k],'--',alpha=0.5,label='observed')\n    ax[k].set_title('node: {}'.format(V[k]))\n    ax[k].plot(yhat_train[:,k],label='predicted (tr)')\n    ax[k].plot(range(yhat_train.shape[0],yhat_train.shape[0]+yhat_test.shape[0]),yhat_test[:,k],label='predicted (test)')\n    ax[k].legend()\nfig.tight_layout()"
   },
   {
+    "objectID": "posts/STGCN/2022-12-30-STGCN-Toy Example.html",
+    "href": "posts/STGCN/2022-12-30-STGCN-Toy Example.html",
+    "title": "Toy Example",
+    "section": "",
+    "text": "import networkx as nx\nimport numpy as np\nimport matplotlib.pyplot as plt\nimport pandas as pd\nimport torch"
+  },
+  {
+    "objectID": "posts/STGCN/2022-12-30-STGCN-Toy Example.html#data",
+    "href": "posts/STGCN/2022-12-30-STGCN-Toy Example.html#data",
+    "title": "Toy Example",
+    "section": "data",
+    "text": "data\n\nfrom torch_geometric_temporal.dataset import WikiMathsDatasetLoader\nfrom torch_geometric_temporal.signal import temporal_signal_split\n\nloader = WikiMathsDatasetLoader()\n\ndataset = loader.get_dataset(lags=14)\n\ntrain_dataset, test_dataset = temporal_signal_split(dataset, train_ratio=0.5)"
+  },
+  {
+    "objectID": "posts/STGCN/2022-12-30-STGCN-Toy Example.html#recurrentgcn",
+    "href": "posts/STGCN/2022-12-30-STGCN-Toy Example.html#recurrentgcn",
+    "title": "Toy Example",
+    "section": "RecurrentGCN",
+    "text": "RecurrentGCN\n\nimport torch\nimport torch.nn.functional as F\nfrom torch_geometric_temporal.nn.recurrent import GConvGRU\n\nclass RecurrentGCN(torch.nn.Module):\n    def __init__(self, node_features, filters):\n        super(RecurrentGCN, self).__init__()\n        self.recurrent = GConvGRU(node_features, filters, 2)\n        self.linear = torch.nn.Linear(filters, 1)\n\n    def forward(self, x, edge_index, edge_weight):\n        h = self.recurrent(x, edge_index, edge_weight)\n        h = F.relu(h)\n        h = self.linear(h)\n        return h"
+  },
+  {
+    "objectID": "posts/STGCN/2022-12-30-STGCN-Toy Example.html#learn",
+    "href": "posts/STGCN/2022-12-30-STGCN-Toy Example.html#learn",
+    "title": "Toy Example",
+    "section": "Learn",
+    "text": "Learn\n\nfrom tqdm import tqdm\n\nmodel = RecurrentGCN(node_features=14, filters=32)\n\noptimizer = torch.optim.Adam(model.parameters(), lr=0.01)\n\nmodel.train()\n\nfor epoch in tqdm(range(50)):\n    for time, snapshot in enumerate(train_dataset):\n        y_hat = model(snapshot.x, snapshot.edge_index, snapshot.edge_attr)\n        cost = torch.mean((y_hat-snapshot.y)**2)\n        cost.backward()\n        optimizer.step()\n        optimizer.zero_grad()\n\n100%|██████████| 50/50 [03:48<00:00,  4.57s/it]"
+  },
+  {
+    "objectID": "posts/STGCN/2022-12-30-STGCN-Toy Example.html#예제의-차원-조사",
+    "href": "posts/STGCN/2022-12-30-STGCN-Toy Example.html#예제의-차원-조사",
+    "title": "Toy Example",
+    "section": "예제의 차원 조사",
+    "text": "예제의 차원 조사\n\nfor time, snapshot in enumerate(train_dataset):\n    _x = snapshot.x \n    _edge_index = snapshot.edge_index \n    _edge_attr = snapshot.edge_attr\n    _y = snapshot.y\n    break\n\n\n_x.shape\n\ntorch.Size([1068, 14])\n\n\n\n1068: number of nodes // 1068개의 노드가 있음\n14: number of features // 하나의 노드에 맵핑된 차원의수\n\n\n_edge_index.shape\n\ntorch.Size([2, 27079])\n\n\n\n_edge_attr.shape\n\ntorch.Size([27079])\n\n\n\n_y.shape\n\ntorch.Size([1068])\n\n\n\n1068: number of nodes\n\n\n_x.shape\n\ntorch.Size([1068, 14])"
+  },
+  {
+    "objectID": "posts/STGCN/2023-02-14-Tables.html",
+    "href": "posts/STGCN/2023-02-14-Tables.html",
+    "title": "Tables",
+    "section": "",
+    "text": "import pandas as pd\n\n- Dataset 5nodes\n\ncol = ['iteration', 'method', 'missingrate', 'missingtype', 'lag', 'number_of_filters', 'interpolation','MSE_train', 'MSE_test']\n\n\ndf = pd.DataFrame(columns=col)\ndf\n\n\n\n\n\n  \n    \n      \n      iteration\n      method\n      missingrate\n      missingtype\n      lag\n      number_of_filters\n      interpolation\n      MSE_train\n      MSE_test\n    \n  \n  \n  \n\n\n\n\n- 실험마다 아래와 같은식으로 추가\n\ndf_row = pd.DataFrame(columns=col)\ndf_row['iteration'] = 1, # 1,2,3,...,10 \ndf_row['method'] = 'stgcn', # 'stgcn','estgcn','gnar' \ndf_row['missingrate'] = 0.0, # 0.0, 0.2, 0.4, 0.6, 0.8 \ndf_row['missingtype'] = None,  # None, 'randomly' and 'block' \ndf_row['lag'] = 1, # 1,2,3,4 ... \ndf_row['number_of_filters'] = 16, # 16,24,32, ... \ndf_row['interpolation'] = None, # None, 'mean', 'linear'\ndf_row['MSE_train'] = 0.96 \ndf_row['MSE_test'] = 0.55\n\n\ndf = pd.concat([df,df_row])\ndf\n\n\n\n\n\n  \n    \n      \n      iteration\n      method\n      missingrate\n      missingtype\n      lag\n      number_of_filters\n      interpolation\n      MSE_train\n      MSE_test\n    \n  \n  \n    \n      0\n      1\n      stgcn\n      0.0\n      None\n      1\n      16\n      None\n      0.96\n      0.55\n    \n  \n\n\n\n\n\ndf_row = pd.DataFrame(columns=col)\ndf_row['iteration'] = 1, # 1,2,3,...,10 \ndf_row['method'] = 'stgcn', # 'stgcn','estgcn','gnar' \ndf_row['missingrate'] = 0.2, # 0.0, 0.2, 0.4, 0.6, 0.8 \ndf_row['missingtype'] = 'randomly',  # None, 'randomly' and 'block' \ndf_row['lag'] = 1, # 1,2,3,4 ... \ndf_row['number_of_filters'] = 16, # 16,24,32, ... \ndf_row['interpolation'] = 'mean', # None, 'mean', 'linear'\ndf_row['MSE_train'] = 1.23\ndf_row['MSE_test'] = 0.88\n\n\ndf = pd.concat([df,df_row])\ndf\n\n\n\n\n\n  \n    \n      \n      iteration\n      method\n      missingrate\n      missingtype\n      lag\n      number_of_filters\n      interpolation\n      MSE_train\n      MSE_test\n    \n  \n  \n    \n      0\n      1\n      stgcn\n      0.0\n      None\n      1\n      16\n      None\n      0.96\n      0.55\n    \n    \n      0\n      1\n      stgcn\n      0.2\n      randomly\n      1\n      16\n      mean\n      1.23\n      0.88"
+  },
+  {
+    "objectID": "posts/STGCN/2023-02-21-SGGCN-study1.html",
+    "href": "posts/STGCN/2023-02-21-SGGCN-study1.html",
+    "title": "STGCN 공부",
+    "section": "",
+    "text": "https://miruetoto.github.io/yechan3/posts/3_Researches/STGCN/2022-12-29-STGCN-tutorial.html"
+  },
+  {
+    "objectID": "posts/STGCN/2023-02-21-SGGCN-study1.html#imports",
+    "href": "posts/STGCN/2023-02-21-SGGCN-study1.html#imports",
+    "title": "STGCN 공부",
+    "section": "imports",
+    "text": "imports\n\n# 일반적인 모듈\nimport numpy as np\nimport matplotlib.pyplot as plt\nimport networkx as nx # 그래프 시그널 시각화를 위한 모듈\nfrom tqdm import tqdm # for문의 진행 상태 확인\n\n# 파이토치 관련\nimport torch\nimport torch.nn.functional as F\n\n\n# PyG 관련\nfrom torch_geometric.data import Data # 그래프 자료를 만들기 위한 클래스\n\n\n# STGCN 관련\nimport torch_geometric_temporal\nfrom torch_geometric_temporal.nn.recurrent import GConvGRU\nfrom torch_geometric_temporal.signal import temporal_signal_split # STGCN dataset을 train/test set으로 분리\n\n- STGCN의 학습을 위한 클래스 선언\n\nclass RecurrentGCN(torch.nn.Module):\n    def __init__(self, node_features, filters):\n        super(RecurrentGCN, self).__init__()\n        self.recurrent = GConvGRU(node_features, filters, 2)\n        self.linear = torch.nn.Linear(filters, 1)\n\n    def forward(self, x, edge_index, edge_weight):\n        h = self.recurrent(x, edge_index, edge_weight)\n        h = F.relu(h)\n        h = self.linear(h)\n        return h"
+  },
+  {
+    "objectID": "posts/STGCN/2023-02-21-SGGCN-study1.html#notations-of-stgcn",
+    "href": "posts/STGCN/2023-02-21-SGGCN-study1.html#notations-of-stgcn",
+    "title": "STGCN 공부",
+    "section": "notations of STGCN",
+    "text": "notations of STGCN\n- 시계열: each \\(t\\) 에에 대한 observation이 하나의 값 (혹은 벡터)\n- STGCN setting에서는 each \\(t\\) 에 대한 observation이 graph"
+  },
+  {
+    "objectID": "posts/STGCN/2023-02-21-SGGCN-study1.html#dataset-dataloaders",
+    "href": "posts/STGCN/2023-02-21-SGGCN-study1.html#dataset-dataloaders",
+    "title": "STGCN 공부",
+    "section": "dataset, dataloaders",
+    "text": "dataset, dataloaders\n\nPyG의 Data 자료형\n(예제) 아래와 같은 그래프 자료를 고려하자.\nWe show a simple example of an unweighted and undirected graph with three nodes and four edges. Each node contains exactly one feature\n\n이러한 자료형은 아래와 같은 형식으로 저장한다.\n\nedge_index = torch.tensor([[0, 1, 1, 2],\n                           [1, 0, 2, 1]], dtype = torch.long)\nx  = torch.tensor([[-1], [0], [1]], dtype = torch.float)\ndata = Data(x=x, edge_index=edge_index) # Data는 그래프자료형을 만드는 클래스\n\n\ntype(data)\n\ntorch_geometric.data.data.Data\n\n\n\ndata.x\n\ntensor([[-1.],\n        [ 0.],\n        [ 1.]])\n\n\n\ndata.edge_index\n\ntensor([[0, 1, 1, 2],\n        [1, 0, 2, 1]])\n\n\n\ndata\n\nData(x=[3, 1], edge_index=[2, 4])"
+  },
+  {
+    "objectID": "posts/STGCN/2023-02-21-SGGCN-study1.html#pytorch-geometric-temporal-의-자료형",
+    "href": "posts/STGCN/2023-02-21-SGGCN-study1.html#pytorch-geometric-temporal-의-자료형",
+    "title": "STGCN 공부",
+    "section": "PyTorch Geometric Temporal 의 자료형",
+    "text": "PyTorch Geometric Temporal 의 자료형\n\nref: PyTorch Geomatric Temporal Signal\n\n아래의 클래스들 중 하나를 이용하여 만든다.\n\n## Temporal Signal Iterators\ntorch_geometric_temporal.signal.StaticGraphTemporalSignal\ntorch_geometric_temporal.signal.DynamicGraphTemporalSignal\ntorch_geometric_temporal.signal.DynamicGraphStaticSignal\n\n## Heterogeneous Temporal Signal Iterators\ntorch_geometric_temporal.signal.StaticHeteroGraphTemporalSignal\ntorch_geometric_temporal.signal.DynamicHeteroGraphTemporalSignal\ntorch_geometric_temporal.signal.DynamicHeteroGraphStaticSignal\n\ntorch_geometric_temporal.signal.dynamic_hetero_graph_static_signal.DynamicHeteroGraphStaticSignal\n\n\n이 중 “Heterogeneous Temporal Signal”은 우리가 관심이 있는 신호가 아님로 사실상 아래 3가지만 고려하면 된다.\n\ntorch_geometric_temporal.signal.StaticGraphTemporalSignal\ntorch_geometric_temporal.signal.DynamicGraphTemporalSignal\ntorch_geometric_temporal.signal.DynamicGraphStaticSignal\n\n여기에서 StaticGraphTemporalSignal 는 시간에 따라서 그래프 구조가 일정한 경우, 즉 \\({\\cal G}_t=\\{{\\cal V},{\\cal E}\\}\\) 와 같은 구조를 의미한다.\n\n(예제1) StaticGraphTemporalSignal을 이용하여 데이터 셋 만들기\n- json data \\(\\to\\) dict\n\nimport json\nimport urllib\n\n\nurl = \"https://raw.githubusercontent.com/benedekrozemberczki/pytorch_geometric_temporal/master/dataset/chickenpox.json\"\ndata_dict = json.loads(urllib.request.urlopen(url).read())\n# data_dict 출력이 김\n\n\ndata_dict.keys()\n\ndict_keys(['edges', 'node_ids', 'FX'])\n\n\n- 살펴보기\n\nnp.array(data_dict['edges']).T\n\narray([[ 0,  0,  0,  0,  0,  0,  0,  1,  1,  1,  1,  2,  2,  2,  2,  3,\n         3,  3,  3,  3,  3,  4,  4,  5,  5,  5,  5,  6,  6,  6,  6,  6,\n         6,  6,  7,  7,  7,  7,  8,  8,  8,  8,  8,  9,  9,  9,  9,  9,\n        10, 10, 10, 10, 10, 10, 10, 10, 11, 11, 11, 11, 11, 12, 12, 12,\n        12, 13, 13, 13, 13, 13, 13, 13, 13, 14, 14, 14, 14, 14, 14, 15,\n        15, 15, 16, 16, 16, 16, 16, 17, 17, 17, 17, 18, 18, 18, 18, 18,\n        18, 18, 19, 19, 19, 19],\n       [10,  6, 13,  1,  0,  5, 16,  0, 16,  1, 14, 10,  8,  2,  5,  8,\n        15, 12,  9, 10,  3,  4, 13,  0, 10,  2,  5,  0, 16,  6, 14, 13,\n        11, 18,  7, 17, 11, 18,  3,  2, 15,  8, 10,  9, 13,  3, 12, 10,\n         5,  9,  8,  3, 10,  2, 13,  0,  6, 11,  7, 13, 18,  3,  9, 13,\n        12, 13,  9,  6,  4, 12,  0, 11, 10, 18, 19,  1, 14,  6, 16,  3,\n        15,  8, 16, 14,  1,  0,  6,  7, 19, 17, 18, 14, 18, 17,  7,  6,\n        19, 11, 18, 14, 19, 17]])"
+  },
+  {
     "objectID": "posts/welcome/index.html",
     "href": "posts/welcome/index.html",
     "title": "Welcome To My Blog",
@@ -67,6 +151,6 @@
     "href": "index.html",
     "title": "myblog",
     "section": "",
-    "text": "Post With Code\n\n\n\n\n\n\n\nnews\n\n\ncode\n\n\nanalysis\n\n\n\n\n\n\n\n\n\n\n\nFeb 20, 2023\n\n\nHarlow Malloc\n\n\n\n\n\n\n  \n\n\n\n\nWelcome To My Blog\n\n\n\n\n\n\n\nnews\n\n\n\n\n\n\n\n\n\n\n\nFeb 17, 2023\n\n\nTristan O’Malley\n\n\n\n\n\n\n  \n\n\n\n\nSTGCN 튜토리얼\n\n\n\n\n\n\n\n\n\n\n\n\nDec 29, 2022\n\n\n신록예찬, 최서연\n\n\n\n\n\n\nNo matching items"
+    "text": "Post With Code\n\n\n\n\n\n\n\nnews\n\n\ncode\n\n\nanalysis\n\n\n\n\n\n\n\n\n\n\n\nFeb 20, 2023\n\n\nHarlow Malloc\n\n\n\n\n\n\n  \n\n\n\n\nWelcome To My Blog\n\n\n\n\n\n\n\nnews\n\n\n\n\n\n\n\n\n\n\n\nFeb 17, 2023\n\n\nTristan O’Malley\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nToy Example\n\n\n\n\n\n\n\nSTGCN\n\n\nPytorch\n\n\n\n\n\n\n\n\n\n\n\nDec 30, 2022\n\n\n신록예찬\n\n\n\n\n\n\n  \n\n\n\n\nSTGCN 공부\n\n\n\n\n\n\n\nSTGCN\n\n\nBASIC\n\n\n\n\n\n\n\n\n\n\n\nDec 30, 2022\n\n\njiyun Lim\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nex\n\n\n\n\n\n\n\n\n\n\n\n\nDec 29, 2022\n\n\njiyun Lim\n\n\n\n\n\n\n  \n\n\n\n\nSTGCN 튜토리얼\n\n\n\n\n\n\n\n\n\n\n\n\nDec 29, 2022\n\n\n신록예찬, 최서연\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nTables\n\n\n\n\n\n\n\nSTGCN\n\n\nPytorch\n\n\n\n\n\n\n\n\n\n\n\n\nDec 29, 2022\n\n\n신록예찬\n\n\n\n\n\n\nNo matching items"
   }
 ]

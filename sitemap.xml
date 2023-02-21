@@ -2,26 +2,42 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
     <loc>https://github.com/pinkocto/myblog/about.html</loc>
-    <lastmod>2023-02-20T16:13:50.576Z</lastmod>
+    <lastmod>2023-02-21T05:18:47.463Z</lastmod>
   </url>
   <url>
     <loc>https://github.com/pinkocto/myblog/Tip/2023-02-20-tips.html</loc>
-    <lastmod>2023-02-20T16:13:50.776Z</lastmod>
+    <lastmod>2023-02-21T05:18:47.655Z</lastmod>
+  </url>
+  <url>
+    <loc>https://github.com/pinkocto/myblog/posts/STGCN/2023-02-20-note.html</loc>
+    <lastmod>2023-02-21T05:18:47.835Z</lastmod>
   </url>
   <url>
     <loc>https://github.com/pinkocto/myblog/posts/STGCN/2022-12-29-STGCN-tutorial.html</loc>
-    <lastmod>2023-02-20T16:13:51.096Z</lastmod>
+    <lastmod>2023-02-21T05:18:48.143Z</lastmod>
+  </url>
+  <url>
+    <loc>https://github.com/pinkocto/myblog/posts/STGCN/2022-12-30-STGCN-Toy Example.html</loc>
+    <lastmod>2023-02-21T05:18:48.375Z</lastmod>
+  </url>
+  <url>
+    <loc>https://github.com/pinkocto/myblog/posts/STGCN/2023-02-14-Tables.html</loc>
+    <lastmod>2023-02-21T05:18:48.567Z</lastmod>
+  </url>
+  <url>
+    <loc>https://github.com/pinkocto/myblog/posts/STGCN/2023-02-21-SGGCN-study1.html</loc>
+    <lastmod>2023-02-21T05:18:48.791Z</lastmod>
   </url>
   <url>
     <loc>https://github.com/pinkocto/myblog/posts/welcome/index.html</loc>
-    <lastmod>2023-02-20T16:13:51.276Z</lastmod>
+    <lastmod>2023-02-21T05:18:48.955Z</lastmod>
   </url>
   <url>
     <loc>https://github.com/pinkocto/myblog/posts/post-with-code/index.html</loc>
-    <lastmod>2023-02-20T16:13:51.436Z</lastmod>
+    <lastmod>2023-02-21T05:18:49.119Z</lastmod>
   </url>
   <url>
     <loc>https://github.com/pinkocto/myblog/index.html</loc>
-    <lastmod>2023-02-20T16:13:51.636Z</lastmod>
+    <lastmod>2023-02-21T05:18:49.351Z</lastmod>
   </url>
 </urlset>
