@@ -515,8 +515,130 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 </div>
 </div>
 <ul>
-<li><span class="math inline">\(\cal{E} = \{(0,10),(0,6),\dots,(19,17)\}\)</span></li>
+<li><span class="math inline">\({\cal E} = \{(0,10),(0,6), \dots, (19,17)\}\)</span></li>
+<li>혹은 <span class="math inline">\({\cal E} = \{(\tt{BACS},\tt{JASZ}), ({\tt BACS},{\tt FEJER}), \dots, (\tt{ZALA},\tt{VAS})\}\)</span></li>
 </ul>
+<div class="cell" data-execution_count="24">
+<div class="sourceCode cell-code" id="cb24"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb24-1"><a href="#cb24-1"></a>data_dict[<span class="st">'node_ids'</span>]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="24">
+<pre><code>{'BACS': 0,
+ 'BARANYA': 1,
+ 'BEKES': 2,
+ 'BORSOD': 3,
+ 'BUDAPEST': 4,
+ 'CSONGRAD': 5,
+ 'FEJER': 6,
+ 'GYOR': 7,
+ 'HAJDU': 8,
+ 'HEVES': 9,
+ 'JASZ': 10,
+ 'KOMAROM': 11,
+ 'NOGRAD': 12,
+ 'PEST': 13,
+ 'SOMOGY': 14,
+ 'SZABOLCS': 15,
+ 'TOLNA': 16,
+ 'VAS': 17,
+ 'VESZPREM': 18,
+ 'ZALA': 19}</code></pre>
+</div>
+</div>
+<div class="cell" data-execution_count="33">
+<div class="sourceCode cell-code" id="cb26"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb26-1"><a href="#cb26-1"></a><span class="bu">len</span>(data_dict[<span class="st">'node_ids'</span>]) <span class="co"># node 개수는 20개</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="33">
+<pre><code>20</code></pre>
+</div>
+</div>
+<ul>
+<li><span class="math inline">\({\cal V}=\{\tt{BACS},\tt{BARANYA} \dots, \tt{ZALA}\}\)</span></li>
+</ul>
+<div class="cell" data-execution_count="25">
+<div class="sourceCode cell-code" id="cb28"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb28-1"><a href="#cb28-1"></a>data_dict.keys()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="25">
+<pre><code>dict_keys(['edges', 'node_ids', 'FX'])</code></pre>
+</div>
+</div>
+<div class="cell" data-execution_count="26">
+<div class="sourceCode cell-code" id="cb30"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb30-1"><a href="#cb30-1"></a>np.array(data_dict[<span class="st">'FX'</span>]), np.array(data_dict[<span class="st">'FX'</span>]).shape</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="26">
+<pre><code>(array([[-1.08135724e-03, -7.11136085e-01, -3.22808515e+00, ...,
+          1.09445310e+00, -7.08747750e-01, -1.82280792e+00],
+        [ 2.85705967e-02, -5.98430173e-01, -2.29097341e-01, ...,
+         -1.59220988e+00, -2.24597623e-01,  7.86330575e-01],
+        [ 3.54742090e-01,  1.90511208e-01,  1.61028185e+00, ...,
+          1.38183225e-01, -7.08747750e-01, -5.61724314e-01],
+        ...,
+        [-4.75512620e-01, -1.19952837e+00, -3.89043358e-01, ...,
+         -1.00023329e+00, -1.71429032e+00,  4.70746677e-02],
+        [-2.08645035e-01,  6.03766218e-01,  1.08216835e-02, ...,
+          4.71099041e-02,  2.45684924e+00, -3.44296107e-01],
+        [ 1.21464875e+00,  7.16472130e-01,  1.29038982e+00, ...,
+          4.56939849e-01,  7.43702632e-01,  1.00375878e+00]]),
+ (521, 20))</code></pre>
+</div>
+</div>
+<ul>
+<li><span class="math inline">\({\bf f}=\begin{bmatrix} {\bf f}_1\\ {\bf f}_2\\ \dots \\ {\bf f}_{521} \end{bmatrix}=\begin{bmatrix} f(t=1,v=\tt{BACS}) &amp; \dots &amp; f(t=1,v=\tt{ZALA}) \\ f(t=2,v=\tt{BACS}) &amp; \dots &amp; f(t=2,v=\tt{ZALA}) \\ \dots &amp; \dots &amp; \dots \\ f(t=521,v=\tt{BACS}) &amp; \dots &amp; f(t=521,v=\tt{ZALA}) \end{bmatrix}\)</span></li>
+</ul>
+<p>즉, data_dict는 아래와 같이 구성되어 있음</p>
+<table class="table">
+<colgroup>
+<col style="width: 20%">
+<col style="width: 20%">
+<col style="width: 20%">
+<col style="width: 20%">
+<col style="width: 20%">
+</colgroup>
+<thead>
+<tr class="header">
+<th style="text-align: center;">수학 기호</th>
+<th style="text-align: center;">코드에 저장된 변수</th>
+<th style="text-align: center;">자료형</th>
+<th style="text-align: center;">차원</th>
+<th style="text-align: center;">설명</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: center;"><span class="math inline">\({\cal V}\)</span></td>
+<td style="text-align: center;"><code>data_dict['node_ids']</code></td>
+<td style="text-align: center;">dict</td>
+<td style="text-align: center;">20</td>
+<td style="text-align: center;">20개의 노드에 대한 설명이 있음</td>
+</tr>
+<tr class="even">
+<td style="text-align: center;"><span class="math inline">\({\cal E}\)</span></td>
+<td style="text-align: center;"><code>data_dict['edges']</code></td>
+<td style="text-align: center;">list (double list)</td>
+<td style="text-align: center;">(102,2)</td>
+<td style="text-align: center;">노드들에 대한 102개의 연결을 정의함</td>
+</tr>
+<tr class="odd">
+<td style="text-align: center;"><span class="math inline">\({\bf f}\)</span></td>
+<td style="text-align: center;"><code>data_dict['node_ids']</code></td>
+<td style="text-align: center;">dict</td>
+<td style="text-align: center;">(521,20)</td>
+<td style="text-align: center;"><span class="math inline">\(f(t,v)\)</span> for <span class="math inline">\(v \in {\cal V}\)</span> and <span class="math inline">\(t = 1,\dots, T\)</span></td>
+</tr>
+</tbody>
+</table>
+<p><code>-</code> 주어진 자료를 정리하여 그래프신호 <span class="math inline">\(\big(\{{\cal V},{\cal E},{\bf W}\},{\bf f}\big)\)</span>를 만들면 아래와 같다.</p>
+<div class="cell" data-execution_count="36">
+<div class="sourceCode cell-code" id="cb32"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb32-1"><a href="#cb32-1"></a>edges <span class="op">=</span> np.array(data_dict[<span class="st">'edges'</span>]).T</span>
+<span id="cb32-2"><a href="#cb32-2"></a>edge_weight <span class="op">=</span> np.ones(edges.shape[<span class="dv">1</span>])</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="cell" data-execution_count="38">
+<div class="sourceCode cell-code" id="cb33"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb33-1"><a href="#cb33-1"></a><span class="bu">len</span>(np.ones(edges.shape[<span class="dv">1</span>]))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="38">
+<pre><code>102</code></pre>
+</div>
+</div>
+<div class="cell" data-execution_count="40">
+<div class="sourceCode cell-code" id="cb35"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb35-1"><a href="#cb35-1"></a>edges.shape</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="40">
+<pre><code>(2, 102)</code></pre>
+</div>
+</div>
 
 
 </section>
