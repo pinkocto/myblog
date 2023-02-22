@@ -275,6 +275,11 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
   <a href="../../../posts/STGCN/STGCN 공부/traffic_prediction.html" class="sidebar-item-text sidebar-link">Traffic Forecasting review</a>
   </div>
 </li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../../posts/STGCN/STGCN 공부/2023-02-01-memo.html" class="sidebar-item-text sidebar-link">메모장</a>
+  </div>
+</li>
       </ul>
   </li>
       </ul>
@@ -344,7 +349,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 </ul>
 <section id="imports" class="level2">
 <h2 class="anchored" data-anchor-id="imports">imports</h2>
-<div class="cell" data-execution_count="1">
+<div class="cell" data-execution_count="3">
 <div class="sourceCode cell-code" id="cb1"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1"></a><span class="co"># 일반적인 모듈</span></span>
 <span id="cb1-2"><a href="#cb1-2"></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
 <span id="cb1-3"><a href="#cb1-3"></a><span class="im">import</span> matplotlib.pyplot <span class="im">as</span> plt</span>
@@ -366,7 +371,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <span id="cb1-19"><a href="#cb1-19"></a><span class="im">from</span> torch_geometric_temporal.signal <span class="im">import</span> temporal_signal_split <span class="co"># STGCN dataset을 train/test set으로 분리</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p><code>-</code> STGCN의 학습을 위한 클래스 선언</p>
-<div class="cell" data-execution_count="3">
+<div class="cell" data-execution_count="4">
 <div class="sourceCode cell-code" id="cb2"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1"></a><span class="kw">class</span> RecurrentGCN(torch.nn.Module):</span>
 <span id="cb2-2"><a href="#cb2-2"></a>    <span class="kw">def</span> <span class="fu">__init__</span>(<span class="va">self</span>, node_features, filters):</span>
 <span id="cb2-3"><a href="#cb2-3"></a>        <span class="bu">super</span>(RecurrentGCN, <span class="va">self</span>).<span class="fu">__init__</span>()</span>
@@ -382,8 +387,8 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 </section>
 <section id="notations-of-stgcn" class="level2">
 <h2 class="anchored" data-anchor-id="notations-of-stgcn">notations of STGCN</h2>
-<p><code>-</code> 시계열: each <span class="math inline">\(t\)</span> 에에 대한 observation이 하나의 값 (혹은 벡터)</p>
-<p><code>-</code> STGCN setting에서는 each <span class="math inline">\(t\)</span> 에 대한 observation이 graph</p>
+<p><code>-</code> 시계열: each <span class="math inline">\(t\)</span> 에에 대한 observation이 하나의 값 (혹은 벡터) - 자료: <span class="math inline">\(X(t) \quad \text{for} \quad t = 1,2,\dots,T\)</span></p>
+<p><code>-</code> STGCN setting에서는 each <span class="math inline">\(t\)</span> 에 대한 observation이 graph - 자료: <span class="math inline">\(X(v,t) \quad \text{for} \quad t = 1,2,\dots,T \quad \text{and} \quad v\in V\)</span> - 주의: 이 포스트에서는 <span class="math inline">\(X(v,t)\)</span>를 <span class="math inline">\(f(v,t)\)</span>로 표현할 때가 있음</p>
 </section>
 <section id="dataset-dataloaders" class="level2">
 <h2 class="anchored" data-anchor-id="dataset-dataloaders">dataset, dataloaders</h2>
@@ -393,15 +398,15 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <p>We show a simple example of an unweighted and undirected graph with three nodes and four edges. Each node contains exactly one feature</p>
 <p><img src="https://pytorch-geometric.readthedocs.io/en/latest/_images/graph.svg" class="img-fluid"></p>
 <p>이러한 자료형은 아래와 같은 형식으로 저장한다.</p>
-<div class="cell" data-execution_count="12">
+<div class="cell" data-execution_count="5">
 <div class="sourceCode cell-code" id="cb3"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1"></a>edge_index <span class="op">=</span> torch.tensor([[<span class="dv">0</span>, <span class="dv">1</span>, <span class="dv">1</span>, <span class="dv">2</span>],</span>
 <span id="cb3-2"><a href="#cb3-2"></a>                           [<span class="dv">1</span>, <span class="dv">0</span>, <span class="dv">2</span>, <span class="dv">1</span>]], dtype <span class="op">=</span> torch.<span class="bu">long</span>)  <span class="co"># 4 edges</span></span>
 <span id="cb3-3"><a href="#cb3-3"></a>x  <span class="op">=</span> torch.tensor([[<span class="op">-</span><span class="dv">1</span>], [<span class="dv">0</span>], [<span class="dv">1</span>]], dtype <span class="op">=</span> torch.<span class="bu">float</span>) <span class="co"># 3 nodes</span></span>
 <span id="cb3-4"><a href="#cb3-4"></a>data <span class="op">=</span> Data(x<span class="op">=</span>x, edge_index<span class="op">=</span>edge_index) <span class="co"># Data는 그래프자료형을 만드는 클래스</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<div class="cell" data-execution_count="16">
+<div class="cell" data-execution_count="6">
 <div class="sourceCode cell-code" id="cb4"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb4-1"><a href="#cb4-1"></a>data</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-display" data-execution_count="16">
+<div class="cell-output cell-output-display" data-execution_count="6">
 <pre><code>Data(x=[3, 1], edge_index=[2, 4])</code></pre>
 </div>
 </div>
@@ -409,36 +414,36 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <li><strong>x</strong> : <span class="math inline">\(3\times1\)</span> 크기의 행렬 <span class="math inline">\(\to\)</span> 3개의 노드와 각 노드는 단일 값을 가진다.</li>
 <li><strong>edge_index</strong> : <span class="math inline">\(2 \times 4\)</span> 크기의 행렬 <span class="math inline">\(\to\)</span> <span class="math inline">\(4\)</span>개의 엣지들 (양방향 그래프)</li>
 </ul>
-<div class="cell" data-execution_count="13">
+<div class="cell" data-execution_count="7">
 <div class="sourceCode cell-code" id="cb6"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb6-1"><a href="#cb6-1"></a><span class="bu">type</span>(data)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-display" data-execution_count="13">
+<div class="cell-output cell-output-display" data-execution_count="7">
 <pre><code>torch_geometric.data.data.Data</code></pre>
 </div>
 </div>
-<div class="cell" data-execution_count="14">
+<div class="cell" data-execution_count="8">
 <div class="sourceCode cell-code" id="cb8"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb8-1"><a href="#cb8-1"></a>data.x <span class="co"># 노드의 특징 행렬</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-display" data-execution_count="14">
+<div class="cell-output cell-output-display" data-execution_count="8">
 <pre><code>tensor([[-1.],
         [ 0.],
         [ 1.]])</code></pre>
 </div>
 </div>
-<div class="cell" data-execution_count="15">
+<div class="cell" data-execution_count="9">
 <div class="sourceCode cell-code" id="cb10"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb10-1"><a href="#cb10-1"></a>data.edge_index <span class="co"># 그래프 연결성</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-display" data-execution_count="15">
+<div class="cell-output cell-output-display" data-execution_count="9">
 <pre><code>tensor([[0, 1, 1, 2],
         [1, 0, 2, 1]])</code></pre>
 </div>
 </div>
-<div class="cell" data-execution_count="23">
+<div class="cell" data-execution_count="10">
 <div class="sourceCode cell-code" id="cb12"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb12-1"><a href="#cb12-1"></a>data.num_edges <span class="co"># edge 총 갯수</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-display" data-execution_count="23">
+<div class="cell-output cell-output-display" data-execution_count="10">
 <pre><code>4</code></pre>
 </div>
 </div>
-<div class="cell" data-execution_count="24">
+<div class="cell" data-execution_count="11">
 <div class="sourceCode cell-code" id="cb14"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb14-1"><a href="#cb14-1"></a>data.is_directed() <span class="co"># 그래프 방향성 여부 확인</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-display" data-execution_count="24">
+<div class="cell-output cell-output-display" data-execution_count="11">
 <pre><code>False</code></pre>
 </div>
 </div>
