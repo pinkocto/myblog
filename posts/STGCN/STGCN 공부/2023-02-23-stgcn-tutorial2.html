@@ -343,6 +343,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
   <li><a href="#recurrentgcn" id="toc-recurrentgcn" class="nav-link" data-scroll-target="#recurrentgcn">RecurrentGCN</a></li>
   <li><a href="#learn" id="toc-learn" class="nav-link" data-scroll-target="#learn">Learn</a></li>
   <li><a href="#예제의-차원-조사" id="toc-예제의-차원-조사" class="nav-link" data-scroll-target="#예제의-차원-조사">예제의 차원 조사</a></li>
+  <li><a href="#우리예제" id="toc-우리예제" class="nav-link" data-scroll-target="#우리예제">우리예제</a></li>
   </ul></li>
   </ul>
 </nav>
@@ -440,7 +441,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 </section>
 <section id="예제의-차원-조사" class="level2">
 <h2 class="anchored" data-anchor-id="예제의-차원-조사">예제의 차원 조사</h2>
-<div class="cell">
+<div class="cell" data-execution_count="6">
 <div class="sourceCode cell-code" id="cb7"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb7-1"><a href="#cb7-1"></a><span class="cf">for</span> time, snapshot <span class="kw">in</span> <span class="bu">enumerate</span>(train_dataset):</span>
 <span id="cb7-2"><a href="#cb7-2"></a>    _x <span class="op">=</span> snapshot.x</span>
 <span id="cb7-3"><a href="#cb7-3"></a>    _edge_index <span class="op">=</span> snapshot.edge_index</span>
@@ -448,27 +449,155 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <span id="cb7-5"><a href="#cb7-5"></a>    _y <span class="op">=</span> snapshot.y</span>
 <span id="cb7-6"><a href="#cb7-6"></a>    <span class="cf">break</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<div class="cell">
+<div class="cell" data-execution_count="7">
 <div class="sourceCode cell-code" id="cb8"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb8-1"><a href="#cb8-1"></a>_x.shape</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="7">
+<pre><code>torch.Size([1068, 14])</code></pre>
+</div>
 </div>
 <ul>
 <li>1068: number of nodes # 1068개의 노드가 있음</li>
 <li>14: number of features # 하나의 노드에 맵핑된 차원의 수</li>
 </ul>
-<div class="cell">
-<div class="sourceCode cell-code" id="cb9"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb9-1"><a href="#cb9-1"></a>_edge_index.shape</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell" data-execution_count="8">
+<div class="sourceCode cell-code" id="cb10"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb10-1"><a href="#cb10-1"></a>_edge_index.shape</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="8">
+<pre><code>torch.Size([2, 27079])</code></pre>
 </div>
-<div class="cell">
-<div class="sourceCode cell-code" id="cb10"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb10-1"><a href="#cb10-1"></a>_edge_attr.shape</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<div class="cell">
-<div class="sourceCode cell-code" id="cb11"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb11-1"><a href="#cb11-1"></a>_y.shape</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell" data-execution_count="9">
+<div class="sourceCode cell-code" id="cb12"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb12-1"><a href="#cb12-1"></a>_edge_attr.shape</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="9">
+<pre><code>torch.Size([27079])</code></pre>
+</div>
+</div>
+<div class="cell" data-execution_count="10">
+<div class="sourceCode cell-code" id="cb14"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb14-1"><a href="#cb14-1"></a>_y.shape</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="10">
+<pre><code>torch.Size([1068])</code></pre>
+</div>
 </div>
 <ul>
 <li>1068: number of nodes</li>
 </ul>
-<div class="cell">
-<div class="sourceCode cell-code" id="cb12"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb12-1"><a href="#cb12-1"></a>_x.shape</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell" data-execution_count="11">
+<div class="sourceCode cell-code" id="cb16"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb16-1"><a href="#cb16-1"></a>_x.shape</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="11">
+<pre><code>torch.Size([1068, 14])</code></pre>
+</div>
+</div>
+</section>
+<section id="우리예제" class="level2">
+<h2 class="anchored" data-anchor-id="우리예제">우리예제</h2>
+<div class="cell" data-execution_count="12">
+<div class="sourceCode cell-code" id="cb18"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb18-1"><a href="#cb18-1"></a>T <span class="op">=</span> <span class="dv">100</span> </span>
+<span id="cb18-2"><a href="#cb18-2"></a>N <span class="op">=</span> <span class="dv">4</span> <span class="co"># number of nodes </span></span>
+<span id="cb18-3"><a href="#cb18-3"></a>E <span class="op">=</span> np.array([[<span class="dv">0</span>,<span class="dv">1</span>],[<span class="dv">1</span>,<span class="dv">2</span>],[<span class="dv">2</span>,<span class="dv">3</span>],[<span class="dv">3</span>,<span class="dv">0</span>]]).T</span>
+<span id="cb18-4"><a href="#cb18-4"></a>V <span class="op">=</span> np.array([<span class="dv">1</span>,<span class="dv">2</span>,<span class="dv">3</span>,<span class="dv">4</span>])</span>
+<span id="cb18-5"><a href="#cb18-5"></a>AMP <span class="op">=</span> np.array([<span class="dv">3</span>,<span class="dv">2</span>,<span class="dv">1</span>,<span class="fl">2.2</span>])</span>
+<span id="cb18-6"><a href="#cb18-6"></a>t <span class="op">=</span> np.arange(<span class="dv">0</span>,T)</span>
+<span id="cb18-7"><a href="#cb18-7"></a>node_features <span class="op">=</span> <span class="dv">1</span> </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="cell" data-execution_count="13">
+<div class="sourceCode cell-code" id="cb19"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb19-1"><a href="#cb19-1"></a>f <span class="op">=</span> np.stack([a<span class="op">*</span>np.sin(<span class="dv">2</span><span class="op">*</span>t<span class="op">**</span><span class="dv">2</span><span class="op">/</span><span class="dv">1000</span>)<span class="op">+</span>np.random.normal(loc<span class="op">=</span><span class="dv">0</span>,scale<span class="op">=</span><span class="fl">0.2</span>,size<span class="op">=</span>T) <span class="cf">for</span> a <span class="kw">in</span> AMP],axis<span class="op">=</span><span class="dv">1</span>).reshape(T,N,node_features)</span>
+<span id="cb19-2"><a href="#cb19-2"></a>f <span class="op">=</span> torch.tensor(f).<span class="bu">float</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="cell" data-execution_count="14">
+<div class="sourceCode cell-code" id="cb20"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb20-1"><a href="#cb20-1"></a>f.shape</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="14">
+<pre><code>torch.Size([100, 4, 1])</code></pre>
+</div>
+</div>
+<div class="cell" data-execution_count="15">
+<div class="sourceCode cell-code" id="cb22"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb22-1"><a href="#cb22-1"></a>X <span class="op">=</span> f[:<span class="dv">99</span>,:,:]</span>
+<span id="cb22-2"><a href="#cb22-2"></a>y <span class="op">=</span> f[<span class="dv">1</span>:,:,:]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="cell" data-execution_count="16">
+<div class="sourceCode cell-code" id="cb23"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb23-1"><a href="#cb23-1"></a>plt.plot(y[:,<span class="dv">0</span>,<span class="dv">0</span>],label<span class="op">=</span><span class="st">"v1"</span>)</span>
+<span id="cb23-2"><a href="#cb23-2"></a>plt.plot(y[:,<span class="dv">1</span>,<span class="dv">0</span>],label<span class="op">=</span><span class="st">"v2"</span>)</span>
+<span id="cb23-3"><a href="#cb23-3"></a>plt.plot(y[:,<span class="dv">2</span>,<span class="dv">0</span>],label<span class="op">=</span><span class="st">"v3"</span>)</span>
+<span id="cb23-4"><a href="#cb23-4"></a>plt.plot(y[:,<span class="dv">3</span>,<span class="dv">0</span>],label<span class="op">=</span><span class="st">"v4"</span>)</span>
+<span id="cb23-5"><a href="#cb23-5"></a>plt.legend()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="16">
+<pre><code>&lt;matplotlib.legend.Legend at 0x7fdca565c8e0&gt;</code></pre>
+</div>
+<div class="cell-output cell-output-display">
+<p><img src="2023-02-23-stgcn-tutorial2_files/figure-html/cell-16-output-2.png" class="img-fluid"></p>
+</div>
+</div>
+<div class="cell" data-execution_count="17">
+<div class="sourceCode cell-code" id="cb25"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb25-1"><a href="#cb25-1"></a>edge_index <span class="op">=</span> torch.tensor(E)</span>
+<span id="cb25-2"><a href="#cb25-2"></a>edge_attr <span class="op">=</span> torch.tensor(np.array([<span class="dv">1</span>,<span class="dv">1</span>,<span class="dv">1</span>,<span class="dv">1</span>]),dtype<span class="op">=</span>torch.float32)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="cell" data-execution_count="18">
+<div class="sourceCode cell-code" id="cb26"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb26-1"><a href="#cb26-1"></a>_ee <span class="op">=</span> <span class="bu">enumerate</span>(<span class="bu">zip</span>(X,y))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="cell" data-execution_count="19">
+<div class="sourceCode cell-code" id="cb27"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb27-1"><a href="#cb27-1"></a><span class="im">from</span> tqdm <span class="im">import</span> tqdm</span>
+<span id="cb27-2"><a href="#cb27-2"></a></span>
+<span id="cb27-3"><a href="#cb27-3"></a>model <span class="op">=</span> RecurrentGCN(node_features<span class="op">=</span><span class="dv">1</span>, filters<span class="op">=</span><span class="dv">4</span>)</span>
+<span id="cb27-4"><a href="#cb27-4"></a></span>
+<span id="cb27-5"><a href="#cb27-5"></a>optimizer <span class="op">=</span> torch.optim.Adam(model.parameters(), lr<span class="op">=</span><span class="fl">0.01</span>)</span>
+<span id="cb27-6"><a href="#cb27-6"></a></span>
+<span id="cb27-7"><a href="#cb27-7"></a>model.train()</span>
+<span id="cb27-8"><a href="#cb27-8"></a></span>
+<span id="cb27-9"><a href="#cb27-9"></a><span class="cf">for</span> epoch <span class="kw">in</span> tqdm(<span class="bu">range</span>(<span class="dv">50</span>)):</span>
+<span id="cb27-10"><a href="#cb27-10"></a>    <span class="cf">for</span> time, (xt,yt) <span class="kw">in</span> <span class="bu">enumerate</span>(<span class="bu">zip</span>(X,y)):</span>
+<span id="cb27-11"><a href="#cb27-11"></a>        y_hat <span class="op">=</span> model(xt, edge_index, edge_attr)</span>
+<span id="cb27-12"><a href="#cb27-12"></a>        cost <span class="op">=</span> torch.mean((y_hat<span class="op">-</span>yt)<span class="op">**</span><span class="dv">2</span>)</span>
+<span id="cb27-13"><a href="#cb27-13"></a>        cost.backward()</span>
+<span id="cb27-14"><a href="#cb27-14"></a>        optimizer.step()</span>
+<span id="cb27-15"><a href="#cb27-15"></a>        optimizer.zero_grad()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>100%|██████████| 50/50 [00:15&lt;00:00,  3.22it/s]</code></pre>
+</div>
+</div>
+<div class="cell" data-execution_count="20">
+<div class="sourceCode cell-code" id="cb29"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb29-1"><a href="#cb29-1"></a>yhat <span class="op">=</span> torch.stack([model(xt, edge_index, edge_attr) <span class="cf">for</span> xt <span class="kw">in</span> X]).detach().numpy()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="cell" data-execution_count="21">
+<div class="sourceCode cell-code" id="cb30"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb30-1"><a href="#cb30-1"></a>plt.plot(y[:,<span class="dv">0</span>,<span class="dv">0</span>],label<span class="op">=</span><span class="st">"y in V1"</span>)</span>
+<span id="cb30-2"><a href="#cb30-2"></a>plt.plot(yhat[:,<span class="dv">0</span>,<span class="dv">0</span>],label<span class="op">=</span><span class="st">"yhat in V1"</span>)</span>
+<span id="cb30-3"><a href="#cb30-3"></a>plt.legend()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="21">
+<pre><code>&lt;matplotlib.legend.Legend at 0x7fdc9c7883d0&gt;</code></pre>
+</div>
+<div class="cell-output cell-output-display">
+<p><img src="2023-02-23-stgcn-tutorial2_files/figure-html/cell-21-output-2.png" class="img-fluid"></p>
+</div>
+</div>
+<div class="cell" data-execution_count="22">
+<div class="sourceCode cell-code" id="cb32"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb32-1"><a href="#cb32-1"></a>plt.plot(y[:,<span class="dv">1</span>,<span class="dv">0</span>],label<span class="op">=</span><span class="st">"y in V2"</span>)</span>
+<span id="cb32-2"><a href="#cb32-2"></a>plt.plot(yhat[:,<span class="dv">1</span>,<span class="dv">0</span>],label<span class="op">=</span><span class="st">"yhat in V2"</span>)</span>
+<span id="cb32-3"><a href="#cb32-3"></a>plt.legend()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="22">
+<pre><code>&lt;matplotlib.legend.Legend at 0x7fdc9c764e50&gt;</code></pre>
+</div>
+<div class="cell-output cell-output-display">
+<p><img src="2023-02-23-stgcn-tutorial2_files/figure-html/cell-22-output-2.png" class="img-fluid"></p>
+</div>
+</div>
+<div class="cell" data-execution_count="23">
+<div class="sourceCode cell-code" id="cb34"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb34-1"><a href="#cb34-1"></a>plt.plot(y[:,<span class="dv">2</span>,<span class="dv">0</span>],label<span class="op">=</span><span class="st">"y in V3"</span>)</span>
+<span id="cb34-2"><a href="#cb34-2"></a>plt.plot(yhat[:,<span class="dv">2</span>,<span class="dv">0</span>],label<span class="op">=</span><span class="st">"yhat in V3"</span>)</span>
+<span id="cb34-3"><a href="#cb34-3"></a>plt.legend()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="23">
+<pre><code>&lt;matplotlib.legend.Legend at 0x7fdc9c6bd940&gt;</code></pre>
+</div>
+<div class="cell-output cell-output-display">
+<p><img src="2023-02-23-stgcn-tutorial2_files/figure-html/cell-23-output-2.png" class="img-fluid"></p>
+</div>
+</div>
+<div class="cell" data-execution_count="24">
+<div class="sourceCode cell-code" id="cb36"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb36-1"><a href="#cb36-1"></a>plt.plot(y[:,<span class="dv">3</span>,<span class="dv">0</span>],label<span class="op">=</span><span class="st">"y in V4"</span>)</span>
+<span id="cb36-2"><a href="#cb36-2"></a>plt.plot(yhat[:,<span class="dv">3</span>,<span class="dv">0</span>],label<span class="op">=</span><span class="st">"yhat in V4"</span>)</span>
+<span id="cb36-3"><a href="#cb36-3"></a>plt.legend()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="24">
+<pre><code>&lt;matplotlib.legend.Legend at 0x7fdc9c69e8e0&gt;</code></pre>
+</div>
+<div class="cell-output cell-output-display">
+<p><img src="2023-02-23-stgcn-tutorial2_files/figure-html/cell-24-output-2.png" class="img-fluid"></p>
+</div>
 </div>
 
 
