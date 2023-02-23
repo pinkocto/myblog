@@ -151,7 +151,7 @@
     "href": "posts/STGCN/STGCN 공부/2023-02-21-SGGCN-tutorial1.html#notations-of-stgcn",
     "title": "튜토리얼 따라가기1",
     "section": "notations of STGCN",
-    "text": "notations of STGCN\n- 시계열: each \\(t\\) 에에 대한 observation이 하나의 값 (혹은 벡터) - 자료: \\(X(t) \\quad \\text{for} \\quad t = 1,2,\\dots,T\\)\n- STGCN setting에서는 each \\(t\\) 에 대한 observation이 graph - 자료: \\(X(v,t) \\quad \\text{for} \\quad t = 1,2,\\dots,T \\quad \\text{and} \\quad v\\in V\\) - 주의: 이 포스트에서는 \\(X(v,t)\\)를 \\(f(v,t)\\)로 표현할 때가 있음"
+    "text": "notations of STGCN\n- 시계열: each \\(t\\) 에에 대한 observation이 하나의 값 (혹은 벡터)\n\n자료: \\(X(t) \\quad \\text{for} \\quad t = 1,2,\\dots,T\\)\n\n- STGCN setting에서는 each \\(t\\) 에 대한 observation이 graph\n\n자료: \\(X(v,t) \\quad \\text{for} \\quad t = 1,2,\\dots,T \\quad \\text{and} \\quad v\\in V\\)\n주의: 이 포스트에서는 \\(X(v,t)\\)를 \\(f(v,t)\\)로 표현할 때가 있음"
   },
   {
     "objectID": "posts/STGCN/STGCN 공부/2023-02-21-SGGCN-tutorial1.html#dataset-dataloaders",
