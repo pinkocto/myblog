@@ -2,42 +2,42 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
     <loc>https://github.com/pinkocto/myblog/about.html</loc>
-    <lastmod>2023-02-23T10:33:47.652Z</lastmod>
+    <lastmod>2023-02-23T10:35:16.188Z</lastmod>
   </url>
   <url>
     <loc>https://github.com/pinkocto/myblog/Tip/2023-02-20-tips.html</loc>
-    <lastmod>2023-02-23T10:33:47.848Z</lastmod>
+    <lastmod>2023-02-23T10:35:16.392Z</lastmod>
   </url>
   <url>
     <loc>https://github.com/pinkocto/myblog/posts/STGCN/튜토리얼/2022-12-29-STGCN-tutorial.html</loc>
-    <lastmod>2023-02-23T10:33:48.172Z</lastmod>
+    <lastmod>2023-02-23T10:35:16.716Z</lastmod>
   </url>
   <url>
     <loc>https://github.com/pinkocto/myblog/posts/STGCN/튜토리얼/2022-12-30-STGCN-Toy Example.html</loc>
-    <lastmod>2023-02-23T10:33:48.412Z</lastmod>
+    <lastmod>2023-02-23T10:35:16.952Z</lastmod>
   </url>
   <url>
-    <loc>https://github.com/pinkocto/myblog/posts/STGCN/STGCN 공부/2023-02-23-stgcn-tutorial.html</loc>
-    <lastmod>2023-02-23T10:33:48.604Z</lastmod>
+    <loc>https://github.com/pinkocto/myblog/posts/STGCN/STGCN 공부/2023-02-23-stgcn-tutorial2.html</loc>
+    <lastmod>2023-02-23T10:35:17.148Z</lastmod>
   </url>
   <url>
     <loc>https://github.com/pinkocto/myblog/posts/STGCN/STGCN 공부/traffic_prediction.html</loc>
-    <lastmod>2023-02-23T10:33:48.848Z</lastmod>
+    <lastmod>2023-02-23T10:35:17.388Z</lastmod>
   </url>
   <url>
     <loc>https://github.com/pinkocto/myblog/posts/STGCN/STGCN 공부/2023-02-01-memo.html</loc>
-    <lastmod>2023-02-23T10:33:49.024Z</lastmod>
+    <lastmod>2023-02-23T10:35:17.568Z</lastmod>
   </url>
   <url>
-    <loc>https://github.com/pinkocto/myblog/posts/STGCN/STGCN 공부/2023-02-21-SGGCN-study1.html</loc>
-    <lastmod>2023-02-23T10:33:49.324Z</lastmod>
+    <loc>https://github.com/pinkocto/myblog/posts/STGCN/STGCN 공부/2023-02-21-SGGCN-tutorial1.html</loc>
+    <lastmod>2023-02-23T10:35:17.872Z</lastmod>
   </url>
   <url>
     <loc>https://github.com/pinkocto/myblog/posts/GCN/2023-02-21-gcn1.html</loc>
-    <lastmod>2023-02-23T10:33:49.604Z</lastmod>
+    <lastmod>2023-02-23T10:35:18.156Z</lastmod>
   </url>
   <url>
     <loc>https://github.com/pinkocto/myblog/index.html</loc>
-    <lastmod>2023-02-23T10:33:49.852Z</lastmod>
+    <lastmod>2023-02-23T10:35:18.388Z</lastmod>
   </url>
 </urlset>
