@@ -2,38 +2,38 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
     <loc>https://github.com/pinkocto/myblog/about.html</loc>
-    <lastmod>2023-02-22T15:38:20.568Z</lastmod>
+    <lastmod>2023-02-23T01:37:32.557Z</lastmod>
   </url>
   <url>
     <loc>https://github.com/pinkocto/myblog/Tip/2023-02-20-tips.html</loc>
-    <lastmod>2023-02-22T15:38:20.760Z</lastmod>
+    <lastmod>2023-02-23T01:37:32.753Z</lastmod>
   </url>
   <url>
-    <loc>https://github.com/pinkocto/myblog/posts/STGCN/2022-12-29-STGCN-tutorial.html</loc>
-    <lastmod>2023-02-22T15:38:21.080Z</lastmod>
+    <loc>https://github.com/pinkocto/myblog/posts/STGCN/튜토리얼/2022-12-29-STGCN-tutorial.html</loc>
+    <lastmod>2023-02-23T01:37:33.077Z</lastmod>
   </url>
   <url>
-    <loc>https://github.com/pinkocto/myblog/posts/STGCN/2022-12-30-STGCN-Toy Example.html</loc>
-    <lastmod>2023-02-22T15:38:21.316Z</lastmod>
+    <loc>https://github.com/pinkocto/myblog/posts/STGCN/튜토리얼/2022-12-30-STGCN-Toy Example.html</loc>
+    <lastmod>2023-02-23T01:37:33.325Z</lastmod>
   </url>
   <url>
     <loc>https://github.com/pinkocto/myblog/posts/STGCN/STGCN 공부/traffic_prediction.html</loc>
-    <lastmod>2023-02-22T15:38:21.560Z</lastmod>
+    <lastmod>2023-02-23T01:37:33.573Z</lastmod>
   </url>
   <url>
     <loc>https://github.com/pinkocto/myblog/posts/STGCN/STGCN 공부/2023-02-01-memo.html</loc>
-    <lastmod>2023-02-22T15:38:21.748Z</lastmod>
+    <lastmod>2023-02-23T01:37:33.749Z</lastmod>
   </url>
   <url>
     <loc>https://github.com/pinkocto/myblog/posts/STGCN/STGCN 공부/2023-02-21-SGGCN-study1.html</loc>
-    <lastmod>2023-02-22T15:38:21.988Z</lastmod>
+    <lastmod>2023-02-23T01:37:33.985Z</lastmod>
   </url>
   <url>
     <loc>https://github.com/pinkocto/myblog/posts/GCN/2023-02-21-gcn1.html</loc>
-    <lastmod>2023-02-22T15:38:22.276Z</lastmod>
+    <lastmod>2023-02-23T01:37:34.277Z</lastmod>
   </url>
   <url>
     <loc>https://github.com/pinkocto/myblog/index.html</loc>
-    <lastmod>2023-02-22T15:38:22.508Z</lastmod>
+    <lastmod>2023-02-23T01:37:34.505Z</lastmod>
   </url>
 </urlset>
