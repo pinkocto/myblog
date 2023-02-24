@@ -550,12 +550,7 @@ vectors:
 <section id="dft-1" class="level2">
 <h2 class="anchored" data-anchor-id="dft-1">DFT</h2>
 <p>일반적으로 우리가 알고있는 DFT<a href="#fn1" class="footnote-ref" id="fnref1" role="doc-noteref"><sup>1</sup></a>는 아래와 같다. (이 그림은 <a href="https://en.wikipedia.org/wiki/Discrete_Fourier_transform">위키피디아</a>에서 캡쳐한 것이다)</p>
-<div class="quarto-figure quarto-figure-center">
-<figure class="figure">
-<p><img src="2022-12-24-Chap 8.3_files/figure-html/d3025f89-333d-4e4d-8710-662dccf51cf5-1-c02def0a-947e-4239-b928-bf699d496cbb.png" class="img-fluid figure-img"></p>
-<p></p><figcaption class="figure-caption">그림1: 위키에서 긁어온 DFT의 정의</figcaption><p></p>
-</figure>
-</div>
+<p><img src="2022-12-24-Chap 8.3_files/figure-html/d3025f89-333d-4e4d-8710-662dccf51cf5-7-dc959f65-92d6-4bb1-b619-347494d65a1c.png" class="img-fluid" alt="download.png"><img src="2022-12-24-Chap 8.3_files/figure-html/d3025f89-333d-4e4d-8710-662dccf51cf5-2-3ba49322-cec8-4282-8503-58a9e62ac2c1.png" class="img-fluid" alt="download.png"><img src="2022-12-24-Chap 8.3_files/figure-html/d3025f89-333d-4e4d-8710-662dccf51cf5-6-c42e2d61-2de4-4369-b668-04b74139cda1.png" class="img-fluid" alt="download.png"><img src="2022-12-24-Chap 8.3_files/figure-html/d3025f89-333d-4e4d-8710-662dccf51cf5-1-140523d1-9be3-4796-8c12-33780eaa3fa4.png" class="img-fluid" alt="download.png"><img src="2022-12-24-Chap 8.3_files/figure-html/d3025f89-333d-4e4d-8710-662dccf51cf5-4-8dc19d86-6220-4d86-99e8-56eebd586f27.png" class="img-fluid" alt="download.png"><img src="2022-12-24-Chap 8.3_files/figure-html/d3025f89-333d-4e4d-8710-662dccf51cf5-3-858d20a6-6aca-4c52-b4d2-d03c1af70af4.png" class="img-fluid" alt="download.png"><img src="2022-12-24-Chap 8.3_files/figure-html/d3025f89-333d-4e4d-8710-662dccf51cf5-5-c02def0a-947e-4239-b928-bf699d496cbb.png" class="img-fluid" alt="그림1: 위키에서 긁어온 DFT의 정의"></p>
 <p>즉 DFT는 임의의 신호 <span class="math inline">\(\{{\bf x}_n\}:=x_0,x_1,\dots,x_{N-1}\)</span>를 적당한 규칙<a href="#fn2" class="footnote-ref" id="fnref2" role="doc-noteref"><sup>2</sup></a>에 따라서 <span class="math inline">\(\{{\bf X}_k\}:=X_0,X_1,\dots,X_{N-1}\)</span>로 바꾸는 변환을 이라고 이해할 수 있다. 이때 사용되는 적당한 규칙은 구체적으로 아래의 수식을 의미한다.</p>
 <p><span class="math display">\[X_k = \sum_{n=0}^{N-1}x_n\cdot e^{-i\frac{2\pi}{N}kn}\]</span></p>
 <p>그런데 매트릭스를 활용하면 위의 수식을 아래와 같이 표현할 수 있다.</p>

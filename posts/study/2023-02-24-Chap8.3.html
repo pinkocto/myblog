@@ -358,7 +358,13 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
   <ul>
   <li><a href="#discrete-fourier-transform" id="toc-discrete-fourier-transform" class="nav-link active" data-scroll-target="#discrete-fourier-transform">Discrete Fourier Transform</a>
   <ul class="collapse">
-  <li><a href="#cyclic-shift-operator-bfb" id="toc-cyclic-shift-operator-bfb" class="nav-link" data-scroll-target="#cyclic-shift-operator-bfb">Cyclic shift operator <span class="math inline">\(\bf{B}\)</span></a></li>
+  <li><a href="#cyclic-shift-operator-bfb" id="toc-cyclic-shift-operator-bfb" class="nav-link" data-scroll-target="#cyclic-shift-operator-bfb">Cyclic shift operator <span class="math inline">\(\bf{B}\)</span></a>
+  <ul class="collapse">
+  <li><a href="#what-is-cyclic-shift" id="toc-what-is-cyclic-shift" class="nav-link" data-scroll-target="#what-is-cyclic-shift">What is Cyclic shift?</a></li>
+  <li><a href="#예제" id="toc-예제" class="nav-link" data-scroll-target="#예제">예제</a></li>
+  </ul></li>
+  <li><a href="#dft" id="toc-dft" class="nav-link" data-scroll-target="#dft">DFT</a></li>
+  <li><a href="#spectral-components-and-frequencies" id="toc-spectral-components-and-frequencies" class="nav-link" data-scroll-target="#spectral-components-and-frequencies">Spectral components and Frequencies</a></li>
   </ul></li>
   </ul>
 </nav>
@@ -396,14 +402,41 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 </div>
 </div>
 <p>This matrix is cyclic shift</p>
-<p>note: <span class="math inline">\(\bf{B}\)</span> is orthogonal matrix (직교행렬: 전치행렬이 역행렬인 행렬)</p>
+<p>note: <span class="math inline">\(\bf{B}\)</span> is orthogonal matrix (직교행렬: 전치행렬이 역행렬인 행렬 <span class="math inline">\(\bf{A}\bf{A}'=\bf{A}'\bf{A}=\bf{I}\)</span>)</p>
 <ul>
-<li>Cyclic shift가 뭔지는 모르겠지만 뭔가 모양새가 단위행렬을 조금 변형해 놓은 것 같이 생겼다.</li>
+<li>Cyclic shift가 뭔지는 모르겠지만 뭔가 모양새가 단위행렬을 한 칸씩 뒤에서 앞으로 밀어놓은 느낌이다.</li>
 </ul>
+<section id="what-is-cyclic-shift" class="level3">
+<h3 class="anchored" data-anchor-id="what-is-cyclic-shift">What is Cyclic shift?</h3>
 <p>ref: <a href="https://en.wikipedia.org/wiki/Circular_shift">Cyclic shift의 개념</a></p>
 <p>a circular shift is the operation of rearranging the entries in a tuple, either by moving the final entry to the first position, while shifting all other entries to the next position, or by performing the inverse operation. A circular shift is a special kind of cyclic permutation, which in turn is a special kind of permutation.</p>
+<p>위를 요약하자면 조합론에서 순환이동이란 튜플의 항목을 재정렬하는 작업이라고 한다. 마지막 element를 첫번째 위치로 이동하고 다른 모든 element들은 다음 위치로 이동하는 것.</p>
+<p><img src="cyclic_shift.png" class="img-fluid"></p>
+<p>예를들어 (a, b, c, d)에 ciclic shift를 반복적으로 적용하면 다음과 같다.</p>
+<ul>
+<li><code>0</code> <span class="math inline">\((a, b, c, d)\)</span> # before cyclic shift (origin)</li>
+<li><code>1</code> <span class="math inline">\((d, a, b, c)\)</span> # 1step</li>
+<li><code>2</code> <span class="math inline">\((c, d, a, b)\)</span> # 2step</li>
+<li><code>3</code> <span class="math inline">\((b, c, d, a)\)</span> # 3step</li>
+<li><code>4</code> <span class="math inline">\((a, b, c, d)\)</span> # 4step –&gt; origin</li>
+</ul>
+<p><em>cyclic shift를 4번 반복하니까 원래 변환 전 원래 튜플로 돌아왔다.</em></p>
+</section>
+<section id="예제" class="level3">
+<h3 class="anchored" data-anchor-id="예제">예제</h3>
+<div class="cell" data-execution_count="10">
+<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode numberSource julia number-lines code-with-copy"><code class="sourceCode julia"><span id="cb4-1"><a href="#cb4-1"></a>B <span class="co"># 1 cyclic shift</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="10">
+<pre><code>5×5 Matrix{Int64}:
+ 0  0  0  0  1
+ 1  0  0  0  0
+ 0  1  0  0  0
+ 0  0  1  0  0
+ 0  0  0  1  0</code></pre>
+</div>
+</div>
 <div class="cell" data-execution_count="2">
-<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode numberSource julia number-lines code-with-copy"><code class="sourceCode julia"><span id="cb4-1"><a href="#cb4-1"></a>B<span class="op">'</span>B</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode numberSource julia number-lines code-with-copy"><code class="sourceCode julia"><span id="cb6-1"><a href="#cb6-1"></a>B<span class="op">'</span>B <span class="co"># B는 orthogonal matrix니까 B'B = I일 것.</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-display" data-execution_count="2">
 <pre><code>5×5 Matrix{Int64}:
  1  0  0  0  0
@@ -413,17 +446,96 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
  0  0  0  0  1</code></pre>
 </div>
 </div>
-<div class="cell" data-execution_count="3">
-<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode numberSource julia number-lines code-with-copy"><code class="sourceCode julia"><span id="cb6-1"><a href="#cb6-1"></a>B<span class="op">'</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-display" data-execution_count="3">
-<pre><code>5×5 adjoint(::Matrix{Int64}) with eltype Int64:
- 0  1  0  0  0
- 0  0  1  0  0
+<p><code>-</code> (ex1) Define <span class="math inline">\(s\)</span> as</p>
+<div class="cell" data-execution_count="4">
+<div class="sourceCode cell-code" id="cb8"><pre class="sourceCode numberSource julia number-lines code-with-copy"><code class="sourceCode julia"><span id="cb8-1"><a href="#cb8-1"></a>s <span class="op">=</span> [<span class="fl">1</span>,<span class="fl">2</span>,<span class="fl">3</span>,<span class="fl">4</span>,<span class="fl">5</span>] <span class="co">## origin</span></span>
+<span id="cb8-2"><a href="#cb8-2"></a>s</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="4">
+<pre><code>5-element Vector{Int64}:
+ 1
+ 2
+ 3
+ 4
+ 5</code></pre>
+</div>
+</div>
+<div class="cell" data-execution_count="5">
+<div class="sourceCode cell-code" id="cb10"><pre class="sourceCode numberSource julia number-lines code-with-copy"><code class="sourceCode julia"><span id="cb10-1"><a href="#cb10-1"></a>B<span class="op">*</span>s</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="5">
+<pre><code>5-element Vector{Int64}:
+ 5
+ 1
+ 2
+ 3
+ 4</code></pre>
+</div>
+</div>
+<p>결과: <span class="math inline">\([1,2,3,4,5] \to [5,1,2,3,4]\)</span></p>
+<ul>
+<li>맨 뒤에 5가 앞으로 나오고 나머지 값들은 한칸씩 뒤로 밀렸다.</li>
+<li>위에서 배운대로라면 5번 쉬프트되면 자기자신으로 돌아오지 않을까?</li>
+</ul>
+<p><code>-</code> <span class="math inline">\(\bf{B}^2\)</span> 에 <span class="math inline">\(s\)</span>를 곱하면?</p>
+<div class="cell" data-execution_count="7">
+<div class="sourceCode cell-code" id="cb12"><pre class="sourceCode numberSource julia number-lines code-with-copy"><code class="sourceCode julia"><span id="cb12-1"><a href="#cb12-1"></a>B<span class="op">^</span><span class="fl">2</span>  <span class="co"># 2 cyclic shift</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="7">
+<pre><code>5×5 Matrix{Int64}:
  0  0  0  1  0
  0  0  0  0  1
- 1  0  0  0  0</code></pre>
+ 1  0  0  0  0
+ 0  1  0  0  0
+ 0  0  1  0  0</code></pre>
 </div>
 </div>
+<div class="cell" data-execution_count="11">
+<div class="sourceCode cell-code" id="cb14"><pre class="sourceCode numberSource julia number-lines code-with-copy"><code class="sourceCode julia"><span id="cb14-1"><a href="#cb14-1"></a>B<span class="op">^</span><span class="fl">2</span><span class="op">*</span>s</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="11">
+<pre><code>5-element Vector{Int64}:
+ 4
+ 5
+ 1
+ 2
+ 3</code></pre>
+</div>
+</div>
+<p>결과: <span class="math inline">\([1,2,3,4,5] \to [5,1,2,3,4] \to [4,5,1,2,3]\)</span></p>
+<p><code>-</code> <span class="math inline">\(\bf{B}^5\)</span>에 <span class="math inline">\(s\)</span>를 곱하면?</p>
+<p>예상대로라면 원래 <span class="math inline">\(s\)</span>인 <span class="math inline">\([1,2,3,4,5]\)</span>로 돌아올 것 같다.</p>
+<div class="cell" data-execution_count="12">
+<div class="sourceCode cell-code" id="cb16"><pre class="sourceCode numberSource julia number-lines code-with-copy"><code class="sourceCode julia"><span id="cb16-1"><a href="#cb16-1"></a>B<span class="op">^</span><span class="fl">5</span><span class="op">*</span>s</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="12">
+<pre><code>5-element Vector{Int64}:
+ 1
+ 2
+ 3
+ 4
+ 5</code></pre>
+</div>
+</div>
+<p>Thus we can interprete the matrix <span class="math inline">\(\bf{B}\)</span> as cyclic shift operator such that</p>
+<p><span class="math display">\[\bf{B}_n = s_{n-1}\]</span></p>
+<p>for <span class="math inline">\(n = 1,\dots,N-1\)</span> and <span class="math inline">\(\bf{B}_{s_0}=s_N\)</span></p>
+<p><em>note</em> : <span class="math inline">\(\bf{B}\)</span>는 시계열에서 다루는 backshift operator과 비슷함.</p>
+<p>(참고) backshift operator(후방이동) 연산자 <span class="math inline">\(\bf{B}\)</span>는 시계열 시차를 다룰 때 유용한 표기법 장치이다. (<span class="math inline">\(B_{y_t} = y_{t-1})\)</span></p>
+<p>시차변수 만들 때 완전 꿀팁인듯?</p>
+</section>
+</section>
+<section id="dft" class="level2">
+<h2 class="anchored" data-anchor-id="dft">DFT</h2>
+<p>The matrix <span class="math inline">\(\bf{B}\)</span> can be expressed as</p>
+<p><span class="math inline">\(\bf{B} = DFT^* \cdot \Lambda \cdot DFT\)</span></p>
+<p>where DFT is unitary and symmetric matrix and <span class="math inline">\(\Lambda\)</span> is diagonal matrix.</p>
+</section>
+<section id="spectral-components-and-frequencies" class="level2">
+<h2 class="anchored" data-anchor-id="spectral-components-and-frequencies">Spectral components and Frequencies</h2>
+<p>we remark:</p>
+<p><strong>(1) Spectral components</strong>: For <span class="math inline">\(k = 0,1,2,\dots, N-1\)</span>, the <span class="math inline">\(k\)</span>-th column of <span class="math inline">\({\bf DFT}^\ast\)</span> is defined by</p>
+<p><span class="math display">\[\Psi_k:=\frac{1}{\sqrt{N}}\begin{bmatrix} 1 \\ e^{j\frac{2\pi}{N}k} \\ e^{j\frac{2\pi}{N}2k} \\ e^{j\frac{2\pi}{N}3k} \\  \dots \\ e^{j\frac{2\pi}{N}(N-1)k} \end{bmatrix}.\]</span></p>
+<p>Note that <span class="math inline">\(\Psi_k\)</span> can be also interpreted as <span class="math inline">\(\ell\)</span>-th eigenvector of <span class="math inline">\({\bf A}\)</span> correspoding <span class="math inline">\(\lambda_\ell = e^{-j\frac{2\pi}{N}k}\)</span>. Those eigenvectors</p>
+<p><span class="math display">\[\big\{{\bf 1},\Psi_1,\Psi_2, \dots, \Psi_{N-1}\big\}\]</span></p>
+<p>form a complete orthonomal basis of <span class="math inline">\(\mathbb{C}^N\)</span>. These vectors are called spectral components.</p>
+<p><strong>(2) Frequencies:</strong> The diagonal entries of <span class="math inline">\({\bf \Lambda}\)</span> are the eigenvalues of the time shift <span class="math inline">\({\bf B}\)</span>. In Physics and in operator theory, these eigenvalues are the frequencies of the signal. In DSP it is more common to call frequencies</p>
+<p><span class="math display">\[\Omega_k=\frac{-1}{2\pi j}\ln\lambda_k=\frac{-1}{2\pi j}\ln e^{-j \frac{2\pi}{N}k}=\frac{k}{N}, \quad k=0,1,2,\dots,N-1.\]</span></p>
 
 
 </section>
