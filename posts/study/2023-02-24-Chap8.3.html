@@ -374,6 +374,9 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 </div>
 <section id="discrete-fourier-transform" class="level1">
 <h1>Discrete Fourier Transform</h1>
+<blockquote class="blockquote">
+<p>이산 푸리에 변환에 대해 알아보자.</p>
+</blockquote>
 <section id="cyclic-shift-operator-bfb" class="level2">
 <h2 class="anchored" data-anchor-id="cyclic-shift-operator-bfb">Cyclic shift operator <span class="math inline">\(\bf{B}\)</span></h2>
 <p>The matrix <span class="math inline">\(\bf{B}\)</span> representing the periodic shift is</p>
@@ -392,6 +395,13 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
  0  0  0  1  0</code></pre>
 </div>
 </div>
+<p>This matrix is cyclic shift</p>
+<p>note: <span class="math inline">\(\bf{B}\)</span> is orthogonal matrix (직교행렬: 전치행렬이 역행렬인 행렬)</p>
+<ul>
+<li>Cyclic shift가 뭔지는 모르겠지만 뭔가 모양새가 단위행렬을 조금 변형해 놓은 것 같이 생겼다.</li>
+</ul>
+<p>ref: <a href="https://en.wikipedia.org/wiki/Circular_shift">Cyclic shift의 개념</a></p>
+<p>a circular shift is the operation of rearranging the entries in a tuple, either by moving the final entry to the first position, while shifting all other entries to the next position, or by performing the inverse operation. A circular shift is a special kind of cyclic permutation, which in turn is a special kind of permutation.</p>
 <div class="cell" data-execution_count="2">
 <div class="sourceCode cell-code" id="cb4"><pre class="sourceCode numberSource julia number-lines code-with-copy"><code class="sourceCode julia"><span id="cb4-1"><a href="#cb4-1"></a>B<span class="op">'</span>B</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-display" data-execution_count="2">
