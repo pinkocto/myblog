@@ -407,8 +407,13 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
   <li><a href="#exam4-abacad" id="toc-exam4-abacad" class="nav-link" data-scroll-target="#exam4-abacad">Exam4: AbAcAd</a>
   <ul class="collapse">
   <li><a href="#data-2" id="toc-data-2" class="nav-link" data-scroll-target="#data-2">data</a></li>
-  <li><a href="#두개의-은닉노드를-이용한-풀이---실패" id="toc-두개의-은닉노드를-이용한-풀이---실패" class="nav-link" data-scroll-target="#두개의-은닉노드를-이용한-풀이---실패">두개의 은닉노드를 이용한 풀이 - 실패</a></li>
+  <li><a href="#두개의-은닉노드를-이용한-풀이---실패" id="toc-두개의-은닉노드를-이용한-풀이---실패" class="nav-link" data-scroll-target="#두개의-은닉노드를-이용한-풀이---실패">두개의 은닉노드를 이용한 풀이 - 실패</a>
+  <ul class="collapse">
+  <li><a href="#결과시각화1-2" id="toc-결과시각화1-2" class="nav-link" data-scroll-target="#결과시각화1-2"><code>-</code> 결과시각화1</a></li>
+  <li><a href="#결과시각화2-3" id="toc-결과시각화2-3" class="nav-link" data-scroll-target="#결과시각화2-3"><code>-</code> 결과시각화2</a></li>
   </ul></li>
+  </ul></li>
+  <li><a href="#숙제" id="toc-숙제" class="nav-link" data-scroll-target="#숙제">숙제</a></li>
   </ul>
 </nav>
     </div>
@@ -906,9 +911,167 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 </section>
 <section id="두개의-은닉노드를-이용한-풀이---실패" class="level2">
 <h2 class="anchored" data-anchor-id="두개의-은닉노드를-이용한-풀이---실패">두개의 은닉노드를 이용한 풀이 - 실패</h2>
-
-
+<p><code>-</code> 데이터정리</p>
+<div class="cell" data-execution_count="113">
+<div class="sourceCode cell-code" id="cb68"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb68-1"><a href="#cb68-1"></a>mapping <span class="op">=</span> {<span class="st">'A'</span>:<span class="dv">0</span>, <span class="st">'b'</span>:<span class="dv">1</span>,<span class="st">'c'</span>:<span class="dv">2</span>,<span class="st">'d'</span>:<span class="dv">3</span>}</span>
+<span id="cb68-2"><a href="#cb68-2"></a>x <span class="op">=</span> torch.tensor(f(txt_x, mapping))</span>
+<span id="cb68-3"><a href="#cb68-3"></a>y <span class="op">=</span> torch.tensor(f(txt_y, mapping))</span>
+<span id="cb68-4"><a href="#cb68-4"></a>x[:<span class="dv">5</span>], y[:<span class="dv">5</span>]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="113">
+<pre><code>(tensor([0, 1, 0, 2, 0]), tensor([1, 0, 2, 0, 3]))</code></pre>
+</div>
+</div>
+<p><code>-</code> 학습</p>
+<div class="cell" data-execution_count="115">
+<div class="sourceCode cell-code" id="cb70"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb70-1"><a href="#cb70-1"></a>torch.manual_seed(<span class="dv">43052</span>)</span>
+<span id="cb70-2"><a href="#cb70-2"></a>net <span class="op">=</span> torch.nn.Sequential(</span>
+<span id="cb70-3"><a href="#cb70-3"></a>    torch.nn.Embedding(num_embeddings<span class="op">=</span><span class="dv">4</span>, embedding_dim<span class="op">=</span><span class="dv">2</span>),</span>
+<span id="cb70-4"><a href="#cb70-4"></a>    torch.nn.Tanh(),</span>
+<span id="cb70-5"><a href="#cb70-5"></a>    torch.nn.Linear(in_features<span class="op">=</span><span class="dv">2</span>, out_features<span class="op">=</span><span class="dv">4</span>)</span>
+<span id="cb70-6"><a href="#cb70-6"></a>)</span>
+<span id="cb70-7"><a href="#cb70-7"></a>loss_fn <span class="op">=</span> torch.nn.CrossEntropyLoss()</span>
+<span id="cb70-8"><a href="#cb70-8"></a>optimizr <span class="op">=</span> torch.optim.Adam(net.parameters())</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="cell" data-execution_count="116">
+<div class="sourceCode cell-code" id="cb71"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb71-1"><a href="#cb71-1"></a><span class="cf">for</span> epoc <span class="kw">in</span> <span class="bu">range</span>(<span class="dv">5000</span>):</span>
+<span id="cb71-2"><a href="#cb71-2"></a>    <span class="co">## 1</span></span>
+<span id="cb71-3"><a href="#cb71-3"></a>    yhat <span class="op">=</span> net(x)</span>
+<span id="cb71-4"><a href="#cb71-4"></a>    <span class="co">## 2</span></span>
+<span id="cb71-5"><a href="#cb71-5"></a>    loss <span class="op">=</span> loss_fn(yhat, y)</span>
+<span id="cb71-6"><a href="#cb71-6"></a>    <span class="co">## 3</span></span>
+<span id="cb71-7"><a href="#cb71-7"></a>    loss.backward()</span>
+<span id="cb71-8"><a href="#cb71-8"></a>    <span class="co">## 4</span></span>
+<span id="cb71-9"><a href="#cb71-9"></a>    optimizr.step()</span>
+<span id="cb71-10"><a href="#cb71-10"></a>    optimizr.zero_grad()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<section id="결과시각화1-2" class="level3">
+<h3 class="anchored" data-anchor-id="결과시각화1-2"><code>-</code> 결과시각화1</h3>
+<div class="cell" data-execution_count="117">
+<div class="sourceCode cell-code" id="cb72"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb72-1"><a href="#cb72-1"></a>hidden <span class="op">=</span> net[:<span class="op">-</span><span class="dv">1</span>](x).data</span>
+<span id="cb72-2"><a href="#cb72-2"></a>yhat <span class="op">=</span> soft(net(x)).data</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="cell" data-execution_count="123">
+<div class="sourceCode cell-code" id="cb73"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb73-1"><a href="#cb73-1"></a>fig,ax <span class="op">=</span> plt.subplots(<span class="dv">1</span>,<span class="dv">3</span>,figsize<span class="op">=</span>(<span class="dv">15</span>,<span class="dv">5</span>))</span>
+<span id="cb73-2"><a href="#cb73-2"></a>ax[<span class="dv">0</span>].plot(hidden[:<span class="dv">9</span>],<span class="st">'--o'</span>)<span class="op">;</span> ax[<span class="dv">0</span>].set_title(<span class="st">'$h:=(tanh \circ linr_1)(x)$'</span>,size<span class="op">=</span><span class="dv">15</span>)</span>
+<span id="cb73-3"><a href="#cb73-3"></a>ax[<span class="dv">1</span>].plot(net(x).data[:<span class="dv">9</span>],<span class="st">'--o'</span>)<span class="op">;</span> ax[<span class="dv">1</span>].set_title(<span class="st">'$net(x):=(linr_2 \circ tanh \circ linr_1)(x)$'</span>,size<span class="op">=</span><span class="dv">15</span>)</span>
+<span id="cb73-4"><a href="#cb73-4"></a>ax[<span class="dv">2</span>].plot(yhat[:<span class="dv">9</span>],<span class="st">'--o'</span>)<span class="op">;</span> ax[<span class="dv">2</span>].set_title(<span class="st">'$\hat</span><span class="sc">{y}</span><span class="st">$ = softmax$(net(x))$'</span>,size<span class="op">=</span><span class="dv">15</span>)<span class="op">;</span></span>
+<span id="cb73-5"><a href="#cb73-5"></a>fig.suptitle(<span class="vs">r"Vis1: $h,net(x),\hat</span><span class="sc">{y}</span><span class="vs">$"</span>,size<span class="op">=</span><span class="dv">20</span>)</span>
+<span id="cb73-6"><a href="#cb73-6"></a>plt.tight_layout()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display">
+<p><img src="2023-02-25-rnn2_files/figure-html/cell-50-output-1.png" class="img-fluid"></p>
+</div>
+</div>
 </section>
+<section id="결과시각화2-3" class="level3">
+<h3 class="anchored" data-anchor-id="결과시각화2-3"><code>-</code> 결과시각화2</h3>
+<div class="cell" data-execution_count="124">
+<div class="sourceCode cell-code" id="cb74"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb74-1"><a href="#cb74-1"></a>combined  <span class="op">=</span> torch.concat([hidden,net(x).data,yhat],axis<span class="op">=</span><span class="dv">1</span>)</span>
+<span id="cb74-2"><a href="#cb74-2"></a>combined.shape</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="124">
+<pre><code>torch.Size([599, 10])</code></pre>
+</div>
+</div>
+<div class="cell" data-execution_count="125">
+<div class="sourceCode cell-code" id="cb76"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb76-1"><a href="#cb76-1"></a>plt.matshow(combined[:<span class="dv">15</span>],vmin<span class="op">=-</span><span class="dv">5</span>,vmax<span class="op">=</span><span class="dv">5</span>,cmap<span class="op">=</span><span class="st">'bwr'</span>)</span>
+<span id="cb76-2"><a href="#cb76-2"></a>plt.xticks(<span class="bu">range</span>(<span class="dv">10</span>), labels<span class="op">=</span>[<span class="vs">r'$h$'</span>,<span class="vs">r'$h$'</span>,<span class="vs">r'$y=A?$'</span>,<span class="vs">r'$y=b?$'</span>,<span class="vs">r'$y=c?$'</span>,<span class="vs">r'$y=d?$'</span>,<span class="vs">r'$P(y=A)$'</span>,<span class="vs">r'$P(y=b)$'</span>,<span class="vs">r'$P(y=c)$'</span>,<span class="vs">r'$P(y=d)$'</span>],size<span class="op">=</span><span class="dv">14</span>)</span>
+<span id="cb76-3"><a href="#cb76-3"></a>plt.colorbar()</span>
+<span id="cb76-4"><a href="#cb76-4"></a>plt.gcf().set_figwidth(<span class="dv">15</span>)</span>
+<span id="cb76-5"><a href="#cb76-5"></a>plt.gcf().set_figheight(<span class="dv">15</span>)</span>
+<span id="cb76-6"><a href="#cb76-6"></a>plt.title(<span class="vs">r"Vis2: $[h | net(x) | \hat</span><span class="sc">{y}</span><span class="vs">]$"</span>,size<span class="op">=</span><span class="dv">25</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="125">
+<pre><code>Text(0.5, 1.0, 'Vis2: $[h | net(x) | \\hat{y}]$')</code></pre>
+</div>
+<div class="cell-output cell-output-display">
+<p><img src="2023-02-25-rnn2_files/figure-html/cell-52-output-2.png" class="img-fluid"></p>
+</div>
+</div>
+<ul>
+<li><span class="math inline">\(x = \text{AbAcAd}\dots\)</span></li>
+<li><span class="math inline">\(y = \text{bAcAdA}\dots\)</span></li>
+</ul>
+<p>결국 A의 자리만 잘 찾고 b,c,d끼리는 구분을 잘 못하는 느낌이다. (1/3확률로 찍는 느낌)</p>
+<p>히든노드를 2개로 하고 잘 한 것 같은데 왜 이런 결과가 나올까?</p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="2023-02-25-rnn2_files/figure-html/8741e681-b353-46e3-b13d-03e00df48829-1-b3f1fda4-80d1-48dd-b602-bf1dbf03d6b6.png" class="img-fluid figure-img"></p>
+<p></p><figcaption class="figure-caption">image.png</figcaption><p></p>
+</figure>
+</div>
+<p>데이터를 살펴보자. 보니까 A-&gt;b, A-&gt;c, A-&gt;d ??? A다음에 뭐가 나올지 맞출 수가 없다.</p>
+<ul>
+<li><p>인간은 추론해서 맞출 수 있겠지만 컴퓨터는 데이터를 바로 직전에 있는 character만 보고 다음을 예측하게끔 우리가 데이터셋을 구성해서 x,y로 줬다.</p></li>
+<li><p>그런데 사실은 바로 직전이 아니고 그 직전에 직전도 보고 뭔가 이렇게 좀 여러개를 이제 봐야한다는 것이다.</p></li>
+<li><p>해결책? 한칸을 더 보게하면 된다. but 엄밀히 말하면 해결이 아님!</p></li>
+</ul>
+<p><strong><em>실패</em></strong></p>
+<p><code>-</code> 실패를 해결하는 순진한 접근방식: 위 문제를 해결하기 위해서는 아래와 같은 구조로 데이터를 다시 정리하면 될 것이다.</p>
+<table class="table">
+<thead>
+<tr class="header">
+<th style="text-align: center;">x</th>
+<th style="text-align: center;">y</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: center;">A,b</td>
+<td style="text-align: center;">A</td>
+</tr>
+<tr class="even">
+<td style="text-align: center;">b,A</td>
+<td style="text-align: center;">c</td>
+</tr>
+<tr class="odd">
+<td style="text-align: center;">A,c</td>
+<td style="text-align: center;">A</td>
+</tr>
+<tr class="even">
+<td style="text-align: center;">c,A</td>
+<td style="text-align: center;">d</td>
+</tr>
+<tr class="odd">
+<td style="text-align: center;">A,d</td>
+<td style="text-align: center;">A</td>
+</tr>
+<tr class="even">
+<td style="text-align: center;">d,A</td>
+<td style="text-align: center;">b</td>
+</tr>
+<tr class="odd">
+<td style="text-align: center;">A,b</td>
+<td style="text-align: center;">A</td>
+</tr>
+<tr class="even">
+<td style="text-align: center;">b,A</td>
+<td style="text-align: center;">c</td>
+</tr>
+<tr class="odd">
+<td style="text-align: center;"><span class="math inline">\(\cdots\)</span></td>
+<td style="text-align: center;"><span class="math inline">\(\cdots\)</span></td>
+</tr>
+</tbody>
+</table>
+<p><code>-</code> 순진한 접근방식의 비판</p>
+<ul>
+<li>결국 정확하게 직전 2개의 문자를 보고 다음 문제를 예측하는 구조</li>
+<li>만약에 직전 3개의 문자를 봐야하는 상황이 된다면 또 다시 코드를 수정해야함.</li>
+<li>그리고 실전에서는 직전 몇 개의 문자를 봐야하는지 모름.</li>
+</ul>
+<p>앞에있는 2개, 3개, 4개.. 이러한 구조를 반영할 수 있는 새로운 네트워크를 고안해냈는데 그것은 바로 <strong>순환신경망</strong>이다.</p>
+<p>지금까지는 순환신경망의 필요성에 대해 알아보았던 것!</p>
+<p><strong><em>이것에 대한 해결책은 순환신경망이다.(NEXT)</em></strong></p>
+</section>
+</section>
+</section>
+<section id="숙제" class="level1">
+<h1>숙제</h1>
+<p>주어진 자료가 다음과 같다고 하자.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb78"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb78-1"><a href="#cb78-1"></a>txt <span class="op">=</span> <span class="bu">list</span>(<span class="st">'abcde'</span>)<span class="op">*</span><span class="dv">100</span></span>
+<span id="cb78-2"><a href="#cb78-2"></a>txt[:<span class="dv">10</span>]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+
+
 </section>
 
 </main> <!-- /main -->
