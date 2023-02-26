@@ -2,62 +2,78 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
     <loc>https://github.com/pinkocto/myblog/about.html</loc>
-    <lastmod>2023-02-26T11:29:28.284Z</lastmod>
+    <lastmod>2023-02-26T13:22:45.652Z</lastmod>
   </url>
   <url>
     <loc>https://github.com/pinkocto/myblog/Tip/2023-02-24-tips.html</loc>
-    <lastmod>2023-02-26T11:29:28.480Z</lastmod>
+    <lastmod>2023-02-26T13:22:45.852Z</lastmod>
   </url>
   <url>
     <loc>https://github.com/pinkocto/myblog/Tip/2023-02-20-tips.html</loc>
-    <lastmod>2023-02-26T11:29:28.660Z</lastmod>
+    <lastmod>2023-02-26T13:22:46.056Z</lastmod>
   </url>
   <url>
     <loc>https://github.com/pinkocto/myblog/posts/STGCN/튜토리얼/2022-12-29-STGCN-tutorial.html</loc>
-    <lastmod>2023-02-26T11:29:28.984Z</lastmod>
+    <lastmod>2023-02-26T13:22:46.392Z</lastmod>
   </url>
   <url>
     <loc>https://github.com/pinkocto/myblog/posts/STGCN/튜토리얼/2022-12-30-STGCN-Toy Example.html</loc>
-    <lastmod>2023-02-26T11:29:29.216Z</lastmod>
+    <lastmod>2023-02-26T13:22:46.660Z</lastmod>
   </url>
   <url>
     <loc>https://github.com/pinkocto/myblog/posts/STGCN/STGCN 공부/2023-02-23-stgcn-tutorial2.html</loc>
-    <lastmod>2023-02-26T11:29:29.464Z</lastmod>
+    <lastmod>2023-02-26T13:22:46.916Z</lastmod>
   </url>
   <url>
     <loc>https://github.com/pinkocto/myblog/posts/STGCN/STGCN 공부/traffic_prediction.html</loc>
-    <lastmod>2023-02-26T11:29:29.704Z</lastmod>
+    <lastmod>2023-02-26T13:22:47.164Z</lastmod>
   </url>
   <url>
     <loc>https://github.com/pinkocto/myblog/posts/STGCN/STGCN 공부/2023-02-21-SGGCN-tutorial1.html</loc>
-    <lastmod>2023-02-26T11:29:30.020Z</lastmod>
+    <lastmod>2023-02-26T13:22:47.480Z</lastmod>
   </url>
   <url>
     <loc>https://github.com/pinkocto/myblog/posts/GCN/2023-02-21-gcn1.html</loc>
-    <lastmod>2023-02-26T11:29:30.320Z</lastmod>
+    <lastmod>2023-02-26T13:22:47.780Z</lastmod>
   </url>
   <url>
-    <loc>https://github.com/pinkocto/myblog/posts/study/2022-12-24-Chap 8.3.html</loc>
-    <lastmod>2023-02-26T11:29:30.640Z</lastmod>
+    <loc>https://github.com/pinkocto/myblog/posts/study/2023-02-25-chap12.2.html</loc>
+    <lastmod>2023-02-26T13:22:47.968Z</lastmod>
+  </url>
+  <url>
+    <loc>https://github.com/pinkocto/myblog/posts/study/prof/2022-12-24-Chap 8.3.html</loc>
+    <lastmod>2023-02-26T13:22:48.292Z</lastmod>
+  </url>
+  <url>
+    <loc>https://github.com/pinkocto/myblog/posts/study/prof/2022-12-27-Chap-12.2.1~12.3.1.html</loc>
+    <lastmod>2023-02-26T13:22:49.068Z</lastmod>
+  </url>
+  <url>
+    <loc>https://github.com/pinkocto/myblog/posts/study/prof/2023-01-15-Chap-12.4.html</loc>
+    <lastmod>2023-02-26T13:22:49.272Z</lastmod>
+  </url>
+  <url>
+    <loc>https://github.com/pinkocto/myblog/posts/study/prof/2022-12-26-Chap-12.2.html</loc>
+    <lastmod>2023-02-26T13:22:49.580Z</lastmod>
   </url>
   <url>
     <loc>https://github.com/pinkocto/myblog/posts/study/2023-02-24-Chap8.3.html</loc>
-    <lastmod>2023-02-26T11:29:30.876Z</lastmod>
+    <lastmod>2023-02-26T13:22:49.820Z</lastmod>
   </url>
   <url>
     <loc>https://github.com/pinkocto/myblog/posts/RNN/2023-02-25-rnn2.html</loc>
-    <lastmod>2023-02-26T11:29:31.336Z</lastmod>
+    <lastmod>2023-02-26T13:22:50.276Z</lastmod>
   </url>
   <url>
     <loc>https://github.com/pinkocto/myblog/posts/RNN/2023-02-25-rnn1.html</loc>
-    <lastmod>2023-02-26T11:29:31.792Z</lastmod>
+    <lastmod>2023-02-26T13:22:50.724Z</lastmod>
   </url>
   <url>
     <loc>https://github.com/pinkocto/myblog/etc/2023-02-01-memo.html</loc>
-    <lastmod>2023-02-26T11:29:31.964Z</lastmod>
+    <lastmod>2023-02-26T13:22:50.900Z</lastmod>
   </url>
   <url>
     <loc>https://github.com/pinkocto/myblog/index.html</loc>
-    <lastmod>2023-02-26T11:29:32.236Z</lastmod>
+    <lastmod>2023-02-26T13:22:51.200Z</lastmod>
   </url>
 </urlset>
