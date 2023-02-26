@@ -287,6 +287,76 @@
     "text": "Spectral components and Frequencies\nwe remark:\n(1) Spectral components: For \\(k = 0,1,2,\\dots, N-1\\), the \\(k\\)-th column of \\({\\bf DFT}^\\ast\\) is defined by\n\\[\\Psi_k:=\\frac{1}{\\sqrt{N}}\\begin{bmatrix} 1 \\\\ e^{j\\frac{2\\pi}{N}k} \\\\ e^{j\\frac{2\\pi}{N}2k} \\\\ e^{j\\frac{2\\pi}{N}3k} \\\\  \\dots \\\\ e^{j\\frac{2\\pi}{N}(N-1)k} \\end{bmatrix}.\\]\nNote that \\(\\Psi_k\\) can be also interpreted as \\(\\ell\\)-th eigenvector of \\({\\bf A}\\) correspoding \\(\\lambda_\\ell = e^{-j\\frac{2\\pi}{N}k}\\). Those eigenvectors\n\\[\\big\\{{\\bf 1},\\Psi_1,\\Psi_2, \\dots, \\Psi_{N-1}\\big\\}\\]\nform a complete orthonomal basis of \\(\\mathbb{C}^N\\). These vectors are called spectral components.\n(2) Frequencies: The diagonal entries of \\({\\bf \\Lambda}\\) are the eigenvalues of the time shift \\({\\bf B}\\). In Physics and in operator theory, these eigenvalues are the frequencies of the signal. In DSP it is more common to call frequencies\n\\[\\Omega_k=\\frac{-1}{2\\pi j}\\ln\\lambda_k=\\frac{-1}{2\\pi j}\\ln e^{-j \\frac{2\\pi}{N}k}=\\frac{k}{N}, \\quad k=0,1,2,\\dots,N-1.\\]"
   },
   {
+    "objectID": "posts/RNN/2023-02-25-rnn2.html",
+    "href": "posts/RNN/2023-02-25-rnn2.html",
+    "title": "순환신경망 (2)",
+    "section": "",
+    "text": "순환신경망 intro(2)- abc예제, abdc예제, AbAcAd예제(1)"
+  },
+  {
+    "objectID": "posts/RNN/2023-02-25-rnn2.html#data",
+    "href": "posts/RNN/2023-02-25-rnn2.html#data",
+    "title": "순환신경망 (2)",
+    "section": "data",
+    "text": "data\n\ntxt = list('abc')*100\ntxt[:10]\n\n['a', 'b', 'c', 'a', 'b', 'c', 'a', 'b', 'c', 'a']\n\n\n\ntxt_x = txt[:-1]\ntxt_y = txt[1:]\n\n\ntxt_x[:5], txt_y[:5]\n\n(['a', 'b', 'c', 'a', 'b'], ['b', 'c', 'a', 'b', 'c'])"
+  },
+  {
+    "objectID": "posts/RNN/2023-02-25-rnn2.html#하나의-은닉노드를-이용한-풀이---억지로-성공",
+    "href": "posts/RNN/2023-02-25-rnn2.html#하나의-은닉노드를-이용한-풀이---억지로-성공",
+    "title": "순환신경망 (2)",
+    "section": "하나의 은닉노드를 이용한 풀이 - 억지로 성공",
+    "text": "하나의 은닉노드를 이용한 풀이 - 억지로 성공\n- 데이터정리\n\nmapping = {'a':0,'b':1,'c':2}\nx = torch.tensor(f(txt_x, mapping))\ny = torch.tensor(f(txt_y, mapping))\nx[:5],y[:5]\n\n(tensor([0, 1, 2, 0, 1]), tensor([1, 2, 0, 1, 2]))\n\n\n- 학습\n\ntorch.manual_seed(43052)\nnet = torch.nn.Sequential(\n    torch.nn.Embedding(num_embeddings=3, embedding_dim=1), # 3? -> a,b,c // 1?->은닉층의 노드개수를 1로 설정\n    torch.nn.Tanh(),\n    #==#\n    torch.nn.Linear(in_features=1, out_features=3)\n)\nloss_fn = torch.nn.CrossEntropyLoss() \noptimizr = torch.optim.Adam(net.parameters())\n\n\nfor epoc in range(5000):\n    ## 1\n    ## 2\n    loss = loss_fn(net(x),y)\n    ## 3\n    loss.backward()\n    ## 4\n    optimizr.step()\n    optimizr.zero_grad()\n\n\nsoft(net(x))[:5] \n\ntensor([[7.7743e-02, 8.4444e-01, 7.7818e-02],\n        [5.2772e-05, 7.6005e-02, 9.2394e-01],\n        [9.2247e-01, 7.7472e-02, 5.5484e-05],\n        [7.7743e-02, 8.4444e-01, 7.7818e-02],\n        [5.2772e-05, 7.6005e-02, 9.2394e-01]], grad_fn=<SliceBackward0>)\n\n\n\nnet[:2]\n\nSequential(\n  (0): Embedding(3, 1)\n  (1): Tanh()\n)\n\n\n\nnet[:2](x)[:5]\n#net[:-1](x)[:5]\n#net[1](net[0](x))[:5]\n\ntensor([[-0.0147],\n        [ 0.9653],\n        [-0.9896],\n        [-0.0147],\n        [ 0.9653]], grad_fn=<SliceBackward0>)\n\n\n- 결과해석\n처음에 두 layer를 통과시킨 값들이 어떤 값을 가질지 조사해보자.\n\nhidden = net[:-1](x).data # 처음 2개의 layer 통과\nyhat = soft(net(x)).data # hidden에 softmax 취한 것.\n\n\nplt.plot(hidden[:9],'--o')\n\n\n\n\n2번째 layer(hidden layer)까지 통과하고 한번 더 linear transform을 거치게 되면 여기 있는 하나의 값이 3개로 잘라지는데 잘라진 3개를 각각 플랏하면 다음과 같다.\n\nnet(x)[:5]\n\ntensor([[-1.4755,  0.9098, -1.4745],\n        [-6.0618,  1.2108,  3.7086],\n        [ 3.0875,  0.6104, -6.6312],\n        [-1.4755,  0.9098, -1.4745],\n        [-6.0618,  1.2108,  3.7086]], grad_fn=<SliceBackward0>)\n\n\n\nplt.plot(net(x).data[:9],'--o') # 파(a)->주(b)->초(c) 순서로 값들이 나타남.\n\n\n\n\n\n\\(x= a,b,c,a,b,c\\dots\\)\n\\(y = b,c,a,b,c,a\\dots\\)\n주황색 선의 학습상태가 썩 마음에 들지 않는다. 초록색은 확실하게 초록색, 파란색은 확실하게 파란색인데 주황색은 딱히 그런게 없다.\n약간 그런느낌 파란색도 아니고 초록색도 아니니까 얘(주황)로 하지\n\n\nplt.plot(yhat[:9],'--o')\n#plt.plot(soft(net(x)).data[:9],'--o')\n\n\n\n\n\nyhat[:5] # b일확률이 84%.. (주->b일확률, 초->c일확률, 파->a일확률)\n\ntensor([[7.7743e-02, 8.4444e-01, 7.7818e-02],\n        [5.2772e-05, 7.6005e-02, 9.2394e-01],\n        [9.2247e-01, 7.7472e-02, 5.5484e-05],\n        [7.7743e-02, 8.4444e-01, 7.7818e-02],\n        [5.2772e-05, 7.6005e-02, 9.2394e-01]])\n\n\n\ny[:5]\n\ntensor([1, 2, 0, 1, 2])\n\n\n\n억지로 맞추고 있긴한데 파라메터가 부족해보인다."
+  },
+  {
+    "objectID": "posts/RNN/2023-02-25-rnn2.html#결과시각화1-위와-똑같은-그림임",
+    "href": "posts/RNN/2023-02-25-rnn2.html#결과시각화1-위와-똑같은-그림임",
+    "title": "순환신경망 (2)",
+    "section": "- 결과시각화1 (위와 똑같은 그림임)",
+    "text": "- 결과시각화1 (위와 똑같은 그림임)\n\nfig,ax = plt.subplots(1,3,figsize=(15,5))\nax[0].plot(hidden[:9],'--o'); ax[0].set_title('$h:=(tanh \\circ linr_1)(x)$', size=15)\nax[1].plot(net(x).data[:9],'--o'); ax[1].set_title('$net(x)(linr_2 \\circ tanh \\circ linr_1)(x)$',size=15)\nax[2].plot(yhat[:9],'--o'); ax[2].set_title('$\\hat{y}$ = softmax$(net(x))$',size=15);\nfig.suptitle(r\"Vis1: $h, net(x),\\hat{y}$\", size=20)\nplt.tight_layout()\n\n\n\n\n\nhidden[:9], (net[-1].weight).T, net[-1].bias.data\n\n(tensor([[-0.0147],\n         [ 0.9653],\n         [-0.9896],\n         [-0.0147],\n         [ 0.9653],\n         [-0.9896],\n         [-0.0147],\n         [ 0.9653],\n         [-0.9896]]),\n tensor([[-4.6804,  0.3071,  5.2894]], grad_fn=<PermuteBackward0>),\n tensor([-1.5440,  0.9143, -1.3970]))\n\n\n\n(파랑, 주황, 초록) 순서로 그려짐\n파랑 = hidden * (-4.6804) + (-1.5440)\n주황 = hidden * (0.3071) + (0.9143) ## 상대적으로 weight, bias가 어정쩡\n초록 = hidden * (5.2894) + (-1.3970)\n\n초록색과 파란색에 대한 클래스는 확실하게 특징을 파악해서 잘 학습한 것 같은데 주황색은 그냥 초록색과 파란색이 아니기 때문에 주황색인 느낌이다.\n- 내부동작을 잘 뜯어보니까 사실 엉성해. 엄청 위태위태하게 맞추고 있었음.\n\nweight: 파랑과 초록을 구분하는 역할을 함.\nweight + bias: 뭔가 교묘하게 에매한 주황값을 만들어서 에매하게 ’b’라고 나올 확률을 학습시킨다. \\(\\to\\) 사실 학습하는 것 같지 않고 때려맞추는 느낌, 쓸 수 있는 weight가 한정적이라서 생기는 현상 (양수, 음수, 0)\n\n\n참고: torch.nn.Linear()의 비밀?\n\n사실 \\(y=x\\bf{W}+b\\) 꼴에서의 \\(\\bf{W}\\)와 \\(b\\)가 저장되는게 아니다.\n\\(y =x\\bf{A}^T+b\\)꼴에서의 \\(\\bf{X}\\)와 \\(b\\)가 저장된다.\n\\(\\bf{W}=\\bf{A}^T\\) 인 관계에 있으므로 l1.weight가 우리자 생각하는 \\(\\bf{W}\\)로 해석하려면 사실 transpose를 취해줘야 한다.\n\n왜 이렇게..?\n\n계산의 효율성 때문 (numpy의 구조를 알아야함)\n\\(x,y\\)는 수학적으로는 col-vec이지만 메모리에 저장할 시에는 row-vec로 해석하는 것이 자연스럽다. (사실 메모리는 격자모양으로 되어있지 않음)"
+  },
+  {
+    "objectID": "posts/RNN/2023-02-25-rnn2.html#결과시각화2",
+    "href": "posts/RNN/2023-02-25-rnn2.html#결과시각화2",
+    "title": "순환신경망 (2)",
+    "section": "- 결과시각화2",
+    "text": "- 결과시각화2\n똑같은 내용을 다른방식으로 시각화 한 것임.\n\ncombined = torch.concat([hidden, net(x).data, yhat],axis=1)\n\n\nplt.matshow(combined[:15], vmin=-15, vmax=15, cmap='bwr')\nplt.xticks(range(7), labels=[r'$h$',r'$y=a?$',r'$y=b?$',r'$y=c?$',r'$P(y=a)$',r'$P(y=b)$',r'$P(y=c)$'], size=14)\nplt.colorbar()\nplt.gcf().set_figwidth(15)\nplt.gcf().set_figheight(15)\nplt.title(r\"Vis2: $[h | net(x) | \\hat{y}]$\", size=25)\n\nText(0.5, 1.0, 'Vis2: $[h | net(x) | \\\\hat{y}]$')\n\n\n\n\n\nsoftmax를 취하기 전단계인 net(x)(2열4열)에서 가장 빨간색인 부분만 살아남아 빨간색(57열)이 되고, 나머지 부분은 흰색으로 바뀌게 된다.\n위의 그림에서 첫번째 행에서 2~4번째 열을 보면 에매한 파란색, 에매한 빨간색으로 b가 되는 느낌."
+  },
+  {
+    "objectID": "posts/RNN/2023-02-25-rnn2.html#data-1",
+    "href": "posts/RNN/2023-02-25-rnn2.html#data-1",
+    "title": "순환신경망 (2)",
+    "section": "data",
+    "text": "data\n\ntxt = list('abcd')*100\ntxt[:10]\n\n['a', 'b', 'c', 'd', 'a', 'b', 'c', 'd', 'a', 'b']\n\n\n\ntxt_x = txt[:-1]\ntxt_y = txt[1:]\n\n\ntxt_x[:5], txt_y[:5]\n\n(['a', 'b', 'c', 'd', 'a'], ['b', 'c', 'd', 'a', 'b'])"
+  },
+  {
+    "objectID": "posts/RNN/2023-02-25-rnn2.html#하나의-은닉노드를-이용한-풀이---억지로-성공-1",
+    "href": "posts/RNN/2023-02-25-rnn2.html#하나의-은닉노드를-이용한-풀이---억지로-성공-1",
+    "title": "순환신경망 (2)",
+    "section": "하나의 은닉노드를 이용한 풀이 - 억지로 성공",
+    "text": "하나의 은닉노드를 이용한 풀이 - 억지로 성공\n- 데이터 정리\n\nmapping = {'a':0,'b':1,'c':2,'d':3}\nx = torch.tensor(f(txt_x,mapping))\ny = torch.tensor(f(txt_y,mapping))\nx[:5],y[:5]\n\n(tensor([0, 1, 2, 3, 0]), tensor([1, 2, 3, 0, 1]))\n\n\n- 학습\n\nnet = torch.nn.Sequential(\n    torch.nn.Embedding(num_embeddings=4, embedding_dim=1),\n    torch.nn.Tanh(),\n    torch.nn.Linear(in_features=1, out_features=4)\n)\nloss_fn = torch.nn.CrossEntropyLoss()\noptimizr = torch.optim.Adam(net.parameters())\n\n\nnet[0].weight.data = torch.tensor([[-0.3333],[-2.5000],[5.0000],[0.3333]])\n\nnet[-1].weight.data = torch.tensor([[1.5000],[-6.0000],[-2.0000],[6.0000]])\nnet[-1].bias.data = torch.tensor([0.1500, -2.0000,  0.1500, -2.000])\n\n\nnet[0]\n\nEmbedding(4, 1)\n\n\n\nfor epoc in range(5000):\n    ## 1\n    ## 2\n    loss = loss_fn(net(x),y)\n    ## 3\n    loss.backward()\n    ## 4\n    optimizr.step()\n    optimizr.zero_grad()\n\n\n- 결과시각화1\n\nhidden = net[:-1](x).data\nyhat = soft(net(x)).data\n\n\nfig,ax = plt.subplots(1,3,figsize=(15,5))\nax[0].plot(hidden[:9],'--o'); ax[0].set_title('$h:=(tanh \\circ linr_1)(x)$',size=15)\nax[1].plot(net(x).data[:9],'--o'); ax[1].set_title('$net(x):=(linr_2 \\circ tanh \\circ linr_1)(x)$',size=15)\nax[2].plot(yhat[:9],'--o'); ax[2].set_title('$\\hat{y}$ = softmax$(net(x))$',size=15);\nfig.suptitle(r\"Vis1: $h,net(x),\\hat{y}$\",size=20)\nplt.tight_layout()\n\n\n\n\n\n\n- 결과시각화2\n\ncombined = torch.concat([hidden, net(x).data, yhat], axis=1)\ncombined.shape\n\ntorch.Size([399, 9])\n\n\n\nplt.matshow(combined[:15],vmin=-15,vmax=15,cmap='bwr')\nplt.xticks(range(9), labels=[r'$h$',r'$y=a?$',r'$y=b?$',r'$y=c?$',r'$y=d?$',r'$P(y=a)$',r'$P(y=b)$',r'$P(y=c)$',r'$P(y=d)$'],size=14)\nplt.colorbar()\nplt.gcf().set_figwidth(15)\nplt.gcf().set_figheight(15)\nplt.title(r\"Vis2: $[h | net(x) | \\hat{y}]$\",size=25)\n\nText(0.5, 1.0, 'Vis2: $[h | net(x) | \\\\hat{y}]$')"
+  },
+  {
+    "objectID": "posts/RNN/2023-02-25-rnn2.html#두개의-은닉노드를-이용한-풀이---깔끔한-성공",
+    "href": "posts/RNN/2023-02-25-rnn2.html#두개의-은닉노드를-이용한-풀이---깔끔한-성공",
+    "title": "순환신경망 (2)",
+    "section": "두개의 은닉노드를 이용한 풀이 - 깔끔한 성공",
+    "text": "두개의 은닉노드를 이용한 풀이 - 깔끔한 성공\n- 데이터정리\n\nmapping = {'a':0,'b':1,'c':2,'d':3}\nx = torch.tensor(f(txt_x,mapping))\ny = torch.tensor(f(txt_y,mapping))\nx[:5],y[:5]\n\n(tensor([0, 1, 2, 3, 0]), tensor([1, 2, 3, 0, 1]))\n\n\n- 학습\n\ntorch.manual_seed(43052)\nnet = torch.nn.Sequential(\n    torch.nn.Embedding(num_embeddings=4,embedding_dim=2),\n    torch.nn.Tanh(),\n    torch.nn.Linear(in_features=2,out_features=4)\n)\nloss_fn = torch.nn.CrossEntropyLoss()\noptimizr = torch.optim.Adam(net.parameters())\n\n\nfor epoc in range(5000):\n    ## 1\n    yhat = net(x)\n    ## 2 \n    loss = loss_fn(yhat,y)\n    ## 3 \n    loss.backward()\n    ## 4 \n    optimizr.step()\n    optimizr.zero_grad()\n\n\n- 결과시각화1\n\nhidden = net[:-1](x).data\nyhat = soft(net(x)).data\n\n\nfig,ax = plt.subplots(1,3,figsize=(15,5))\nax[0].plot(hidden[:9],'--o'); ax[0].set_title('$h:=(tanh \\circ linr_1)(x)$',size=15)\nax[1].plot(net(x).data[:9],'--o'); ax[1].set_title('$net(x):=(linr_2 \\circ tanh \\circ linr_1)(x)$',size=15)\nax[2].plot(yhat[:9],'--o'); ax[2].set_title('$\\hat{y}$ = softmax$(net(x))$',size=15);\nfig.suptitle(r\"Vis1: $h,net(x),\\hat{y}$\",size=20)\nplt.tight_layout()\n\n\n\n\n\n\n- 결과시각화2\n\ncombined  = torch.concat([hidden,net(x).data,yhat],axis=1)\ncombined.shape\n\ntorch.Size([399, 10])\n\n\n\nplt.matshow(combined[:15],vmin=-7,vmax=7,cmap='bwr')\nplt.xticks(range(10), labels=[r'$h$',r'$h$',r'$y=a?$',r'$y=b?$',r'$y=c?$',r'$y=d?$',r'$P(y=a)$',r'$P(y=b)$',r'$P(y=c)$',r'$P(y=d)$'],size=14)\nplt.colorbar()\nplt.gcf().set_figwidth(15)\nplt.gcf().set_figheight(15)\nplt.title(r\"Vis2: $[h | net(x) | \\hat{y}]$\",size=25)\n\nText(0.5, 1.0, 'Vis2: $[h | net(x) | \\\\hat{y}]$')"
+  },
+  {
+    "objectID": "posts/RNN/2023-02-25-rnn2.html#data-2",
+    "href": "posts/RNN/2023-02-25-rnn2.html#data-2",
+    "title": "순환신경망 (2)",
+    "section": "data",
+    "text": "data\n\ntxt = list('AbAcAd')*100\ntxt[:10]\n\n['A', 'b', 'A', 'c', 'A', 'd', 'A', 'b', 'A', 'c']\n\n\n\ntxt_x = txt[:-1]\ntxt_y = txt[1:]\n\n\ntxt_x[:5],txt_y[:5]\n\n(['A', 'b', 'A', 'c', 'A'], ['b', 'A', 'c', 'A', 'd'])"
+  },
+  {
+    "objectID": "posts/RNN/2023-02-25-rnn2.html#두개의-은닉노드를-이용한-풀이---실패",
+    "href": "posts/RNN/2023-02-25-rnn2.html#두개의-은닉노드를-이용한-풀이---실패",
+    "title": "순환신경망 (2)",
+    "section": "두개의 은닉노드를 이용한 풀이 - 실패",
+    "text": "두개의 은닉노드를 이용한 풀이 - 실패"
+  },
+  {
     "objectID": "posts/RNN/2023-02-25-rnn1.html",
     "href": "posts/RNN/2023-02-25-rnn1.html",
     "title": "순환신경망 (1)",
