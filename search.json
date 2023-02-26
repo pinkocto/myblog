@@ -207,7 +207,7 @@
     "href": "posts/study/2023-02-25-chap12.2.html",
     "title": "Chap 12.2: Weakly Stationary Graph process",
     "section": "",
-    "text": "https://miruetoto.github.io/yechan3/posts/2_Studies/CGSP/2022-12-26-Chap-12.2.html\n\nusing LinearAlgebra, DSP"
+    "text": "using LinearAlgebra, DSP"
   },
   {
     "objectID": "posts/study/2023-02-25-chap12.2.html#simultaneously-diagonalizable",
