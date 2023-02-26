@@ -758,6 +758,9 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <p><img src="2023-02-25-rnn2_files/figure-html/cell-33-output-1.png" class="img-fluid"></p>
 </div>
 </div>
+<ul>
+<li>주황색과 빨간색을 특징을 잘 파악했는데 녹색과 파란색은 좀 에매하게 특징을 파악했지만 어쩌다보니 결과는 잘 나옴.</li>
+</ul>
 </section>
 <section id="결과시각화2-1" class="level3">
 <h3 class="anchored" data-anchor-id="결과시각화2-1"><code>-</code> 결과시각화2</h3>
@@ -800,7 +803,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <div class="cell" data-execution_count="103">
 <div class="sourceCode cell-code" id="cb55"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb55-1"><a href="#cb55-1"></a>torch.manual_seed(<span class="dv">43052</span>)</span>
 <span id="cb55-2"><a href="#cb55-2"></a>net <span class="op">=</span> torch.nn.Sequential(</span>
-<span id="cb55-3"><a href="#cb55-3"></a>    torch.nn.Embedding(num_embeddings<span class="op">=</span><span class="dv">4</span>,embedding_dim<span class="op">=</span><span class="dv">2</span>),</span>
+<span id="cb55-3"><a href="#cb55-3"></a>    torch.nn.Embedding(num_embeddings<span class="op">=</span><span class="dv">4</span>,embedding_dim<span class="op">=</span><span class="dv">2</span>), <span class="co"># 은닉노드 2개</span></span>
 <span id="cb55-4"><a href="#cb55-4"></a>    torch.nn.Tanh(),</span>
 <span id="cb55-5"><a href="#cb55-5"></a>    torch.nn.Linear(in_features<span class="op">=</span><span class="dv">2</span>,out_features<span class="op">=</span><span class="dv">4</span>)</span>
 <span id="cb55-6"><a href="#cb55-6"></a>)</span>
@@ -836,6 +839,8 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <p><img src="2023-02-25-rnn2_files/figure-html/cell-40-output-1.png" class="img-fluid"></p>
 </div>
 </div>
+<p><strong>(맨 왼쪽 그림)</strong> 2개의 노드를 썼으니까 파랑이와 주황색선 두개가 보인다. - h dimension <span class="math inline">\((n,1)\to(n,2)\)</span> - 주황이가 확실히 1, -1 호불호가 갈려서 학습이 된다. - 파랑이도 1, -1 두가지로 갈려서 학습이 된다.</p>
+<p>맨 왼쪽그림에서 적당한 선형변환을 통해 2번째 그림을 만들어야 하고, 여기서 3번째 그림을 만들어야 한다. - 가장 오른쪽 그림의 출력결과만 봐도 매우 깔끔하게 나온다! - 높은 확률로 깔끔하게 예측하고 있음을 볼 수 있다.</p>
 </section>
 <section id="결과시각화2-2" class="level3">
 <h3 class="anchored" data-anchor-id="결과시각화2-2"><code>-</code> 결과시각화2</h3>
@@ -860,6 +865,20 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <p><img src="2023-02-25-rnn2_files/figure-html/cell-42-output-2.png" class="img-fluid"></p>
 </div>
 </div>
+<ul>
+<li>hidden layer는 <span class="math inline">\(-1\sim 1\)</span> 값을 가질 수 있다.
+<ul>
+<li>파,빨 <span class="math inline">\(\to\)</span> b</li>
+<li>파,파 <span class="math inline">\(\to\)</span> c</li>
+<li>빨,파 <span class="math inline">\(\to\)</span> d</li>
+<li>빨,빨 <span class="math inline">\(\to\)</span> a</li>
+</ul></li>
+</ul>
+<p>이런식으로 hidden layer에 있는 특징들도 결과를 해석하기에 좋은 형태로 잘 학습되어 있다.</p>
+<ul>
+<li><p>빨간색일수록 근거가 뚜렷함. 특징이 그전에 비해서 굉장히 명확하게 학습이 되고 있다는 것을 알 수 있다.</p></li>
+<li><p>그 전에는 b와 d는 특징을 잘 파악하고 있는데 a,c는 약간 에매했지만 이번에는 a,b,c,d의 특징들을 잘 이해하고 맞추는 것처럼 느껴진다.</p></li>
+</ul>
 </section>
 </section>
 </section>
