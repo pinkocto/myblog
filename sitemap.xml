@@ -2,78 +2,82 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
     <loc>https://github.com/pinkocto/myblog/about.html</loc>
-    <lastmod>2023-02-26T13:27:57.944Z</lastmod>
+    <lastmod>2023-02-27T05:43:29.865Z</lastmod>
   </url>
   <url>
     <loc>https://github.com/pinkocto/myblog/Tip/2023-02-24-tips.html</loc>
-    <lastmod>2023-02-26T13:27:58.156Z</lastmod>
+    <lastmod>2023-02-27T05:43:30.065Z</lastmod>
   </url>
   <url>
     <loc>https://github.com/pinkocto/myblog/Tip/2023-02-20-tips.html</loc>
-    <lastmod>2023-02-26T13:27:58.340Z</lastmod>
+    <lastmod>2023-02-27T05:43:30.257Z</lastmod>
   </url>
   <url>
     <loc>https://github.com/pinkocto/myblog/posts/STGCN/튜토리얼/2022-12-29-STGCN-tutorial.html</loc>
-    <lastmod>2023-02-26T13:27:58.656Z</lastmod>
+    <lastmod>2023-02-27T05:43:30.581Z</lastmod>
   </url>
   <url>
     <loc>https://github.com/pinkocto/myblog/posts/STGCN/튜토리얼/2022-12-30-STGCN-Toy Example.html</loc>
-    <lastmod>2023-02-26T13:27:58.900Z</lastmod>
+    <lastmod>2023-02-27T05:43:30.833Z</lastmod>
   </url>
   <url>
     <loc>https://github.com/pinkocto/myblog/posts/STGCN/STGCN 공부/2023-02-23-stgcn-tutorial2.html</loc>
-    <lastmod>2023-02-26T13:27:59.148Z</lastmod>
+    <lastmod>2023-02-27T05:43:31.073Z</lastmod>
   </url>
   <url>
     <loc>https://github.com/pinkocto/myblog/posts/STGCN/STGCN 공부/traffic_prediction.html</loc>
-    <lastmod>2023-02-26T13:27:59.392Z</lastmod>
+    <lastmod>2023-02-27T05:43:31.325Z</lastmod>
   </url>
   <url>
     <loc>https://github.com/pinkocto/myblog/posts/STGCN/STGCN 공부/2023-02-21-SGGCN-tutorial1.html</loc>
-    <lastmod>2023-02-26T13:27:59.716Z</lastmod>
+    <lastmod>2023-02-27T05:43:31.645Z</lastmod>
   </url>
   <url>
     <loc>https://github.com/pinkocto/myblog/posts/GCN/2023-02-21-gcn1.html</loc>
-    <lastmod>2023-02-26T13:28:00.008Z</lastmod>
+    <lastmod>2023-02-27T05:43:31.945Z</lastmod>
+  </url>
+  <url>
+    <loc>https://github.com/pinkocto/myblog/posts/GCN/2023-02-27-gcn-prac.html</loc>
+    <lastmod>2023-02-27T05:43:32.169Z</lastmod>
   </url>
   <url>
     <loc>https://github.com/pinkocto/myblog/posts/study/2023-02-25-chap12.2.html</loc>
-    <lastmod>2023-02-26T13:28:00.196Z</lastmod>
+    <lastmod>2023-02-27T05:43:32.357Z</lastmod>
   </url>
   <url>
     <loc>https://github.com/pinkocto/myblog/posts/study/prof/2022-12-24-Chap 8.3.html</loc>
-    <lastmod>2023-02-26T13:28:00.508Z</lastmod>
+    <lastmod>2023-02-27T05:43:32.681Z</lastmod>
   </url>
   <url>
     <loc>https://github.com/pinkocto/myblog/posts/study/prof/2022-12-27-Chap-12.2.1~12.3.1.html</loc>
-    <lastmod>2023-02-26T13:28:01.276Z</lastmod>
+    <lastmod>2023-02-27T05:43:33.441Z</lastmod>
   </url>
   <url>
     <loc>https://github.com/pinkocto/myblog/posts/study/prof/2023-01-15-Chap-12.4.html</loc>
-    <lastmod>2023-02-26T13:28:01.476Z</lastmod>
+    <lastmod>2023-02-27T05:43:33.653Z</lastmod>
   </url>
   <url>
     <loc>https://github.com/pinkocto/myblog/posts/study/prof/2022-12-26-Chap-12.2.html</loc>
-    <lastmod>2023-02-26T13:28:01.784Z</lastmod>
+    <lastmod>2023-02-27T05:43:33.957Z</lastmod>
   </url>
   <url>
     <loc>https://github.com/pinkocto/myblog/posts/study/2023-02-24-Chap8.3.html</loc>
-    <lastmod>2023-02-26T13:28:02.028Z</lastmod>
+    <lastmod>2023-02-27T05:43:34.189Z</lastmod>
   </url>
   <url>
     <loc>https://github.com/pinkocto/myblog/posts/RNN/2023-02-25-rnn2.html</loc>
-    <lastmod>2023-02-26T13:28:02.484Z</lastmod>
+    <lastmod>2023-02-27T05:43:34.645Z</lastmod>
   </url>
   <url>
     <loc>https://github.com/pinkocto/myblog/posts/RNN/2023-02-25-rnn1.html</loc>
-    <lastmod>2023-02-26T13:28:02.936Z</lastmod>
+    <lastmod>2023-02-27T05:43:35.093Z</lastmod>
   </url>
   <url>
     <loc>https://github.com/pinkocto/myblog/etc/2023-02-01-memo.html</loc>
-    <lastmod>2023-02-26T13:28:03.120Z</lastmod>
+    <lastmod>2023-02-27T05:43:35.269Z</lastmod>
   </url>
   <url>
     <loc>https://github.com/pinkocto/myblog/index.html</loc>
-    <lastmod>2023-02-26T13:28:03.424Z</lastmod>
+    <lastmod>2023-02-27T05:43:35.577Z</lastmod>
   </url>
 </urlset>
