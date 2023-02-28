@@ -7,9 +7,9 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 <meta name="author" content="jiyun Lim">
-<meta name="dcterms.date" content="2023-02-24">
+<meta name="dcterms.date" content="2023-02-28">
 
-<title>myblog - Chap 12.2: Weakly Stationary Graph process</title>
+<title>myblog - iterator vs.&nbsp;iterabl object</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -88,22 +88,22 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 </style>
 
 
-<script src="../../site_libs/quarto-nav/quarto-nav.js"></script>
-<script src="../../site_libs/quarto-nav/headroom.min.js"></script>
-<script src="../../site_libs/clipboard/clipboard.min.js"></script>
-<script src="../../site_libs/quarto-search/autocomplete.umd.js"></script>
-<script src="../../site_libs/quarto-search/fuse.min.js"></script>
-<script src="../../site_libs/quarto-search/quarto-search.js"></script>
-<meta name="quarto:offset" content="../../">
-<script src="../../site_libs/quarto-html/quarto.js"></script>
-<script src="../../site_libs/quarto-html/popper.min.js"></script>
-<script src="../../site_libs/quarto-html/tippy.umd.min.js"></script>
-<script src="../../site_libs/quarto-html/anchor.min.js"></script>
-<link href="../../site_libs/quarto-html/tippy.css" rel="stylesheet">
-<link href="../../site_libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" id="quarto-text-highlighting-styles">
-<script src="../../site_libs/bootstrap/bootstrap.min.js"></script>
-<link href="../../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="../../site_libs/bootstrap/bootstrap.min.css" rel="stylesheet" id="quarto-bootstrap" data-mode="light">
+<script src="../site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="../site_libs/quarto-nav/headroom.min.js"></script>
+<script src="../site_libs/clipboard/clipboard.min.js"></script>
+<script src="../site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="../site_libs/quarto-search/fuse.min.js"></script>
+<script src="../site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="../">
+<script src="../site_libs/quarto-html/quarto.js"></script>
+<script src="../site_libs/quarto-html/popper.min.js"></script>
+<script src="../site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="../site_libs/quarto-html/anchor.min.js"></script>
+<link href="../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="../site_libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="../site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="../site_libs/bootstrap/bootstrap.min.css" rel="stylesheet" id="quarto-bootstrap" data-mode="light">
 <script id="quarto-search-options" type="application/json">{
   "location": "navbar",
   "copy-button": false,
@@ -124,9 +124,8 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
   }
 }</script>
 
-  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
 
-<link rel="stylesheet" href="../../styles.css">
+<link rel="stylesheet" href="../styles.css">
 </head>
 
 <body class="nav-sidebar docked nav-fixed">
@@ -136,7 +135,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
     <nav class="navbar navbar-expand-lg navbar-dark ">
       <div class="navbar-container container-fluid">
       <div class="navbar-brand-container">
-    <a class="navbar-brand" href="../../index.html">
+    <a class="navbar-brand" href="../index.html">
     <span class="navbar-title">myblog</span>
     </a>
   </div>
@@ -146,7 +145,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
           <div class="collapse navbar-collapse" id="navbarCollapse">
             <ul class="navbar-nav navbar-nav-scroll ms-auto">
   <li class="nav-item">
-    <a class="nav-link active" href="../../about.html" aria-current="page">
+    <a class="nav-link active" href="../about.html" aria-current="page">
  <span class="menu-text">About</span></a>
   </li>  
   <li class="nav-item compact">
@@ -161,7 +160,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
     </nav>
   <nav class="quarto-secondary-nav" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
     <div class="container-fluid d-flex justify-content-between">
-      <h1 class="quarto-secondary-nav-title">Chap 12.2: Weakly Stationary Graph process</h1>
+      <h1 class="quarto-secondary-nav-title">iterator vs.&nbsp;iterabl object</h1>
       <button type="button" class="quarto-btn-toggle btn" aria-label="Show secondary navigation">
         <i class="bi bi-chevron-right"></i>
       </button>
@@ -169,39 +168,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
   </nav>
 </header>
 <!-- content -->
-<header id="title-block-header" class="quarto-title-block default page-columns page-full">
-  <div class="quarto-title-banner page-columns page-full">
-    <div class="quarto-title column-body">
-      <h1 class="title d-none d-lg-block">Chap 12.2: Weakly Stationary Graph process</h1>
-                                <div class="quarto-categories">
-                <div class="quarto-category">CGSP</div>
-                <div class="quarto-category">study</div>
-              </div>
-                  </div>
-  </div>
-    
-  
-  <div class="quarto-title-meta">
-
-      <div>
-      <div class="quarto-title-meta-heading">Author</div>
-      <div class="quarto-title-meta-contents">
-               <p>jiyun Lim </p>
-            </div>
-    </div>
-      
-      <div>
-      <div class="quarto-title-meta-heading">Published</div>
-      <div class="quarto-title-meta-contents">
-        <p class="date">February 24, 2023</p>
-      </div>
-    </div>
-    
-      
-    </div>
-    
-  
-  </header><div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
 <!-- sidebar -->
   <nav id="quarto-sidebar" class="sidebar collapse sidebar-navigation docked overflow-auto">
       <div class="mt-2 flex-shrink-0 align-items-center">
@@ -213,7 +180,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
     <ul class="list-unstyled mt-1">
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="../../about.html" class="sidebar-item-text sidebar-link">About</a>
+  <a href="../about.html" class="sidebar-item-text sidebar-link">About</a>
   </div>
 </li>
         <li class="sidebar-item sidebar-item-section">
@@ -226,12 +193,12 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
       <ul id="quarto-sidebar-section-1" class="collapse list-unstyled sidebar-section depth1 show">  
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="../../etc/2023-02-28.html" class="sidebar-item-text sidebar-link">iterator vs.&nbsp;iterabl object</a>
+  <a href="../etc/2023-02-28.html" class="sidebar-item-text sidebar-link active">iterator vs.&nbsp;iterabl object</a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="../../etc/2023-02-01-memo.html" class="sidebar-item-text sidebar-link">메모장</a>
+  <a href="../etc/2023-02-01-memo.html" class="sidebar-item-text sidebar-link">메모장</a>
   </div>
 </li>
       </ul>
@@ -254,12 +221,12 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
       <ul id="quarto-sidebar-section-3" class="collapse list-unstyled sidebar-section depth2 ">  
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="../../posts/GCN/2023-02-27-gcn-prac.html" class="sidebar-item-text sidebar-link">GCN Implementation</a>
+  <a href="../posts/GCN/2023-02-27-gcn-prac.html" class="sidebar-item-text sidebar-link">GCN Implementation</a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="../../posts/GCN/2023-02-21-gcn1.html" class="sidebar-item-text sidebar-link">Graph Convolutional Network</a>
+  <a href="../posts/GCN/2023-02-21-gcn1.html" class="sidebar-item-text sidebar-link">Graph Convolutional Network</a>
   </div>
 </li>
       </ul>
@@ -274,17 +241,17 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
       <ul id="quarto-sidebar-section-4" class="collapse list-unstyled sidebar-section depth2 ">  
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="../../posts/RNN/2023-02-25-rnn1.html" class="sidebar-item-text sidebar-link">순환신경망 (1)</a>
+  <a href="../posts/RNN/2023-02-25-rnn1.html" class="sidebar-item-text sidebar-link">순환신경망 (1)</a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="../../posts/RNN/2023-02-25-rnn2.html" class="sidebar-item-text sidebar-link">순환신경망 (2)</a>
+  <a href="../posts/RNN/2023-02-25-rnn2.html" class="sidebar-item-text sidebar-link">순환신경망 (2)</a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="../../posts/RNN/2023-02-28-rnn3.html" class="sidebar-item-text sidebar-link">순환신경망 (3)</a>
+  <a href="../posts/RNN/2023-02-28-rnn3.html" class="sidebar-item-text sidebar-link">순환신경망 (3)</a>
   </div>
 </li>
       </ul>
@@ -307,17 +274,17 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
       <ul id="quarto-sidebar-section-6" class="collapse list-unstyled sidebar-section depth3 ">  
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="../../posts/STGCN/STGCN 공부/traffic_prediction.html" class="sidebar-item-text sidebar-link">Traffic Forecasting review</a>
+  <a href="../posts/STGCN/STGCN 공부/traffic_prediction.html" class="sidebar-item-text sidebar-link">Traffic Forecasting review</a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="../../posts/STGCN/STGCN 공부/2023-02-21-STGCN-tutorial1.html" class="sidebar-item-text sidebar-link">튜토리얼 따라가기1</a>
+  <a href="../posts/STGCN/STGCN 공부/2023-02-21-STGCN-tutorial1.html" class="sidebar-item-text sidebar-link">튜토리얼 따라가기1</a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="../../posts/STGCN/STGCN 공부/2023-02-23-stgcn-tutorial2.html" class="sidebar-item-text sidebar-link">튜토리얼 따라가기2</a>
+  <a href="../posts/STGCN/STGCN 공부/2023-02-23-stgcn-tutorial2.html" class="sidebar-item-text sidebar-link">튜토리얼 따라가기2</a>
   </div>
 </li>
       </ul>
@@ -332,12 +299,12 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
       <ul id="quarto-sidebar-section-7" class="collapse list-unstyled sidebar-section depth3 ">  
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="../../posts/STGCN/튜토리얼/2022-12-29-STGCN-tutorial.html" class="sidebar-item-text sidebar-link">STGCN 튜토리얼</a>
+  <a href="../posts/STGCN/튜토리얼/2022-12-29-STGCN-tutorial.html" class="sidebar-item-text sidebar-link">STGCN 튜토리얼</a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="../../posts/STGCN/튜토리얼/2022-12-30-STGCN-Toy Example.html" class="sidebar-item-text sidebar-link">Toy Example</a>
+  <a href="../posts/STGCN/튜토리얼/2022-12-30-STGCN-Toy Example.html" class="sidebar-item-text sidebar-link">Toy Example</a>
   </div>
 </li>
       </ul>
@@ -346,20 +313,20 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
   </li>
           <li class="sidebar-item sidebar-item-section">
       <div class="sidebar-item-container"> 
-            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-8" aria-expanded="true">Study</a>
-          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-8" aria-expanded="true">
+            <a class="sidebar-item-text sidebar-link text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-8" aria-expanded="false">Study</a>
+          <a class="sidebar-item-toggle text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-8" aria-expanded="false">
             <i class="bi bi-chevron-right ms-2"></i>
           </a> 
       </div>
-      <ul id="quarto-sidebar-section-8" class="collapse list-unstyled sidebar-section depth2 show">  
+      <ul id="quarto-sidebar-section-8" class="collapse list-unstyled sidebar-section depth2 ">  
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="../../posts/study/2023-02-25-chap12.2.html" class="sidebar-item-text sidebar-link active">Chap 12.2: Weakly Stationary Graph process</a>
+  <a href="../posts/study/2023-02-25-chap12.2.html" class="sidebar-item-text sidebar-link">Chap 12.2: Weakly Stationary Graph process</a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="../../posts/study/2023-02-24-Chap8.3.html" class="sidebar-item-text sidebar-link">Chap 8.3: Discrete Fourier Transform</a>
+  <a href="../posts/study/2023-02-24-Chap8.3.html" class="sidebar-item-text sidebar-link">Chap 8.3: Discrete Fourier Transform</a>
   </div>
 </li>
           <li class="sidebar-item sidebar-item-section">
@@ -372,22 +339,22 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
       <ul id="quarto-sidebar-section-9" class="collapse list-unstyled sidebar-section depth3 ">  
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="../../posts/study/prof/2022-12-27-Chap-12.2.1~12.3.1.html" class="sidebar-item-text sidebar-link">Chap 12.2 ~ 3: Power Spectral Density and its Estimators</a>
+  <a href="../posts/study/prof/2022-12-27-Chap-12.2.1~12.3.1.html" class="sidebar-item-text sidebar-link">Chap 12.2 ~ 3: Power Spectral Density and its Estimators</a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="../../posts/study/prof/2022-12-26-Chap-12.2.html" class="sidebar-item-text sidebar-link">Chap 12.2: Weakly Stationary Graph Processes</a>
+  <a href="../posts/study/prof/2022-12-26-Chap-12.2.html" class="sidebar-item-text sidebar-link">Chap 12.2: Weakly Stationary Graph Processes</a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="../../posts/study/prof/2023-01-15-Chap-12.4.html" class="sidebar-item-text sidebar-link">Chap 12.4: Node Subsampling for PSD Estimation</a>
+  <a href="../posts/study/prof/2023-01-15-Chap-12.4.html" class="sidebar-item-text sidebar-link">Chap 12.4: Node Subsampling for PSD Estimation</a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="../../posts/study/prof/2022-12-24-Chap 8.3.html" class="sidebar-item-text sidebar-link">Chap 8.3: Discrete Fourier Transform</a>
+  <a href="../posts/study/prof/2022-12-24-Chap 8.3.html" class="sidebar-item-text sidebar-link">Chap 8.3: Discrete Fourier Transform</a>
   </div>
 </li>
       </ul>
@@ -406,12 +373,12 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
       <ul id="quarto-sidebar-section-10" class="collapse list-unstyled sidebar-section depth1 show">  
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="../../Tip/2023-02-20-tips.html" class="sidebar-item-text sidebar-link">download files from Github</a>
+  <a href="../Tip/2023-02-20-tips.html" class="sidebar-item-text sidebar-link">download files from Github</a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="../../Tip/2023-02-24-tips.html" class="sidebar-item-text sidebar-link">Julia 연동</a>
+  <a href="../Tip/2023-02-24-tips.html" class="sidebar-item-text sidebar-link">Julia 연동</a>
   </div>
 </li>
       </ul>
@@ -425,58 +392,119 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
     <h2 id="toc-title">On this page</h2>
    
   <ul>
-  <li><a href="#preliminary-study" id="toc-preliminary-study" class="nav-link active" data-scroll-target="#preliminary-study">Preliminary Study</a>
+  <li><a href="#클래스" id="toc-클래스" class="nav-link active" data-scroll-target="#클래스">클래스</a>
   <ul class="collapse">
-  <li><a href="#simultaneously-diagonalizable" id="toc-simultaneously-diagonalizable" class="nav-link" data-scroll-target="#simultaneously-diagonalizable">Simultaneously Diagonalizable</a></li>
-  <li><a href="#commute" id="toc-commute" class="nav-link" data-scroll-target="#commute">Commute</a></li>
-  <li><a href="#shift-invariant-filter" id="toc-shift-invariant-filter" class="nav-link" data-scroll-target="#shift-invariant-filter">Shift Invariant Filter</a></li>
+  <li><a href="#iterator-vs.-iterabl-object" id="toc-iterator-vs.-iterabl-object" class="nav-link" data-scroll-target="#iterator-vs.-iterabl-object">01. iterator vs.&nbsp;iterabl object</a></li>
   </ul></li>
   </ul>
 </nav>
     </div>
 <!-- main -->
-<main class="content quarto-banner-title-block" id="quarto-document-content">
+<main class="content" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default">
+<div class="quarto-title">
+<h1 class="title d-none d-lg-block">iterator vs.&nbsp;iterabl object</h1>
+  <div class="quarto-categories">
+    <div class="quarto-category">class</div>
+  </div>
+  </div>
 
 
 
+<div class="quarto-title-meta">
 
-<div class="cell" data-execution_count="3">
-<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode numberSource julia number-lines code-with-copy"><code class="sourceCode julia"><span id="cb1-1"><a href="#cb1-1"></a><span class="im">using</span> <span class="bu">LinearAlgebra</span>, <span class="bu">DSP</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+    <div>
+    <div class="quarto-title-meta-heading">Author</div>
+    <div class="quarto-title-meta-contents">
+             <p>jiyun Lim </p>
+          </div>
+  </div>
+    
+    <div>
+    <div class="quarto-title-meta-heading">Published</div>
+    <div class="quarto-title-meta-contents">
+      <p class="date">February 28, 2023</p>
+    </div>
+  </div>
+  
+    
+  </div>
+  
+
+</header>
+
+<section id="클래스" class="level1">
+<h1>클래스</h1>
+<blockquote class="blockquote">
+<p>클래스 헷갈리는 개념모음</p>
+</blockquote>
+<ul>
+<li><a href="https://pinkocto.github.io/Quarto-Blog/posts/Python/2023-02-23-class8.html">파이썬 iterable object</a></li>
+</ul>
+<pre><code>파이썬의 모든 것은 오브젝트이다. 
+함수도 오브젝트이고
+리스트도 오브젝트이다..</code></pre>
+<section id="iterator-vs.-iterabl-object" class="level2">
+<h2 class="anchored" data-anchor-id="iterator-vs.-iterabl-object">01. iterator vs.&nbsp;iterabl object</h2>
+<div class="cell" data-execution_count="1">
+<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1"></a>_lst<span class="op">=</span> [<span class="dv">1</span>,<span class="dv">2</span>,<span class="dv">3</span>]</span>
+<span id="cb2-2"><a href="#cb2-2"></a><span class="cf">for</span> i <span class="kw">in</span> _lst:</span>
+<span id="cb2-3"><a href="#cb2-3"></a>    <span class="bu">print</span>(i)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>1
+2
+3</code></pre>
 </div>
-<section id="preliminary-study" class="level1">
-<h1>Preliminary Study</h1>
-<section id="simultaneously-diagonalizable" class="level2">
-<h2 class="anchored" data-anchor-id="simultaneously-diagonalizable">Simultaneously Diagonalizable</h2>
-<p>매트릭스 <span class="math inline">\(\bf{A}\)</span>와 <span class="math inline">\(\bf{B}\)</span>가 대각화 가능하다는 것은 아래의 표현을 만족한 적당한 invertible matrix와 <span class="math inline">\({\bf \Psi}_A,{\bf \Psi}_B\)</span>와 대각행렬 <span class="math inline">\({\bf \Lambda}_A,{\bf \Lambda}_B\)</span>가 존재한다는 의미가 된다.</p>
-<p><span class="math display">\[{\bf A} = {\bf V}_{A} {\bf \Lambda}_A {\bf V}_{A}^{-1}\]</span></p>
-<p><span class="math display">\[{\bf B} = {\bf V}_{B} {\bf \Lambda}_B {\bf V}_{B}^{-1}\]</span></p>
-<p>그리고 만약에 <span class="math inline">\({\bf V}_{A}={\bf V}_{B}\)</span>이라면 즉,</p>
-<p><span class="math display">\[{\bf A} = {\bf V} {\bf \Lambda}_A {\bf V}^{-1}\]</span></p>
-<p><span class="math display">\[{\bf B} = {\bf V} {\bf \Lambda}_B {\bf V}^{-1}\]</span></p>
-<p>이라면 <span class="math inline">\(\{{\bf A},{\bf B}\}\)</span>가 simultaneosuly diagonalizable 하다고 표현한다.</p>
-</section>
-<section id="commute" class="level2">
-<h2 class="anchored" data-anchor-id="commute">Commute</h2>
-<p>두 matrix <span class="math inline">\(\bf{A}\)</span> 와 <span class="math inline">\(\bf{B}\)</span>에 대하여</p>
-<p><span class="math display">\[{\bf A}{\bf B}= {\bf B}{\bf A}\]</span></p>
-<p>인 관계가 성립하면 두 매트릭스가 commute한다고 표현한다. 그런데 <span class="math inline">\({\bf A}{\bf B}= {\bf B}{\bf A}\)</span>의 조건은 <span class="math inline">\(\bf{A}, \bf{B}\)</span>가 동시대각화가능할(simultaneously diagonalizable) 조건과 같다. 따라서 simultaneously diagonalizable는 commute와 같은 말이라 생각해도 무방하다.</p>
-</section>
-<section id="shift-invariant-filter" class="level2">
-<h2 class="anchored" data-anchor-id="shift-invariant-filter">Shift Invariant Filter</h2>
-<p>Define the matrix <span class="math inline">\({\bf B}\)</span> as periodic shift matrix such that</p>
-<p><span class="math display">\[
-{\bf B} = \begin{bmatrix}
-0 &amp; 0 &amp; 0 &amp; \dots  &amp; 0 &amp; 1 \\
-1 &amp; 0 &amp; 0 &amp; \dots &amp; 0 &amp; 0 \\
-0 &amp; 1 &amp; 0 &amp; \dots &amp; 0 &amp; 0 \\
-\dots &amp; \dots &amp; \dots &amp; \dots &amp; \dots &amp; \dots\\
-0 &amp; 0 &amp; \dots &amp; 1 &amp; 0 &amp; 0 \\
-0 &amp; 0 &amp; \dots &amp; 0 &amp; 1 &amp; 0 \\
-\end{bmatrix}.\]</span></p>
-<p>A generic filter <span class="math inline">\({\boldsymbol h}\)</span> is given by its <span class="math inline">\(z\)</span>-transform</p>
-<p><span class="math display">\[h(z)=h_0z^0+h_1z^{-1}+\cdots +h_{N-1}z^{-(N-1)}\]</span></p>
-<p>where <span class="math inline">\(s_{n-1}=z^{-1}s_n\)</span>. In vector notation, and with respect to the standard basis <span class="math inline">\({\bf I}\)</span>, the filter is represented by the matrix <span class="math inline">\({\bf H}\)</span>, a polynomial in the cyclic shift</p>
-<p><span class="math display">\[{\bf H}=h({\bf B})=h_0{\bf B}^0+h_1{\bf B}^1+\cdots+h_{N-1}{\bf B}^{N-1}.\]</span></p>
+</div>
+<div class="cell" data-execution_count="2">
+<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb4-1"><a href="#cb4-1"></a>_iterator <span class="op">=</span> _lst.<span class="fu">__iter__</span>() <span class="co"># __iter__()라는 함수를 쓰면 iterator가 만들어진다.</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<ul>
+<li>iterator에는 <code>__next__</code> 라는 기능이 있다.</li>
+<li>iterable object에는 <code>__next__</code>라는 기능이 없다.</li>
+<li>이것이 iterator(=jenerator)와 iterable object와의 차이</li>
+</ul>
+<div class="cell" data-execution_count="3">
+<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb5-1"><a href="#cb5-1"></a>_iterator.<span class="fu">__next__</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="3">
+<pre><code>1</code></pre>
+</div>
+</div>
+<div class="cell" data-execution_count="4">
+<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb7-1"><a href="#cb7-1"></a>_iterator.<span class="fu">__next__</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="4">
+<pre><code>2</code></pre>
+</div>
+</div>
+<div class="cell" data-execution_count="5">
+<div class="sourceCode cell-code" id="cb9"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb9-1"><a href="#cb9-1"></a>_iterator.<span class="fu">__next__</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="5">
+<pre><code>3</code></pre>
+</div>
+</div>
+<div class="cell" data-execution_count="9">
+<div class="sourceCode cell-code" id="cb11"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb11-1"><a href="#cb11-1"></a>_iterator.<span class="fu">__next__</span>() <span class="co"># 에러 나는게 당연! 다음은 없으니까..</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-error">
+<pre><code>StopIteration: </code></pre>
+</div>
+</div>
+<div class="cell" data-execution_count="7">
+<div class="sourceCode cell-code" id="cb13"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb13-1"><a href="#cb13-1"></a><span class="bu">set</span>(<span class="bu">dir</span>(_lst)) <span class="op">&amp;</span> {<span class="st">'__next__'</span>, <span class="st">'__iter__'</span>} <span class="co"># 얘는 iterable object</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="7">
+<pre><code>{'__iter__'}</code></pre>
+</div>
+</div>
+<div class="cell" data-execution_count="8">
+<div class="sourceCode cell-code" id="cb15"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb15-1"><a href="#cb15-1"></a><span class="bu">set</span>(<span class="bu">dir</span>(_iterator)) <span class="op">&amp;</span> {<span class="st">'__next__'</span>, <span class="st">'__iter__'</span>} <span class="co"># 얘는 iterator (=generator)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="8">
+<pre><code>{'__iter__', '__next__'}</code></pre>
+</div>
+</div>
+<ul>
+<li><code>dir()</code>로 확인했을 때 <code>__iter__</code> 만 있으면 iterable object</li>
+<li><code>__iter__</code>와 <code>__next__</code> 둘 다 있으면 iterator!!</li>
+</ul>
 
 
 </section>
