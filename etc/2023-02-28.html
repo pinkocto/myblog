@@ -465,6 +465,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <li>iterable object에는 <code>__next__</code>라는 기능이 없다.</li>
 <li>이것이 iterator(=jenerator)와 iterable object와의 차이</li>
 </ul>
+<p><strong>iterable object는 결국 iterator로 만들 수 있는 오브젝트라는 것</strong></p>
 <div class="cell" data-execution_count="3">
 <div class="sourceCode cell-code" id="cb5"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb5-1"><a href="#cb5-1"></a>_iterator.<span class="fu">__next__</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-display" data-execution_count="3">
@@ -484,7 +485,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 </div>
 </div>
 <div class="cell" data-execution_count="9">
-<div class="sourceCode cell-code" id="cb11"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb11-1"><a href="#cb11-1"></a>_iterator.<span class="fu">__next__</span>() <span class="co"># 에러 나는게 당연! 다음은 없으니까..</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb11"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb11-1"><a href="#cb11-1"></a>_iterator.<span class="fu">__next__</span>() <span class="co"># 에러 나는게 당연! 다음에 꺼낼게 없으니까...</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-error">
 <pre><code>StopIteration: </code></pre>
 </div>
