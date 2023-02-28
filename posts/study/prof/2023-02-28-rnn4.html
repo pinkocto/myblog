@@ -440,6 +440,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
   <li><a href="#순환신경망-구현2-with-rnncell-hidden-node2" id="toc-순환신경망-구현2-with-rnncell-hidden-node2" class="nav-link" data-scroll-target="#순환신경망-구현2-with-rnncell-hidden-node2">순환신경망 구현2 (with RNNCell, hidden node2)</a></li>
   <li><a href="#순환신경망-구현3-with-rnn-hidden-node2-성공" id="toc-순환신경망-구현3-with-rnn-hidden-node2-성공" class="nav-link" data-scroll-target="#순환신경망-구현3-with-rnn-hidden-node2-성공">순환신경망 구현3 (with RNN, hidden node2) – 성공</a></li>
   <li><a href="#순환신경망-구현4-with-rnn-hidden-node-3-성공" id="toc-순환신경망-구현4-with-rnn-hidden-node-3-성공" class="nav-link" data-scroll-target="#순환신경망-구현4-with-rnn-hidden-node-3-성공">순환신경망 구현4 (with RNN, hidden node 3) – 성공</a></li>
+  <li><a href="#hw-hello-예제" id="toc-hw-hello-예제" class="nav-link" data-scroll-target="#hw-hello-예제">HW: hello 예제</a></li>
   </ul>
 </nav>
     </div>
@@ -947,6 +948,177 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <ul>
 <li>세번째 히든노드 = 대소문자구분</li>
 <li>1,2히든노드 = bcd를구분</li>
+</ul>
+</section>
+<section id="hw-hello-예제" class="level1">
+<h1>HW: hello 예제</h1>
+<p>아래와 같은 hello가 반복되는 자료가 있다고 하자.</p>
+<div class="cell" data-execution_count="73">
+<div class="sourceCode cell-code" id="cb71"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb71-1"><a href="#cb71-1"></a>txt <span class="op">=</span> <span class="bu">list</span>(<span class="st">'hello'</span>)<span class="op">*</span><span class="dv">100</span></span>
+<span id="cb71-2"><a href="#cb71-2"></a>txt[:<span class="dv">10</span>]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="73">
+<pre><code>['h', 'e', 'l', 'l', 'o', 'h', 'e', 'l', 'l', 'o']</code></pre>
+</div>
+</div>
+<div class="cell" data-execution_count="74">
+<div class="sourceCode cell-code" id="cb73"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb73-1"><a href="#cb73-1"></a>txt_x <span class="op">=</span> txt[:<span class="op">-</span><span class="dv">1</span>]</span>
+<span id="cb73-2"><a href="#cb73-2"></a>txt_y <span class="op">=</span> txt[<span class="dv">1</span>:]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="cell" data-execution_count="97">
+<div class="sourceCode cell-code" id="cb74"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb74-1"><a href="#cb74-1"></a>txt_x[:<span class="dv">5</span>], txt_y[:<span class="dv">5</span>]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="97">
+<pre><code>(['h', 'e', 'l', 'l', 'o'], ['e', 'l', 'l', 'o', 'h'])</code></pre>
+</div>
+</div>
+<div class="cell" data-execution_count="76">
+<div class="sourceCode cell-code" id="cb76"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb76-1"><a href="#cb76-1"></a>x <span class="op">=</span> torch.nn.functional.one_hot(torch.tensor(f(txt_x,{<span class="st">'h'</span>:<span class="dv">0</span>,<span class="st">'e'</span>:<span class="dv">1</span>,<span class="st">'l'</span>:<span class="dv">2</span>,<span class="st">'o'</span>:<span class="dv">3</span>}))).<span class="bu">float</span>()</span>
+<span id="cb76-2"><a href="#cb76-2"></a>y <span class="op">=</span> torch.nn.functional.one_hot(torch.tensor(f(txt_y,{<span class="st">'h'</span>:<span class="dv">0</span>,<span class="st">'e'</span>:<span class="dv">1</span>,<span class="st">'l'</span>:<span class="dv">2</span>,<span class="st">'o'</span>:<span class="dv">3</span>}))).<span class="bu">float</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="cell" data-execution_count="82">
+<div class="sourceCode cell-code" id="cb77"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb77-1"><a href="#cb77-1"></a>x,y</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="82">
+<pre><code>(tensor([[1., 0., 0., 0.],
+         [0., 1., 0., 0.],
+         [0., 0., 1., 0.],
+         ...,
+         [0., 1., 0., 0.],
+         [0., 0., 1., 0.],
+         [0., 0., 1., 0.]]),
+ tensor([[0., 1., 0., 0.],
+         [0., 0., 1., 0.],
+         [0., 0., 1., 0.],
+         ...,
+         [0., 0., 1., 0.],
+         [0., 0., 1., 0.],
+         [0., 0., 0., 1.]]))</code></pre>
+</div>
+</div>
+<div class="cell" data-execution_count="123">
+<div class="sourceCode cell-code" id="cb79"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb79-1"><a href="#cb79-1"></a>x.shape, y.shape</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="123">
+<pre><code>(torch.Size([499, 4]), torch.Size([499, 4]))</code></pre>
+</div>
+</div>
+<p>3개의 은닉노드를 가진 RNN을 설계하고 학습하라.</p>
+<p><strong><em>(풀이시작!!!)</em></strong></p>
+<p><strong><em>RNN설계 (hidden node=3)</em></strong></p>
+<p><code>(1)</code> 숙성네트워크~ <code>(2)</code> 조리네트워크</p>
+<div class="cell" data-execution_count="98">
+<div class="sourceCode cell-code" id="cb81"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb81-1"><a href="#cb81-1"></a>torch.manual_seed(<span class="dv">2</span>) </span>
+<span id="cb81-2"><a href="#cb81-2"></a>rnn <span class="op">=</span> torch.nn.RNN(<span class="dv">4</span>,<span class="dv">3</span>)</span>
+<span id="cb81-3"><a href="#cb81-3"></a>cook <span class="op">=</span> torch.nn.Linear(<span class="dv">3</span>,<span class="dv">4</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p><code>(3)</code> 손실함수와 옵티마이저</p>
+<div class="cell" data-execution_count="88">
+<div class="sourceCode cell-code" id="cb82"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb82-1"><a href="#cb82-1"></a>loss_fn <span class="op">=</span> torch.nn.CrossEntropyLoss()</span>
+<span id="cb82-2"><a href="#cb82-2"></a>optimizr <span class="op">=</span> torch.optim.Adam(<span class="bu">list</span>(rnn.parameters()) <span class="op">+</span> <span class="bu">list</span>(cook.parameters()))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p><code>(4)</code> 학습</p>
+<div class="cell" data-execution_count="93">
+<div class="sourceCode cell-code" id="cb83"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb83-1"><a href="#cb83-1"></a>_water <span class="op">=</span> torch.zeros(<span class="dv">1</span>,<span class="dv">3</span>)</span>
+<span id="cb83-2"><a href="#cb83-2"></a><span class="cf">for</span> epoc <span class="kw">in</span> <span class="bu">range</span>(<span class="dv">5000</span>):</span>
+<span id="cb83-3"><a href="#cb83-3"></a>    <span class="co">## 1</span></span>
+<span id="cb83-4"><a href="#cb83-4"></a>    hidden,hT <span class="op">=</span> rnn(x,_water)</span>
+<span id="cb83-5"><a href="#cb83-5"></a>    output <span class="op">=</span> cook(hidden)</span>
+<span id="cb83-6"><a href="#cb83-6"></a>    <span class="co">## 2</span></span>
+<span id="cb83-7"><a href="#cb83-7"></a>    loss <span class="op">=</span> loss_fn(output,y)</span>
+<span id="cb83-8"><a href="#cb83-8"></a>    <span class="co">## 3</span></span>
+<span id="cb83-9"><a href="#cb83-9"></a>    loss.backward()</span>
+<span id="cb83-10"><a href="#cb83-10"></a>    <span class="co">## 4</span></span>
+<span id="cb83-11"><a href="#cb83-11"></a>    optimizr.step()</span>
+<span id="cb83-12"><a href="#cb83-12"></a>    optimizr.zero_grad()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p><code>(5)</code> 시각화1: yhat</p>
+<div class="cell" data-execution_count="95">
+<div class="sourceCode cell-code" id="cb84"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb84-1"><a href="#cb84-1"></a>yhat <span class="op">=</span> soft(output)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="cell" data-execution_count="99">
+<div class="sourceCode cell-code" id="cb85"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb85-1"><a href="#cb85-1"></a>plt.matshow(yhat[:<span class="dv">15</span>].data, cmap<span class="op">=</span><span class="st">'bwr'</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="99">
+<pre><code>&lt;matplotlib.image.AxesImage at 0x7f682418c9d0&gt;</code></pre>
+</div>
+<div class="cell-output cell-output-display">
+<p><img src="2023-02-28-rnn4_files/figure-html/cell-58-output-2.png" class="img-fluid"></p>
+</div>
+</div>
+<p><code>(6)</code> 시각화2: hidden, yhat</p>
+<div class="cell" data-execution_count="130">
+<div class="sourceCode cell-code" id="cb87"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb87-1"><a href="#cb87-1"></a>combinded  <span class="op">=</span> torch.concat([hidden,yhat],axis<span class="op">=</span><span class="dv">1</span>)</span>
+<span id="cb87-2"><a href="#cb87-2"></a>combinded.shape</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="130">
+<pre><code>torch.Size([499, 7])</code></pre>
+</div>
+</div>
+<div class="cell" data-execution_count="131">
+<div class="sourceCode cell-code" id="cb89"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb89-1"><a href="#cb89-1"></a>plt.matshow(combinded[:<span class="dv">15</span>].data,cmap<span class="op">=</span><span class="st">'bwr'</span>)</span>
+<span id="cb89-2"><a href="#cb89-2"></a>plt.xticks(<span class="bu">range</span>(<span class="dv">7</span>), labels<span class="op">=</span>[<span class="vs">r'$h1$'</span>,<span class="vs">r'$h2$'</span>,<span class="vs">r'$h3$'</span>,<span class="vs">r'$y=h?$'</span>,<span class="vs">r'$y=e?$'</span>,<span class="vs">r'$y=l?$'</span>,<span class="vs">r'$y=o?$'</span>],size<span class="op">=</span><span class="dv">14</span>)</span>
+<span id="cb89-3"><a href="#cb89-3"></a>plt.colorbar()</span>
+<span id="cb89-4"><a href="#cb89-4"></a>plt.gcf().set_figwidth(<span class="dv">15</span>)</span>
+<span id="cb89-5"><a href="#cb89-5"></a>plt.gcf().set_figheight(<span class="dv">15</span>)</span>
+<span id="cb89-6"><a href="#cb89-6"></a>plt.title(<span class="vs">r"Vis2: $[h | \hat</span><span class="sc">{y}</span><span class="vs">]$"</span>,size<span class="op">=</span><span class="dv">25</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="131">
+<pre><code>Text(0.5, 1.0, 'Vis2: $[h | \\hat{y}]$')</code></pre>
+</div>
+<div class="cell-output cell-output-display">
+<p><img src="2023-02-28-rnn4_files/figure-html/cell-60-output-2.png" class="img-fluid"></p>
+</div>
+</div>
+<div class="cell" data-execution_count="132">
+<div class="sourceCode cell-code" id="cb91"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb91-1"><a href="#cb91-1"></a>y[:<span class="dv">15</span>]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="132">
+<pre><code>tensor([[0., 1., 0., 0.],
+        [0., 0., 1., 0.],
+        [0., 0., 1., 0.],
+        [0., 0., 0., 1.],
+        [1., 0., 0., 0.],
+        [0., 1., 0., 0.],
+        [0., 0., 1., 0.],
+        [0., 0., 1., 0.],
+        [0., 0., 0., 1.],
+        [1., 0., 0., 0.],
+        [0., 1., 0., 0.],
+        [0., 0., 1., 0.],
+        [0., 0., 1., 0.],
+        [0., 0., 0., 1.],
+        [1., 0., 0., 0.]])</code></pre>
+</div>
+</div>
+<div class="cell" data-execution_count="133">
+<div class="sourceCode cell-code" id="cb93"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb93-1"><a href="#cb93-1"></a>plt.matshow(combinded[<span class="op">-</span><span class="dv">15</span>:].data,cmap<span class="op">=</span><span class="st">'bwr'</span>)</span>
+<span id="cb93-2"><a href="#cb93-2"></a>plt.xticks(<span class="bu">range</span>(<span class="dv">7</span>), labels<span class="op">=</span>[<span class="vs">r'$h1$'</span>,<span class="vs">r'$h2$'</span>,<span class="vs">r'$h3$'</span>,<span class="vs">r'$y=h?$'</span>,<span class="vs">r'$y=e?$'</span>,<span class="vs">r'$y=l?$'</span>,<span class="vs">r'$y=o?$'</span>],size<span class="op">=</span><span class="dv">14</span>)</span>
+<span id="cb93-3"><a href="#cb93-3"></a>plt.colorbar()</span>
+<span id="cb93-4"><a href="#cb93-4"></a>plt.gcf().set_figwidth(<span class="dv">15</span>)</span>
+<span id="cb93-5"><a href="#cb93-5"></a>plt.gcf().set_figheight(<span class="dv">15</span>)</span>
+<span id="cb93-6"><a href="#cb93-6"></a>plt.title(<span class="vs">r"Vis2: $[h | \hat</span><span class="sc">{y}</span><span class="vs">]$"</span>,size<span class="op">=</span><span class="dv">25</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="133">
+<pre><code>Text(0.5, 1.0, 'Vis2: $[h | \\hat{y}]$')</code></pre>
+</div>
+<div class="cell-output cell-output-display">
+<p><img src="2023-02-28-rnn4_files/figure-html/cell-62-output-2.png" class="img-fluid"></p>
+</div>
+</div>
+<div class="cell" data-execution_count="117">
+<div class="sourceCode cell-code" id="cb95"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb95-1"><a href="#cb95-1"></a>y[<span class="op">-</span><span class="dv">15</span>:]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="117">
+<pre><code>tensor([[1., 0., 0., 0.],
+        [0., 1., 0., 0.],
+        [0., 0., 1., 0.],
+        [0., 0., 1., 0.],
+        [0., 0., 0., 1.],
+        [1., 0., 0., 0.],
+        [0., 1., 0., 0.],
+        [0., 0., 1., 0.],
+        [0., 0., 1., 0.],
+        [0., 0., 0., 1.],
+        [1., 0., 0., 0.],
+        [0., 1., 0., 0.],
+        [0., 0., 1., 0.],
+        [0., 0., 1., 0.],
+        [0., 0., 0., 1.]])</code></pre>
+</div>
+</div>
+<ul>
+<li>꽤 잘 맞추는 것 같다…ㅎ</li>
 </ul>
 
 
