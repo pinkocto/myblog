@@ -473,6 +473,116 @@ tensor([-0.6763], requires_grad=True)</code></pre>
 <pre><code>params (iterable): iterable of parameters to optimize or dicts defining
         parameter groups</code></pre>
 <p><code>-</code> 설명을 읽어보면 params에 iterable object를 넣으라고 되어있음 (ieterable object는 숨겨진 명령어로 <code>__iter__</code>를 가지고 있는 오브젝트를 의미)</p>
+<div class="cell" data-execution_count="15">
+<div class="sourceCode cell-code" id="cb8"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb8-1"><a href="#cb8-1"></a><span class="bu">set</span>(<span class="bu">dir</span>(net.parameters())) <span class="op">&amp;</span> {<span class="st">'__iter__'</span>}</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="15">
+<pre><code>{'__iter__'}</code></pre>
+</div>
+</div>
+<p><code>-</code> 무슨의미?</p>
+<div class="cell" data-execution_count="16">
+<div class="sourceCode cell-code" id="cb10"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb10-1"><a href="#cb10-1"></a><span class="cf">for</span> param <span class="kw">in</span> net.parameters():</span>
+<span id="cb10-2"><a href="#cb10-2"></a>    <span class="bu">print</span>(param)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Parameter containing:
+tensor([[-0.7051]], requires_grad=True)
+Parameter containing:
+tensor([-0.6763], requires_grad=True)</code></pre>
+</div>
+</div>
+<p><code>-</code> 그냥 이런느낌인데?</p>
+<div class="cell" data-execution_count="17">
+<div class="sourceCode cell-code" id="cb12"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb12-1"><a href="#cb12-1"></a><span class="cf">for</span> param <span class="kw">in</span> [net.weight, net.bias]:</span>
+<span id="cb12-2"><a href="#cb12-2"></a>    <span class="bu">print</span>(param)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Parameter containing:
+tensor([[-0.7051]], requires_grad=True)
+Parameter containing:
+tensor([-0.6763], requires_grad=True)</code></pre>
+</div>
+</div>
+<p><code>-</code> 결론: <code>net.parameters()</code>는 net오브젝트에서 학습할 파라메터를 모두 모아 리스트 같은 iterable object로 만다는 함수라 이해할 수 있다.</p>
+<p><code>-</code> 응용예제1</p>
+<div class="cell" data-execution_count="18">
+<div class="sourceCode cell-code" id="cb14"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb14-1"><a href="#cb14-1"></a>df <span class="op">=</span> pd.read_csv(<span class="st">"https://raw.githubusercontent.com/guebin/DL2022/master/posts/II.%20DNN/2022-09-22-regression.csv"</span>) </span>
+<span id="cb14-2"><a href="#cb14-2"></a>x<span class="op">=</span>torch.tensor(df.x).<span class="bu">float</span>().reshape(<span class="dv">100</span>,<span class="dv">1</span>)</span>
+<span id="cb14-3"><a href="#cb14-3"></a>y<span class="op">=</span>torch.tensor(df.y).<span class="bu">float</span>().reshape(<span class="dv">100</span>,<span class="dv">1</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="cell" data-execution_count="22">
+<div class="sourceCode cell-code" id="cb15"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb15-1"><a href="#cb15-1"></a>b <span class="op">=</span> torch.tensor(<span class="op">-</span><span class="fl">5.0</span>, requires_grad<span class="op">=</span><span class="va">True</span>)</span>
+<span id="cb15-2"><a href="#cb15-2"></a>w <span class="op">=</span> torch.tensor(<span class="fl">10.0</span>, requires_grad<span class="op">=</span><span class="va">True</span>)</span>
+<span id="cb15-3"><a href="#cb15-3"></a>optimizr <span class="op">=</span> torch.optim.SGD([b,w],lr<span class="op">=</span><span class="dv">1</span><span class="op">/</span><span class="dv">10</span>) </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="cell" data-execution_count="23">
+<div class="sourceCode cell-code" id="cb16"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb16-1"><a href="#cb16-1"></a>plt.plot(x,y,<span class="st">'o'</span>)</span>
+<span id="cb16-2"><a href="#cb16-2"></a>plt.plot(x,(w<span class="op">*</span>x<span class="op">+</span>b).data,<span class="st">'--'</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display">
+<p><img src="2023-02-28-rnn3_files/figure-html/cell-11-output-1.png" class="img-fluid"></p>
+</div>
+</div>
+<div class="cell" data-execution_count="24">
+<div class="sourceCode cell-code" id="cb17"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb17-1"><a href="#cb17-1"></a><span class="cf">for</span> epoc <span class="kw">in</span> <span class="bu">range</span>(<span class="dv">30</span>):</span>
+<span id="cb17-2"><a href="#cb17-2"></a>    <span class="co">## step1</span></span>
+<span id="cb17-3"><a href="#cb17-3"></a>    yhat <span class="op">=</span> b <span class="op">+</span> w<span class="op">*</span>x</span>
+<span id="cb17-4"><a href="#cb17-4"></a>    <span class="co">## step2</span></span>
+<span id="cb17-5"><a href="#cb17-5"></a>    loss <span class="op">=</span> torch.mean((y<span class="op">-</span>yhat)<span class="op">**</span><span class="dv">2</span>)</span>
+<span id="cb17-6"><a href="#cb17-6"></a>    <span class="co">## step3</span></span>
+<span id="cb17-7"><a href="#cb17-7"></a>    loss.backward()</span>
+<span id="cb17-8"><a href="#cb17-8"></a>    <span class="co">## step4</span></span>
+<span id="cb17-9"><a href="#cb17-9"></a>    optimizr.step()</span>
+<span id="cb17-10"><a href="#cb17-10"></a>    optimizr.zero_grad()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="cell" data-execution_count="25">
+<div class="sourceCode cell-code" id="cb18"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb18-1"><a href="#cb18-1"></a>plt.plot(x,y,<span class="st">'o'</span>)</span>
+<span id="cb18-2"><a href="#cb18-2"></a>plt.plot(x,(w<span class="op">*</span>x<span class="op">+</span>b).data,<span class="st">'--'</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display">
+<p><img src="2023-02-28-rnn3_files/figure-html/cell-13-output-1.png" class="img-fluid"></p>
+</div>
+</div>
+<p><code>-</code> 응용예제2</p>
+<div class="cell" data-execution_count="30">
+<div class="sourceCode cell-code" id="cb19"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb19-1"><a href="#cb19-1"></a>df <span class="op">=</span> pd.read_csv(<span class="st">"https://raw.githubusercontent.com/guebin/DL2022/master/posts/II.%20DNN/2022-09-22-regression.csv"</span>) </span>
+<span id="cb19-2"><a href="#cb19-2"></a>x <span class="op">=</span> torch.tensor(df.x).<span class="bu">float</span>().reshape(<span class="dv">100</span>,<span class="dv">1</span>)</span>
+<span id="cb19-3"><a href="#cb19-3"></a>y <span class="op">=</span> torch.tensor(df.y).<span class="bu">float</span>().reshape(<span class="dv">100</span>,<span class="dv">1</span>)</span>
+<span id="cb19-4"><a href="#cb19-4"></a>X <span class="op">=</span> torch.concat([torch.ones_like(x),x],axis<span class="op">=</span><span class="dv">1</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="cell" data-execution_count="31">
+<div class="sourceCode cell-code" id="cb20"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb20-1"><a href="#cb20-1"></a>What <span class="op">=</span> torch.tensor([[<span class="op">-</span><span class="fl">5.0</span>],[<span class="fl">10.0</span>]],requires_grad<span class="op">=</span><span class="va">True</span>)</span>
+<span id="cb20-2"><a href="#cb20-2"></a>optimizr <span class="op">=</span> torch.optim.SGD([What],lr<span class="op">=</span><span class="dv">1</span><span class="op">/</span><span class="dv">10</span>) <span class="co"># What은 iterable 하지 않지만 [What]은 iterable 함</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="cell" data-execution_count="32">
+<div class="sourceCode cell-code" id="cb21"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb21-1"><a href="#cb21-1"></a>What</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="32">
+<pre><code>tensor([[-5.],
+        [10.]], requires_grad=True)</code></pre>
+</div>
+</div>
+<div class="cell" data-execution_count="33">
+<div class="sourceCode cell-code" id="cb23"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb23-1"><a href="#cb23-1"></a>plt.plot(x,y,<span class="st">'o'</span>)</span>
+<span id="cb23-2"><a href="#cb23-2"></a>plt.plot(x,(X<span class="op">@</span>What).data,<span class="st">'--'</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display">
+<p><img src="2023-02-28-rnn3_files/figure-html/cell-17-output-1.png" class="img-fluid"></p>
+</div>
+</div>
+<div class="cell" data-execution_count="35">
+<div class="sourceCode cell-code" id="cb24"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb24-1"><a href="#cb24-1"></a><span class="cf">for</span> epoc <span class="kw">in</span> <span class="bu">range</span>(<span class="dv">30</span>):</span>
+<span id="cb24-2"><a href="#cb24-2"></a>    <span class="co">## step1</span></span>
+<span id="cb24-3"><a href="#cb24-3"></a>    yhat <span class="op">=</span> X<span class="op">@</span>What</span>
+<span id="cb24-4"><a href="#cb24-4"></a>    <span class="co">## step2</span></span>
+<span id="cb24-5"><a href="#cb24-5"></a>    loss <span class="op">=</span> torch.mean((y<span class="op">-</span>yhat)<span class="op">**</span><span class="dv">2</span>)</span>
+<span id="cb24-6"><a href="#cb24-6"></a>    <span class="co">## step3</span></span>
+<span id="cb24-7"><a href="#cb24-7"></a>    loss.backward()</span>
+<span id="cb24-8"><a href="#cb24-8"></a>    <span class="co">## step4</span></span>
+<span id="cb24-9"><a href="#cb24-9"></a>    optimizr.step()</span>
+<span id="cb24-10"><a href="#cb24-10"></a>    optimizr.zero_grad()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="cell" data-execution_count="36">
+<div class="sourceCode cell-code" id="cb25"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb25-1"><a href="#cb25-1"></a>plt.plot(x,y,<span class="st">'o'</span>)</span>
+<span id="cb25-2"><a href="#cb25-2"></a>plt.plot(x,(X<span class="op">@</span>What).data,<span class="st">'--'</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display">
+<p><img src="2023-02-28-rnn3_files/figure-html/cell-19-output-1.png" class="img-fluid"></p>
+</div>
+</div>
 
 
 </section>
