@@ -294,20 +294,6 @@
     "text": "Spectral component and Frequencies\n\\({\\bf A}\\)의 고유벡터 \\({\\bf \\Psi}\\)의 각 column을 spectral component라고 부른다.\n\nψ₁ = Ψ[:,1] # ψ₁ is first spectral component \nψ₂ = Ψ[:,2] # ψ₂ is seconde spectral component \nψ₃ = Ψ[:,3] # ψ₃ is third spectral component \nψ₄ = Ψ[:,4] # ψ₄ is last spectral component\n\n그리고 아래와 같은 수열을 \\(\\Omega_{k}=\\frac{k}{N}\\)을 frequency 라고 부른다.\n\nN=4 \nΩ = [k/N for k in 0:(N-1)]\nΩ\n\n4-element Vector{Float64}:\n 0.0\n 0.25\n 0.5\n 0.75"
   },
   {
-    "objectID": "posts/study/prof/2023-02-28-rnn4.html",
-    "href": "posts/study/prof/2023-02-28-rnn4.html",
-    "title": "순환신경망 (4)",
-    "section": "",
-    "text": "RNN (2)-AbAcAd예제(3)"
-  },
-  {
-    "objectID": "posts/study/prof/2023-02-28-rnn4.html#data",
-    "href": "posts/study/prof/2023-02-28-rnn4.html#data",
-    "title": "순환신경망 (4)",
-    "section": "data",
-    "text": "data\n- 기존의 정리방식\n\ntxt = list('AbAcAd')*100\ntxt[:10]\n\n['A', 'b', 'A', 'c', 'A', 'd', 'A', 'b', 'A', 'c']\n\n\n\ntxt_x = txt[:-1]\ntxt_y = txt[1:]\n\n\ntxt_x[:5], txt_y[:5]\n\n(['A', 'b', 'A', 'c', 'A'], ['b', 'A', 'c', 'A', 'd'])\n\n\n\nx = torch.nn.functional.one_hot(torch.tensor(f(txt_x,{'A':0,'b':1,'c':2,'d':3}))).float()\ny = torch.nn.functional.one_hot(torch.tensor(f(txt_y,{'A':0,'b':1,'c':2,'d':3}))).float()\n\n\nx,y\n\n(tensor([[1., 0., 0., 0.],\n         [0., 1., 0., 0.],\n         [1., 0., 0., 0.],\n         ...,\n         [1., 0., 0., 0.],\n         [0., 0., 1., 0.],\n         [1., 0., 0., 0.]]),\n tensor([[0., 1., 0., 0.],\n         [1., 0., 0., 0.],\n         [0., 0., 1., 0.],\n         ...,\n         [0., 0., 1., 0.],\n         [1., 0., 0., 0.],\n         [0., 0., 0., 1.]]))"
-  },
-  {
     "objectID": "posts/study/prof/2022-12-27-Chap-12.2.1~12.3.1.html",
     "href": "posts/study/prof/2022-12-27-Chap-12.2.1~12.3.1.html",
     "title": "Chap 12.2 ~ 3: Power Spectral Density and its Estimators",
@@ -439,6 +425,20 @@
     "title": "Chap 8.3: Discrete Fourier Transform",
     "section": "Spectral components and Frequencies",
     "text": "Spectral components and Frequencies\nwe remark:\n(1) Spectral components: For \\(k = 0,1,2,\\dots, N-1\\), the \\(k\\)-th column of \\({\\bf DFT}^\\ast\\) is defined by\n\\[\\Psi_k:=\\frac{1}{\\sqrt{N}}\\begin{bmatrix} 1 \\\\ e^{j\\frac{2\\pi}{N}k} \\\\ e^{j\\frac{2\\pi}{N}2k} \\\\ e^{j\\frac{2\\pi}{N}3k} \\\\  \\dots \\\\ e^{j\\frac{2\\pi}{N}(N-1)k} \\end{bmatrix}.\\]\nNote that \\(\\Psi_k\\) can be also interpreted as \\(\\ell\\)-th eigenvector of \\({\\bf A}\\) correspoding \\(\\lambda_\\ell = e^{-j\\frac{2\\pi}{N}k}\\). Those eigenvectors\n\\[\\big\\{{\\bf 1},\\Psi_1,\\Psi_2, \\dots, \\Psi_{N-1}\\big\\}\\]\nform a complete orthonomal basis of \\(\\mathbb{C}^N\\). These vectors are called spectral components.\n(2) Frequencies: The diagonal entries of \\({\\bf \\Lambda}\\) are the eigenvalues of the time shift \\({\\bf B}\\). In Physics and in operator theory, these eigenvalues are the frequencies of the signal. In DSP it is more common to call frequencies\n\\[\\Omega_k=\\frac{-1}{2\\pi j}\\ln\\lambda_k=\\frac{-1}{2\\pi j}\\ln e^{-j \\frac{2\\pi}{N}k}=\\frac{k}{N}, \\quad k=0,1,2,\\dots,N-1.\\]"
+  },
+  {
+    "objectID": "posts/RNN/2023-02-28-rnn4.html",
+    "href": "posts/RNN/2023-02-28-rnn4.html",
+    "title": "순환신경망 (4)",
+    "section": "",
+    "text": "RNN (2)-AbAcAd예제(3)"
+  },
+  {
+    "objectID": "posts/RNN/2023-02-28-rnn4.html#data",
+    "href": "posts/RNN/2023-02-28-rnn4.html#data",
+    "title": "순환신경망 (4)",
+    "section": "data",
+    "text": "data\n- 기존의 정리방식\n\ntxt = list('AbAcAd')*100\ntxt[:10]\n\n['A', 'b', 'A', 'c', 'A', 'd', 'A', 'b', 'A', 'c']\n\n\n\ntxt_x = txt[:-1]\ntxt_y = txt[1:]\n\n\ntxt_x[:5], txt_y[:5]\n\n(['A', 'b', 'A', 'c', 'A'], ['b', 'A', 'c', 'A', 'd'])\n\n\n\nx = torch.nn.functional.one_hot(torch.tensor(f(txt_x,{'A':0,'b':1,'c':2,'d':3}))).float()\ny = torch.nn.functional.one_hot(torch.tensor(f(txt_y,{'A':0,'b':1,'c':2,'d':3}))).float()\n\n\nx,y\n\n(tensor([[1., 0., 0., 0.],\n         [0., 1., 0., 0.],\n         [1., 0., 0., 0.],\n         ...,\n         [1., 0., 0., 0.],\n         [0., 0., 1., 0.],\n         [1., 0., 0., 0.]]),\n tensor([[0., 1., 0., 0.],\n         [1., 0., 0., 0.],\n         [0., 0., 1., 0.],\n         ...,\n         [0., 0., 1., 0.],\n         [1., 0., 0., 0.],\n         [0., 0., 0., 1.]]))"
   },
   {
     "objectID": "posts/RNN/2023-02-25-rnn2.html",
