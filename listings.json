@@ -2,7 +2,6 @@
   {
     "listing": "/index.html",
     "items": [
-      "/posts/study/prof/2022-12-24-Chap 8.3.html",
       "/posts/RNN/2023-02-28-rnn3.html",
       "/posts/GCN/2023-02-27-gcn-prac.html",
       "/posts/RNN/2023-02-25-rnn2.html",
@@ -17,7 +16,8 @@
       "/posts/STGCN/튜토리얼/2022-12-30-STGCN-Toy Example.html",
       "/posts/STGCN/튜토리얼/2022-12-29-STGCN-tutorial.html",
       "/posts/study/prof/2022-12-27-Chap-12.2.1~12.3.1.html",
-      "/posts/study/prof/2022-12-26-Chap-12.2.html"
+      "/posts/study/prof/2022-12-26-Chap-12.2.html",
+      "/posts/study/prof/2022-12-24-Chap 8.3.html"
     ]
   }
 ]
