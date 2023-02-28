@@ -229,12 +229,12 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
       <ul id="quarto-sidebar-section-1" class="collapse list-unstyled sidebar-section depth1 show">  
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="../../etc/2023-02-28.html" class="sidebar-item-text sidebar-link">iterator vs.&nbsp;iterabl object</a>
+  <a href="../../etc/2023-02-01-memo.html" class="sidebar-item-text sidebar-link">메모장</a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="../../etc/2023-02-01-memo.html" class="sidebar-item-text sidebar-link">메모장</a>
+  <a href="../../etc/2023-02-28.html" class="sidebar-item-text sidebar-link">클래스 암기</a>
   </div>
 </li>
       </ul>
@@ -1101,7 +1101,8 @@ tensor([[-2.4571]], requires_grad=True)</code></pre>
 <span id="cb80-4"><a href="#cb80-4"></a>    torch.nn.Linear(in_features<span class="op">=</span><span class="dv">1</span>, out_features<span class="op">=</span><span class="dv">1</span>, bias<span class="op">=</span><span class="va">False</span>)</span>
 <span id="cb80-5"><a href="#cb80-5"></a>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<p><strong><em>클래스에 대한 이해가 부족하 학생을 위한 암기방법</em></strong></p>
+<section id="클래스에-대한-이해가-부족한-학생을-위한-암기방법" class="level4">
+<h4 class="anchored" data-anchor-id="클래스에-대한-이해가-부족한-학생을-위한-암기방법"><font color="red">클래스에 대한 이해가 부족한 학생을 위한 암기방법</font></h4>
 <p><strong>step1</strong>: 아래의 코드를 복사하여 틀을 만든다. (무조건 고정임, XXXX자리는 원하는 이름을 넣는다.)</p>
 <div class="cell" data-execution_count="193">
 <div class="sourceCode cell-code" id="cb81"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb81-1"><a href="#cb81-1"></a><span class="kw">class</span> XXXX(torch.nn.Module):</span>
@@ -1163,6 +1164,7 @@ tensor([[-2.4571]], requires_grad=True)</code></pre>
 <span id="cb84-4"><a href="#cb84-4"></a>    torch.nn.Linear(in_features<span class="op">=</span><span class="dv">1</span>, out_features<span class="op">=</span><span class="dv">1</span>, bias<span class="op">=</span><span class="va">False</span>)</span>
 <span id="cb84-5"><a href="#cb84-5"></a>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <p>ACTIVATION의 자리에 tanh가 왜 적절한지 직관을 얻어보자.</p>
+</section>
 <section id="실험결과1sig-sigmoid-activation을-포함한-아키텍처로-학습시킨-25개의-적합결과" class="level4">
 <h4 class="anchored" data-anchor-id="실험결과1sig-sigmoid-activation을-포함한-아키텍처로-학습시킨-25개의-적합결과"><code>-</code> 실험결과1(Sig): Sigmoid activation을 포함한 아키텍처로 학습시킨 25개의 적합결과</h4>
 <div class="cell" data-execution_count="196">
