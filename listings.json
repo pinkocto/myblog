@@ -2,6 +2,8 @@
   {
     "listing": "/index.html",
     "items": [
+      "/posts/DNN/2023-03-01-dnn2.html",
+      "/posts/DNN/2023-03-01-dnn1.html",
       "/posts/RNN/2023-03-01-rnn5.html",
       "/posts/RNN/2023-02-28-rnn4.html",
       "/posts/RNN/2023-02-28-rnn3.html",
