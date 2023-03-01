@@ -576,77 +576,77 @@
   {
     "objectID": "posts/RNN/2023-03-01-rnn5.html",
     "href": "posts/RNN/2023-03-01-rnn5.html",
-    "title": "순환신경망 (4)",
+    "title": "순환신경망 (5)",
     "section": "",
     "text": "LSTM (1) - GPU실험, abcabC예제, abcdabcD예제"
   },
   {
     "objectID": "posts/RNN/2023-03-01-rnn5.html#len-20-hidden-nodes",
     "href": "posts/RNN/2023-03-01-rnn5.html#len-20-hidden-nodes",
-    "title": "순환신경망 (4)",
+    "title": "순환신경망 (5)",
     "section": "20000 len + 20 hidden nodes",
     "text": "20000 len + 20 hidden nodes\ncpu\n\nx = torch.randn([20000,4]) \ny = torch.randn([20000,4]) \n\n\nrnn = torch.nn.RNN(4,20)\nlinr = torch.nn.Linear(20,4)\noptimizr = torch.optim.Adam(list(rnn.parameters()) + list(linr.parameters()))\nloss_fn = torch.nn.MSELoss()\n\n\nt1 = time.time()\nfor epoc in range(100):\n    ## 1\n    _water = torch.zeros(1,20)\n    hidden, hT = rnn(x, _water)\n    yhat = linr(hidden)\n    ## 2\n    loss = loss_fn(yhat,y)\n    ## 3\n    loss.backward() ## 사실 역전파 부분이 시간을 되게 많이 잡아먹음.\n    ## 4\n    optimizr.step()\n    optimizr.zero_grad()\nt2 = time.time()\nt2 - t1\n\n145.73457264900208\n\n\ngpu\n\nx = torch.randn([20000,4]).to(\"cuda:0\")\ny = torch.randn([20000,4]).to(\"cuda:0\")\n\n\nrnn = torch.nn.RNN(4,20).to(\"cuda:0\")\nlinr = torch.nn.Linear(20,4).to(\"cuda:0\")\noptimizr = torch.optim.Adam(list(rnn.parameters())+list(linr.parameters()))\nloss_fn = torch.nn.MSELoss() \n\n\nt1 = time.time()\nfor epoc in range(100):\n    ## 1 \n    _water = torch.zeros(1,20).to(\"cuda:0\")\n    hidden, hT = rnn(x,_water) \n    yhat = linr(hidden) \n    ## 2 \n    loss = loss_fn(yhat,y) \n    ## 3\n    loss.backward()  ## 시간차이의 이유!\n    ## 4 \n    optimizr.step()\n    optimizr.zero_grad()\nt2 = time.time()\nt2 - t1 \n\n4.398334980010986\n\n\n\n왜 빠른지? (거의 30배정도 차이)"
   },
   {
     "objectID": "posts/RNN/2023-03-01-rnn5.html#len-20-hidden-nodes-역전파주석처리",
     "href": "posts/RNN/2023-03-01-rnn5.html#len-20-hidden-nodes-역전파주석처리",
-    "title": "순환신경망 (4)",
+    "title": "순환신경망 (5)",
     "section": "20000 len + 20 hidden nodes + 역전파주석처리",
     "text": "20000 len + 20 hidden nodes + 역전파주석처리\n\nx = torch.randn([20000,4]) \ny = torch.randn([20000,4]) \n\n\nrnn = torch.nn.RNN(4,20) \nlinr = torch.nn.Linear(20,4) \noptimizr = torch.optim.Adam(list(rnn.parameters())+list(linr.parameters()))\nloss_fn = torch.nn.MSELoss() \n\n\nt1 = time.time()\nfor epoc in range(100):\n    ## 1 \n    _water = torch.zeros(1,20)\n    hidden, hT = rnn(x,_water) \n    yhat = linr(hidden) \n    ## 2 \n    loss = loss_fn(yhat,y) \n    ## 3\n    #loss.backward() \n    ## 4 \n    optimizr.step()\n    optimizr.zero_grad()\nt2 = time.time()\nt2 - t1 \n\n28.299692392349243\n\n\ngpu\n\nx = torch.randn([20000,4]).to(\"cuda:0\")\ny = torch.randn([20000,4]).to(\"cuda:0\")\n\n\nrnn = torch.nn.RNN(4,20).to(\"cuda:0\")\nlinr = torch.nn.Linear(20,4).to(\"cuda:0\")\noptimizr = torch.optim.Adam(list(rnn.parameters())+list(linr.parameters()))\nloss_fn = torch.nn.MSELoss() \n\n\nt1 = time.time()\nfor epoc in range(100):\n    ## 1 \n    _water = torch.zeros(1,20).to(\"cuda:0\")\n    hidden, hT = rnn(x,_water) \n    yhat = linr(hidden) \n    ## 2 \n    loss = loss_fn(yhat,y) \n    ## 3\n    #loss.backward() \n    ## 4 \n    optimizr.step()\n    optimizr.zero_grad()\nt2 = time.time()\nt2 - t1 \n\n1.6998937129974365\n\n\n\n미분을 진행하는 과정에서 gpu의 효율이 극대화된다."
   },
   {
     "objectID": "posts/RNN/2023-03-01-rnn5.html#len-20-hidden-nodes-1",
     "href": "posts/RNN/2023-03-01-rnn5.html#len-20-hidden-nodes-1",
-    "title": "순환신경망 (4)",
+    "title": "순환신경망 (5)",
     "section": "2000 len + 20 hidden nodes",
     "text": "2000 len + 20 hidden nodes\ncpu\n\nx = torch.randn([2000,4]) \ny = torch.randn([2000,4]) \n\n\nrnn = torch.nn.RNN(4,20) \nlinr = torch.nn.Linear(20,4) \noptimizr = torch.optim.Adam(list(rnn.parameters())+list(linr.parameters()))\nloss_fn = torch.nn.MSELoss() \n\n\nt1 = time.time()\nfor epoc in range(100):\n    ## 1 \n    _water = torch.zeros(1,20)\n    hidden, hT = rnn(x,_water) \n    yhat = linr(hidden) \n    ## 2 \n    loss = loss_fn(yhat,y) \n    ## 3\n    loss.backward() \n    ## 4 \n    optimizr.step()\n    optimizr.zero_grad()\nt2 = time.time()\nt2 - t1 \n\n10.605574131011963\n\n\ngpu\n\nx = torch.randn([2000,4]).to(\"cuda:0\")\ny = torch.randn([2000,4]).to(\"cuda:0\")\n\n\nrnn = torch.nn.RNN(4,20).to(\"cuda:0\")\nlinr = torch.nn.Linear(20,4).to(\"cuda:0\")\noptimizr = torch.optim.Adam(list(rnn.parameters())+list(linr.parameters()))\nloss_fn = torch.nn.MSELoss() \n\n\nt1 = time.time()\nfor epoc in range(100):\n    ## 1 \n    _water = torch.zeros(1,20).to(\"cuda:0\")\n    hidden, hT = rnn(x,_water) \n    yhat = linr(hidden) \n    ## 2 \n    loss = loss_fn(yhat,y) \n    ## 3\n    loss.backward() \n    ## 4 \n    optimizr.step()\n    optimizr.zero_grad()\nt2 = time.time()\nt2 - t1 \n\n0.4819977283477783"
   },
   {
     "objectID": "posts/RNN/2023-03-01-rnn5.html#len-20-hidden-nodes-역전파주석처리-1",
     "href": "posts/RNN/2023-03-01-rnn5.html#len-20-hidden-nodes-역전파주석처리-1",
-    "title": "순환신경망 (4)",
+    "title": "순환신경망 (5)",
     "section": "2000 len + 20 hidden nodes + 역전파주석처리",
     "text": "2000 len + 20 hidden nodes + 역전파주석처리\n\nx = torch.randn([2000,4]) \ny = torch.randn([2000,4]) \n\n\nrnn = torch.nn.RNN(4,20) \nlinr = torch.nn.Linear(20,4) \noptimizr = torch.optim.Adam(list(rnn.parameters())+list(linr.parameters()))\nloss_fn = torch.nn.MSELoss() \n\n\nt1 = time.time()\nfor epoc in range(100):\n    ## 1 \n    _water = torch.zeros(1,20)\n    hidden, hT = rnn(x,_water) \n    yhat = linr(hidden) \n    ## 2 \n    loss = loss_fn(yhat,y) \n    ## 3\n    # loss.backward() \n    ## 4 \n    optimizr.step()\n    optimizr.zero_grad()\nt2 = time.time()\nt2 - t1 \n\n3.2522189617156982\n\n\ngpu\n\nx = torch.randn([2000,4]).to(\"cuda:0\")\ny = torch.randn([2000,4]).to(\"cuda:0\")\n\n\nrnn = torch.nn.RNN(4,20).to(\"cuda:0\")\nlinr = torch.nn.Linear(20,4).to(\"cuda:0\")\noptimizr = torch.optim.Adam(list(rnn.parameters())+list(linr.parameters()))\nloss_fn = torch.nn.MSELoss() \n\n\nt1 = time.time()\nfor epoc in range(100):\n    ## 1 \n    _water = torch.zeros(1,20).to(\"cuda:0\")\n    hidden, hT = rnn(x,_water) \n    yhat = linr(hidden) \n    ## 2 \n    loss = loss_fn(yhat,y) \n    ## 3\n    # loss.backward() \n    ## 4 \n    optimizr.step()\n    optimizr.zero_grad()\nt2 = time.time()\nt2 - t1 \n\n0.1948552131652832"
   },
   {
     "objectID": "posts/RNN/2023-03-01-rnn5.html#len-1000-hidden-nodes",
     "href": "posts/RNN/2023-03-01-rnn5.html#len-1000-hidden-nodes",
-    "title": "순환신경망 (4)",
+    "title": "순환신경망 (5)",
     "section": "2000 len + 1000 hidden nodes",
     "text": "2000 len + 1000 hidden nodes\ncpu\n\nx = torch.randn([2000,4]) \ny = torch.randn([2000,4]) \n\n\nrnn = torch.nn.RNN(4,1000) \nlinr = torch.nn.Linear(1000,4) \noptimizr = torch.optim.Adam(list(rnn.parameters())+list(linr.parameters()))\nloss_fn = torch.nn.MSELoss() \n\n\nt1 = time.time()\nfor epoc in range(100):\n    ## 1 \n    _water = torch.zeros(1,1000)\n    hidden, hT = rnn(x,_water) \n    yhat = linr(hidden) \n    ## 2 \n    loss = loss_fn(yhat,y) \n    ## 3\n    loss.backward() \n    ## 4 \n    optimizr.step()\n    optimizr.zero_grad()\nt2 = time.time()\nt2 - t1 \n\n43.083815574645996\n\n\ngpu\n\nx = torch.randn([2000,4]).to(\"cuda:0\")\ny = torch.randn([2000,4]).to(\"cuda:0\")\n\n\nrnn = torch.nn.RNN(4,1000).to(\"cuda:0\")\nlinr = torch.nn.Linear(1000,4).to(\"cuda:0\")\noptimizr = torch.optim.Adam(list(rnn.parameters())+list(linr.parameters()))\nloss_fn = torch.nn.MSELoss() \n\n\nt1 = time.time()\nfor epoc in range(100):\n    ## 1 \n    _water = torch.zeros(1,1000).to(\"cuda:0\")\n    hidden, hT = rnn(x,_water) \n    yhat = linr(hidden) \n    ## 2 \n    loss = loss_fn(yhat,y) \n    ## 3\n    loss.backward() \n    ## 4 \n    optimizr.step()\n    optimizr.zero_grad()\nt2 = time.time()\nt2 - t1 \n\n5.486930847167969"
   },
   {
     "objectID": "posts/RNN/2023-03-01-rnn5.html#len-1000-hidden-nodes-역전파주석처리",
     "href": "posts/RNN/2023-03-01-rnn5.html#len-1000-hidden-nodes-역전파주석처리",
-    "title": "순환신경망 (4)",
+    "title": "순환신경망 (5)",
     "section": "2000 len + 1000 hidden nodes + 역전파주석처리",
     "text": "2000 len + 1000 hidden nodes + 역전파주석처리\ncpu\n\nx = torch.randn([2000,4]) \ny = torch.randn([2000,4]) \n\n\nrnn = torch.nn.RNN(4,1000) \nlinr = torch.nn.Linear(1000,4) \noptimizr = torch.optim.Adam(list(rnn.parameters())+list(linr.parameters()))\nloss_fn = torch.nn.MSELoss() \n\n\nt1 = time.time()\nfor epoc in range(100):\n    ## 1 \n    _water = torch.zeros(1,1000)\n    hidden, hT = rnn(x,_water) \n    yhat = linr(hidden) \n    ## 2 \n    loss = loss_fn(yhat,y) \n    ## 3\n    # loss.backward() \n    ## 4 \n    optimizr.step()\n    optimizr.zero_grad()\nt2 = time.time()\nt2 - t1 \n\n6.92149543762207\n\n\ngpu\n\nx = torch.randn([2000,4]).to(\"cuda:0\")\ny = torch.randn([2000,4]).to(\"cuda:0\")\n\n\nrnn = torch.nn.RNN(4,1000).to(\"cuda:0\")\nlinr = torch.nn.Linear(1000,4).to(\"cuda:0\")\noptimizr = torch.optim.Adam(list(rnn.parameters())+list(linr.parameters()))\nloss_fn = torch.nn.MSELoss() \n\n\nt1 = time.time()\nfor epoc in range(100):\n    ## 1 \n    _water = torch.zeros(1,1000).to(\"cuda:0\")\n    hidden, hT = rnn(x,_water) \n    yhat = linr(hidden) \n    ## 2 \n    loss = loss_fn(yhat,y) \n    ## 3\n    # loss.backward() \n    ## 4 \n    optimizr.step()\n    optimizr.zero_grad()\nt2 = time.time()\nt2 - t1 \n\n2.9791648387908936"
   },
   {
     "objectID": "posts/RNN/2023-03-01-rnn5.html#실험결과-요약",
     "href": "posts/RNN/2023-03-01-rnn5.html#실험결과-요약",
-    "title": "순환신경망 (4)",
+    "title": "순환신경망 (5)",
     "section": "실험결과 요약",
     "text": "실험결과 요약\n\n\n\nlen\n# of hidden ndoes\nbackward\ncpu\ngpu\nratio\n\n\n\n\n20000\n20\nO\n145.73\n4.39\n33.19\n\n\n20000\n20\nX\n28.29\n1.69\n16.73\n\n\n2000\n20\nO\n10.60\n0.48\n22.08\n\n\n2000\n20\nX\n3.25\n0.19\n17.10\n\n\n2000\n1000\nO\n43.08\n5.48\n7.86\n\n\n2000\n1000\nX\n6.92\n2.97\n2.32"
   },
   {
     "objectID": "posts/RNN/2023-03-01-rnn5.html#data",
     "href": "posts/RNN/2023-03-01-rnn5.html#data",
-    "title": "순환신경망 (4)",
+    "title": "순환신경망 (5)",
     "section": "data",
     "text": "data\n\ndef f(txt,mapping):\n    return [mapping[key] for key in txt] \n\n\ntxt = list('abcabC')*100\ntxt[:8]\n\n['a', 'b', 'c', 'a', 'b', 'C', 'a', 'b']\n\n\n\ntxt_x = txt[:-1]\ntxt_y = txt[1:]\ntxt_x[:8], txt_y[:8]\n\n(['a', 'b', 'c', 'a', 'b', 'C', 'a', 'b'],\n ['b', 'c', 'a', 'b', 'C', 'a', 'b', 'c'])\n\n\n\nmapping = {'a':0,'b':1,'c':2,'C':3}\nx = torch.nn.functional.one_hot(torch.tensor(f(txt_x,mapping))).float()\ny = torch.nn.functional.one_hot(torch.tensor(f(txt_y,mapping))).float()\n\n\nx = x.to(\"cuda:0\")\ny = y.to(\"cuda:0\")\n\n- a,b,c,a,b,C - 보이는 문자수가 a,b,c,C 이므로 4개\n- a1,b1,c,a2,b2,C - 문맥까지 고려하면 6개\nhidden node의 개수를 2개로 하면 a,b,c,C 4개의 문자를 구분할 수는 있지만 문맥에 따른 차이점을 구분하기 모호할 수 있다.\n\\(\\to\\) 따라서 hidden node의 개수를 3으로 설정하자."
   },
   {
     "objectID": "posts/RNN/2023-03-01-rnn5.html#data-1",
     "href": "posts/RNN/2023-03-01-rnn5.html#data-1",
-    "title": "순환신경망 (4)",
+    "title": "순환신경망 (5)",
     "section": "data",
     "text": "data\n\ntxt = list('abcdabcD')*100\ntxt[:8]\n\n['a', 'b', 'c', 'd', 'a', 'b', 'c', 'D']\n\n\n\ntxt_x = txt[:-1]\ntxt_y = txt[1:]\n\n\nmapping = {'a':0,'b':1,'c':2,'d':3,'D':4}\nx = torch.nn.functional.one_hot(torch.tensor(f(txt_x,mapping))).float()\ny = torch.nn.functional.one_hot(torch.tensor(f(txt_y,mapping))).float()\n\n\nx=x.to(\"cuda:0\")\ny=y.to(\"cuda:0\")"
   },
   {
     "objectID": "posts/RNN/2023-03-01-rnn5.html#rnn-vs.-lstm-성능비교실헝",
     "href": "posts/RNN/2023-03-01-rnn5.html#rnn-vs.-lstm-성능비교실헝",
-    "title": "순환신경망 (4)",
+    "title": "순환신경망 (5)",
     "section": "RNN vs. LSTM 성능비교실헝",
     "text": "RNN vs. LSTM 성능비교실헝\n- RNN\n\nfig, ax = plt.subplots(5,5,figsize=(10,10))\nfor i in range(5):\n    for j in range(5):\n        rnn = torch.nn.RNN(5,4).to(\"cuda:0\")\n        linr = torch.nn.Linear(4,5).to(\"cuda:0\")\n        loss_fn = torch.nn.CrossEntropyLoss()\n        optimizr = torch.optim.Adam(list(rnn.parameters())+list(linr.parameters()),lr=0.1)\n        _water = torch.zeros(1,4).to(\"cuda:0\")\n        for epoc in range(3000):\n            ## 1\n            hidden, hT = rnn(x,_water)\n            output = linr(hidden)\n            ## 2\n            loss = loss_fn(output,y)\n            ## 3\n            loss.backward()\n            ## 4 \n            optimizr.step()\n            optimizr.zero_grad()\n        yhat=soft(output)    \n        combind = torch.concat([hidden,yhat],axis=1)\n        ax[i][j].matshow(combind.to(\"cpu\").data[-8:],cmap='bwr',vmin=-1,vmax=1)\nfig.suptitle(r\"$RNN$\",size=20)\nfig.tight_layout()\n\n\n\n\n성공횟수가 이전 예제보다 확실히 적어졌다.\n- LSTM\n\nfig, ax = plt.subplots(5,5,figsize=(10,10))\nfor i in range(5):\n    for j in range(5):\n        lstm = torch.nn.LSTM(5,4).to(\"cuda:0\")\n        linr = torch.nn.Linear(4,5).to(\"cuda:0\")\n        loss_fn = torch.nn.CrossEntropyLoss()\n        optimizr = torch.optim.Adam(list(lstm.parameters())+list(linr.parameters()),lr=0.1)\n        _water = torch.zeros(1,4).to(\"cuda:0\")\n        for epoc in range(3000):\n            ## 1\n            hidden, (hT,cT) = lstm(x,(_water,_water))\n            output = linr(hidden)\n            ## 2\n            loss = loss_fn(output,y)\n            ## 3\n            loss.backward()\n            ## 4 \n            optimizr.step()\n            optimizr.zero_grad()\n        yhat=soft(output)    \n        combind = torch.concat([hidden,yhat],axis=1)\n        ax[i][j].matshow(combind.to(\"cpu\").data[-8:],cmap='bwr',vmin=-1,vmax=1)\nfig.suptitle(r\"$LSTM$\",size=20)\nfig.tight_layout()\n\n\n\n\n\n대부분 성공\nLSTM이 해당 세팅에서도 학습이 더 잘된다는 것을 알 수 있었다.\n\n- 관찰1: LSTM이 확실히 장기기억에 강하다.\n- 관찰2: LSTM은 hidden에 0이 잘 나온다.\n\n사실 확실히 구분되는 특징을 판별할때는 -1,1로 히든레이어 값들이 설정되면 명확하다.\n히든레이어에 -1~1 사이의 값이 나온다면 애매한 판단이 내려지게 된다.\n그런데 이 애매한 판단이 어떻게 보면 문맥의 뉘앙스를 이해하는데 더 잘 맞다.\n그런데 RNN은 -1,1로 셋팅된 상황에서 -1~1로의 변화가 더디다는 것이 문제임."
   },
@@ -711,6 +711,6 @@
     "href": "index.html",
     "title": "myblog",
     "section": "",
-    "text": "순환신경망 (4)\n\n\n\n\n\n\n\nDL2022\n\n\nRNN\n\n\n\n\n\n\n\n\n\n\n\nFeb 28, 2023\n\n\njiyun Lim\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n순환신경망 (3)\n\n\n\n\n\n\n\nDL2022\n\n\nRNN\n\n\n\n\n\n\n\n\n\n\n\nFeb 28, 2023\n\n\njiyun Lim\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n순환신경망 (4)\n\n\n\n\n\n\n\nDL2022\n\n\nRNN\n\n\n\n\n\n\n\n\n\n\n\nFeb 28, 2023\n\n\njiyun Lim\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nGCN Implementation\n\n\n\n\n\n\n\nGCN\n\n\nImplementation\n\n\n\n\n\n\n\n\n\n\n\nFeb 27, 2023\n\n\njiyun Lim\n\n\n\n\n\n\n  \n\n\n\n\n순환신경망 (2)\n\n\n\n\n\n\n\nDL2022\n\n\nRNN\n\n\n\n\n\n\n\n\n\n\n\nFeb 25, 2023\n\n\njiyun Lim\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n순환신경망 (1)\n\n\n\n\n\n\n\nDL2022\n\n\nRNN\n\n\n\n\n\n\n\n\n\n\n\nFeb 25, 2023\n\n\njiyun Lim\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nChap 12.2: Weakly Stationary Graph process\n\n\n\n\n\n\n\nCGSP\n\n\nstudy\n\n\n\n\n\n\n\n\n\n\n\nFeb 24, 2023\n\n\njiyun Lim\n\n\n\n\n\n\n  \n\n\n\n\nChap 8.3: Discrete Fourier Transform\n\n\n\n\n\n\n\nCGSP\n\n\nstudy\n\n\n\n\n\n\n\n\n\n\n\nFeb 24, 2023\n\n\njiyun Lim\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n튜토리얼 따라가기2\n\n\n\n\n\n\n\nSTGCN\n\n\nBASIC\n\n\n\n\n\n\n\n\n\n\n\nFeb 23, 2023\n\n\njiyun Lim\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nTraffic Forecasting review\n\n\n\n\n\n\n\n\n\n\n\n\nFeb 21, 2023\n\n\njiyun Lim\n\n\n\n\n\n\n  \n\n\n\n\nGraph Convolutional Network\n\n\n\n\n\n\n\nGCN\n\n\nBASIC\n\n\n\n\n\n\n\n\n\n\n\nFeb 21, 2023\n\n\njiyun Lim\n\n\n\n\n\n\n  \n\n\n\n\n튜토리얼 따라가기1\n\n\n\n\n\n\n\nSTGCN\n\n\nBASIC\n\n\n\n\n\n\n\n\n\n\n\nFeb 20, 2023\n\n\njiyun Lim\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nChap 12.4: Node Subsampling for PSD Estimation\n\n\n\n\n\n\n\n\n\n\n\n\nJan 15, 2023\n\n\n신록예찬\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nToy Example\n\n\n\n\n\n\n\nSTGCN\n\n\nPytorch\n\n\n\n\n\n\n\n\n\n\n\nDec 30, 2022\n\n\n신록예찬\n\n\n\n\n\n\n  \n\n\n\n\nSTGCN 튜토리얼\n\n\n\n\n\n\n\n\n\n\n\n\nDec 29, 2022\n\n\n신록예찬, 최서연\n\n\n\n\n\n\n  \n\n\n\n\nChap 12.2 ~ 3: Power Spectral Density and its Estimators\n\n\n\n\n\n\n\n\n\n\n\n\nDec 27, 2022\n\n\n신록예찬\n\n\n\n\n\n\n  \n\n\n\n\nChap 12.2: Weakly Stationary Graph Processes\n\n\n\n\n\n\n\n\n\n\n\n\nDec 26, 2022\n\n\n신록예찬\n\n\n\n\n\n\n  \n\n\n\n\nChap 8.3: Discrete Fourier Transform\n\n\n\n\n\n\n\n\n\n\n\n\nDec 24, 2022\n\n\n신록예찬\n\n\n\n\n\n\nNo matching items"
+    "text": "순환신경망 (4)\n\n\n\n\n\n\n\nDL2022\n\n\nRNN\n\n\n\n\n\n\n\n\n\n\n\nFeb 28, 2023\n\n\njiyun Lim\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n순환신경망 (3)\n\n\n\n\n\n\n\nDL2022\n\n\nRNN\n\n\n\n\n\n\n\n\n\n\n\nFeb 28, 2023\n\n\njiyun Lim\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n순환신경망 (5)\n\n\n\n\n\n\n\nDL2022\n\n\nRNN\n\n\n\n\n\n\n\n\n\n\n\nFeb 28, 2023\n\n\njiyun Lim\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nGCN Implementation\n\n\n\n\n\n\n\nGCN\n\n\nImplementation\n\n\n\n\n\n\n\n\n\n\n\nFeb 27, 2023\n\n\njiyun Lim\n\n\n\n\n\n\n  \n\n\n\n\n순환신경망 (2)\n\n\n\n\n\n\n\nDL2022\n\n\nRNN\n\n\n\n\n\n\n\n\n\n\n\nFeb 25, 2023\n\n\njiyun Lim\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n순환신경망 (1)\n\n\n\n\n\n\n\nDL2022\n\n\nRNN\n\n\n\n\n\n\n\n\n\n\n\nFeb 25, 2023\n\n\njiyun Lim\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nChap 12.2: Weakly Stationary Graph process\n\n\n\n\n\n\n\nCGSP\n\n\nstudy\n\n\n\n\n\n\n\n\n\n\n\nFeb 24, 2023\n\n\njiyun Lim\n\n\n\n\n\n\n  \n\n\n\n\nChap 8.3: Discrete Fourier Transform\n\n\n\n\n\n\n\nCGSP\n\n\nstudy\n\n\n\n\n\n\n\n\n\n\n\nFeb 24, 2023\n\n\njiyun Lim\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n튜토리얼 따라가기2\n\n\n\n\n\n\n\nSTGCN\n\n\nBASIC\n\n\n\n\n\n\n\n\n\n\n\nFeb 23, 2023\n\n\njiyun Lim\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nTraffic Forecasting review\n\n\n\n\n\n\n\n\n\n\n\n\nFeb 21, 2023\n\n\njiyun Lim\n\n\n\n\n\n\n  \n\n\n\n\nGraph Convolutional Network\n\n\n\n\n\n\n\nGCN\n\n\nBASIC\n\n\n\n\n\n\n\n\n\n\n\nFeb 21, 2023\n\n\njiyun Lim\n\n\n\n\n\n\n  \n\n\n\n\n튜토리얼 따라가기1\n\n\n\n\n\n\n\nSTGCN\n\n\nBASIC\n\n\n\n\n\n\n\n\n\n\n\nFeb 20, 2023\n\n\njiyun Lim\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nChap 12.4: Node Subsampling for PSD Estimation\n\n\n\n\n\n\n\n\n\n\n\n\nJan 15, 2023\n\n\n신록예찬\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nToy Example\n\n\n\n\n\n\n\nSTGCN\n\n\nPytorch\n\n\n\n\n\n\n\n\n\n\n\nDec 30, 2022\n\n\n신록예찬\n\n\n\n\n\n\n  \n\n\n\n\nSTGCN 튜토리얼\n\n\n\n\n\n\n\n\n\n\n\n\nDec 29, 2022\n\n\n신록예찬, 최서연\n\n\n\n\n\n\n  \n\n\n\n\nChap 12.2 ~ 3: Power Spectral Density and its Estimators\n\n\n\n\n\n\n\n\n\n\n\n\nDec 27, 2022\n\n\n신록예찬\n\n\n\n\n\n\n  \n\n\n\n\nChap 12.2: Weakly Stationary Graph Processes\n\n\n\n\n\n\n\n\n\n\n\n\nDec 26, 2022\n\n\n신록예찬\n\n\n\n\n\n\n  \n\n\n\n\nChap 8.3: Discrete Fourier Transform\n\n\n\n\n\n\n\n\n\n\n\n\nDec 24, 2022\n\n\n신록예찬\n\n\n\n\n\n\nNo matching items"
   }
 ]
