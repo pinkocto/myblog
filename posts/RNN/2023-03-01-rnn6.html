@@ -484,6 +484,10 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
   <li><a href="#data-abab-1" id="toc-data-abab-1" class="nav-link" data-scroll-target="#data-abab-1">data: abaB</a></li>
   <li><a href="#epoch" id="toc-epoch" class="nav-link" data-scroll-target="#epoch">1000 epoch</a></li>
   <li><a href="#시각화" id="toc-시각화" class="nav-link" data-scroll-target="#시각화">시각화</a></li>
+  <li><a href="#시각화의-해석-i" id="toc-시각화의-해석-i" class="nav-link" data-scroll-target="#시각화의-해석-i">시각화의 해석 I</a></li>
+  <li><a href="#시각화의-해석-ii" id="toc-시각화의-해석-ii" class="nav-link" data-scroll-target="#시각화의-해석-ii">시각화의 해석 II</a></li>
+  <li><a href="#lstm의-알고리즘-리뷰-i-수식위주" id="toc-lstm의-알고리즘-리뷰-i-수식위주" class="nav-link" data-scroll-target="#lstm의-알고리즘-리뷰-i-수식위주">LSTM의 알고리즘 리뷰 I (수식위주)</a></li>
+  <li><a href="#lstm의-알고리즘-리뷰-ii-느낌위주" id="toc-lstm의-알고리즘-리뷰-ii-느낌위주" class="nav-link" data-scroll-target="#lstm의-알고리즘-리뷰-ii-느낌위주">LSTM의 알고리즘 리뷰 II (느낌위주)</a></li>
   </ul></li>
   </ul>
 </nav>
@@ -842,10 +846,162 @@ h_t &amp;= o_t \odot \text{tanh}(c_t)
 </section>
 <section id="시각화" class="level2">
 <h2 class="anchored" data-anchor-id="시각화">시각화</h2>
-<div class="cell">
+<div class="cell" data-execution_count="73">
 <div class="sourceCode cell-code" id="cb47"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb47-1"><a href="#cb47-1"></a>T <span class="op">=</span> <span class="bu">len</span>(x)</span>
-<span id="cb47-2"><a href="#cb47-2"></a>input_gate</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb47-2"><a href="#cb47-2"></a>input_gate <span class="op">=</span> torch.zeros(T,<span class="dv">2</span>)</span>
+<span id="cb47-3"><a href="#cb47-3"></a>forget_gate <span class="op">=</span> torch.zeros(T,<span class="dv">2</span>)</span>
+<span id="cb47-4"><a href="#cb47-4"></a>output_gate <span class="op">=</span> torch.zeros(T,<span class="dv">2</span>)</span>
+<span id="cb47-5"><a href="#cb47-5"></a>g <span class="op">=</span> torch.zeros(T,<span class="dv">2</span>)</span>
+<span id="cb47-6"><a href="#cb47-6"></a>cell <span class="op">=</span> torch.zeros(T,<span class="dv">2</span>)</span>
+<span id="cb47-7"><a href="#cb47-7"></a>h <span class="op">=</span> torch.zeros(T,<span class="dv">2</span>) </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
+<div class="cell" data-execution_count="75">
+<div class="sourceCode cell-code" id="cb48"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb48-1"><a href="#cb48-1"></a><span class="cf">for</span> t <span class="kw">in</span> <span class="bu">range</span>(T): </span>
+<span id="cb48-2"><a href="#cb48-2"></a>    <span class="co">## 1: calculate _ifgo </span></span>
+<span id="cb48-3"><a href="#cb48-3"></a>    _ifgo <span class="op">=</span> x[[t]] <span class="op">@</span> lstm.weight_ih_l0.T <span class="op">+</span> h[[t]] <span class="op">@</span> lstm.weight_hh_l0.T <span class="op">+</span> lstm.bias_ih_l0 <span class="op">+</span> lstm.bias_hh_l0 </span>
+<span id="cb48-4"><a href="#cb48-4"></a>    <span class="co">## 2: decompose _ifgo </span></span>
+<span id="cb48-5"><a href="#cb48-5"></a>    input_gate[[t]] <span class="op">=</span> sig(_ifgo[:,<span class="dv">0</span>:<span class="dv">2</span>])</span>
+<span id="cb48-6"><a href="#cb48-6"></a>    forget_gate[[t]] <span class="op">=</span> sig(_ifgo[:,<span class="dv">2</span>:<span class="dv">4</span>])</span>
+<span id="cb48-7"><a href="#cb48-7"></a>    g[[t]] <span class="op">=</span> tanh(_ifgo[:,<span class="dv">4</span>:<span class="dv">6</span>])</span>
+<span id="cb48-8"><a href="#cb48-8"></a>    output_gate[[t]] <span class="op">=</span> sig(_ifgo[:,<span class="dv">6</span>:<span class="dv">8</span>])</span>
+<span id="cb48-9"><a href="#cb48-9"></a>    <span class="co">## 3: calculate ht,ct </span></span>
+<span id="cb48-10"><a href="#cb48-10"></a>    cell[[t]] <span class="op">=</span> forget_gate[[t]] <span class="op">*</span> cell[[t]] <span class="op">+</span> input_gate[[t]] <span class="op">*</span> g[[t]]</span>
+<span id="cb48-11"><a href="#cb48-11"></a>    h[[t]] <span class="op">=</span> output_gate[[t]] <span class="op">*</span> tanh(cell[[t]])</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="cell" data-execution_count="76">
+<div class="sourceCode cell-code" id="cb49"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb49-1"><a href="#cb49-1"></a>combinded1 <span class="op">=</span> torch.concat([input_gate,forget_gate,output_gate],axis<span class="op">=</span><span class="dv">1</span>)</span>
+<span id="cb49-2"><a href="#cb49-2"></a>combinded2 <span class="op">=</span> torch.concat([g,cell,h,soft(output)],axis<span class="op">=</span><span class="dv">1</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="cell" data-execution_count="77">
+<div class="sourceCode cell-code" id="cb50"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb50-1"><a href="#cb50-1"></a>plt.matshow(combinded1[<span class="op">-</span><span class="dv">8</span>:].data,cmap<span class="op">=</span><span class="st">'bwr'</span>,vmin<span class="op">=-</span><span class="dv">1</span>,vmax<span class="op">=</span><span class="dv">1</span>)<span class="op">;</span></span>
+<span id="cb50-2"><a href="#cb50-2"></a>plt.xticks(<span class="bu">range</span>(combinded1.shape[<span class="op">-</span><span class="dv">1</span>]),labels<span class="op">=</span>[<span class="st">'i'</span>]<span class="op">*</span><span class="dv">2</span> <span class="op">+</span> [<span class="st">'f'</span>]<span class="op">*</span><span class="dv">2</span> <span class="op">+</span> [<span class="st">'o'</span>]<span class="op">*</span><span class="dv">2</span>)<span class="op">;</span></span>
+<span id="cb50-3"><a href="#cb50-3"></a>plt.matshow(combinded2[<span class="op">-</span><span class="dv">8</span>:].data,cmap<span class="op">=</span><span class="st">'bwr'</span>,vmin<span class="op">=-</span><span class="dv">1</span>,vmax<span class="op">=</span><span class="dv">1</span>)</span>
+<span id="cb50-4"><a href="#cb50-4"></a>plt.xticks(<span class="bu">range</span>(combinded2.shape[<span class="op">-</span><span class="dv">1</span>]),labels<span class="op">=</span>[<span class="st">'g'</span>]<span class="op">*</span><span class="dv">2</span> <span class="op">+</span> [<span class="st">'c'</span>]<span class="op">*</span><span class="dv">2</span> <span class="op">+</span> [<span class="st">'h'</span>]<span class="op">*</span><span class="dv">2</span> <span class="op">+</span> [<span class="st">'yhat'</span>]<span class="op">*</span><span class="dv">3</span>)<span class="op">;</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display">
+<p><img src="2023-03-01-rnn6_files/figure-html/cell-40-output-1.png" class="img-fluid"></p>
+</div>
+<div class="cell-output cell-output-display">
+<p><img src="2023-03-01-rnn6_files/figure-html/cell-40-output-2.png" class="img-fluid"></p>
+</div>
+</div>
+<ul>
+<li>상단그림은 게이트의 값들만 시각화, 하단그림은 게이트 이외의 값들을 시각화</li>
+</ul>
+</section>
+<section id="시각화의-해석-i" class="level2">
+<h2 class="anchored" data-anchor-id="시각화의-해석-i">시각화의 해석 I</h2>
+<div class="cell" data-execution_count="80">
+<div class="sourceCode cell-code" id="cb51"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb51-1"><a href="#cb51-1"></a>plt.matshow(combinded1[<span class="op">-</span><span class="dv">8</span>:].data,cmap<span class="op">=</span><span class="st">'bwr'</span>,vmin<span class="op">=-</span><span class="dv">1</span>,vmax<span class="op">=</span><span class="dv">1</span>)<span class="op">;</span></span>
+<span id="cb51-2"><a href="#cb51-2"></a>plt.xticks(<span class="bu">range</span>(combinded1.shape[<span class="op">-</span><span class="dv">1</span>]),labels<span class="op">=</span>[<span class="st">'i'</span>]<span class="op">*</span><span class="dv">2</span> <span class="op">+</span> [<span class="st">'f'</span>]<span class="op">*</span><span class="dv">2</span> <span class="op">+</span> [<span class="st">'o'</span>]<span class="op">*</span><span class="dv">2</span>)<span class="op">;</span></span>
+<span id="cb51-3"><a href="#cb51-3"></a>plt.colorbar()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="80">
+<pre><code>&lt;matplotlib.colorbar.Colorbar at 0x7fb0131c8a60&gt;</code></pre>
+</div>
+<div class="cell-output cell-output-display">
+<p><img src="2023-03-01-rnn6_files/figure-html/cell-41-output-2.png" class="img-fluid"></p>
+</div>
+</div>
+<p><code>-</code> input gate, forget gate, output_gate는 모두 <span class="math inline">\(0\sim 1\)</span> 사이의 값을 가진다.</p>
+<ul>
+<li>(참고) 파:<span class="math inline">\(-1\)</span>, 흰:<span class="math inline">\(0\)</span>, 빨:<span class="math inline">\(1\)</span></li>
+</ul>
+<p><code>-</code> 이 값들은 각각 모두 <span class="math inline">\(g_t, c_{t-1}, \text{tanh}(c_t)\)</span> 에 곱해진다. 따라서 input_gate, forget_fate, ouput_gate는 gate의 역할로 비유가능하다. <strong>(1이면 통과, 0이면 차단)</strong></p>
+<ul>
+<li>input_gate: <span class="math inline">\(g_t\)</span> 의 값을 얼만큼 통과시킬지 <span class="math inline">\(0\sim 1\)</span> 사이의 숫자로 결정</li>
+<li>forget_gate: <span class="math inline">\(c_{t-1}\)</span>의 값을 얼만큼 통과시킬지 <span class="math inline">\(0\sim 1\)</span> 사이의 숫자로 결정</li>
+<li>output_gate: <span class="math inline">\(\text{htan}(c_t)\)</span> 의 값들을 얼만큼 통과시킬지 <span class="math inline">\(0\sim 1\)</span> 사이의 숫자로 결정</li>
+</ul>
+<p><em>input/forget/output gate가 진짜 문지기 같은 역할을 함 (어떤 값을 통과시킬지 말지 0과 1사이의 숫자로 정해주는 역할을 한다.) 그렇기 때문에 gate라는 이름이 붙게 되었다.</em></p>
+</section>
+<section id="시각화의-해석-ii" class="level2">
+<h2 class="anchored" data-anchor-id="시각화의-해석-ii">시각화의 해석 II</h2>
+<div class="cell" data-execution_count="79">
+<div class="sourceCode cell-code" id="cb53"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb53-1"><a href="#cb53-1"></a>plt.matshow(combinded2[<span class="op">-</span><span class="dv">8</span>:].data,cmap<span class="op">=</span><span class="st">'bwr'</span>,vmin<span class="op">=-</span><span class="dv">1</span>,vmax<span class="op">=</span><span class="dv">1</span>)</span>
+<span id="cb53-2"><a href="#cb53-2"></a>plt.xticks(<span class="bu">range</span>(combinded2.shape[<span class="op">-</span><span class="dv">1</span>]),labels<span class="op">=</span>[<span class="st">'g'</span>]<span class="op">*</span><span class="dv">2</span> <span class="op">+</span> [<span class="st">'c'</span>]<span class="op">*</span><span class="dv">2</span> <span class="op">+</span> [<span class="st">'h'</span>]<span class="op">*</span><span class="dv">2</span> <span class="op">+</span> [<span class="st">'yhat'</span>]<span class="op">*</span><span class="dv">3</span>)<span class="op">;</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display">
+<p><img src="2023-03-01-rnn6_files/figure-html/cell-42-output-1.png" class="img-fluid"></p>
+</div>
+</div>
+<p><code>-</code> 결국 <span class="math inline">\(g_t \to c_t \to h_t \to \hat{y}\)</span>의 느낌이다. (<span class="math inline">\(h_t\)</span>를 계산하기 위해서는 <span class="math inline">\(c_t\)</span>가 필요했고, <span class="math inline">\(c_t\)</span>를 계산하기 위해서는 <span class="math inline">\(c_{t-1}\)</span> 과 <span class="math inline">\(g_t\)</span>가 필요했음)</p>
+<ul>
+<li><span class="math inline">\(h_t = \text{tanh}(c_t) \odot o_t\)</span></li>
+<li><span class="math inline">\(c_t = c_{t-1} \odot f_t + g_t \odot i_t\)</span></li>
+</ul>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="2023-03-01-rnn6_files/figure-html/05d2043c-b800-43da-b6f9-920b8247fc4a-1-c5724de6-25aa-449c-8416-272b8cecf7f5.png" class="img-fluid figure-img"></p>
+<p></p><figcaption class="figure-caption">image.png</figcaption><p></p>
+</figure>
+</div>
+<p><code>-</code> <span class="math inline">\(g_t, c_t, h_t\)</span> 모두 <span class="math inline">\(x_t\)</span>의 정보를 숙성시켜 가지고 있는 느낌이 든다.</p>
+<p><code>-</code> <span class="math inline">\(g_t\)</span>의 특징: 보통 -1, 1 중 하나의 값을 가지도록 학습되어 있다. (마치 RNN의 hidden node처럼!)</p>
+<ul>
+<li><span class="math inline">\(g_t = \text{tanh}(x_t\bf{W}_{ig}+h_{t-1}\bf{W}_{hg}+b_{ig}+b_{hg})\)</span></li>
+</ul>
+<p><code>-</code> <span class="math inline">\(c_t\)</span>의 특징: <span class="math inline">\(g_t\)</span>와 매우 비슷하지만 약간 다른 값을 가진다. 그래서 <span class="math inline">\(g_t\)</span>와 달리 <span class="math inline">\(-1,1\)</span> 이외의 값도 종종 등장.</p>
+<ul>
+<li><strong><em><span class="math inline">\(g_t, c_t, h_t\)</span> 모두 콩물(<span class="math inline">\(x_t\)</span>)를 숙성시킨 간장이지만 <span class="math inline">\(g_t\)</span> 보다는 <span class="math inline">\(c_t\)</span>가 더, <span class="math inline">\(h_t\)</span>보다는 <span class="math inline">\(c_t\)</span>가 더 숙성된 느낌이다.</em></strong></li>
+<li><strong><em><span class="math inline">\(g_t\)</span>는 진한 빨/파 였다면 <span class="math inline">\(c_t\)</span>는 <span class="math inline">\(g_t\)</span>와 유사하지만 좀 더 연한 빨/파, <span class="math inline">\(h_t\)</span>는 <span class="math inline">\(c_t\)</span>와 유사하지만 더 연한 빨/파</em></strong></li>
+</ul>
+<div class="cell" data-execution_count="82">
+<div class="sourceCode cell-code" id="cb54"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb54-1"><a href="#cb54-1"></a><span class="bu">print</span>(<span class="st">"first row: gt=</span><span class="sc">{}</span><span class="st">, ct=</span><span class="sc">{}</span><span class="st">"</span>.<span class="bu">format</span>(g[<span class="op">-</span><span class="dv">8</span>].data, cell[<span class="op">-</span><span class="dv">8</span>].data))</span>
+<span id="cb54-2"><a href="#cb54-2"></a><span class="bu">print</span>(<span class="st">"second row: gt=</span><span class="sc">{}</span><span class="st">, ct=</span><span class="sc">{}</span><span class="st">"</span>.<span class="bu">format</span>(g[<span class="op">-</span><span class="dv">7</span>].data, cell[<span class="op">-</span><span class="dv">7</span>].data))</span>
+<span id="cb54-3"><a href="#cb54-3"></a><span class="co">#g[-7], cell[-7]</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>first row: gt=tensor([ 0.9999, -0.9999]), ct=tensor([ 0.9647, -0.9984])
+second row: gt=tensor([ 0.9970, -0.9554]), ct=tensor([ 0.3592, -0.9373])</code></pre>
+</div>
+</div>
+<p><code>-</code> <span class="math inline">\(h_t\)</span>의 특징: (1) <span class="math inline">\(c_t\)</span>의 느낌이 있음 하지만 약간의 변형이 있음. (2) -1~1 사이의 값을 훨씬 다양하게 가진다. (tanh때문)</p>
+<div class="cell" data-execution_count="83">
+<div class="sourceCode cell-code" id="cb56"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb56-1"><a href="#cb56-1"></a><span class="bu">print</span>(<span class="st">"first row: gt=</span><span class="sc">{}</span><span class="st">, ct=</span><span class="sc">{}</span><span class="st">, ht=</span><span class="sc">{}</span><span class="st">"</span>.<span class="bu">format</span>(g[<span class="op">-</span><span class="dv">8</span>].data, cell[<span class="op">-</span><span class="dv">8</span>].data,h[<span class="op">-</span><span class="dv">8</span>].data))</span>
+<span id="cb56-2"><a href="#cb56-2"></a><span class="bu">print</span>(<span class="st">"second row: gt=</span><span class="sc">{}</span><span class="st">, ct=</span><span class="sc">{}</span><span class="st">, ht=</span><span class="sc">{}</span><span class="st">"</span>.<span class="bu">format</span>(g[<span class="op">-</span><span class="dv">7</span>].data, cell[<span class="op">-</span><span class="dv">7</span>].data,h[<span class="op">-</span><span class="dv">7</span>].data))</span>
+<span id="cb56-3"><a href="#cb56-3"></a><span class="co">#g[-7], cell[-7]</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>first row: gt=tensor([ 0.9999, -0.9999]), ct=tensor([ 0.9647, -0.9984]), ht=tensor([ 0.7370, -0.3323])
+second row: gt=tensor([ 0.9970, -0.9554]), ct=tensor([ 0.3592, -0.9373]), ht=tensor([ 0.0604, -0.6951])</code></pre>
+</div>
+</div>
+<p><code>-</code> 예전의문 해결</p>
+<ul>
+<li><p>실험적으로 살펴보니 LSTM이 RNN보다 장기기억에 유리했음.</p></li>
+<li><p>그 이유: RNN은 <span class="math inline">\(h_t\)</span>의 값이 <span class="math inline">\(-1\)</span> 혹은 <span class="math inline">\(1\)</span>로 결정되는 경우가 많았음. 그러나 경우에 따라서는 <span class="math inline">\(h_t\)</span>이 -1~1의 값을 가지는 것이 문맥적 뉘앙스를 포착하기에는 유리한다 LSTM이 이러한 방식으로 학습되는 경우가 많았음.</p></li>
+<li><p>왜 LSTM의 <span class="math inline">\(h_t\)</span>은 -1,1 이외의 값을 쉽게 가질 수 있는가? (1) gate들의 역할 (2) 마지막에 취해지는 tanh때문</p></li>
+</ul>
+</section>
+<section id="lstm의-알고리즘-리뷰-i-수식위주" class="level2">
+<h2 class="anchored" data-anchor-id="lstm의-알고리즘-리뷰-i-수식위주">LSTM의 알고리즘 리뷰 I (수식위주)</h2>
+<p><strong>(step1)</strong> calculate <span class="math inline">\(\tt{ifgo}\)</span></p>
+<p><span class="math inline">\({\tt ifgo} = {\boldsymbol x}_t \big[{\bf W}_{ii} | {\bf W}_{if}| {\bf W}_{ig} |{\bf W}_{io}\big] + {\boldsymbol h}_{t-1} \big[ {\bf W}_{hi}|{\bf W}_{hf} |{\bf W}_{hg} | {\bf W}_{ho} \big] + bias \\  =\big[{\boldsymbol x}_t{\bf W}_{ii} + {\boldsymbol h}_{t-1}{\bf W}_{hi} ~\big|~ {\boldsymbol x}_t{\bf W}_{if}+ {\boldsymbol h}_{t-1}{\bf W}_{hf}~ \big|~ {\boldsymbol x}_t{\bf W}_{ig} + {\boldsymbol h}_{t-1}{\bf W}_{hg} ~\big|~ {\boldsymbol x}_t{\bf W}_{io} + {\boldsymbol h}_{t-1}{\bf W}_{ho} \big] + bias\)</span></p>
+<p>참고: 위의 수식은 아래코드에 해당하는 부분</p>
+<div class="cell" data-execution_count="84">
+<div class="sourceCode cell-code" id="cb58"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb58-1"><a href="#cb58-1"></a>ifgo <span class="op">=</span> xt <span class="op">@</span> lstm_cell.weight_ih.T <span class="op">+\</span></span>
+<span id="cb58-2"><a href="#cb58-2"></a>       ht <span class="op">@</span> lstm_cell.weight_hh.T <span class="op">+\</span></span>
+<span id="cb58-3"><a href="#cb58-3"></a>       lstm_cell.bias_ih <span class="op">+</span> lstm_cell.bias_hh</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p><strong>(stpe2)</strong> decompose <span class="math inline">\(\tt{ifgo}\)</span> and get <span class="math inline">\(i_t,f_t,g_t,o_t\)</span></p>
+<p><span class="math inline">\({\boldsymbol i}_t = \sigma({\boldsymbol x}_t {\bf W}_{ii} + {\boldsymbol h}_{t-1} {\bf W}_{hi} +bias ) \\ {\boldsymbol f}_t = \sigma({\boldsymbol x}_t {\bf W}_{if} + {\boldsymbol h}_{t-1} {\bf W}_{hf} +bias ) \\ {\boldsymbol g}_t = \tanh({\boldsymbol x}_t {\bf W}_{ig} + {\boldsymbol h}_{t-1} {\bf W}_{hg} +bias ) \\ {\boldsymbol o}_t = \sigma({\boldsymbol x}_t {\bf W}_{io} + {\boldsymbol h}_{t-1} {\bf W}_{ho} +bias )\)</span></p>
+<p><strong>(step3)</strong> calculate <span class="math inline">\(c_t\)</span> and <span class="math inline">\(h_t\)</span></p>
+<p><span class="math inline">\({\boldsymbol c}_t = {\boldsymbol i}_t \odot {\boldsymbol g}_t+ {\boldsymbol f}_t \odot {\boldsymbol c}_{t-1} \\ {\boldsymbol h}_t = \tanh({\boldsymbol o}_t \odot {\boldsymbol c}_t)\)</span></p>
+</section>
+<section id="lstm의-알고리즘-리뷰-ii-느낌위주" class="level2">
+<h2 class="anchored" data-anchor-id="lstm의-알고리즘-리뷰-ii-느낌위주">LSTM의 알고리즘 리뷰 II (느낌위주)</h2>
+<blockquote class="blockquote">
+<p>이해 및 암기를 돕기위해서 비유적으로 설명한 챕터!</p>
+</blockquote>
+<p><code>-</code> 느낌1: RNN이 콩물에서 간장을 한번에 숙성시키는 방법이라면 LSTM은 콩물에서 간장을 3차로 나누어 숙성하는 느낌이다.</p>
+<ul>
+<li>콩물: <span class="math inline">\(\boldsymbol x_t\)</span></li>
+<li>1차숙성: <span class="math inline">\(\boldsymbol g_t\)</span></li>
+<li>2차숙성: <span class="math inline">\(\boldsymbol c_t\)</span></li>
+<li>3차숙성: <span class="math inline">\(\boldsymbol h_t\)</span></li>
+</ul>
+<p><code>-</code> 느낌2: <span class="math inline">\(g_t\)</span> 에 대하여</p>
+<ul>
+<li>계산방법: <span class="math inline">\(x_t\)</span>와 <span class="math inline">\(h_{t-1}\)</span>를 <span class="math inline">\(\bf{W}_{ig},\bf{W}_{hg}\)</span>를 이용해 선형결합하고 <span class="math inline">\(\tt{tanh}\)</span>를 취한결과</li>
+<li>RNN에서 간장을 만들던 그 수식에서 <span class="math inline">\(h_t\)</span>를 <span class="math inline">\(g_t\)</span> 로 바꾼것.</li>
+<li>크게 2가지의 의미를 가진다. (1) 과거와 현재의 결합 (2) 활성화함수 <span class="math inline">\(\text{tanh}\)</span> 를 적용</li>
+</ul>
 
 
 </section>
