@@ -321,6 +321,11 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
   <a href="../../posts/RNN/2023-03-01-rnn5.html" class="sidebar-item-text sidebar-link">순환신경망 (5)</a>
   </div>
 </li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../posts/RNN/2023-03-01-rnn6.html" class="sidebar-item-text sidebar-link">순환신경망 (6)</a>
+  </div>
+</li>
       </ul>
   </li>
           <li class="sidebar-item sidebar-item-section">
@@ -448,6 +453,11 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
   <a href="../../Tip/2023-02-24-tips.html" class="sidebar-item-text sidebar-link">Julia 연동</a>
   </div>
 </li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../Tip/2023-02-28-link.html" class="sidebar-item-text sidebar-link">some links</a>
+  </div>
+</li>
       </ul>
   </li>
     </ul>
@@ -459,11 +469,8 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
     <h2 id="toc-title">On this page</h2>
    
   <ul>
-  <li><a href="#review" id="toc-review" class="nav-link active" data-scroll-target="#review">review</a>
-  <ul class="collapse">
-  <li><a href="#ver1-loss-sum-of-squares-error" id="toc-ver1-loss-sum-of-squares-error" class="nav-link" data-scroll-target="#ver1-loss-sum-of-squares-error">ver1: loss = sum of squares error</a></li>
+  <li><a href="#ver1-loss-sum-of-squares-error" id="toc-ver1-loss-sum-of-squares-error" class="nav-link active" data-scroll-target="#ver1-loss-sum-of-squares-error">ver1: loss = sum of squares error</a></li>
   <li><a href="#ver2-loss-mean-squared-error-mse" id="toc-ver2-loss-mean-squared-error-mse" class="nav-link" data-scroll-target="#ver2-loss-mean-squared-error-mse">ver2: loss = mean squared error = MSE</a></li>
-  </ul></li>
   <li><a href="#step1의-다른버전-torch.nn.linear" id="toc-step1의-다른버전-torch.nn.linear" class="nav-link" data-scroll-target="#step1의-다른버전-torch.nn.linear">step1의 다른버전: torch.nn.Linear()</a>
   <ul class="collapse">
   <li><a href="#ver1-biastrue" id="toc-ver1-biastrue" class="nav-link" data-scroll-target="#ver1-biastrue">ver1: bias=True</a></li>
@@ -488,8 +495,6 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <blockquote class="blockquote">
 <p>회귀분석(2)– SSE와 MSE, step1의 다른버전 (torch.nn.Linear)</p>
 </blockquote>
-<section id="review" class="level1">
-<h1>review</h1>
 <div class="cell" data-execution_count="1">
 <div class="sourceCode cell-code" id="cb1"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1"></a><span class="im">import</span> torch</span>
 <span id="cb1-2"><a href="#cb1-2"></a><span class="im">import</span> pandas <span class="im">as</span> pd</span>
@@ -668,7 +673,6 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
         [4.0144]], requires_grad=True)</code></pre>
 </div>
 </div>
-</section>
 </section>
 <section id="step1의-다른버전-torch.nn.linear" class="level1">
 <h1>step1의 다른버전: torch.nn.Linear()</h1>

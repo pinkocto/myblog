@@ -61,6 +61,7 @@ ul.task-list li input[type="checkbox"] {
   }
 }</script>
 
+  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
 
 <link rel="stylesheet" href="../styles.css">
 </head>
@@ -221,6 +222,11 @@ ul.task-list li input[type="checkbox"] {
   <a href="../posts/RNN/2023-03-01-rnn5.html" class="sidebar-item-text sidebar-link">순환신경망 (5)</a>
   </div>
 </li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../posts/RNN/2023-03-01-rnn6.html" class="sidebar-item-text sidebar-link">순환신경망 (6)</a>
+  </div>
+</li>
       </ul>
   </li>
           <li class="sidebar-item sidebar-item-section">
@@ -348,6 +354,11 @@ ul.task-list li input[type="checkbox"] {
   <a href="../Tip/2023-02-24-tips.html" class="sidebar-item-text sidebar-link">Julia 연동</a>
   </div>
 </li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../Tip/2023-02-28-link.html" class="sidebar-item-text sidebar-link">some links</a>
+  </div>
+</li>
       </ul>
   </li>
     </ul>
@@ -362,6 +373,7 @@ ul.task-list li input[type="checkbox"] {
   <li><a href="#메모장" id="toc-메모장" class="nav-link active" data-scroll-target="#메모장">메모장</a></li>
   <li><a href="#st-gcn" id="toc-st-gcn" class="nav-link" data-scroll-target="#st-gcn">01. ST-GCN</a></li>
   <li><a href="#gnn" id="toc-gnn" class="nav-link" data-scroll-target="#gnn">02. GNN</a></li>
+  <li><a href="#lstm" id="toc-lstm" class="nav-link" data-scroll-target="#lstm">03. LSTM</a></li>
   </ul>
 </nav>
     </div>
@@ -435,6 +447,26 @@ ul.task-list li input[type="checkbox"] {
 <li><p>왜 순환신경망일까? 왜 순환이지???</p></li>
 <li><p>03/01 DNN 2강까지</p></li>
 <li><p>03/01 RNN 6강까지</p></li>
+</ul>
+</section>
+<section id="lstm" class="level2">
+<h2 class="anchored" data-anchor-id="lstm">03. LSTM</h2>
+<p>https://pytorch.org/docs/stable/generated/torch.nn.LSTM.html</p>
+<p><span class="math display">\[\begin{align*}i_t &amp; = \sigma(W_{ii}x_t + b_{ii} + W_{hi}h_{t-1}+b_{hi}) \\
+f_t &amp; = \sigma(W_{if}x_t + b_{if} +W_{hf}h_{t-1}+b_{hf}) \\
+g_t &amp; = \text{tanh} (W_{ig}x_t + b_{ig} + W_{hg}h_{t-1}+b_{hg} \\
+o_t &amp; = \sigma(W_{io}x_t + b_{io}+W_{ho}h_{t-1} +b_{ho}) \\
+c_t &amp; = f_t\odot c_{t-1} + i_t \odot g_t \\
+h_t &amp;= o_t \odot \text{tanh}(c_t)
+\end{align*}\]</span></p>
+<ul>
+<li><span class="math inline">\(h_t\)</span>: hidden state at <span class="math inline">\(t\)</span></li>
+<li><span class="math inline">\(c_t\)</span>: cell state at time <span class="math inline">\(t\)</span></li>
+<li><span class="math inline">\(x_t\)</span>: the input at time <span class="math inline">\(t\)</span></li>
+<li><span class="math inline">\(h_{t-1}\)</span>: the hidden state of the layer at time <span class="math inline">\(t-1\)</span></li>
+<li><span class="math inline">\(i_t, f_t, g_t, o_t\)</span>: input,forget,cell,and output gates, respectively</li>
+<li><span class="math inline">\(\sigma\)</span>: the sigmoid function</li>
+<li><span class="math inline">\(\odot\)</span>: the Hadamard product</li>
 </ul>
 
 
