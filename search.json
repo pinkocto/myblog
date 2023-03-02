@@ -837,7 +837,7 @@
     "href": "posts/RNN/2023-03-01-rnn6.html#시각화",
     "title": "순환신경망 (6)",
     "section": "시각화",
-    "text": "시각화"
+    "text": "시각화\n\nT = len(x)\ninput_gate"
   },
   {
     "objectID": "posts/RNN/2023-02-25-rnn1.html",
@@ -893,14 +893,14 @@
     "href": "etc/2023-02-01-memo.html#gnn",
     "title": "메모장",
     "section": "02. GNN",
-    "text": "02. GNN\n\n왜 순환신경망일까? 왜 순환이지???\n03/01 DNN 2강까지\n03/01 RNN 6강까지"
+    "text": "02. GNN\n\n왜 순환신경망일까? 왜 순환이지???\n03/01 DNN 2강까지\n03/01 RNN 6강까지\n03/02 RNN 8강까지\n03/02 DNN 4강까지\n03/03 Python list comprehension 부분"
   },
   {
     "objectID": "etc/2023-02-01-memo.html#lstm",
     "href": "etc/2023-02-01-memo.html#lstm",
     "title": "메모장",
     "section": "03. LSTM",
-    "text": "03. LSTM\nhttps://pytorch.org/docs/stable/generated/torch.nn.LSTM.html\n\\[\\begin{align*}i_t & = \\sigma(W_{ii}x_t + b_{ii} + W_{hi}h_{t-1}+b_{hi}) \\\\\nf_t & = \\sigma(W_{if}x_t + b_{if} +W_{hf}h_{t-1}+b_{hf}) \\\\\ng_t & = \\text{tanh} (W_{ig}x_t + b_{ig} + W_{hg}h_{t-1}+b_{hg} \\\\\no_t & = \\sigma(W_{io}x_t + b_{io}+W_{ho}h_{t-1} +b_{ho}) \\\\\nc_t & = f_t\\odot c_{t-1} + i_t \\odot g_t \\\\\nh_t &= o_t \\odot \\text{tanh}(c_t)\n\\end{align*}\\]\n\n\\(h_t\\): hidden state at \\(t\\)\n\\(c_t\\): cell state at time \\(t\\)\n\\(x_t\\): the input at time \\(t\\)\n\\(h_{t-1}\\): the hidden state of the layer at time \\(t-1\\)\n\\(i_t, f_t, g_t, o_t\\): input,forget,cell,and output gates, respectively\n\\(\\sigma\\): the sigmoid function\n\\(\\odot\\): the Hadamard product"
+    "text": "03. LSTM\n\npytorch 공식문서\n\n\\[\\begin{align*}i_t & = \\sigma(W_{ii}x_t + b_{ii} + W_{hi}h_{t-1}+b_{hi}) \\\\\nf_t & = \\sigma(W_{if}x_t + b_{if} +W_{hf}h_{t-1}+b_{hf}) \\\\\ng_t & = \\text{tanh} (W_{ig}x_t + b_{ig} + W_{hg}h_{t-1}+b_{hg} \\\\\no_t & = \\sigma(W_{io}x_t + b_{io}+W_{ho}h_{t-1} +b_{ho}) \\\\\nc_t & = f_t\\odot c_{t-1} + i_t \\odot g_t \\\\\nh_t &= o_t \\odot \\text{tanh}(c_t)\n\\end{align*}\\]\n\n\\(h_t\\): hidden state at \\(t\\)\n\\(c_t\\): cell state at time \\(t\\)\n\\(x_t\\): the input at time \\(t\\)\n\\(h_{t-1}\\): the hidden state of the layer at time \\(t-1\\)\n\\(i_t, f_t, g_t, o_t\\): input,forget,cell,and output gates, respectively\n\\(\\sigma\\): the sigmoid function\n\\(\\odot\\): the Hadamard product"
   },
   {
     "objectID": "index.html",
