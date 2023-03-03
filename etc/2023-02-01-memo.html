@@ -418,13 +418,13 @@ ul.task-list li input[type="checkbox"] {
 </section>
 <section id="gnn" class="level2">
 <h2 class="anchored" data-anchor-id="gnn">00. GNN</h2>
-<p>CNN<a href="#fn1" class="footnote-ref" id="fnref1" role="doc-noteref"><sup>1</sup></a> GNN의 계기가 됐다. CNN은 여러 단계의 지역화된 공간특징을 추출하고 재구성해 표현력이 높다. 그 결과 거의 모든 머신러닝 영역에서 돌파구가 됐고 딥러닝의 혁명을 가져왔다. graphs와 CNN을 깊이 파다보면 그래프에서 잘 사용될 수 있는 기술들이 이미 CNN에 있음을 알 수 있다.</p>
+<p>CNN<a href="#fn1" class="footnote-ref" id="fnref1" role="doc-noteref"><sup>1</sup></a> 은 GNN의 계기가 됐다. CNN은 여러 단계의 지역화된 공간특징을 추출하고 재구성해 표현력이 높다. 그 결과 거의 모든 머신러닝 영역에서 돌파구가 됐고 딥러닝의 혁명을 가져왔다. graphs와 CNN을 깊이 파다보면 그래프에서 잘 사용될 수 있는 기술들이 이미 CNN에 있음을 알 수 있다.</p>
 <ul>
 <li><ol type="1">
 <li>graphs are the most typical locally connected structure.</li>
 </ol></li>
 <li><ol start="2" type="1">
-<li>sharedd weights reduce the computational cost.</li>
+<li>sharedd weights reduce the computational cost compared with traditional spectral graph theory<a href="#fn2" class="footnote-ref" id="fnref2" role="doc-noteref"><sup>2</sup></a></li>
 </ol></li>
 <li><ol start="3" type="1">
 <li>multi-layer structure structure is the key to deal with hierarchical patterns, which captures the features of various sizes.</li>
@@ -494,6 +494,7 @@ h_t &amp;= o_t \odot \text{tanh}(c_t)
 
 <ol>
 <li id="fn1"><p>LeCun at al., 1988<a href="#fnref1" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn2"><p>Chung and Graham, 1997<a href="#fnref2" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
 </ol>
 </section></div></main> <!-- /main -->
 <script id="quarto-html-after-body" type="application/javascript">
