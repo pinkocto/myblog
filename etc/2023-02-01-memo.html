@@ -371,10 +371,17 @@ ul.task-list li input[type="checkbox"] {
    
   <ul>
   <li><a href="#메모장" id="toc-메모장" class="nav-link active" data-scroll-target="#메모장">메모장</a></li>
-  <li><a href="#gnn" id="toc-gnn" class="nav-link" data-scroll-target="#gnn">00. GNN</a></li>
-  <li><a href="#st-gcn" id="toc-st-gcn" class="nav-link" data-scroll-target="#st-gcn">01. ST-GCN</a></li>
-  <li><a href="#gnn-1" id="toc-gnn-1" class="nav-link" data-scroll-target="#gnn-1">02. GNN</a></li>
+  <li><a href="#gnn" id="toc-gnn" class="nav-link" data-scroll-target="#gnn">00. GNN</a>
+  <ul class="collapse">
+  <li><a href="#motivation" id="toc-motivation" class="nav-link" data-scroll-target="#motivation">MOTIVATION</a>
+  <ul class="collapse">
+  <li><a href="#convolutional-neural-networks" id="toc-convolutional-neural-networks" class="nav-link" data-scroll-target="#convolutional-neural-networks"><code>-</code> Convolutional Neural Networks</a></li>
+  <li><a href="#network-embedding" id="toc-network-embedding" class="nav-link" data-scroll-target="#network-embedding"><code>-</code> NETWORK EMBEDDING</a></li>
+  </ul></li>
+  <li><a href="#st-gcn-보류중" id="toc-st-gcn-보류중" class="nav-link" data-scroll-target="#st-gcn-보류중">01. ST-GCN (보류중)</a></li>
+  <li><a href="#rnn" id="toc-rnn" class="nav-link" data-scroll-target="#rnn">02. RNN</a></li>
   <li><a href="#lstm" id="toc-lstm" class="nav-link" data-scroll-target="#lstm">03. LSTM</a></li>
+  </ul></li>
   </ul>
 </nav>
     </div>
@@ -413,26 +420,52 @@ ul.task-list li input[type="checkbox"] {
 
 </header>
 
-<section id="메모장" class="level2">
-<h2 class="anchored" data-anchor-id="메모장">메모장</h2>
+<section id="메모장" class="level1">
+<h1>메모장</h1>
+<blockquote class="blockquote">
+<p>about GNN…</p>
+</blockquote>
 </section>
-<section id="gnn" class="level2">
-<h2 class="anchored" data-anchor-id="gnn">00. GNN</h2>
+<section id="gnn" class="level1">
+<h1>00. GNN</h1>
+<section id="motivation" class="level2">
+<h2 class="anchored" data-anchor-id="motivation">MOTIVATION</h2>
+<section id="convolutional-neural-networks" class="level3">
+<h3 class="anchored" data-anchor-id="convolutional-neural-networks"><code>-</code> Convolutional Neural Networks</h3>
 <p>CNN<a href="#fn1" class="footnote-ref" id="fnref1" role="doc-noteref"><sup>1</sup></a> 은 GNN의 계기가 됐다. CNN은 여러 단계의 지역화된 공간특징을 추출하고 재구성해 표현력이 높다. 그 결과 거의 모든 머신러닝 영역에서 돌파구가 됐고 딥러닝의 혁명을 가져왔다. graphs와 CNN을 깊이 파다보면 그래프에서 잘 사용될 수 있는 기술들이 이미 CNN에 있음을 알 수 있다.</p>
 <ul>
 <li><ol type="1">
 <li>graphs are the most typical locally connected structure.</li>
 </ol></li>
 <li><ol start="2" type="1">
-<li>sharedd weights reduce the computational cost compared with traditional spectral graph theory<a href="#fn2" class="footnote-ref" id="fnref2" role="doc-noteref"><sup>2</sup></a></li>
+<li>shared weights reduce the computational cost compared with traditional spectral graph theory<a href="#fn2" class="footnote-ref" id="fnref2" role="doc-noteref"><sup>2</sup></a></li>
 </ol></li>
 <li><ol start="3" type="1">
 <li>multi-layer structure structure is the key to deal with hierarchical patterns, which captures the features of various sizes.</li>
 </ol></li>
 </ul>
+<p>However, CNNs can only operate on regular Euclidean data like images (2D grid) and text (1D sequence), which can also be regarded as instances of graphs. Therefore, it is straightforward to think of finding the generalization of CNNs to graphs. But, it is hard to define localized convolutional filters and pooling operators, which hinders the transformation of CNN from Euclidean to non-Euclidean domain</p>
+<p><strong><em>(동기1): CNN을 확장해 그래프에 적용할 수도 있지않을까 생각해볼 수도 있지만 CNN은 이미지(2D grid), 텍스트(1D sequence) 등 일반적인 유클리드 데이터에서만 작동할 수 있다.</em></strong></p>
+<ul>
+<li>(localized convolutional filters와 pooling 작업을 정의하기 어려워서 CNN을 “Euclidean <span class="math inline">\(\to\)</span>non-Euclidean domain” 로의 확장은 힘들다.)</li>
+</ul>
 </section>
-<section id="st-gcn" class="level2">
-<h2 class="anchored" data-anchor-id="st-gcn">01. ST-GCN</h2>
+<section id="network-embedding" class="level3">
+<h3 class="anchored" data-anchor-id="network-embedding"><code>-</code> NETWORK EMBEDDING</h3>
+<p>The other motivation comes from graph embedding<a href="#fn3" class="footnote-ref" id="fnref3" role="doc-noteref"><sup>3</sup></a>, which learns to represent graph nodes, edges, or subgraphs in low-dimensional vectors.</p>
+<p>In graph analysis, traditional machine learning approaches usually rely on hand-engineered features and are limited by its inflexibility and high cost. Following the idea of representation learning and the success of word embedding<a href="#fn4" class="footnote-ref" id="fnref4" role="doc-noteref"><sup>4</sup></a>, DeepWalk<a href="#fn5" class="footnote-ref" id="fnref5" role="doc-noteref"><sup>5</sup></a>, which is regarded as the first graph embedding method based on representation learning, applies SkipGram model<a href="#fn6" class="footnote-ref" id="fnref6" role="doc-noteref"><sup>6</sup></a> on the generated random walks. Similar approaches such as node2vec<a href="#fn7" class="footnote-ref" id="fnref7" role="doc-noteref"><sup>7</sup></a>, LINE<a href="#fn8" class="footnote-ref" id="fnref8" role="doc-noteref"><sup>8</sup></a>, and TADW<a href="#fn9" class="footnote-ref" id="fnref9" role="doc-noteref"><sup>9</sup></a> also achieved breakthroughs. However, these methods suffer from two severe drawbacks<a href="#fn10" class="footnote-ref" id="fnref10" role="doc-noteref"><sup>10</sup></a>.</p>
+<ul>
+<li><p>First, no parameters are shared between nodes in the encoder, which leads to computational inefficiency, since it means the number of parameters grows linearly with the number of nodes.</p></li>
+<li><p>Second, the direct embedding methods lack the ability of generalization, which means they cannot deal with dynamic graphs or be generalized to new graphs.</p></li>
+</ul>
+<p><strong><em>(동기2): 그래프의 node, edges, subgraphs를 낮은차원의 벡터로 표현하는 그래프 임베딩 문제. (계산 비효율적, 확장성 부족)</em></strong></p>
+<hr>
+<p>. Wu et al.&nbsp;[2019c] categorize GNNs into four groups: recurrent graph neural networks (RecGNNs), convolutional graph neural networks (ConvGNNs), graph auto-encoders (GAEs), and spatial-temporal graph neural networks (STGNNs).</p>
+<hr>
+</section>
+</section>
+<section id="st-gcn-보류중" class="level2">
+<h2 class="anchored" data-anchor-id="st-gcn-보류중">01. ST-GCN (보류중)</h2>
 <ul>
 <li><p>temporal signal vs.&nbsp;static signals</p></li>
 <li><p>static graph vs.&nbsp;dynamic graph</p></li>
@@ -453,8 +486,8 @@ ul.task-list li input[type="checkbox"] {
 </ul>
 <hr>
 </section>
-<section id="gnn-1" class="level2">
-<h2 class="anchored" data-anchor-id="gnn-1">02. GNN</h2>
+<section id="rnn" class="level2">
+<h2 class="anchored" data-anchor-id="rnn">02. RNN</h2>
 <ul>
 <li><p>왜 순환신경망일까? 왜 순환이지???</p></li>
 <li><p>03/01 DNN 2강까지</p></li>
@@ -488,6 +521,7 @@ h_t &amp;= o_t \odot \text{tanh}(c_t)
 
 
 </section>
+</section>
 
 
 <div id="quarto-appendix" class="default"><section id="footnotes" class="footnotes footnotes-end-of-document" role="doc-endnotes"><h2 class="anchored quarto-appendix-heading">Footnotes</h2>
@@ -495,6 +529,14 @@ h_t &amp;= o_t \odot \text{tanh}(c_t)
 <ol>
 <li id="fn1"><p>LeCun at al., 1988<a href="#fnref1" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
 <li id="fn2"><p>Chung and Graham, 1997<a href="#fnref2" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn3"><p>Cai at al., 2018, Cui at al., 2018, Goyal and Ferrara, 2018, Hamilton et al., 2017a, Zhang et al., 2018a<a href="#fnref3" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn4"><p>Mikolov et al., 2013<a href="#fnref4" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn5"><p>Perozzi et al., 2014<a href="#fnref5" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn6"><p>Mikolov et al., 2013<a href="#fnref6" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn7"><p>Grover and Leskovec, 2016<a href="#fnref7" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn8"><p>Tang et al., 2015<a href="#fnref8" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn9"><p>Yang et al., 2015b<a href="#fnref9" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn10"><p>Hamilton et al.,2017a<a href="#fnref10" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
 </ol>
 </section></div></main> <!-- /main -->
 <script id="quarto-html-after-body" type="application/javascript">
