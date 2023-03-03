@@ -427,6 +427,8 @@ ul.task-list li input[type="checkbox"] {
   <ul class="collapse">
   <li><a href="#intro" id="toc-intro" class="nav-link" data-scroll-target="#intro">intro</a></li>
   <li><a href="#model" id="toc-model" class="nav-link" data-scroll-target="#model">Model</a></li>
+  <li><a href="#how-to-learn-the-parameters-of-f-g" id="toc-how-to-learn-the-parameters-of-f-g" class="nav-link" data-scroll-target="#how-to-learn-the-parameters-of-f-g">How to learn the parameters of <span class="math inline">\(f, g\)</span></a></li>
+  <li><a href="#limitations" id="toc-limitations" class="nav-link" data-scroll-target="#limitations">Limitations</a></li>
   </ul></li>
   <li><a href="#graph-convolutional-networks" id="toc-graph-convolutional-networks" class="nav-link" data-scroll-target="#graph-convolutional-networks">Graph Convolutional Networks</a>
   <ul class="collapse">
@@ -525,6 +527,30 @@ ul.task-list li input[type="checkbox"] {
 <li><p>(참고) <span class="math inline">\(f\)</span>, <span class="math inline">\(g\)</span>를 통하는 계산을 FNN이라고 해석될 수 있다.</p></li>
 </ul>
 </section>
+<section id="how-to-learn-the-parameters-of-f-g" class="level3">
+<h3 class="anchored" data-anchor-id="how-to-learn-the-parameters-of-f-g">How to learn the parameters of <span class="math inline">\(f, g\)</span></h3>
+<p>After the introduction of the framework of GNN, the next question is how to learn the parameters of the local transition function <span class="math inline">\(f\)</span> and local output function <span class="math inline">\(g\)</span>. With the target information (<span class="math inline">\(t_v\)</span> for a specific node) for the supervision, the loss can be written as:</p>
+<p><span class="math display">\[loss =\sum_{i=1}^p(t_i - o_i)\]</span></p>
+<p>where <span class="math inline">\(p\)</span> is the number of supervised nodes.</p>
+<p>The learning algorithm is based on a <strong>gradient descent strategy</strong> and is composed of the following steps.</p>
+<ul>
+<li><p><strong>step1.</strong> : The states <span class="math inline">\(\bf{h}_v^t\)</span> are iteratively updated by <span class="math inline">\(\bf{h}_v = f(\bf{x}_v,\bf{x}_{co[v]}, \bf{h}_{ne[v]}, \bf{x}_{ne[v]})\)</span> until a time step <span class="math inline">\(T\)</span>. Then we obtain an approximation fixed point solution <span class="math inline">\(\bf{H} = F(\bf{H}, \bf{X}): \space\space \bf{H}(T)\approx \bf{H}\)</span>.</p></li>
+<li><p><strong>step2.</strong>: The gradient of weights <span class="math inline">\(\bf{W}\)</span> is computed from the loss</p></li>
+<li><p><strong>step3.</strong>: The weights <span class="math inline">\(\bf{W}\)</span> are updated according to the gradient computed in the last step.</p></li>
+</ul>
+<p>After running the algorithm, we can get a model trained for a specific supervised/semisupervised task as well as hidden states of nodes in the graph. The vanilla GNN model provides an effective way to model graphic data and it is the first step toward incorporating neural networks into graph domain.</p>
+</section>
+<section id="limitations" class="level3">
+<h3 class="anchored" data-anchor-id="limitations">Limitations</h3>
+<p>Though experimental results showed that GNN is a powerful architecture for modeling structural data, there are still several limitations of the vanilla GNN.</p>
+<ul>
+<li><p><code>1.</code> it is computationally inefficient to update the hidden states of nodes iteratively to get the fixed point. The model needs T steps of computation to approximate the fixed point. If relaxing the assumption of the fixed point, we can design a multi-layer GNN to get a stable representation of the node and its neighborhood.</p></li>
+<li><p><code>2.</code> vanilla GNN uses the same parameters in the iteration while most popular neural networks use different parameters in different layers, which serves as a hierarchical feature extraction method. Moreover, the update of node hidden states is a sequential process which can benefit from the RNN kernels like GRU and LSTM</p></li>
+<li><p><code>3.</code> Third, there are also some informative features on the edges which cannot be effectively modeled in the vanilla GNN. For example, the edges in the knowledge graph have the type of relations and the message propagation through different edges should be different according to their types. Besides, how to learn the hidden states of edges is also an important problem.</p></li>
+<li><p><code>4.</code> Last, if T is pretty large, it is unsuitable to use the fixed points if we focus on the representation of nodes instead of graphs because the distribution of representation in the fixed point will be much more smooth in value and less informative for distinguishing each node.</p></li>
+</ul>
+<p>Beyond the vanilla GNN, several variants are proposed to release these limitations. For example, Gated Graph Neural Network (GGNN)<a href="#fn18" class="footnote-ref" id="fnref18" role="doc-noteref"><sup>18</sup></a> is proposed to solve the first problem. Relational GCN (R-GCN)<a href="#fn19" class="footnote-ref" id="fnref19" role="doc-noteref"><sup>19</sup></a> is proposed to deal with directed graphs. More details could be found in the following chapters</p>
+</section>
 </section>
 <section id="graph-convolutional-networks" class="level2">
 <h2 class="anchored" data-anchor-id="graph-convolutional-networks">Graph Convolutional Networks</h2>
@@ -577,6 +603,8 @@ ul.task-list li input[type="checkbox"] {
 <li id="fn15"><p>Scarselli et al., 2004, 2009<a href="#fnref15" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
 <li id="fn16"><p>Scarselli et al.&nbsp;2009<a href="#fnref16" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
 <li id="fn17"><p>Khamsi and Kirk, 2011<a href="#fnref17" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn18"><p>Li et al., 2016<a href="#fnref18" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn19"><p>Schlichtkrull et al., 2018<a href="#fnref19" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
 </ol>
 </section></div></main> <!-- /main -->
 <script id="quarto-html-after-body" type="application/javascript">
