@@ -371,14 +371,26 @@ ul.task-list li input[type="checkbox"] {
    
   <ul>
   <li><a href="#메모장" id="toc-메모장" class="nav-link active" data-scroll-target="#메모장">메모장</a></li>
-  <li><a href="#gnn" id="toc-gnn" class="nav-link" data-scroll-target="#gnn">00. GNN</a>
+  <li><a href="#gnn" id="toc-gnn" class="nav-link" data-scroll-target="#gnn">GNN</a>
   <ul class="collapse">
   <li><a href="#motivation" id="toc-motivation" class="nav-link" data-scroll-target="#motivation">MOTIVATION</a>
   <ul class="collapse">
   <li><a href="#convolutional-neural-networks" id="toc-convolutional-neural-networks" class="nav-link" data-scroll-target="#convolutional-neural-networks"><code>-</code> Convolutional Neural Networks</a></li>
   <li><a href="#network-embedding" id="toc-network-embedding" class="nav-link" data-scroll-target="#network-embedding"><code>-</code> NETWORK EMBEDDING</a></li>
   </ul></li>
-  <li><a href="#st-gcn-보류중" id="toc-st-gcn-보류중" class="nav-link" data-scroll-target="#st-gcn-보류중">01. ST-GCN (보류중)</a></li>
+  <li><a href="#vanilla-graph-nueral-networks" id="toc-vanilla-graph-nueral-networks" class="nav-link" data-scroll-target="#vanilla-graph-nueral-networks">Vanilla Graph Nueral Networks</a>
+  <ul class="collapse">
+  <li><a href="#intro" id="toc-intro" class="nav-link" data-scroll-target="#intro">intro</a></li>
+  <li><a href="#model" id="toc-model" class="nav-link" data-scroll-target="#model">Model</a></li>
+  </ul></li>
+  <li><a href="#graph-convolutional-networks" id="toc-graph-convolutional-networks" class="nav-link" data-scroll-target="#graph-convolutional-networks">Graph Convolutional Networks</a>
+  <ul class="collapse">
+  <li><a href="#spectral-methods" id="toc-spectral-methods" class="nav-link" data-scroll-target="#spectral-methods">1. Spectral methods</a></li>
+  <li><a href="#spatial-methods" id="toc-spatial-methods" class="nav-link" data-scroll-target="#spatial-methods">2. Spatial methods</a></li>
+  </ul></li>
+  </ul></li>
+  <li><a href="#st-gcn" id="toc-st-gcn" class="nav-link" data-scroll-target="#st-gcn">ST-GCN</a>
+  <ul class="collapse">
   <li><a href="#rnn" id="toc-rnn" class="nav-link" data-scroll-target="#rnn">02. RNN</a></li>
   <li><a href="#lstm" id="toc-lstm" class="nav-link" data-scroll-target="#lstm">03. LSTM</a></li>
   </ul></li>
@@ -427,7 +439,8 @@ ul.task-list li input[type="checkbox"] {
 </blockquote>
 </section>
 <section id="gnn" class="level1">
-<h1>00. GNN</h1>
+<h1>GNN</h1>
+<p>The GNN is designed specifically to handle graph-structured data, such as social networks, molecular structures, knowledge graphs, etc.</p>
 <section id="motivation" class="level2">
 <h2 class="anchored" data-anchor-id="motivation">MOTIVATION</h2>
 <section id="convolutional-neural-networks" class="level3">
@@ -460,12 +473,67 @@ ul.task-list li input[type="checkbox"] {
 </ul>
 <p><strong><em>(동기2): 그래프의 node, edges, subgraphs를 낮은차원의 벡터로 표현하는 그래프 임베딩 문제. (계산 비효율적, 확장성 부족)</em></strong></p>
 <hr>
-<p>. Wu et al.&nbsp;[2019c] categorize GNNs into four groups: recurrent graph neural networks (RecGNNs), convolutional graph neural networks (ConvGNNs), graph auto-encoders (GAEs), and spatial-temporal graph neural networks (STGNNs).</p>
+<p>. Wu et al.&nbsp;[2019c] categorize GNNs into four groups: recurrent graph neural networks (RecGNNs), convolutional graph neural networks (ConvGNNs), graph auto-encoders (GAEs), and spatial-temporal graph neural networks (STGNNs).</p>
 <hr>
 </section>
 </section>
-<section id="st-gcn-보류중" class="level2">
-<h2 class="anchored" data-anchor-id="st-gcn-보류중">01. ST-GCN (보류중)</h2>
+<section id="vanilla-graph-nueral-networks" class="level2">
+<h2 class="anchored" data-anchor-id="vanilla-graph-nueral-networks">Vanilla Graph Nueral Networks</h2>
+<section id="intro" class="level3">
+<h3 class="anchored" data-anchor-id="intro">intro</h3>
+<p>The concept of GNN was first proposed in Gori <a href="#fn11" class="footnote-ref" id="fnref11" role="doc-noteref"><sup>11</sup></a>. For simplicity, we will talk about the model proposed in Scarselli<a href="#fn12" class="footnote-ref" id="fnref12" role="doc-noteref"><sup>12</sup></a>, which aims to extend existing neural networks for processing graph-structured data.</p>
+<p>A node is naturally defined by its features and related nodes in the graph. The target of GNN is to learn a state embedding <span class="math inline">\(h_v \in \mathbb{R}^s\)</span> , which encodes the information of the neighborhood, for each node. The state embedding hv is used to produce an output ov, such as the distribution of the predicted node label. In Scarselli<a href="#fn13" class="footnote-ref" id="fnref13" role="doc-noteref"><sup>13</sup></a>, a typical graph is illustrated in Figure 4.1. The vanilla GNN model deals with the undirected homogeneous graph where each node in the graph has its input features <span class="math inline">\(x_v\)</span> and each edge may also have its features. The paper uses <span class="math inline">\(co[v]\)</span> and <span class="math inline">\(ne[v]\)</span> to denote the set of edges and neighbors of node <span class="math inline">\(v\)</span>. For processing other more complicated graphs such as heterogeneous graphs, the corresponding variants of GNNs could be found in later chapter</p>
+</section>
+<section id="model" class="level3">
+<h3 class="anchored" data-anchor-id="model">Model</h3>
+<p>Given the input features of nodes and edges, next we will talk about how the model obtains the node embedding hv and the output embedding <span class="math inline">\(o_v\)</span>.</p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="2023-02-01-memo_files/figure-html/07d1e2d6-ad6e-4ac0-8ffb-75a5269f9d84-1-882a09cc-4264-4d01-994c-551d648e79b0.png" class="img-fluid figure-img"></p>
+<p></p><figcaption class="figure-caption">An example of the graph based on Scarselli et al.[2009]</figcaption><p></p>
+</figure>
+</div>
+<p><span class="math display">\[\bf{h}_v = f(\bf{x}_v,\bf{x}_{co[v]}, \bf{h}_{ne[v]}, \bf{x}_{ne[v]})\]</span></p>
+<p><span class="math display">\[\bf{o}_v = g(\bf{h}_v,\bf{x}_v)\]</span></p>
+<ul>
+<li><span class="math inline">\(\bf{x}\)</span> : input feature</li>
+<li><span class="math inline">\(\bf{h}\)</span> : hidden state</li>
+<li><span class="math inline">\(co[v]\)</span> : the set of edges connected to node <span class="math inline">\(v\)</span></li>
+<li><span class="math inline">\(ne[v]\)</span> : set of neighbors of node <span class="math inline">\(v\)</span></li>
+</ul>
+<p><span class="math inline">\(\bf{x}_v, \bf{x}_{co[v]}, \bf{h}_{ne[v]}, \bf{x}_{ne[v]}\)</span> are the feature of <span class="math inline">\(v\)</span>, the state and the feature of the node in the neighborhood of <span class="math inline">\(v\)</span>, respectively.</p>
+<p><span class="math display">\[\bf{H} = F(\bf{H}, \bf{X})\]</span> <span class="math display">\[\bf{O} = G(\bf{H}, \bf{X}_N\]</span></p>
+</section>
+</section>
+<section id="graph-convolutional-networks" class="level2">
+<h2 class="anchored" data-anchor-id="graph-convolutional-networks">Graph Convolutional Networks</h2>
+<p>In this chapter, we will talk about graph convolutional networks (GCNs), which aim to generalize convolutions to the graph domain. As convolutional neural networks (CNNs) have achieved great success in the area of deep learning, it is intuitive to define the convolution operation on graphs. Advances in this direction are often categorized as <strong><em>spectral approaches</em></strong> and <strong><em>spatial approaches</em></strong>. As there may have vast variants in each direction, we only list several classic models in this chapter.</p>
+<section id="spectral-methods" class="level3">
+<h3 class="anchored" data-anchor-id="spectral-methods">1. Spectral methods</h3>
+<ul>
+<li><p>Spectral network</p></li>
+<li><p>ChebNet</p></li>
+<li><p>GCN</p></li>
+<li><p>AGCN</p></li>
+</ul>
+</section>
+<section id="spatial-methods" class="level3">
+<h3 class="anchored" data-anchor-id="spatial-methods">2. Spatial methods</h3>
+<ul>
+<li><p>Neural FPs</p></li>
+<li><p>PATCHY-SAN</p></li>
+<li><p>DCNN</p></li>
+<li><p>DGCN</p></li>
+<li><p>LGCN</p></li>
+<li><p>MoNet</p></li>
+<li><p>GraphSAGE</p></li>
+</ul>
+<hr>
+</section>
+</section>
+</section>
+<section id="st-gcn" class="level1">
+<h1>ST-GCN</h1>
 <ul>
 <li><p>temporal signal vs.&nbsp;static signals</p></li>
 <li><p>static graph vs.&nbsp;dynamic graph</p></li>
@@ -485,7 +553,6 @@ ul.task-list li input[type="checkbox"] {
 <li><p><a href="http://web.stanford.edu/class/cs224w/">ML with Graphs 강의영상</a></p></li>
 </ul>
 <hr>
-</section>
 <section id="rnn" class="level2">
 <h2 class="anchored" data-anchor-id="rnn">02. RNN</h2>
 <ul>
@@ -537,6 +604,9 @@ h_t &amp;= o_t \odot \text{tanh}(c_t)
 <li id="fn8"><p>Tang et al., 2015<a href="#fnref8" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
 <li id="fn9"><p>Yang et al., 2015b<a href="#fnref9" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
 <li id="fn10"><p>Hamilton et al.,2017a<a href="#fnref10" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn11"><p>et al.[2005], Scarselli et al.&nbsp;[2004, 2009]<a href="#fnref11" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn12"><p>et al.&nbsp;[2009]<a href="#fnref12" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn13"><p>et al.&nbsp;[2009]<a href="#fnref13" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
 </ol>
 </section></div></main> <!-- /main -->
 <script id="quarto-html-after-body" type="application/javascript">
