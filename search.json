@@ -928,7 +928,7 @@
     "href": "etc/2023-02-01-memo.html#gnn",
     "title": "메모장",
     "section": "00. GNN",
-    "text": "00. GNN\nCNN[LeCun at al., 1988] GNN의 계기가 됐다. CNN은 여러 단계의 지역화된 공간특징을 추출하고 재구성해 표현력이 높다. 그 결과 거의 모든 머신러닝 영역에서 돌파구가 됐고 딥러닝의 혁명을 가져왔다. graphs와 CNN을 깊이 파다보면 그래프에서 잘 사용될 수 있는 기술들이 이미 CNN에 있음을 알 수 있다. - 1. graphs are the most typical locally connected structure. - 2. sharedd weights reduce the computational cost. - 3. multi-layer structure structure is the key to deal wi"
+    "text": "00. GNN\nCNN1 GNN의 계기가 됐다. CNN은 여러 단계의 지역화된 공간특징을 추출하고 재구성해 표현력이 높다. 그 결과 거의 모든 머신러닝 영역에서 돌파구가 됐고 딥러닝의 혁명을 가져왔다. graphs와 CNN을 깊이 파다보면 그래프에서 잘 사용될 수 있는 기술들이 이미 CNN에 있음을 알 수 있다.\n\n\ngraphs are the most typical locally connected structure.\n\n\nsharedd weights reduce the computational cost.\n\n\nmulti-layer structure structure is the key to deal with hierarchical patterns, which captures the features of various sizes."
   },
   {
     "objectID": "etc/2023-02-01-memo.html#st-gcn",
