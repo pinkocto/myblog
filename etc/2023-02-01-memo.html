@@ -483,6 +483,12 @@ ul.task-list li input[type="checkbox"] {
 <h3 class="anchored" data-anchor-id="intro">intro</h3>
 <p>The concept of GNN was first proposed in Gori <a href="#fn11" class="footnote-ref" id="fnref11" role="doc-noteref"><sup>11</sup></a>. For simplicity, we will talk about the model proposed in Scarselli<a href="#fn12" class="footnote-ref" id="fnref12" role="doc-noteref"><sup>12</sup></a>, which aims to extend existing neural networks for processing graph-structured data.</p>
 <p>A node is naturally defined by its features and related nodes in the graph. The target of GNN is to learn a state embedding <span class="math inline">\(h_v \in \mathbb{R}^s\)</span> , which encodes the information of the neighborhood, for each node. The state embedding hv is used to produce an output ov, such as the distribution of the predicted node label. In Scarselli<a href="#fn13" class="footnote-ref" id="fnref13" role="doc-noteref"><sup>13</sup></a>, a typical graph is illustrated in Figure 4.1. The vanilla GNN model deals with the undirected homogeneous graph where each node in the graph has its input features <span class="math inline">\(x_v\)</span> and each edge may also have its features. The paper uses <span class="math inline">\(co[v]\)</span> and <span class="math inline">\(ne[v]\)</span> to denote the set of edges and neighbors of node <span class="math inline">\(v\)</span>. For processing other more complicated graphs such as heterogeneous graphs, the corresponding variants of GNNs could be found in later chapter</p>
+<p><em>GNN의 개념은 Gori<a href="#fn14" class="footnote-ref" id="fnref14" role="doc-noteref"><sup>14</sup></a> 와 Scarselli<a href="#fn15" class="footnote-ref" id="fnref15" role="doc-noteref"><sup>15</sup></a> 가 제안했다. 여기서는 앞으로 소개할 모델로의 확장이 자연스러운 Scarselli<a href="#fn16" class="footnote-ref" id="fnref16" role="doc-noteref"><sup>16</sup></a> 의 모델을 대표로 설명한다.</em></p>
+<ul>
+<li><p><strong><em>GNN의 최종목표는 각 노드의 state embedding <span class="math inline">\(\bf{h}_v \in \mathbb{R}^2\)</span>를 학습하는 것!</em></strong></p></li>
+<li><p>state embedding <span class="math inline">\(\bf{h}_v\)</span>는 해당노드와 주변노드의 정보를 포함하고 있으며, node <span class="math inline">\(v\)</span>의 출력값인 <span class="math inline">\(\bf{o}_v\)</span>를 얻을 때 사용한다.</p></li>
+<li><p><em>(참고) 기본 그래프 신경망은 무향 동종 그래프이며, 각 노드는 input features <span class="math inline">\(\bf{x}_v\)</span> 가 있고, edge도 features를 가질 수 있다.</em></p></li>
+</ul>
 </section>
 <section id="model" class="level3">
 <h3 class="anchored" data-anchor-id="model">Model</h3>
@@ -498,11 +504,21 @@ ul.task-list li input[type="checkbox"] {
 <ul>
 <li><span class="math inline">\(\bf{x}\)</span> : input feature</li>
 <li><span class="math inline">\(\bf{h}\)</span> : hidden state</li>
-<li><span class="math inline">\(co[v]\)</span> : the set of edges connected to node <span class="math inline">\(v\)</span></li>
-<li><span class="math inline">\(ne[v]\)</span> : set of neighbors of node <span class="math inline">\(v\)</span></li>
+<li><span class="math inline">\(co[v]\)</span> : the set of edges connected to node <span class="math inline">\(v\)</span> (node <span class="math inline">\(v\)</span> 에 연결된 edge 집합)</li>
+<li><span class="math inline">\(ne[v]\)</span> : set of neighbors of node <span class="math inline">\(v\)</span> (node <span class="math inline">\(v\)</span>에 인접한 노드 집합)</li>
+<li><span class="math inline">\(f\)</span> : local transition function (이웃으로부터 node state를 업데이트 하기 위해 노드들끼리 공유하는 함수)</li>
+<li><span class="math inline">\(g\)</span> : local output function (노드의 출력값을 계산하기 위한 함수)</li>
 </ul>
 <p><span class="math inline">\(\bf{x}_v, \bf{x}_{co[v]}, \bf{h}_{ne[v]}, \bf{x}_{ne[v]}\)</span> are the feature of <span class="math inline">\(v\)</span>, the state and the feature of the node in the neighborhood of <span class="math inline">\(v\)</span>, respectively.</p>
-<p><span class="math display">\[\bf{H} = F(\bf{H}, \bf{X})\]</span> <span class="math display">\[\bf{O} = G(\bf{H}, \bf{X}_N\]</span></p>
+<p><span class="math display">\[\bf{H} = F(\bf{H}, \bf{X})\]</span> <span class="math display">\[\bf{O} = G(\bf{H}, \bf{X}_N)\]</span></p>
+<p>여기서 <span class="math inline">\(F\)</span>와 <span class="math inline">\(G\)</span>는 모든 노드에 대한 local transition function <span class="math inline">\(f\)</span>와 local output function <span class="math inline">\(g\)</span>를 쌓은 버전이라고 생각하면 된다. <span class="math inline">\(\bf{H}\)</span>는 fixed point이며, <span class="math inline">\(F\)</span>가 contraction map이라면 유일하게 정의된다. &lt;- 이게 무슨소리지?</p>
+<p>Banach’s fixed point theorem<a href="#fn17" class="footnote-ref" id="fnref17" role="doc-noteref"><sup>17</sup></a> 를 바탕으로 GNN은 다음과 같은 고전적인 반복 계산법을 사용한다.</p>
+<p><span class="math display">\[\bf{H}^{t+1} = F(\bf{H}^t,\bf{X})\]</span></p>
+<ul>
+<li><p><span class="math inline">\(\bf{H}^t\)</span>: <span class="math inline">\(\bf{H}\)</span>를 <span class="math inline">\(t\)</span>번 반복한 결과값.</p></li>
+<li><p>임의의 초깃값 <span class="math inline">\(\bf{H}^0\)</span>에 대해 <span class="math inline">\(\bf{H}^{t+1} = F(\bf{H}^t,\bf{X})\)</span>는 기하급수적으로 빠르게 <span class="math inline">\(\bf{H} = F(\bf{H}, \bf{X})\)</span>의 해에 수렴한다.</p></li>
+<li><p>(참고) <span class="math inline">\(f\)</span>, <span class="math inline">\(g\)</span>를 통하는 계산을 FNN이라고 해석될 수 있다.</p></li>
+</ul>
 </section>
 </section>
 <section id="graph-convolutional-networks" class="level2">
@@ -607,6 +623,10 @@ h_t &amp;= o_t \odot \text{tanh}(c_t)
 <li id="fn11"><p>et al.[2005], Scarselli et al.&nbsp;[2004, 2009]<a href="#fnref11" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
 <li id="fn12"><p>et al.&nbsp;[2009]<a href="#fnref12" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
 <li id="fn13"><p>et al.&nbsp;[2009]<a href="#fnref13" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn14"><p>Gori et al., 2005<a href="#fnref14" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn15"><p>Scarselli et al., 2004, 2009<a href="#fnref15" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn16"><p>Scarselli et al.&nbsp;2009<a href="#fnref16" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn17"><p>Khamsi and Kirk, 2011<a href="#fnref17" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
 </ol>
 </section></div></main> <!-- /main -->
 <script id="quarto-html-after-body" type="application/javascript">
