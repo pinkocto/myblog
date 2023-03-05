@@ -501,6 +501,8 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
   </ul></li>
   <li><a href="#visualize-graph" id="toc-visualize-graph" class="nav-link" data-scroll-target="#visualize-graph">Visualize Graph</a></li>
   <li><a href="#implementing-graph-neural-networks" id="toc-implementing-graph-neural-networks" class="nav-link" data-scroll-target="#implementing-graph-neural-networks">Implementing Graph Neural Networks</a></li>
+  <li><a href="#embedding-the-karate-club-network" id="toc-embedding-the-karate-club-network" class="nav-link" data-scroll-target="#embedding-the-karate-club-network">Embedding the Karate Club Network</a></li>
+  <li><a href="#training-on-the-karate-club-network" id="toc-training-on-the-karate-club-network" class="nav-link" data-scroll-target="#training-on-the-karate-club-network">Training on the Karate Club Network</a></li>
   <li><a href="#conclusion" id="toc-conclusion" class="nav-link" data-scroll-target="#conclusion">Conclusion</a></li>
   </ul></li>
   </ul>
@@ -789,6 +791,9 @@ See https://networkx.org for complete documentation.</pre>
 <p><span class="math display">\[
 \mathbf{x}_v^{(\ell + 1)} = \mathbf{W}^{(\ell + 1)} \sum_{w \in \mathcal{N}(v) \, \cup \, \{ v \}} \frac{1}{c_{w,v}} \cdot \mathbf{x}_w^{(\ell)}
 \]</span></p>
+<p>where <span class="math inline">\(\mathbf{W}^{(\ell + 1)}\)</span> denotes a trainable weight matrix of shape <code>[num_output_features, num_input_features]</code> and <span class="math inline">\(c_{w,v}\)</span> refers to a fixed normalization coefficient for each edge.</p>
+<p>PyG implements this layer via <a href="https://pytorch-geometric.readthedocs.io/en/latest/modules/nn.html#torch_geometric.nn.conv.GCNConv"><code>GCNConv</code></a>, which can be executed by passing in the node feature representation <code>x</code> and the COO graph connectivity representation <code>edge_index</code>.</p>
+<p>With this, we are ready to create our first Graph Neural Network by defining our network architecture in a <code>torch.nn.Module</code> class:</p>
 <div class="cell" data-execution_count="31">
 <div class="sourceCode cell-code" id="cb32"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb32-1"><a href="#cb32-1"></a><span class="co"># create GNN by defining our network architecture in a 'torch.nn.Mudule' class</span></span>
 <span id="cb32-2"><a href="#cb32-2"></a><span class="im">import</span> torch</span>
@@ -833,162 +838,1276 @@ See https://networkx.org for complete documentation.</pre>
 )</code></pre>
 </div>
 </div>
-<div class="cell" data-execution_count="32">
-<div class="sourceCode cell-code" id="cb34"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb34-1"><a href="#cb34-1"></a>model <span class="op">=</span> GCN()</span>
-<span id="cb34-2"><a href="#cb34-2"></a></span>
-<span id="cb34-3"><a href="#cb34-3"></a>_, h <span class="op">=</span> model(data.x, data.edge_index)</span>
-<span id="cb34-4"><a href="#cb34-4"></a><span class="bu">print</span>(<span class="ss">f'Embedding shape: </span><span class="sc">{</span><span class="bu">list</span>(h.shape)<span class="sc">}</span><span class="ss">'</span>)</span>
-<span id="cb34-5"><a href="#cb34-5"></a></span>
-<span id="cb34-6"><a href="#cb34-6"></a>visualize_embedding(h, color<span class="op">=</span>data.y)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell" data-execution_count="80">
+<div class="sourceCode cell-code" id="cb34"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb34-1"><a href="#cb34-1"></a><span class="bu">print</span>(data)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Data(x=[34, 34], edge_index=[2, 156], y=[34], train_mask=[34])</code></pre>
+</div>
+</div>
+<ul>
+<li>We first define and stack three graph convolution layers, which corresponds to aggregating 3-hop neighborhood information around each node (all nodes up to 3 “hops” away). In addition, the GCNConv layers reduce the node feature dimensionality to <span class="math inline">\(2\)</span> , i.e., <span class="math inline">\(34→4→4→2\)</span> . Each GCNConv layer is enhanced by a <a href="https://pytorch.org/docs/stable/generated/torch.nn.Tanh.html?highlight=tanh#torch.nn.Tanh">tanh</a> non-linearity.</li>
+</ul>
+</section>
+<section id="embedding-the-karate-club-network" class="level2">
+<h2 class="anchored" data-anchor-id="embedding-the-karate-club-network">Embedding the Karate Club Network</h2>
+<p>Let’s take a look at the node embeddings produced by our GNN. Here, we pass in the initial node features x and the graph connectivity information edge_index to the model, and visualize its 2-dimensional embedding.</p>
+<div class="cell" data-execution_count="92">
+<div class="sourceCode cell-code" id="cb36"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb36-1"><a href="#cb36-1"></a><span class="kw">def</span> visualize_embedding(h, color, epoch<span class="op">=</span><span class="va">None</span>, loss<span class="op">=</span><span class="va">None</span>):</span>
+<span id="cb36-2"><a href="#cb36-2"></a>    plt.figure(figsize<span class="op">=</span>(<span class="dv">7</span>,<span class="dv">7</span>))</span>
+<span id="cb36-3"><a href="#cb36-3"></a>    plt.xticks([])</span>
+<span id="cb36-4"><a href="#cb36-4"></a>    plt.yticks([])</span>
+<span id="cb36-5"><a href="#cb36-5"></a>    h <span class="op">=</span> h.detach().cpu().numpy()</span>
+<span id="cb36-6"><a href="#cb36-6"></a>    plt.scatter(h[:,<span class="dv">0</span>],h[:,<span class="dv">1</span>], s<span class="op">=</span><span class="dv">140</span>, c<span class="op">=</span>color, cmap<span class="op">=</span><span class="st">"Set2"</span>)</span>
+<span id="cb36-7"><a href="#cb36-7"></a>    <span class="cf">if</span> epoch <span class="kw">is</span> <span class="kw">not</span> <span class="va">None</span> <span class="kw">and</span> loss <span class="kw">is</span> <span class="kw">not</span> <span class="va">None</span>:</span>
+<span id="cb36-8"><a href="#cb36-8"></a>        plt.xlabel(<span class="ss">f'Epoch: </span><span class="sc">{</span>epoch<span class="sc">}</span><span class="ss">, Loss: </span><span class="sc">{</span>loss<span class="sc">.</span>item()<span class="sc">:.4f}</span><span class="ss">'</span>, fontsize<span class="op">=</span><span class="dv">16</span>)</span>
+<span id="cb36-9"><a href="#cb36-9"></a>    plt.show()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="cell" data-execution_count="93">
+<div class="sourceCode cell-code" id="cb37"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb37-1"><a href="#cb37-1"></a>model <span class="op">=</span> GCN()</span>
+<span id="cb37-2"><a href="#cb37-2"></a></span>
+<span id="cb37-3"><a href="#cb37-3"></a>_, h <span class="op">=</span> model(data.x, data.edge_index)</span>
+<span id="cb37-4"><a href="#cb37-4"></a><span class="bu">print</span>(<span class="ss">f'Embedding shape: </span><span class="sc">{</span><span class="bu">list</span>(h.shape)<span class="sc">}</span><span class="ss">'</span>)</span>
+<span id="cb37-5"><a href="#cb37-5"></a></span>
+<span id="cb37-6"><a href="#cb37-6"></a>visualize_embedding(h, color<span class="op">=</span>data.y)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>Embedding shape: [34, 2]</code></pre>
 </div>
 <div class="cell-output cell-output-display">
-<p><img src="2023-03-04-gnn-intro_files/figure-html/cell-22-output-2.png" class="img-fluid"></p>
+<p><img src="2023-03-04-gnn-intro_files/figure-html/cell-24-output-2.png" class="img-fluid"></p>
 </div>
 </div>
-<div class="cell" data-execution_count="34">
-<div class="sourceCode cell-code" id="cb36"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb36-1"><a href="#cb36-1"></a><span class="im">import</span> time</span>
-<span id="cb36-2"><a href="#cb36-2"></a></span>
-<span id="cb36-3"><a href="#cb36-3"></a>model <span class="op">=</span> GCN()</span>
-<span id="cb36-4"><a href="#cb36-4"></a>criterion <span class="op">=</span> torch.nn.CrossEntropyLoss()  <span class="co"># Define loss criterion.</span></span>
-<span id="cb36-5"><a href="#cb36-5"></a>optimizer <span class="op">=</span> torch.optim.Adam(model.parameters(), lr<span class="op">=</span><span class="fl">0.01</span>)  <span class="co"># Define optimizer.</span></span>
-<span id="cb36-6"><a href="#cb36-6"></a></span>
-<span id="cb36-7"><a href="#cb36-7"></a><span class="kw">def</span> train(data):</span>
-<span id="cb36-8"><a href="#cb36-8"></a>    optimizer.zero_grad()  <span class="co"># Clear gradients.</span></span>
-<span id="cb36-9"><a href="#cb36-9"></a>    out, h <span class="op">=</span> model(data.x, data.edge_index)  <span class="co"># Perform a single forward pass.</span></span>
-<span id="cb36-10"><a href="#cb36-10"></a>    loss <span class="op">=</span> criterion(out[data.train_mask], data.y[data.train_mask])  <span class="co"># Compute the loss solely based on the training nodes.</span></span>
-<span id="cb36-11"><a href="#cb36-11"></a>    loss.backward()  <span class="co"># Derive gradients.</span></span>
-<span id="cb36-12"><a href="#cb36-12"></a>    optimizer.step()  <span class="co"># Update parameters based on gradients.</span></span>
-<span id="cb36-13"><a href="#cb36-13"></a>    <span class="cf">return</span> loss, h</span>
-<span id="cb36-14"><a href="#cb36-14"></a></span>
-<span id="cb36-15"><a href="#cb36-15"></a><span class="cf">for</span> epoch <span class="kw">in</span> <span class="bu">range</span>(<span class="dv">401</span>):</span>
-<span id="cb36-16"><a href="#cb36-16"></a>    loss, h <span class="op">=</span> train(data)</span>
-<span id="cb36-17"><a href="#cb36-17"></a>    <span class="cf">if</span> epoch <span class="op">%</span> <span class="dv">10</span> <span class="op">==</span> <span class="dv">0</span>:</span>
-<span id="cb36-18"><a href="#cb36-18"></a>        visualize_embedding(h, color<span class="op">=</span>data.y, epoch<span class="op">=</span>epoch, loss<span class="op">=</span>loss)</span>
-<span id="cb36-19"><a href="#cb36-19"></a>        time.sleep(<span class="fl">0.3</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>Remarkably, even before training the weights of our model, the model produces an embedding of nodes that closely resembles the community-structure of the graph. Nodes of the same color (community) are already closely clustered together in the embedding space, although the weights of our model are initialized completely at random and we have not yet performed any training so far! This leads to the conclusion that GNNs introduce a strong inductive bias, leading to similar embeddings for nodes that are close to each other in the input graph.</p>
+</section>
+<section id="training-on-the-karate-club-network" class="level2">
+<h2 class="anchored" data-anchor-id="training-on-the-karate-club-network">Training on the Karate Club Network</h2>
+<p>But can we do better? Let’s look at an example on how to train our network parameters based on the knowledge of the community assignments of 4 nodes in the graph (one for each community):</p>
+<p>Since everything in our model is differentiable and parameterized, we can add some labels, train the model and observse how the embeddings react. Here, we make use of a semi-supervised or transductive learning procedure: We simply train against one node per class, but are allowed to make use of the complete input graph data.</p>
+<p>Training our model is very similar to any other PyTorch model. In addition to defining our network architecture, we define a loss critertion (here, CrossEntropyLoss) and initialize a stochastic gradient optimizer (here, Adam). After that, we perform multiple rounds of optimization, where each round consists of a forward and backward pass to compute the gradients of our model parameters w.r.t. to the loss derived from the forward pass. If you are not new to PyTorch, this scheme should appear familar to you.</p>
+<ul>
+<li>(참고) <a href="https://pytorch.org/tutorials/beginner/blitz/cifar10_tutorial.html#define-a-loss-function-and-optimizer">a good introduction on how to train a neural network in PyTorch</a>.</li>
+</ul>
+<div class="cell" data-execution_count="98">
+<div class="sourceCode cell-code" id="cb39"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb39-1"><a href="#cb39-1"></a><span class="im">import</span> time</span>
+<span id="cb39-2"><a href="#cb39-2"></a></span>
+<span id="cb39-3"><a href="#cb39-3"></a>model <span class="op">=</span> GCN()</span>
+<span id="cb39-4"><a href="#cb39-4"></a>loss_fn <span class="op">=</span> torch.nn.CrossEntropyLoss()  <span class="co"># Define loss criterion.</span></span>
+<span id="cb39-5"><a href="#cb39-5"></a>optimizr <span class="op">=</span> torch.optim.Adam(model.parameters(), lr<span class="op">=</span><span class="fl">0.01</span>)  <span class="co"># Define optimizer.</span></span>
+<span id="cb39-6"><a href="#cb39-6"></a></span>
+<span id="cb39-7"><a href="#cb39-7"></a><span class="kw">def</span> train(data):</span>
+<span id="cb39-8"><a href="#cb39-8"></a>    optimizer.zero_grad()  <span class="co"># Clear gradients.</span></span>
+<span id="cb39-9"><a href="#cb39-9"></a>    out, h <span class="op">=</span> model(data.x, data.edge_index)  <span class="co"># Perform a single forward pass.</span></span>
+<span id="cb39-10"><a href="#cb39-10"></a>    loss <span class="op">=</span> loss_fn(out[data.train_mask], data.y[data.train_mask])  <span class="co"># Compute the loss solely based on the training nodes.</span></span>
+<span id="cb39-11"><a href="#cb39-11"></a>    loss.backward()  <span class="co"># Derive gradients.</span></span>
+<span id="cb39-12"><a href="#cb39-12"></a>    optimizr.step()  <span class="co"># Update parameters based on gradients.</span></span>
+<span id="cb39-13"><a href="#cb39-13"></a>    <span class="cf">return</span> loss, h</span>
+<span id="cb39-14"><a href="#cb39-14"></a></span>
+<span id="cb39-15"><a href="#cb39-15"></a><span class="cf">for</span> epoc <span class="kw">in</span> <span class="bu">range</span>(<span class="dv">401</span>):</span>
+<span id="cb39-16"><a href="#cb39-16"></a>    loss, h <span class="op">=</span> train(data)</span>
+<span id="cb39-17"><a href="#cb39-17"></a>    <span class="cf">if</span> epoch <span class="op">%</span> <span class="dv">10</span> <span class="op">==</span> <span class="dv">0</span>:</span>
+<span id="cb39-18"><a href="#cb39-18"></a>        visualize_embedding(h, color<span class="op">=</span>data.y, epoch<span class="op">=</span>epoc, loss<span class="op">=</span>loss)</span>
+<span id="cb39-19"><a href="#cb39-19"></a>        time.sleep(<span class="fl">0.3</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-display">
-<p><img src="2023-03-04-gnn-intro_files/figure-html/cell-23-output-1.png" class="img-fluid"></p>
-</div>
-<div class="cell-output cell-output-display">
-<p><img src="2023-03-04-gnn-intro_files/figure-html/cell-23-output-2.png" class="img-fluid"></p>
-</div>
-<div class="cell-output cell-output-display">
-<p><img src="2023-03-04-gnn-intro_files/figure-html/cell-23-output-3.png" class="img-fluid"></p>
-</div>
-<div class="cell-output cell-output-display">
-<p><img src="2023-03-04-gnn-intro_files/figure-html/cell-23-output-4.png" class="img-fluid"></p>
-</div>
-<div class="cell-output cell-output-display">
-<p><img src="2023-03-04-gnn-intro_files/figure-html/cell-23-output-5.png" class="img-fluid"></p>
+<p><img src="2023-03-04-gnn-intro_files/figure-html/cell-25-output-1.png" class="img-fluid"></p>
 </div>
 <div class="cell-output cell-output-display">
-<p><img src="2023-03-04-gnn-intro_files/figure-html/cell-23-output-6.png" class="img-fluid"></p>
+<p><img src="2023-03-04-gnn-intro_files/figure-html/cell-25-output-2.png" class="img-fluid"></p>
 </div>
 <div class="cell-output cell-output-display">
-<p><img src="2023-03-04-gnn-intro_files/figure-html/cell-23-output-7.png" class="img-fluid"></p>
+<p><img src="2023-03-04-gnn-intro_files/figure-html/cell-25-output-3.png" class="img-fluid"></p>
 </div>
 <div class="cell-output cell-output-display">
-<p><img src="2023-03-04-gnn-intro_files/figure-html/cell-23-output-8.png" class="img-fluid"></p>
+<p><img src="2023-03-04-gnn-intro_files/figure-html/cell-25-output-4.png" class="img-fluid"></p>
 </div>
 <div class="cell-output cell-output-display">
-<p><img src="2023-03-04-gnn-intro_files/figure-html/cell-23-output-9.png" class="img-fluid"></p>
+<p><img src="2023-03-04-gnn-intro_files/figure-html/cell-25-output-5.png" class="img-fluid"></p>
 </div>
 <div class="cell-output cell-output-display">
-<p><img src="2023-03-04-gnn-intro_files/figure-html/cell-23-output-10.png" class="img-fluid"></p>
+<p><img src="2023-03-04-gnn-intro_files/figure-html/cell-25-output-6.png" class="img-fluid"></p>
 </div>
 <div class="cell-output cell-output-display">
-<p><img src="2023-03-04-gnn-intro_files/figure-html/cell-23-output-11.png" class="img-fluid"></p>
+<p><img src="2023-03-04-gnn-intro_files/figure-html/cell-25-output-7.png" class="img-fluid"></p>
 </div>
 <div class="cell-output cell-output-display">
-<p><img src="2023-03-04-gnn-intro_files/figure-html/cell-23-output-12.png" class="img-fluid"></p>
+<p><img src="2023-03-04-gnn-intro_files/figure-html/cell-25-output-8.png" class="img-fluid"></p>
 </div>
 <div class="cell-output cell-output-display">
-<p><img src="2023-03-04-gnn-intro_files/figure-html/cell-23-output-13.png" class="img-fluid"></p>
+<p><img src="2023-03-04-gnn-intro_files/figure-html/cell-25-output-9.png" class="img-fluid"></p>
 </div>
 <div class="cell-output cell-output-display">
-<p><img src="2023-03-04-gnn-intro_files/figure-html/cell-23-output-14.png" class="img-fluid"></p>
+<p><img src="2023-03-04-gnn-intro_files/figure-html/cell-25-output-10.png" class="img-fluid"></p>
 </div>
 <div class="cell-output cell-output-display">
-<p><img src="2023-03-04-gnn-intro_files/figure-html/cell-23-output-15.png" class="img-fluid"></p>
+<p><img src="2023-03-04-gnn-intro_files/figure-html/cell-25-output-11.png" class="img-fluid"></p>
 </div>
 <div class="cell-output cell-output-display">
-<p><img src="2023-03-04-gnn-intro_files/figure-html/cell-23-output-16.png" class="img-fluid"></p>
+<p><img src="2023-03-04-gnn-intro_files/figure-html/cell-25-output-12.png" class="img-fluid"></p>
 </div>
 <div class="cell-output cell-output-display">
-<p><img src="2023-03-04-gnn-intro_files/figure-html/cell-23-output-17.png" class="img-fluid"></p>
+<p><img src="2023-03-04-gnn-intro_files/figure-html/cell-25-output-13.png" class="img-fluid"></p>
 </div>
 <div class="cell-output cell-output-display">
-<p><img src="2023-03-04-gnn-intro_files/figure-html/cell-23-output-18.png" class="img-fluid"></p>
+<p><img src="2023-03-04-gnn-intro_files/figure-html/cell-25-output-14.png" class="img-fluid"></p>
 </div>
 <div class="cell-output cell-output-display">
-<p><img src="2023-03-04-gnn-intro_files/figure-html/cell-23-output-19.png" class="img-fluid"></p>
+<p><img src="2023-03-04-gnn-intro_files/figure-html/cell-25-output-15.png" class="img-fluid"></p>
 </div>
 <div class="cell-output cell-output-display">
-<p><img src="2023-03-04-gnn-intro_files/figure-html/cell-23-output-20.png" class="img-fluid"></p>
+<p><img src="2023-03-04-gnn-intro_files/figure-html/cell-25-output-16.png" class="img-fluid"></p>
 </div>
 <div class="cell-output cell-output-display">
-<p><img src="2023-03-04-gnn-intro_files/figure-html/cell-23-output-21.png" class="img-fluid"></p>
+<p><img src="2023-03-04-gnn-intro_files/figure-html/cell-25-output-17.png" class="img-fluid"></p>
 </div>
 <div class="cell-output cell-output-display">
-<p><img src="2023-03-04-gnn-intro_files/figure-html/cell-23-output-22.png" class="img-fluid"></p>
+<p><img src="2023-03-04-gnn-intro_files/figure-html/cell-25-output-18.png" class="img-fluid"></p>
 </div>
 <div class="cell-output cell-output-display">
-<p><img src="2023-03-04-gnn-intro_files/figure-html/cell-23-output-23.png" class="img-fluid"></p>
+<p><img src="2023-03-04-gnn-intro_files/figure-html/cell-25-output-19.png" class="img-fluid"></p>
 </div>
 <div class="cell-output cell-output-display">
-<p><img src="2023-03-04-gnn-intro_files/figure-html/cell-23-output-24.png" class="img-fluid"></p>
+<p><img src="2023-03-04-gnn-intro_files/figure-html/cell-25-output-20.png" class="img-fluid"></p>
 </div>
 <div class="cell-output cell-output-display">
-<p><img src="2023-03-04-gnn-intro_files/figure-html/cell-23-output-25.png" class="img-fluid"></p>
+<p><img src="2023-03-04-gnn-intro_files/figure-html/cell-25-output-21.png" class="img-fluid"></p>
 </div>
 <div class="cell-output cell-output-display">
-<p><img src="2023-03-04-gnn-intro_files/figure-html/cell-23-output-26.png" class="img-fluid"></p>
+<p><img src="2023-03-04-gnn-intro_files/figure-html/cell-25-output-22.png" class="img-fluid"></p>
 </div>
 <div class="cell-output cell-output-display">
-<p><img src="2023-03-04-gnn-intro_files/figure-html/cell-23-output-27.png" class="img-fluid"></p>
+<p><img src="2023-03-04-gnn-intro_files/figure-html/cell-25-output-23.png" class="img-fluid"></p>
 </div>
 <div class="cell-output cell-output-display">
-<p><img src="2023-03-04-gnn-intro_files/figure-html/cell-23-output-28.png" class="img-fluid"></p>
+<p><img src="2023-03-04-gnn-intro_files/figure-html/cell-25-output-24.png" class="img-fluid"></p>
 </div>
 <div class="cell-output cell-output-display">
-<p><img src="2023-03-04-gnn-intro_files/figure-html/cell-23-output-29.png" class="img-fluid"></p>
+<p><img src="2023-03-04-gnn-intro_files/figure-html/cell-25-output-25.png" class="img-fluid"></p>
 </div>
 <div class="cell-output cell-output-display">
-<p><img src="2023-03-04-gnn-intro_files/figure-html/cell-23-output-30.png" class="img-fluid"></p>
+<p><img src="2023-03-04-gnn-intro_files/figure-html/cell-25-output-26.png" class="img-fluid"></p>
 </div>
 <div class="cell-output cell-output-display">
-<p><img src="2023-03-04-gnn-intro_files/figure-html/cell-23-output-31.png" class="img-fluid"></p>
+<p><img src="2023-03-04-gnn-intro_files/figure-html/cell-25-output-27.png" class="img-fluid"></p>
 </div>
 <div class="cell-output cell-output-display">
-<p><img src="2023-03-04-gnn-intro_files/figure-html/cell-23-output-32.png" class="img-fluid"></p>
+<p><img src="2023-03-04-gnn-intro_files/figure-html/cell-25-output-28.png" class="img-fluid"></p>
 </div>
 <div class="cell-output cell-output-display">
-<p><img src="2023-03-04-gnn-intro_files/figure-html/cell-23-output-33.png" class="img-fluid"></p>
+<p><img src="2023-03-04-gnn-intro_files/figure-html/cell-25-output-29.png" class="img-fluid"></p>
 </div>
 <div class="cell-output cell-output-display">
-<p><img src="2023-03-04-gnn-intro_files/figure-html/cell-23-output-34.png" class="img-fluid"></p>
+<p><img src="2023-03-04-gnn-intro_files/figure-html/cell-25-output-30.png" class="img-fluid"></p>
 </div>
 <div class="cell-output cell-output-display">
-<p><img src="2023-03-04-gnn-intro_files/figure-html/cell-23-output-35.png" class="img-fluid"></p>
+<p><img src="2023-03-04-gnn-intro_files/figure-html/cell-25-output-31.png" class="img-fluid"></p>
 </div>
 <div class="cell-output cell-output-display">
-<p><img src="2023-03-04-gnn-intro_files/figure-html/cell-23-output-36.png" class="img-fluid"></p>
+<p><img src="2023-03-04-gnn-intro_files/figure-html/cell-25-output-32.png" class="img-fluid"></p>
 </div>
 <div class="cell-output cell-output-display">
-<p><img src="2023-03-04-gnn-intro_files/figure-html/cell-23-output-37.png" class="img-fluid"></p>
+<p><img src="2023-03-04-gnn-intro_files/figure-html/cell-25-output-33.png" class="img-fluid"></p>
 </div>
 <div class="cell-output cell-output-display">
-<p><img src="2023-03-04-gnn-intro_files/figure-html/cell-23-output-38.png" class="img-fluid"></p>
+<p><img src="2023-03-04-gnn-intro_files/figure-html/cell-25-output-34.png" class="img-fluid"></p>
 </div>
 <div class="cell-output cell-output-display">
-<p><img src="2023-03-04-gnn-intro_files/figure-html/cell-23-output-39.png" class="img-fluid"></p>
+<p><img src="2023-03-04-gnn-intro_files/figure-html/cell-25-output-35.png" class="img-fluid"></p>
 </div>
 <div class="cell-output cell-output-display">
-<p><img src="2023-03-04-gnn-intro_files/figure-html/cell-23-output-40.png" class="img-fluid"></p>
+<p><img src="2023-03-04-gnn-intro_files/figure-html/cell-25-output-36.png" class="img-fluid"></p>
 </div>
 <div class="cell-output cell-output-display">
-<p><img src="2023-03-04-gnn-intro_files/figure-html/cell-23-output-41.png" class="img-fluid"></p>
+<p><img src="2023-03-04-gnn-intro_files/figure-html/cell-25-output-37.png" class="img-fluid"></p>
+</div>
+<div class="cell-output cell-output-display">
+<p><img src="2023-03-04-gnn-intro_files/figure-html/cell-25-output-38.png" class="img-fluid"></p>
+</div>
+<div class="cell-output cell-output-display">
+<p><img src="2023-03-04-gnn-intro_files/figure-html/cell-25-output-39.png" class="img-fluid"></p>
+</div>
+<div class="cell-output cell-output-display">
+<p><img src="2023-03-04-gnn-intro_files/figure-html/cell-25-output-40.png" class="img-fluid"></p>
+</div>
+<div class="cell-output cell-output-display">
+<p><img src="2023-03-04-gnn-intro_files/figure-html/cell-25-output-41.png" class="img-fluid"></p>
+</div>
+<div class="cell-output cell-output-display">
+<p><img src="2023-03-04-gnn-intro_files/figure-html/cell-25-output-42.png" class="img-fluid"></p>
+</div>
+<div class="cell-output cell-output-display">
+<p><img src="2023-03-04-gnn-intro_files/figure-html/cell-25-output-43.png" class="img-fluid"></p>
+</div>
+<div class="cell-output cell-output-display">
+<p><img src="2023-03-04-gnn-intro_files/figure-html/cell-25-output-44.png" class="img-fluid"></p>
+</div>
+<div class="cell-output cell-output-display">
+<p><img src="2023-03-04-gnn-intro_files/figure-html/cell-25-output-45.png" class="img-fluid"></p>
+</div>
+<div class="cell-output cell-output-display">
+<p><img src="2023-03-04-gnn-intro_files/figure-html/cell-25-output-46.png" class="img-fluid"></p>
+</div>
+<div class="cell-output cell-output-display">
+<p><img src="2023-03-04-gnn-intro_files/figure-html/cell-25-output-47.png" class="img-fluid"></p>
+</div>
+<div class="cell-output cell-output-display">
+<p><img src="2023-03-04-gnn-intro_files/figure-html/cell-25-output-48.png" class="img-fluid"></p>
+</div>
+<div class="cell-output cell-output-display">
+<p><img src="2023-03-04-gnn-intro_files/figure-html/cell-25-output-49.png" class="img-fluid"></p>
+</div>
+<div class="cell-output cell-output-display">
+<p><img src="2023-03-04-gnn-intro_files/figure-html/cell-25-output-50.png" class="img-fluid"></p>
+</div>
+<div class="cell-output cell-output-display">
+<p><img src="2023-03-04-gnn-intro_files/figure-html/cell-25-output-51.png" class="img-fluid"></p>
+</div>
+<div class="cell-output cell-output-display">
+<p><img src="2023-03-04-gnn-intro_files/figure-html/cell-25-output-52.png" class="img-fluid"></p>
+</div>
+<div class="cell-output cell-output-display">
+<p><img src="2023-03-04-gnn-intro_files/figure-html/cell-25-output-53.png" class="img-fluid"></p>
+</div>
+<div class="cell-output cell-output-display">
+<p><img src="2023-03-04-gnn-intro_files/figure-html/cell-25-output-54.png" class="img-fluid"></p>
+</div>
+<div class="cell-output cell-output-display">
+<p><img src="2023-03-04-gnn-intro_files/figure-html/cell-25-output-55.png" class="img-fluid"></p>
+</div>
+<div class="cell-output cell-output-display">
+<p><img src="2023-03-04-gnn-intro_files/figure-html/cell-25-output-56.png" class="img-fluid"></p>
+</div>
+<div class="cell-output cell-output-display">
+<p><img src="2023-03-04-gnn-intro_files/figure-html/cell-25-output-57.png" class="img-fluid"></p>
+</div>
+<div class="cell-output cell-output-display">
+<p><img src="2023-03-04-gnn-intro_files/figure-html/cell-25-output-58.png" class="img-fluid"></p>
+</div>
+<div class="cell-output cell-output-display">
+<p><img src="2023-03-04-gnn-intro_files/figure-html/cell-25-output-59.png" class="img-fluid"></p>
+</div>
+<div class="cell-output cell-output-display">
+<p><img src="2023-03-04-gnn-intro_files/figure-html/cell-25-output-60.png" class="img-fluid"></p>
+</div>
+<div class="cell-output cell-output-display">
+<p><img src="2023-03-04-gnn-intro_files/figure-html/cell-25-output-61.png" class="img-fluid"></p>
+</div>
+<div class="cell-output cell-output-display">
+<p><img src="2023-03-04-gnn-intro_files/figure-html/cell-25-output-62.png" class="img-fluid"></p>
+</div>
+<div class="cell-output cell-output-display">
+<p><img src="2023-03-04-gnn-intro_files/figure-html/cell-25-output-63.png" class="img-fluid"></p>
+</div>
+<div class="cell-output cell-output-display">
+<p><img src="2023-03-04-gnn-intro_files/figure-html/cell-25-output-64.png" class="img-fluid"></p>
+</div>
+<div class="cell-output cell-output-display">
+<p><img src="2023-03-04-gnn-intro_files/figure-html/cell-25-output-65.png" class="img-fluid"></p>
+</div>
+<div class="cell-output cell-output-display">
+<p><img src="2023-03-04-gnn-intro_files/figure-html/cell-25-output-66.png" class="img-fluid"></p>
+</div>
+<div class="cell-output cell-output-display">
+<p><img src="2023-03-04-gnn-intro_files/figure-html/cell-25-output-67.png" class="img-fluid"></p>
+</div>
+<div class="cell-output cell-output-display">
+<p><img src="2023-03-04-gnn-intro_files/figure-html/cell-25-output-68.png" class="img-fluid"></p>
+</div>
+<div class="cell-output cell-output-display">
+<p><img src="2023-03-04-gnn-intro_files/figure-html/cell-25-output-69.png" class="img-fluid"></p>
+</div>
+<div class="cell-output cell-output-display">
+<p><img src="2023-03-04-gnn-intro_files/figure-html/cell-25-output-70.png" class="img-fluid"></p>
+</div>
+<div class="cell-output cell-output-display">
+<p><img src="2023-03-04-gnn-intro_files/figure-html/cell-25-output-71.png" class="img-fluid"></p>
+</div>
+<div class="cell-output cell-output-display">
+<p><img src="2023-03-04-gnn-intro_files/figure-html/cell-25-output-72.png" class="img-fluid"></p>
+</div>
+<div class="cell-output cell-output-display">
+<p><img src="2023-03-04-gnn-intro_files/figure-html/cell-25-output-73.png" class="img-fluid"></p>
+</div>
+<div class="cell-output cell-output-display">
+<p><img src="2023-03-04-gnn-intro_files/figure-html/cell-25-output-74.png" class="img-fluid"></p>
+</div>
+<div class="cell-output cell-output-display">
+<p><img src="2023-03-04-gnn-intro_files/figure-html/cell-25-output-75.png" class="img-fluid"></p>
+</div>
+<div class="cell-output cell-output-display">
+<p><img src="2023-03-04-gnn-intro_files/figure-html/cell-25-output-76.png" class="img-fluid"></p>
+</div>
+<div class="cell-output cell-output-display">
+<p><img src="2023-03-04-gnn-intro_files/figure-html/cell-25-output-77.png" class="img-fluid"></p>
+</div>
+<div class="cell-output cell-output-display">
+<p><img src="2023-03-04-gnn-intro_files/figure-html/cell-25-output-78.png" class="img-fluid"></p>
+</div>
+<div class="cell-output cell-output-display">
+<p><img src="2023-03-04-gnn-intro_files/figure-html/cell-25-output-79.png" class="img-fluid"></p>
+</div>
+<div class="cell-output cell-output-display">
+<p><img src="2023-03-04-gnn-intro_files/figure-html/cell-25-output-80.png" class="img-fluid"></p>
+</div>
+<div class="cell-output cell-output-display">
+<p><img src="2023-03-04-gnn-intro_files/figure-html/cell-25-output-81.png" class="img-fluid"></p>
+</div>
+<div class="cell-output cell-output-display">
+<p><img src="2023-03-04-gnn-intro_files/figure-html/cell-25-output-82.png" class="img-fluid"></p>
+</div>
+<div class="cell-output cell-output-display">
+<p><img src="2023-03-04-gnn-intro_files/figure-html/cell-25-output-83.png" class="img-fluid"></p>
+</div>
+<div class="cell-output cell-output-display">
+<p><img src="2023-03-04-gnn-intro_files/figure-html/cell-25-output-84.png" class="img-fluid"></p>
+</div>
+<div class="cell-output cell-output-display">
+<p><img src="2023-03-04-gnn-intro_files/figure-html/cell-25-output-85.png" class="img-fluid"></p>
+</div>
+<div class="cell-output cell-output-display">
+<p><img src="2023-03-04-gnn-intro_files/figure-html/cell-25-output-86.png" class="img-fluid"></p>
+</div>
+<div class="cell-output cell-output-display">
+<p><img src="2023-03-04-gnn-intro_files/figure-html/cell-25-output-87.png" class="img-fluid"></p>
+</div>
+<div class="cell-output cell-output-display">
+<p><img src="2023-03-04-gnn-intro_files/figure-html/cell-25-output-88.png" class="img-fluid"></p>
+</div>
+<div class="cell-output cell-output-display">
+<p><img src="2023-03-04-gnn-intro_files/figure-html/cell-25-output-89.png" class="img-fluid"></p>
+</div>
+<div class="cell-output cell-output-display">
+<p><img src="2023-03-04-gnn-intro_files/figure-html/cell-25-output-90.png" class="img-fluid"></p>
+</div>
+<div class="cell-output cell-output-display">
+<p><img src="2023-03-04-gnn-intro_files/figure-html/cell-25-output-91.png" class="img-fluid"></p>
+</div>
+<div class="cell-output cell-output-display">
+<p><img src="2023-03-04-gnn-intro_files/figure-html/cell-25-output-92.png" class="img-fluid"></p>
+</div>
+<div class="cell-output cell-output-display">
+<p><img src="2023-03-04-gnn-intro_files/figure-html/cell-25-output-93.png" class="img-fluid"></p>
+</div>
+<div class="cell-output cell-output-display">
+<p><img src="2023-03-04-gnn-intro_files/figure-html/cell-25-output-94.png" class="img-fluid"></p>
+</div>
+<div class="cell-output cell-output-display">
+<p><img src="2023-03-04-gnn-intro_files/figure-html/cell-25-output-95.png" class="img-fluid"></p>
+</div>
+<div class="cell-output cell-output-display">
+<p><img src="2023-03-04-gnn-intro_files/figure-html/cell-25-output-96.png" class="img-fluid"></p>
+</div>
+<div class="cell-output cell-output-display">
+<p><img src="2023-03-04-gnn-intro_files/figure-html/cell-25-output-97.png" class="img-fluid"></p>
+</div>
+<div class="cell-output cell-output-display">
+<p><img src="2023-03-04-gnn-intro_files/figure-html/cell-25-output-98.png" class="img-fluid"></p>
+</div>
+<div class="cell-output cell-output-display">
+<p><img src="2023-03-04-gnn-intro_files/figure-html/cell-25-output-99.png" class="img-fluid"></p>
+</div>
+<div class="cell-output cell-output-display">
+<p><img src="2023-03-04-gnn-intro_files/figure-html/cell-25-output-100.png" class="img-fluid"></p>
+</div>
+<div class="cell-output cell-output-display">
+<p><img src="2023-03-04-gnn-intro_files/figure-html/cell-25-output-101.png" class="img-fluid"></p>
+</div>
+<div class="cell-output cell-output-display">
+<p><img src="2023-03-04-gnn-intro_files/figure-html/cell-25-output-102.png" class="img-fluid"></p>
+</div>
+<div class="cell-output cell-output-display">
+<p><img src="2023-03-04-gnn-intro_files/figure-html/cell-25-output-103.png" class="img-fluid"></p>
+</div>
+<div class="cell-output cell-output-display">
+<p><img src="2023-03-04-gnn-intro_files/figure-html/cell-25-output-104.png" class="img-fluid"></p>
+</div>
+<div class="cell-output cell-output-display">
+<p><img src="2023-03-04-gnn-intro_files/figure-html/cell-25-output-105.png" class="img-fluid"></p>
+</div>
+<div class="cell-output cell-output-display">
+<p><img src="2023-03-04-gnn-intro_files/figure-html/cell-25-output-106.png" class="img-fluid"></p>
+</div>
+<div class="cell-output cell-output-display">
+<p><img src="2023-03-04-gnn-intro_files/figure-html/cell-25-output-107.png" class="img-fluid"></p>
+</div>
+<div class="cell-output cell-output-display">
+<p><img src="2023-03-04-gnn-intro_files/figure-html/cell-25-output-108.png" class="img-fluid"></p>
+</div>
+<div class="cell-output cell-output-display">
+<p><img src="2023-03-04-gnn-intro_files/figure-html/cell-25-output-109.png" class="img-fluid"></p>
+</div>
+<div class="cell-output cell-output-display">
+<p><img src="2023-03-04-gnn-intro_files/figure-html/cell-25-output-110.png" class="img-fluid"></p>
+</div>
+<div class="cell-output cell-output-display">
+<p><img src="2023-03-04-gnn-intro_files/figure-html/cell-25-output-111.png" class="img-fluid"></p>
+</div>
+<div class="cell-output cell-output-display">
+<p><img src="2023-03-04-gnn-intro_files/figure-html/cell-25-output-112.png" class="img-fluid"></p>
+</div>
+<div class="cell-output cell-output-display">
+<p><img src="2023-03-04-gnn-intro_files/figure-html/cell-25-output-113.png" class="img-fluid"></p>
+</div>
+<div class="cell-output cell-output-display">
+<p><img src="2023-03-04-gnn-intro_files/figure-html/cell-25-output-114.png" class="img-fluid"></p>
+</div>
+<div class="cell-output cell-output-display">
+<p><img src="2023-03-04-gnn-intro_files/figure-html/cell-25-output-115.png" class="img-fluid"></p>
+</div>
+<div class="cell-output cell-output-display">
+<p><img src="2023-03-04-gnn-intro_files/figure-html/cell-25-output-116.png" class="img-fluid"></p>
+</div>
+<div class="cell-output cell-output-display">
+<p><img src="2023-03-04-gnn-intro_files/figure-html/cell-25-output-117.png" class="img-fluid"></p>
+</div>
+<div class="cell-output cell-output-display">
+<p><img src="2023-03-04-gnn-intro_files/figure-html/cell-25-output-118.png" class="img-fluid"></p>
+</div>
+<div class="cell-output cell-output-display">
+<p><img src="2023-03-04-gnn-intro_files/figure-html/cell-25-output-119.png" class="img-fluid"></p>
+</div>
+<div class="cell-output cell-output-display">
+<p><img src="2023-03-04-gnn-intro_files/figure-html/cell-25-output-120.png" class="img-fluid"></p>
+</div>
+<div class="cell-output cell-output-display">
+<p><img src="2023-03-04-gnn-intro_files/figure-html/cell-25-output-121.png" class="img-fluid"></p>
+</div>
+<div class="cell-output cell-output-display">
+<p><img src="2023-03-04-gnn-intro_files/figure-html/cell-25-output-122.png" class="img-fluid"></p>
+</div>
+<div class="cell-output cell-output-display">
+<p><img src="2023-03-04-gnn-intro_files/figure-html/cell-25-output-123.png" class="img-fluid"></p>
+</div>
+<div class="cell-output cell-output-display">
+<p><img src="2023-03-04-gnn-intro_files/figure-html/cell-25-output-124.png" class="img-fluid"></p>
+</div>
+<div class="cell-output cell-output-display">
+<p><img src="2023-03-04-gnn-intro_files/figure-html/cell-25-output-125.png" class="img-fluid"></p>
+</div>
+<div class="cell-output cell-output-display">
+<p><img src="2023-03-04-gnn-intro_files/figure-html/cell-25-output-126.png" class="img-fluid"></p>
+</div>
+<div class="cell-output cell-output-display">
+<p><img src="2023-03-04-gnn-intro_files/figure-html/cell-25-output-127.png" class="img-fluid"></p>
+</div>
+<div class="cell-output cell-output-display">
+<p><img src="2023-03-04-gnn-intro_files/figure-html/cell-25-output-128.png" class="img-fluid"></p>
+</div>
+<div class="cell-output cell-output-display">
+<p><img src="2023-03-04-gnn-intro_files/figure-html/cell-25-output-129.png" class="img-fluid"></p>
+</div>
+<div class="cell-output cell-output-display">
+<p><img src="2023-03-04-gnn-intro_files/figure-html/cell-25-output-130.png" class="img-fluid"></p>
+</div>
+<div class="cell-output cell-output-display">
+<p><img src="2023-03-04-gnn-intro_files/figure-html/cell-25-output-131.png" class="img-fluid"></p>
+</div>
+<div class="cell-output cell-output-display">
+<p><img src="2023-03-04-gnn-intro_files/figure-html/cell-25-output-132.png" class="img-fluid"></p>
+</div>
+<div class="cell-output cell-output-display">
+<p><img src="2023-03-04-gnn-intro_files/figure-html/cell-25-output-133.png" class="img-fluid"></p>
+</div>
+<div class="cell-output cell-output-display">
+<p><img src="2023-03-04-gnn-intro_files/figure-html/cell-25-output-134.png" class="img-fluid"></p>
+</div>
+<div class="cell-output cell-output-display">
+<p><img src="2023-03-04-gnn-intro_files/figure-html/cell-25-output-135.png" class="img-fluid"></p>
+</div>
+<div class="cell-output cell-output-display">
+<p><img src="2023-03-04-gnn-intro_files/figure-html/cell-25-output-136.png" class="img-fluid"></p>
+</div>
+<div class="cell-output cell-output-display">
+<p><img src="2023-03-04-gnn-intro_files/figure-html/cell-25-output-137.png" class="img-fluid"></p>
+</div>
+<div class="cell-output cell-output-display">
+<p><img src="2023-03-04-gnn-intro_files/figure-html/cell-25-output-138.png" class="img-fluid"></p>
+</div>
+<div class="cell-output cell-output-display">
+<p><img src="2023-03-04-gnn-intro_files/figure-html/cell-25-output-139.png" class="img-fluid"></p>
+</div>
+<div class="cell-output cell-output-display">
+<p><img src="2023-03-04-gnn-intro_files/figure-html/cell-25-output-140.png" class="img-fluid"></p>
+</div>
+<div class="cell-output cell-output-display">
+<p><img src="2023-03-04-gnn-intro_files/figure-html/cell-25-output-141.png" class="img-fluid"></p>
+</div>
+<div class="cell-output cell-output-display">
+<p><img src="2023-03-04-gnn-intro_files/figure-html/cell-25-output-142.png" class="img-fluid"></p>
+</div>
+<div class="cell-output cell-output-display">
+<p><img src="2023-03-04-gnn-intro_files/figure-html/cell-25-output-143.png" class="img-fluid"></p>
+</div>
+<div class="cell-output cell-output-display">
+<p><img src="2023-03-04-gnn-intro_files/figure-html/cell-25-output-144.png" class="img-fluid"></p>
+</div>
+<div class="cell-output cell-output-display">
+<p><img src="2023-03-04-gnn-intro_files/figure-html/cell-25-output-145.png" class="img-fluid"></p>
+</div>
+<div class="cell-output cell-output-display">
+<p><img src="2023-03-04-gnn-intro_files/figure-html/cell-25-output-146.png" class="img-fluid"></p>
+</div>
+<div class="cell-output cell-output-display">
+<p><img src="2023-03-04-gnn-intro_files/figure-html/cell-25-output-147.png" class="img-fluid"></p>
+</div>
+<div class="cell-output cell-output-display">
+<p><img src="2023-03-04-gnn-intro_files/figure-html/cell-25-output-148.png" class="img-fluid"></p>
+</div>
+<div class="cell-output cell-output-display">
+<p><img src="2023-03-04-gnn-intro_files/figure-html/cell-25-output-149.png" class="img-fluid"></p>
+</div>
+<div class="cell-output cell-output-display">
+<p><img src="2023-03-04-gnn-intro_files/figure-html/cell-25-output-150.png" class="img-fluid"></p>
+</div>
+<div class="cell-output cell-output-display">
+<p><img src="2023-03-04-gnn-intro_files/figure-html/cell-25-output-151.png" class="img-fluid"></p>
+</div>
+<div class="cell-output cell-output-display">
+<p><img src="2023-03-04-gnn-intro_files/figure-html/cell-25-output-152.png" class="img-fluid"></p>
+</div>
+<div class="cell-output cell-output-display">
+<p><img src="2023-03-04-gnn-intro_files/figure-html/cell-25-output-153.png" class="img-fluid"></p>
+</div>
+<div class="cell-output cell-output-display">
+<p><img src="2023-03-04-gnn-intro_files/figure-html/cell-25-output-154.png" class="img-fluid"></p>
+</div>
+<div class="cell-output cell-output-display">
+<p><img src="2023-03-04-gnn-intro_files/figure-html/cell-25-output-155.png" class="img-fluid"></p>
+</div>
+<div class="cell-output cell-output-display">
+<p><img src="2023-03-04-gnn-intro_files/figure-html/cell-25-output-156.png" class="img-fluid"></p>
+</div>
+<div class="cell-output cell-output-display">
+<p><img src="2023-03-04-gnn-intro_files/figure-html/cell-25-output-157.png" class="img-fluid"></p>
+</div>
+<div class="cell-output cell-output-display">
+<p><img src="2023-03-04-gnn-intro_files/figure-html/cell-25-output-158.png" class="img-fluid"></p>
+</div>
+<div class="cell-output cell-output-display">
+<p><img src="2023-03-04-gnn-intro_files/figure-html/cell-25-output-159.png" class="img-fluid"></p>
+</div>
+<div class="cell-output cell-output-display">
+<p><img src="2023-03-04-gnn-intro_files/figure-html/cell-25-output-160.png" class="img-fluid"></p>
+</div>
+<div class="cell-output cell-output-display">
+<p><img src="2023-03-04-gnn-intro_files/figure-html/cell-25-output-161.png" class="img-fluid"></p>
+</div>
+<div class="cell-output cell-output-display">
+<p><img src="2023-03-04-gnn-intro_files/figure-html/cell-25-output-162.png" class="img-fluid"></p>
+</div>
+<div class="cell-output cell-output-display">
+<p><img src="2023-03-04-gnn-intro_files/figure-html/cell-25-output-163.png" class="img-fluid"></p>
+</div>
+<div class="cell-output cell-output-display">
+<p><img src="2023-03-04-gnn-intro_files/figure-html/cell-25-output-164.png" class="img-fluid"></p>
+</div>
+<div class="cell-output cell-output-display">
+<p><img src="2023-03-04-gnn-intro_files/figure-html/cell-25-output-165.png" class="img-fluid"></p>
+</div>
+<div class="cell-output cell-output-display">
+<p><img src="2023-03-04-gnn-intro_files/figure-html/cell-25-output-166.png" class="img-fluid"></p>
+</div>
+<div class="cell-output cell-output-display">
+<p><img src="2023-03-04-gnn-intro_files/figure-html/cell-25-output-167.png" class="img-fluid"></p>
+</div>
+<div class="cell-output cell-output-display">
+<p><img src="2023-03-04-gnn-intro_files/figure-html/cell-25-output-168.png" class="img-fluid"></p>
+</div>
+<div class="cell-output cell-output-display">
+<p><img src="2023-03-04-gnn-intro_files/figure-html/cell-25-output-169.png" class="img-fluid"></p>
+</div>
+<div class="cell-output cell-output-display">
+<p><img src="2023-03-04-gnn-intro_files/figure-html/cell-25-output-170.png" class="img-fluid"></p>
+</div>
+<div class="cell-output cell-output-display">
+<p><img src="2023-03-04-gnn-intro_files/figure-html/cell-25-output-171.png" class="img-fluid"></p>
+</div>
+<div class="cell-output cell-output-display">
+<p><img src="2023-03-04-gnn-intro_files/figure-html/cell-25-output-172.png" class="img-fluid"></p>
+</div>
+<div class="cell-output cell-output-display">
+<p><img src="2023-03-04-gnn-intro_files/figure-html/cell-25-output-173.png" class="img-fluid"></p>
+</div>
+<div class="cell-output cell-output-display">
+<p><img src="2023-03-04-gnn-intro_files/figure-html/cell-25-output-174.png" class="img-fluid"></p>
+</div>
+<div class="cell-output cell-output-display">
+<p><img src="2023-03-04-gnn-intro_files/figure-html/cell-25-output-175.png" class="img-fluid"></p>
+</div>
+<div class="cell-output cell-output-display">
+<p><img src="2023-03-04-gnn-intro_files/figure-html/cell-25-output-176.png" class="img-fluid"></p>
+</div>
+<div class="cell-output cell-output-display">
+<p><img src="2023-03-04-gnn-intro_files/figure-html/cell-25-output-177.png" class="img-fluid"></p>
+</div>
+<div class="cell-output cell-output-display">
+<p><img src="2023-03-04-gnn-intro_files/figure-html/cell-25-output-178.png" class="img-fluid"></p>
+</div>
+<div class="cell-output cell-output-display">
+<p><img src="2023-03-04-gnn-intro_files/figure-html/cell-25-output-179.png" class="img-fluid"></p>
+</div>
+<div class="cell-output cell-output-display">
+<p><img src="2023-03-04-gnn-intro_files/figure-html/cell-25-output-180.png" class="img-fluid"></p>
+</div>
+<div class="cell-output cell-output-display">
+<p><img src="2023-03-04-gnn-intro_files/figure-html/cell-25-output-181.png" class="img-fluid"></p>
+</div>
+<div class="cell-output cell-output-display">
+<p><img src="2023-03-04-gnn-intro_files/figure-html/cell-25-output-182.png" class="img-fluid"></p>
+</div>
+<div class="cell-output cell-output-display">
+<p><img src="2023-03-04-gnn-intro_files/figure-html/cell-25-output-183.png" class="img-fluid"></p>
+</div>
+<div class="cell-output cell-output-display">
+<p><img src="2023-03-04-gnn-intro_files/figure-html/cell-25-output-184.png" class="img-fluid"></p>
+</div>
+<div class="cell-output cell-output-display">
+<p><img src="2023-03-04-gnn-intro_files/figure-html/cell-25-output-185.png" class="img-fluid"></p>
+</div>
+<div class="cell-output cell-output-display">
+<p><img src="2023-03-04-gnn-intro_files/figure-html/cell-25-output-186.png" class="img-fluid"></p>
+</div>
+<div class="cell-output cell-output-display">
+<p><img src="2023-03-04-gnn-intro_files/figure-html/cell-25-output-187.png" class="img-fluid"></p>
+</div>
+<div class="cell-output cell-output-display">
+<p><img src="2023-03-04-gnn-intro_files/figure-html/cell-25-output-188.png" class="img-fluid"></p>
+</div>
+<div class="cell-output cell-output-display">
+<p><img src="2023-03-04-gnn-intro_files/figure-html/cell-25-output-189.png" class="img-fluid"></p>
+</div>
+<div class="cell-output cell-output-display">
+<p><img src="2023-03-04-gnn-intro_files/figure-html/cell-25-output-190.png" class="img-fluid"></p>
+</div>
+<div class="cell-output cell-output-display">
+<p><img src="2023-03-04-gnn-intro_files/figure-html/cell-25-output-191.png" class="img-fluid"></p>
+</div>
+<div class="cell-output cell-output-display">
+<p><img src="2023-03-04-gnn-intro_files/figure-html/cell-25-output-192.png" class="img-fluid"></p>
+</div>
+<div class="cell-output cell-output-display">
+<p><img src="2023-03-04-gnn-intro_files/figure-html/cell-25-output-193.png" class="img-fluid"></p>
+</div>
+<div class="cell-output cell-output-display">
+<p><img src="2023-03-04-gnn-intro_files/figure-html/cell-25-output-194.png" class="img-fluid"></p>
+</div>
+<div class="cell-output cell-output-display">
+<p><img src="2023-03-04-gnn-intro_files/figure-html/cell-25-output-195.png" class="img-fluid"></p>
+</div>
+<div class="cell-output cell-output-display">
+<p><img src="2023-03-04-gnn-intro_files/figure-html/cell-25-output-196.png" class="img-fluid"></p>
+</div>
+<div class="cell-output cell-output-display">
+<p><img src="2023-03-04-gnn-intro_files/figure-html/cell-25-output-197.png" class="img-fluid"></p>
+</div>
+<div class="cell-output cell-output-display">
+<p><img src="2023-03-04-gnn-intro_files/figure-html/cell-25-output-198.png" class="img-fluid"></p>
+</div>
+<div class="cell-output cell-output-display">
+<p><img src="2023-03-04-gnn-intro_files/figure-html/cell-25-output-199.png" class="img-fluid"></p>
+</div>
+<div class="cell-output cell-output-display">
+<p><img src="2023-03-04-gnn-intro_files/figure-html/cell-25-output-200.png" class="img-fluid"></p>
+</div>
+<div class="cell-output cell-output-display">
+<p><img src="2023-03-04-gnn-intro_files/figure-html/cell-25-output-201.png" class="img-fluid"></p>
+</div>
+<div class="cell-output cell-output-display">
+<p><img src="2023-03-04-gnn-intro_files/figure-html/cell-25-output-202.png" class="img-fluid"></p>
+</div>
+<div class="cell-output cell-output-display">
+<p><img src="2023-03-04-gnn-intro_files/figure-html/cell-25-output-203.png" class="img-fluid"></p>
+</div>
+<div class="cell-output cell-output-display">
+<p><img src="2023-03-04-gnn-intro_files/figure-html/cell-25-output-204.png" class="img-fluid"></p>
+</div>
+<div class="cell-output cell-output-display">
+<p><img src="2023-03-04-gnn-intro_files/figure-html/cell-25-output-205.png" class="img-fluid"></p>
+</div>
+<div class="cell-output cell-output-display">
+<p><img src="2023-03-04-gnn-intro_files/figure-html/cell-25-output-206.png" class="img-fluid"></p>
+</div>
+<div class="cell-output cell-output-display">
+<p><img src="2023-03-04-gnn-intro_files/figure-html/cell-25-output-207.png" class="img-fluid"></p>
+</div>
+<div class="cell-output cell-output-display">
+<p><img src="2023-03-04-gnn-intro_files/figure-html/cell-25-output-208.png" class="img-fluid"></p>
+</div>
+<div class="cell-output cell-output-display">
+<p><img src="2023-03-04-gnn-intro_files/figure-html/cell-25-output-209.png" class="img-fluid"></p>
+</div>
+<div class="cell-output cell-output-display">
+<p><img src="2023-03-04-gnn-intro_files/figure-html/cell-25-output-210.png" class="img-fluid"></p>
+</div>
+<div class="cell-output cell-output-display">
+<p><img src="2023-03-04-gnn-intro_files/figure-html/cell-25-output-211.png" class="img-fluid"></p>
+</div>
+<div class="cell-output cell-output-display">
+<p><img src="2023-03-04-gnn-intro_files/figure-html/cell-25-output-212.png" class="img-fluid"></p>
+</div>
+<div class="cell-output cell-output-display">
+<p><img src="2023-03-04-gnn-intro_files/figure-html/cell-25-output-213.png" class="img-fluid"></p>
+</div>
+<div class="cell-output cell-output-display">
+<p><img src="2023-03-04-gnn-intro_files/figure-html/cell-25-output-214.png" class="img-fluid"></p>
+</div>
+<div class="cell-output cell-output-display">
+<p><img src="2023-03-04-gnn-intro_files/figure-html/cell-25-output-215.png" class="img-fluid"></p>
+</div>
+<div class="cell-output cell-output-display">
+<p><img src="2023-03-04-gnn-intro_files/figure-html/cell-25-output-216.png" class="img-fluid"></p>
+</div>
+<div class="cell-output cell-output-display">
+<p><img src="2023-03-04-gnn-intro_files/figure-html/cell-25-output-217.png" class="img-fluid"></p>
+</div>
+<div class="cell-output cell-output-display">
+<p><img src="2023-03-04-gnn-intro_files/figure-html/cell-25-output-218.png" class="img-fluid"></p>
+</div>
+<div class="cell-output cell-output-display">
+<p><img src="2023-03-04-gnn-intro_files/figure-html/cell-25-output-219.png" class="img-fluid"></p>
+</div>
+<div class="cell-output cell-output-display">
+<p><img src="2023-03-04-gnn-intro_files/figure-html/cell-25-output-220.png" class="img-fluid"></p>
+</div>
+<div class="cell-output cell-output-display">
+<p><img src="2023-03-04-gnn-intro_files/figure-html/cell-25-output-221.png" class="img-fluid"></p>
+</div>
+<div class="cell-output cell-output-display">
+<p><img src="2023-03-04-gnn-intro_files/figure-html/cell-25-output-222.png" class="img-fluid"></p>
+</div>
+<div class="cell-output cell-output-display">
+<p><img src="2023-03-04-gnn-intro_files/figure-html/cell-25-output-223.png" class="img-fluid"></p>
+</div>
+<div class="cell-output cell-output-display">
+<p><img src="2023-03-04-gnn-intro_files/figure-html/cell-25-output-224.png" class="img-fluid"></p>
+</div>
+<div class="cell-output cell-output-display">
+<p><img src="2023-03-04-gnn-intro_files/figure-html/cell-25-output-225.png" class="img-fluid"></p>
+</div>
+<div class="cell-output cell-output-display">
+<p><img src="2023-03-04-gnn-intro_files/figure-html/cell-25-output-226.png" class="img-fluid"></p>
+</div>
+<div class="cell-output cell-output-display">
+<p><img src="2023-03-04-gnn-intro_files/figure-html/cell-25-output-227.png" class="img-fluid"></p>
+</div>
+<div class="cell-output cell-output-display">
+<p><img src="2023-03-04-gnn-intro_files/figure-html/cell-25-output-228.png" class="img-fluid"></p>
+</div>
+<div class="cell-output cell-output-display">
+<p><img src="2023-03-04-gnn-intro_files/figure-html/cell-25-output-229.png" class="img-fluid"></p>
+</div>
+<div class="cell-output cell-output-display">
+<p><img src="2023-03-04-gnn-intro_files/figure-html/cell-25-output-230.png" class="img-fluid"></p>
+</div>
+<div class="cell-output cell-output-display">
+<p><img src="2023-03-04-gnn-intro_files/figure-html/cell-25-output-231.png" class="img-fluid"></p>
+</div>
+<div class="cell-output cell-output-display">
+<p><img src="2023-03-04-gnn-intro_files/figure-html/cell-25-output-232.png" class="img-fluid"></p>
+</div>
+<div class="cell-output cell-output-display">
+<p><img src="2023-03-04-gnn-intro_files/figure-html/cell-25-output-233.png" class="img-fluid"></p>
+</div>
+<div class="cell-output cell-output-display">
+<p><img src="2023-03-04-gnn-intro_files/figure-html/cell-25-output-234.png" class="img-fluid"></p>
+</div>
+<div class="cell-output cell-output-display">
+<p><img src="2023-03-04-gnn-intro_files/figure-html/cell-25-output-235.png" class="img-fluid"></p>
+</div>
+<div class="cell-output cell-output-display">
+<p><img src="2023-03-04-gnn-intro_files/figure-html/cell-25-output-236.png" class="img-fluid"></p>
+</div>
+<div class="cell-output cell-output-display">
+<p><img src="2023-03-04-gnn-intro_files/figure-html/cell-25-output-237.png" class="img-fluid"></p>
+</div>
+<div class="cell-output cell-output-display">
+<p><img src="2023-03-04-gnn-intro_files/figure-html/cell-25-output-238.png" class="img-fluid"></p>
+</div>
+<div class="cell-output cell-output-display">
+<p><img src="2023-03-04-gnn-intro_files/figure-html/cell-25-output-239.png" class="img-fluid"></p>
+</div>
+<div class="cell-output cell-output-display">
+<p><img src="2023-03-04-gnn-intro_files/figure-html/cell-25-output-240.png" class="img-fluid"></p>
+</div>
+<div class="cell-output cell-output-display">
+<p><img src="2023-03-04-gnn-intro_files/figure-html/cell-25-output-241.png" class="img-fluid"></p>
+</div>
+<div class="cell-output cell-output-display">
+<p><img src="2023-03-04-gnn-intro_files/figure-html/cell-25-output-242.png" class="img-fluid"></p>
+</div>
+<div class="cell-output cell-output-display">
+<p><img src="2023-03-04-gnn-intro_files/figure-html/cell-25-output-243.png" class="img-fluid"></p>
+</div>
+<div class="cell-output cell-output-display">
+<p><img src="2023-03-04-gnn-intro_files/figure-html/cell-25-output-244.png" class="img-fluid"></p>
+</div>
+<div class="cell-output cell-output-display">
+<p><img src="2023-03-04-gnn-intro_files/figure-html/cell-25-output-245.png" class="img-fluid"></p>
+</div>
+<div class="cell-output cell-output-display">
+<p><img src="2023-03-04-gnn-intro_files/figure-html/cell-25-output-246.png" class="img-fluid"></p>
+</div>
+<div class="cell-output cell-output-display">
+<p><img src="2023-03-04-gnn-intro_files/figure-html/cell-25-output-247.png" class="img-fluid"></p>
+</div>
+<div class="cell-output cell-output-display">
+<p><img src="2023-03-04-gnn-intro_files/figure-html/cell-25-output-248.png" class="img-fluid"></p>
+</div>
+<div class="cell-output cell-output-display">
+<p><img src="2023-03-04-gnn-intro_files/figure-html/cell-25-output-249.png" class="img-fluid"></p>
+</div>
+<div class="cell-output cell-output-display">
+<p><img src="2023-03-04-gnn-intro_files/figure-html/cell-25-output-250.png" class="img-fluid"></p>
+</div>
+<div class="cell-output cell-output-display">
+<p><img src="2023-03-04-gnn-intro_files/figure-html/cell-25-output-251.png" class="img-fluid"></p>
+</div>
+<div class="cell-output cell-output-display">
+<p><img src="2023-03-04-gnn-intro_files/figure-html/cell-25-output-252.png" class="img-fluid"></p>
+</div>
+<div class="cell-output cell-output-display">
+<p><img src="2023-03-04-gnn-intro_files/figure-html/cell-25-output-253.png" class="img-fluid"></p>
+</div>
+<div class="cell-output cell-output-display">
+<p><img src="2023-03-04-gnn-intro_files/figure-html/cell-25-output-254.png" class="img-fluid"></p>
+</div>
+<div class="cell-output cell-output-display">
+<p><img src="2023-03-04-gnn-intro_files/figure-html/cell-25-output-255.png" class="img-fluid"></p>
+</div>
+<div class="cell-output cell-output-display">
+<p><img src="2023-03-04-gnn-intro_files/figure-html/cell-25-output-256.png" class="img-fluid"></p>
+</div>
+<div class="cell-output cell-output-display">
+<p><img src="2023-03-04-gnn-intro_files/figure-html/cell-25-output-257.png" class="img-fluid"></p>
+</div>
+<div class="cell-output cell-output-display">
+<p><img src="2023-03-04-gnn-intro_files/figure-html/cell-25-output-258.png" class="img-fluid"></p>
+</div>
+<div class="cell-output cell-output-display">
+<p><img src="2023-03-04-gnn-intro_files/figure-html/cell-25-output-259.png" class="img-fluid"></p>
+</div>
+<div class="cell-output cell-output-display">
+<p><img src="2023-03-04-gnn-intro_files/figure-html/cell-25-output-260.png" class="img-fluid"></p>
+</div>
+<div class="cell-output cell-output-display">
+<p><img src="2023-03-04-gnn-intro_files/figure-html/cell-25-output-261.png" class="img-fluid"></p>
+</div>
+<div class="cell-output cell-output-display">
+<p><img src="2023-03-04-gnn-intro_files/figure-html/cell-25-output-262.png" class="img-fluid"></p>
+</div>
+<div class="cell-output cell-output-display">
+<p><img src="2023-03-04-gnn-intro_files/figure-html/cell-25-output-263.png" class="img-fluid"></p>
+</div>
+<div class="cell-output cell-output-display">
+<p><img src="2023-03-04-gnn-intro_files/figure-html/cell-25-output-264.png" class="img-fluid"></p>
+</div>
+<div class="cell-output cell-output-display">
+<p><img src="2023-03-04-gnn-intro_files/figure-html/cell-25-output-265.png" class="img-fluid"></p>
+</div>
+<div class="cell-output cell-output-display">
+<p><img src="2023-03-04-gnn-intro_files/figure-html/cell-25-output-266.png" class="img-fluid"></p>
+</div>
+<div class="cell-output cell-output-display">
+<p><img src="2023-03-04-gnn-intro_files/figure-html/cell-25-output-267.png" class="img-fluid"></p>
+</div>
+<div class="cell-output cell-output-display">
+<p><img src="2023-03-04-gnn-intro_files/figure-html/cell-25-output-268.png" class="img-fluid"></p>
+</div>
+<div class="cell-output cell-output-display">
+<p><img src="2023-03-04-gnn-intro_files/figure-html/cell-25-output-269.png" class="img-fluid"></p>
+</div>
+<div class="cell-output cell-output-display">
+<p><img src="2023-03-04-gnn-intro_files/figure-html/cell-25-output-270.png" class="img-fluid"></p>
+</div>
+<div class="cell-output cell-output-display">
+<p><img src="2023-03-04-gnn-intro_files/figure-html/cell-25-output-271.png" class="img-fluid"></p>
+</div>
+<div class="cell-output cell-output-display">
+<p><img src="2023-03-04-gnn-intro_files/figure-html/cell-25-output-272.png" class="img-fluid"></p>
+</div>
+<div class="cell-output cell-output-display">
+<p><img src="2023-03-04-gnn-intro_files/figure-html/cell-25-output-273.png" class="img-fluid"></p>
+</div>
+<div class="cell-output cell-output-display">
+<p><img src="2023-03-04-gnn-intro_files/figure-html/cell-25-output-274.png" class="img-fluid"></p>
+</div>
+<div class="cell-output cell-output-display">
+<p><img src="2023-03-04-gnn-intro_files/figure-html/cell-25-output-275.png" class="img-fluid"></p>
+</div>
+<div class="cell-output cell-output-display">
+<p><img src="2023-03-04-gnn-intro_files/figure-html/cell-25-output-276.png" class="img-fluid"></p>
+</div>
+<div class="cell-output cell-output-display">
+<p><img src="2023-03-04-gnn-intro_files/figure-html/cell-25-output-277.png" class="img-fluid"></p>
+</div>
+<div class="cell-output cell-output-display">
+<p><img src="2023-03-04-gnn-intro_files/figure-html/cell-25-output-278.png" class="img-fluid"></p>
+</div>
+<div class="cell-output cell-output-display">
+<p><img src="2023-03-04-gnn-intro_files/figure-html/cell-25-output-279.png" class="img-fluid"></p>
+</div>
+<div class="cell-output cell-output-display">
+<p><img src="2023-03-04-gnn-intro_files/figure-html/cell-25-output-280.png" class="img-fluid"></p>
+</div>
+<div class="cell-output cell-output-display">
+<p><img src="2023-03-04-gnn-intro_files/figure-html/cell-25-output-281.png" class="img-fluid"></p>
+</div>
+<div class="cell-output cell-output-display">
+<p><img src="2023-03-04-gnn-intro_files/figure-html/cell-25-output-282.png" class="img-fluid"></p>
+</div>
+<div class="cell-output cell-output-display">
+<p><img src="2023-03-04-gnn-intro_files/figure-html/cell-25-output-283.png" class="img-fluid"></p>
+</div>
+<div class="cell-output cell-output-display">
+<p><img src="2023-03-04-gnn-intro_files/figure-html/cell-25-output-284.png" class="img-fluid"></p>
+</div>
+<div class="cell-output cell-output-display">
+<p><img src="2023-03-04-gnn-intro_files/figure-html/cell-25-output-285.png" class="img-fluid"></p>
+</div>
+<div class="cell-output cell-output-display">
+<p><img src="2023-03-04-gnn-intro_files/figure-html/cell-25-output-286.png" class="img-fluid"></p>
+</div>
+<div class="cell-output cell-output-display">
+<p><img src="2023-03-04-gnn-intro_files/figure-html/cell-25-output-287.png" class="img-fluid"></p>
+</div>
+<div class="cell-output cell-output-display">
+<p><img src="2023-03-04-gnn-intro_files/figure-html/cell-25-output-288.png" class="img-fluid"></p>
+</div>
+<div class="cell-output cell-output-display">
+<p><img src="2023-03-04-gnn-intro_files/figure-html/cell-25-output-289.png" class="img-fluid"></p>
+</div>
+<div class="cell-output cell-output-display">
+<p><img src="2023-03-04-gnn-intro_files/figure-html/cell-25-output-290.png" class="img-fluid"></p>
+</div>
+<div class="cell-output cell-output-display">
+<p><img src="2023-03-04-gnn-intro_files/figure-html/cell-25-output-291.png" class="img-fluid"></p>
+</div>
+<div class="cell-output cell-output-display">
+<p><img src="2023-03-04-gnn-intro_files/figure-html/cell-25-output-292.png" class="img-fluid"></p>
+</div>
+<div class="cell-output cell-output-display">
+<p><img src="2023-03-04-gnn-intro_files/figure-html/cell-25-output-293.png" class="img-fluid"></p>
+</div>
+<div class="cell-output cell-output-display">
+<p><img src="2023-03-04-gnn-intro_files/figure-html/cell-25-output-294.png" class="img-fluid"></p>
+</div>
+<div class="cell-output cell-output-display">
+<p><img src="2023-03-04-gnn-intro_files/figure-html/cell-25-output-295.png" class="img-fluid"></p>
+</div>
+<div class="cell-output cell-output-display">
+<p><img src="2023-03-04-gnn-intro_files/figure-html/cell-25-output-296.png" class="img-fluid"></p>
+</div>
+<div class="cell-output cell-output-display">
+<p><img src="2023-03-04-gnn-intro_files/figure-html/cell-25-output-297.png" class="img-fluid"></p>
+</div>
+<div class="cell-output cell-output-display">
+<p><img src="2023-03-04-gnn-intro_files/figure-html/cell-25-output-298.png" class="img-fluid"></p>
+</div>
+<div class="cell-output cell-output-display">
+<p><img src="2023-03-04-gnn-intro_files/figure-html/cell-25-output-299.png" class="img-fluid"></p>
+</div>
+<div class="cell-output cell-output-display">
+<p><img src="2023-03-04-gnn-intro_files/figure-html/cell-25-output-300.png" class="img-fluid"></p>
+</div>
+<div class="cell-output cell-output-display">
+<p><img src="2023-03-04-gnn-intro_files/figure-html/cell-25-output-301.png" class="img-fluid"></p>
+</div>
+<div class="cell-output cell-output-display">
+<p><img src="2023-03-04-gnn-intro_files/figure-html/cell-25-output-302.png" class="img-fluid"></p>
+</div>
+<div class="cell-output cell-output-display">
+<p><img src="2023-03-04-gnn-intro_files/figure-html/cell-25-output-303.png" class="img-fluid"></p>
+</div>
+<div class="cell-output cell-output-display">
+<p><img src="2023-03-04-gnn-intro_files/figure-html/cell-25-output-304.png" class="img-fluid"></p>
+</div>
+<div class="cell-output cell-output-display">
+<p><img src="2023-03-04-gnn-intro_files/figure-html/cell-25-output-305.png" class="img-fluid"></p>
+</div>
+<div class="cell-output cell-output-display">
+<p><img src="2023-03-04-gnn-intro_files/figure-html/cell-25-output-306.png" class="img-fluid"></p>
+</div>
+<div class="cell-output cell-output-display">
+<p><img src="2023-03-04-gnn-intro_files/figure-html/cell-25-output-307.png" class="img-fluid"></p>
+</div>
+<div class="cell-output cell-output-display">
+<p><img src="2023-03-04-gnn-intro_files/figure-html/cell-25-output-308.png" class="img-fluid"></p>
+</div>
+<div class="cell-output cell-output-display">
+<p><img src="2023-03-04-gnn-intro_files/figure-html/cell-25-output-309.png" class="img-fluid"></p>
+</div>
+<div class="cell-output cell-output-display">
+<p><img src="2023-03-04-gnn-intro_files/figure-html/cell-25-output-310.png" class="img-fluid"></p>
+</div>
+<div class="cell-output cell-output-display">
+<p><img src="2023-03-04-gnn-intro_files/figure-html/cell-25-output-311.png" class="img-fluid"></p>
+</div>
+<div class="cell-output cell-output-display">
+<p><img src="2023-03-04-gnn-intro_files/figure-html/cell-25-output-312.png" class="img-fluid"></p>
+</div>
+<div class="cell-output cell-output-display">
+<p><img src="2023-03-04-gnn-intro_files/figure-html/cell-25-output-313.png" class="img-fluid"></p>
+</div>
+<div class="cell-output cell-output-display">
+<p><img src="2023-03-04-gnn-intro_files/figure-html/cell-25-output-314.png" class="img-fluid"></p>
+</div>
+<div class="cell-output cell-output-display">
+<p><img src="2023-03-04-gnn-intro_files/figure-html/cell-25-output-315.png" class="img-fluid"></p>
+</div>
+<div class="cell-output cell-output-display">
+<p><img src="2023-03-04-gnn-intro_files/figure-html/cell-25-output-316.png" class="img-fluid"></p>
+</div>
+<div class="cell-output cell-output-display">
+<p><img src="2023-03-04-gnn-intro_files/figure-html/cell-25-output-317.png" class="img-fluid"></p>
+</div>
+<div class="cell-output cell-output-display">
+<p><img src="2023-03-04-gnn-intro_files/figure-html/cell-25-output-318.png" class="img-fluid"></p>
+</div>
+<div class="cell-output cell-output-display">
+<p><img src="2023-03-04-gnn-intro_files/figure-html/cell-25-output-319.png" class="img-fluid"></p>
+</div>
+<div class="cell-output cell-output-display">
+<p><img src="2023-03-04-gnn-intro_files/figure-html/cell-25-output-320.png" class="img-fluid"></p>
+</div>
+<div class="cell-output cell-output-display">
+<p><img src="2023-03-04-gnn-intro_files/figure-html/cell-25-output-321.png" class="img-fluid"></p>
+</div>
+<div class="cell-output cell-output-display">
+<p><img src="2023-03-04-gnn-intro_files/figure-html/cell-25-output-322.png" class="img-fluid"></p>
+</div>
+<div class="cell-output cell-output-display">
+<p><img src="2023-03-04-gnn-intro_files/figure-html/cell-25-output-323.png" class="img-fluid"></p>
+</div>
+<div class="cell-output cell-output-display">
+<p><img src="2023-03-04-gnn-intro_files/figure-html/cell-25-output-324.png" class="img-fluid"></p>
+</div>
+<div class="cell-output cell-output-display">
+<p><img src="2023-03-04-gnn-intro_files/figure-html/cell-25-output-325.png" class="img-fluid"></p>
+</div>
+<div class="cell-output cell-output-display">
+<p><img src="2023-03-04-gnn-intro_files/figure-html/cell-25-output-326.png" class="img-fluid"></p>
+</div>
+<div class="cell-output cell-output-display">
+<p><img src="2023-03-04-gnn-intro_files/figure-html/cell-25-output-327.png" class="img-fluid"></p>
+</div>
+<div class="cell-output cell-output-display">
+<p><img src="2023-03-04-gnn-intro_files/figure-html/cell-25-output-328.png" class="img-fluid"></p>
+</div>
+<div class="cell-output cell-output-display">
+<p><img src="2023-03-04-gnn-intro_files/figure-html/cell-25-output-329.png" class="img-fluid"></p>
+</div>
+<div class="cell-output cell-output-display">
+<p><img src="2023-03-04-gnn-intro_files/figure-html/cell-25-output-330.png" class="img-fluid"></p>
+</div>
+<div class="cell-output cell-output-display">
+<p><img src="2023-03-04-gnn-intro_files/figure-html/cell-25-output-331.png" class="img-fluid"></p>
+</div>
+<div class="cell-output cell-output-display">
+<p><img src="2023-03-04-gnn-intro_files/figure-html/cell-25-output-332.png" class="img-fluid"></p>
+</div>
+<div class="cell-output cell-output-display">
+<p><img src="2023-03-04-gnn-intro_files/figure-html/cell-25-output-333.png" class="img-fluid"></p>
+</div>
+<div class="cell-output cell-output-display">
+<p><img src="2023-03-04-gnn-intro_files/figure-html/cell-25-output-334.png" class="img-fluid"></p>
+</div>
+<div class="cell-output cell-output-display">
+<p><img src="2023-03-04-gnn-intro_files/figure-html/cell-25-output-335.png" class="img-fluid"></p>
+</div>
+<div class="cell-output cell-output-display">
+<p><img src="2023-03-04-gnn-intro_files/figure-html/cell-25-output-336.png" class="img-fluid"></p>
+</div>
+<div class="cell-output cell-output-display">
+<p><img src="2023-03-04-gnn-intro_files/figure-html/cell-25-output-337.png" class="img-fluid"></p>
+</div>
+<div class="cell-output cell-output-display">
+<p><img src="2023-03-04-gnn-intro_files/figure-html/cell-25-output-338.png" class="img-fluid"></p>
+</div>
+<div class="cell-output cell-output-display">
+<p><img src="2023-03-04-gnn-intro_files/figure-html/cell-25-output-339.png" class="img-fluid"></p>
+</div>
+<div class="cell-output cell-output-display">
+<p><img src="2023-03-04-gnn-intro_files/figure-html/cell-25-output-340.png" class="img-fluid"></p>
+</div>
+<div class="cell-output cell-output-display">
+<p><img src="2023-03-04-gnn-intro_files/figure-html/cell-25-output-341.png" class="img-fluid"></p>
+</div>
+<div class="cell-output cell-output-display">
+<p><img src="2023-03-04-gnn-intro_files/figure-html/cell-25-output-342.png" class="img-fluid"></p>
+</div>
+<div class="cell-output cell-output-display">
+<p><img src="2023-03-04-gnn-intro_files/figure-html/cell-25-output-343.png" class="img-fluid"></p>
+</div>
+<div class="cell-output cell-output-display">
+<p><img src="2023-03-04-gnn-intro_files/figure-html/cell-25-output-344.png" class="img-fluid"></p>
+</div>
+<div class="cell-output cell-output-display">
+<p><img src="2023-03-04-gnn-intro_files/figure-html/cell-25-output-345.png" class="img-fluid"></p>
+</div>
+<div class="cell-output cell-output-display">
+<p><img src="2023-03-04-gnn-intro_files/figure-html/cell-25-output-346.png" class="img-fluid"></p>
+</div>
+<div class="cell-output cell-output-display">
+<p><img src="2023-03-04-gnn-intro_files/figure-html/cell-25-output-347.png" class="img-fluid"></p>
+</div>
+<div class="cell-output cell-output-display">
+<p><img src="2023-03-04-gnn-intro_files/figure-html/cell-25-output-348.png" class="img-fluid"></p>
+</div>
+<div class="cell-output cell-output-display">
+<p><img src="2023-03-04-gnn-intro_files/figure-html/cell-25-output-349.png" class="img-fluid"></p>
+</div>
+<div class="cell-output cell-output-display">
+<p><img src="2023-03-04-gnn-intro_files/figure-html/cell-25-output-350.png" class="img-fluid"></p>
+</div>
+<div class="cell-output cell-output-display">
+<p><img src="2023-03-04-gnn-intro_files/figure-html/cell-25-output-351.png" class="img-fluid"></p>
+</div>
+<div class="cell-output cell-output-display">
+<p><img src="2023-03-04-gnn-intro_files/figure-html/cell-25-output-352.png" class="img-fluid"></p>
+</div>
+<div class="cell-output cell-output-display">
+<p><img src="2023-03-04-gnn-intro_files/figure-html/cell-25-output-353.png" class="img-fluid"></p>
+</div>
+<div class="cell-output cell-output-display">
+<p><img src="2023-03-04-gnn-intro_files/figure-html/cell-25-output-354.png" class="img-fluid"></p>
+</div>
+<div class="cell-output cell-output-display">
+<p><img src="2023-03-04-gnn-intro_files/figure-html/cell-25-output-355.png" class="img-fluid"></p>
+</div>
+<div class="cell-output cell-output-display">
+<p><img src="2023-03-04-gnn-intro_files/figure-html/cell-25-output-356.png" class="img-fluid"></p>
+</div>
+<div class="cell-output cell-output-display">
+<p><img src="2023-03-04-gnn-intro_files/figure-html/cell-25-output-357.png" class="img-fluid"></p>
+</div>
+<div class="cell-output cell-output-display">
+<p><img src="2023-03-04-gnn-intro_files/figure-html/cell-25-output-358.png" class="img-fluid"></p>
+</div>
+<div class="cell-output cell-output-display">
+<p><img src="2023-03-04-gnn-intro_files/figure-html/cell-25-output-359.png" class="img-fluid"></p>
+</div>
+<div class="cell-output cell-output-display">
+<p><img src="2023-03-04-gnn-intro_files/figure-html/cell-25-output-360.png" class="img-fluid"></p>
+</div>
+<div class="cell-output cell-output-display">
+<p><img src="2023-03-04-gnn-intro_files/figure-html/cell-25-output-361.png" class="img-fluid"></p>
+</div>
+<div class="cell-output cell-output-display">
+<p><img src="2023-03-04-gnn-intro_files/figure-html/cell-25-output-362.png" class="img-fluid"></p>
+</div>
+<div class="cell-output cell-output-display">
+<p><img src="2023-03-04-gnn-intro_files/figure-html/cell-25-output-363.png" class="img-fluid"></p>
+</div>
+<div class="cell-output cell-output-display">
+<p><img src="2023-03-04-gnn-intro_files/figure-html/cell-25-output-364.png" class="img-fluid"></p>
+</div>
+<div class="cell-output cell-output-display">
+<p><img src="2023-03-04-gnn-intro_files/figure-html/cell-25-output-365.png" class="img-fluid"></p>
+</div>
+<div class="cell-output cell-output-display">
+<p><img src="2023-03-04-gnn-intro_files/figure-html/cell-25-output-366.png" class="img-fluid"></p>
+</div>
+<div class="cell-output cell-output-display">
+<p><img src="2023-03-04-gnn-intro_files/figure-html/cell-25-output-367.png" class="img-fluid"></p>
+</div>
+<div class="cell-output cell-output-display">
+<p><img src="2023-03-04-gnn-intro_files/figure-html/cell-25-output-368.png" class="img-fluid"></p>
+</div>
+<div class="cell-output cell-output-display">
+<p><img src="2023-03-04-gnn-intro_files/figure-html/cell-25-output-369.png" class="img-fluid"></p>
+</div>
+<div class="cell-output cell-output-display">
+<p><img src="2023-03-04-gnn-intro_files/figure-html/cell-25-output-370.png" class="img-fluid"></p>
+</div>
+<div class="cell-output cell-output-display">
+<p><img src="2023-03-04-gnn-intro_files/figure-html/cell-25-output-371.png" class="img-fluid"></p>
+</div>
+<div class="cell-output cell-output-display">
+<p><img src="2023-03-04-gnn-intro_files/figure-html/cell-25-output-372.png" class="img-fluid"></p>
+</div>
+<div class="cell-output cell-output-display">
+<p><img src="2023-03-04-gnn-intro_files/figure-html/cell-25-output-373.png" class="img-fluid"></p>
+</div>
+<div class="cell-output cell-output-display">
+<p><img src="2023-03-04-gnn-intro_files/figure-html/cell-25-output-374.png" class="img-fluid"></p>
+</div>
+<div class="cell-output cell-output-display">
+<p><img src="2023-03-04-gnn-intro_files/figure-html/cell-25-output-375.png" class="img-fluid"></p>
+</div>
+<div class="cell-output cell-output-display">
+<p><img src="2023-03-04-gnn-intro_files/figure-html/cell-25-output-376.png" class="img-fluid"></p>
+</div>
+<div class="cell-output cell-output-display">
+<p><img src="2023-03-04-gnn-intro_files/figure-html/cell-25-output-377.png" class="img-fluid"></p>
+</div>
+<div class="cell-output cell-output-display">
+<p><img src="2023-03-04-gnn-intro_files/figure-html/cell-25-output-378.png" class="img-fluid"></p>
+</div>
+<div class="cell-output cell-output-display">
+<p><img src="2023-03-04-gnn-intro_files/figure-html/cell-25-output-379.png" class="img-fluid"></p>
+</div>
+<div class="cell-output cell-output-display">
+<p><img src="2023-03-04-gnn-intro_files/figure-html/cell-25-output-380.png" class="img-fluid"></p>
+</div>
+<div class="cell-output cell-output-display">
+<p><img src="2023-03-04-gnn-intro_files/figure-html/cell-25-output-381.png" class="img-fluid"></p>
+</div>
+<div class="cell-output cell-output-display">
+<p><img src="2023-03-04-gnn-intro_files/figure-html/cell-25-output-382.png" class="img-fluid"></p>
+</div>
+<div class="cell-output cell-output-display">
+<p><img src="2023-03-04-gnn-intro_files/figure-html/cell-25-output-383.png" class="img-fluid"></p>
+</div>
+<div class="cell-output cell-output-display">
+<p><img src="2023-03-04-gnn-intro_files/figure-html/cell-25-output-384.png" class="img-fluid"></p>
+</div>
+<div class="cell-output cell-output-display">
+<p><img src="2023-03-04-gnn-intro_files/figure-html/cell-25-output-385.png" class="img-fluid"></p>
+</div>
+<div class="cell-output cell-output-display">
+<p><img src="2023-03-04-gnn-intro_files/figure-html/cell-25-output-386.png" class="img-fluid"></p>
+</div>
+<div class="cell-output cell-output-display">
+<p><img src="2023-03-04-gnn-intro_files/figure-html/cell-25-output-387.png" class="img-fluid"></p>
+</div>
+<div class="cell-output cell-output-display">
+<p><img src="2023-03-04-gnn-intro_files/figure-html/cell-25-output-388.png" class="img-fluid"></p>
+</div>
+<div class="cell-output cell-output-display">
+<p><img src="2023-03-04-gnn-intro_files/figure-html/cell-25-output-389.png" class="img-fluid"></p>
+</div>
+<div class="cell-output cell-output-display">
+<p><img src="2023-03-04-gnn-intro_files/figure-html/cell-25-output-390.png" class="img-fluid"></p>
+</div>
+<div class="cell-output cell-output-display">
+<p><img src="2023-03-04-gnn-intro_files/figure-html/cell-25-output-391.png" class="img-fluid"></p>
+</div>
+<div class="cell-output cell-output-display">
+<p><img src="2023-03-04-gnn-intro_files/figure-html/cell-25-output-392.png" class="img-fluid"></p>
+</div>
+<div class="cell-output cell-output-display">
+<p><img src="2023-03-04-gnn-intro_files/figure-html/cell-25-output-393.png" class="img-fluid"></p>
+</div>
+<div class="cell-output cell-output-display">
+<p><img src="2023-03-04-gnn-intro_files/figure-html/cell-25-output-394.png" class="img-fluid"></p>
+</div>
+<div class="cell-output cell-output-display">
+<p><img src="2023-03-04-gnn-intro_files/figure-html/cell-25-output-395.png" class="img-fluid"></p>
+</div>
+<div class="cell-output cell-output-display">
+<p><img src="2023-03-04-gnn-intro_files/figure-html/cell-25-output-396.png" class="img-fluid"></p>
+</div>
+<div class="cell-output cell-output-display">
+<p><img src="2023-03-04-gnn-intro_files/figure-html/cell-25-output-397.png" class="img-fluid"></p>
+</div>
+<div class="cell-output cell-output-display">
+<p><img src="2023-03-04-gnn-intro_files/figure-html/cell-25-output-398.png" class="img-fluid"></p>
+</div>
+<div class="cell-output cell-output-display">
+<p><img src="2023-03-04-gnn-intro_files/figure-html/cell-25-output-399.png" class="img-fluid"></p>
+</div>
+<div class="cell-output cell-output-display">
+<p><img src="2023-03-04-gnn-intro_files/figure-html/cell-25-output-400.png" class="img-fluid"></p>
+</div>
+<div class="cell-output cell-output-display">
+<p><img src="2023-03-04-gnn-intro_files/figure-html/cell-25-output-401.png" class="img-fluid"></p>
 </div>
 </div>
 </section>
