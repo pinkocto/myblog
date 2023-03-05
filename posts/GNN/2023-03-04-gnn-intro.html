@@ -489,13 +489,17 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
     <h2 id="toc-title">On this page</h2>
    
   <ul>
-  <li><a href="#gnn-introduction" id="toc-gnn-introduction" class="nav-link active" data-scroll-target="#gnn-introduction">GNN introduction</a>
+  <li><a href="#gnn-tutorial1-introduction" id="toc-gnn-tutorial1-introduction" class="nav-link active" data-scroll-target="#gnn-tutorial1-introduction">GNN tutorial1 (introduction)</a>
   <ul class="collapse">
-  <li><a href="#data-description" id="toc-data-description" class="nav-link" data-scroll-target="#data-description">Data description</a>
+  <li><a href="#data-description" id="toc-data-description" class="nav-link" data-scroll-target="#data-description">Data description</a></li>
+  <li><a href="#inspect-some-properties" id="toc-inspect-some-properties" class="nav-link" data-scroll-target="#inspect-some-properties">Inspect some properties</a>
   <ul class="collapse">
-  <li><a href="#inspect-some-properties" id="toc-inspect-some-properties" class="nav-link" data-scroll-target="#inspect-some-properties">Inspect some properties</a></li>
-  <li><a href="#visualize-graph" id="toc-visualize-graph" class="nav-link" data-scroll-target="#visualize-graph">Visualize Graph</a></li>
+  <li><a href="#edge_index" id="toc-edge_index" class="nav-link" data-scroll-target="#edge_index"><code>1</code> edge_index</a></li>
+  <li><a href="#x-node-feature" id="toc-x-node-feature" class="nav-link" data-scroll-target="#x-node-feature"><code>2</code> x (node feature)</a></li>
+  <li><a href="#y-node-label" id="toc-y-node-label" class="nav-link" data-scroll-target="#y-node-label"><code>3</code> y (node label)</a></li>
+  <li><a href="#train_mask" id="toc-train_mask" class="nav-link" data-scroll-target="#train_mask"><code>4</code> train_mask</a></li>
   </ul></li>
+  <li><a href="#visualize-graph" id="toc-visualize-graph" class="nav-link" data-scroll-target="#visualize-graph">Visualize Graph</a></li>
   <li><a href="#implementing-graph-neural-networks" id="toc-implementing-graph-neural-networks" class="nav-link" data-scroll-target="#implementing-graph-neural-networks">Implementing Graph Neural Networks</a></li>
   <li><a href="#conclusion" id="toc-conclusion" class="nav-link" data-scroll-target="#conclusion">Conclusion</a></li>
   </ul></li>
@@ -508,8 +512,8 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 
 
 
-<section id="gnn-introduction" class="level1">
-<h1>GNN introduction</h1>
+<section id="gnn-tutorial1-introduction" class="level1">
+<h1>GNN tutorial1 (introduction)</h1>
 <blockquote class="blockquote">
 <p>Zachary’s karate club network example</p>
 </blockquote>
@@ -569,8 +573,9 @@ Number of features: 34
 Number of classes: 4</code></pre>
 </div>
 </div>
-<section id="inspect-some-properties" class="level3">
-<h3 class="anchored" data-anchor-id="inspect-some-properties">Inspect some properties</h3>
+</section>
+<section id="inspect-some-properties" class="level2">
+<h2 class="anchored" data-anchor-id="inspect-some-properties">Inspect some properties</h2>
 <div class="cell" data-execution_count="40">
 <div class="sourceCode cell-code" id="cb5"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb5-1"><a href="#cb5-1"></a>dataset[<span class="dv">0</span>]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-display" data-execution_count="40">
@@ -638,8 +643,8 @@ Is undirected: True</code></pre>
 </ol></li>
 </ul></li>
 </ul>
-<section id="edge_index" class="level4">
-<h4 class="anchored" data-anchor-id="edge_index"><code>1</code> edge_index</h4>
+<section id="edge_index" class="level3">
+<h3 class="anchored" data-anchor-id="edge_index"><code>1</code> edge_index</h3>
 <div class="cell" data-execution_count="48">
 <div class="sourceCode cell-code" id="cb13"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb13-1"><a href="#cb13-1"></a>edge_index <span class="op">=</span> data.edge_index</span>
 <span id="cb13-2"><a href="#cb13-2"></a><span class="bu">print</span>(edge_index.t()[:<span class="dv">10</span>])</span>
@@ -664,8 +669,8 @@ torch.Size([156, 2])</code></pre>
 <li><strong><code>PyG</code>에서는 directed graphs와 undirected graphs를 구별하지 않는다. undirected 그래프를 directed 그래프의 특수케이스로 취급(directed graph edge_index의 모든 항목에 대해 inverse edge가 존재하는 경우)</strong></li>
 </ul>
 </section>
-<section id="x-node-feature" class="level4">
-<h4 class="anchored" data-anchor-id="x-node-feature"><code>2</code> x (node feature)</h4>
+<section id="x-node-feature" class="level3">
+<h3 class="anchored" data-anchor-id="x-node-feature"><code>2</code> x (node feature)</h3>
 <div class="cell" data-execution_count="55">
 <div class="sourceCode cell-code" id="cb15"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb15-1"><a href="#cb15-1"></a>data.x, data.x.shape <span class="co"># node featurs matrix</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-display" data-execution_count="55">
@@ -683,8 +688,8 @@ torch.Size([156, 2])</code></pre>
 <li><code>karate club</code> dataset의 각 노드에 karate club 구성원을 고유하게 설명하는 34차원 feature vector가 할당되어 있다.</li>
 </ul>
 </section>
-<section id="y-node-label" class="level4">
-<h4 class="anchored" data-anchor-id="y-node-label"><code>3</code> y (node label)</h4>
+<section id="y-node-label" class="level3">
+<h3 class="anchored" data-anchor-id="y-node-label"><code>3</code> y (node label)</h3>
 <div class="cell" data-execution_count="56">
 <div class="sourceCode cell-code" id="cb17"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb17-1"><a href="#cb17-1"></a>data.y <span class="co"># node labels</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-display" data-execution_count="56">
@@ -696,8 +701,8 @@ torch.Size([156, 2])</code></pre>
 <li>그래프에는 각 노드가 속한 커뮤니티를 나타내는 4개의 클래스가 있음.</li>
 </ul>
 </section>
-<section id="train_mask" class="level4">
-<h4 class="anchored" data-anchor-id="train_mask"><code>4</code> train_mask</h4>
+<section id="train_mask" class="level3">
+<h3 class="anchored" data-anchor-id="train_mask"><code>4</code> train_mask</h3>
 <div class="cell" data-execution_count="57">
 <div class="sourceCode cell-code" id="cb19"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb19-1"><a href="#cb19-1"></a>data.train_mask <span class="co"># describes for which nodes we already know their community assigments</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-display" data-execution_count="57">
@@ -733,8 +738,8 @@ torch.Size([156, 2])</code></pre>
 </ul>
 </section>
 </section>
-<section id="visualize-graph" class="level3">
-<h3 class="anchored" data-anchor-id="visualize-graph">Visualize Graph</h3>
+<section id="visualize-graph" class="level2">
+<h2 class="anchored" data-anchor-id="visualize-graph">Visualize Graph</h2>
 <div class="cell" data-execution_count="76">
 <div class="sourceCode cell-code" id="cb27"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb27-1"><a href="#cb27-1"></a><span class="co"># 위에서 정의한 그래프 시각화를 위한 함수..</span></span>
 <span id="cb27-2"><a href="#cb27-2"></a><span class="kw">def</span> visualize_graph(G, color):</span>
@@ -777,7 +782,6 @@ See https://networkx.org for complete documentation.</pre>
 </div>
 </div>
 <p><em>(참고) 그래프를 <code>networkx</code> 라이브러리 형식으로 변환하면 그래프 시각화를 위한 많은 기능(그래프 조작 등.)을 사용할 수 있음.</em></p>
-</section>
 </section>
 <section id="implementing-graph-neural-networks" class="level2">
 <h2 class="anchored" data-anchor-id="implementing-graph-neural-networks">Implementing Graph Neural Networks</h2>
