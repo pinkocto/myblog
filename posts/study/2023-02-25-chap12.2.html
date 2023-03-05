@@ -372,6 +372,11 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
+  <a href="../../posts/STGCN/STGCN 공부/Untitled.html" class="sidebar-item-text sidebar-link">Untitled</a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
   <a href="../../posts/STGCN/STGCN 공부/2023-02-21-STGCN-tutorial1.html" class="sidebar-item-text sidebar-link">튜토리얼 따라가기1</a>
   </div>
 </li>
@@ -414,7 +419,22 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
       <ul id="quarto-sidebar-section-10" class="collapse list-unstyled sidebar-section depth2 show">  
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
+  <a href="../../posts/study/2023-03-05-test27.html" class="sidebar-item-text sidebar-link">27_test</a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../posts/study/2023-03-05-survey-review.html" class="sidebar-item-text sidebar-link">A Comprehensive Survey on Geometric Deep Learning</a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
   <a href="../../posts/study/2023-02-25-chap12.2.html" class="sidebar-item-text sidebar-link active">Chap 12.2: Weakly Stationary Graph process</a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../posts/study/2023-03-05-chap-12.2.1~12.3.1.html" class="sidebar-item-text sidebar-link">Chap 12.2: Weakly Stationary Graph process</a>
   </div>
 </li>
           <li class="sidebar-item">
@@ -494,7 +514,11 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
   <ul class="collapse">
   <li><a href="#simultaneously-diagonalizable" id="toc-simultaneously-diagonalizable" class="nav-link" data-scroll-target="#simultaneously-diagonalizable">Simultaneously Diagonalizable</a></li>
   <li><a href="#commute" id="toc-commute" class="nav-link" data-scroll-target="#commute">Commute</a></li>
-  <li><a href="#shift-invariant-filter" id="toc-shift-invariant-filter" class="nav-link" data-scroll-target="#shift-invariant-filter">Shift Invariant Filter</a></li>
+  <li><a href="#shift-invariant-filter" id="toc-shift-invariant-filter" class="nav-link" data-scroll-target="#shift-invariant-filter">Shift Invariant Filter</a>
+  <ul class="collapse">
+  <li><a href="#example" id="toc-example" class="nav-link" data-scroll-target="#example">Example</a></li>
+  </ul></li>
+  <li><a href="#weakly-stationary-graph-processes" id="toc-weakly-stationary-graph-processes" class="nav-link" data-scroll-target="#weakly-stationary-graph-processes">Weakly Stationary Graph Processes</a></li>
   </ul></li>
   </ul>
 </nav>
@@ -505,7 +529,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 
 
 
-<div class="cell" data-execution_count="3">
+<div class="cell" data-execution_count="13">
 <div class="sourceCode cell-code" id="cb1"><pre class="sourceCode numberSource julia number-lines code-with-copy"><code class="sourceCode julia"><span id="cb1-1"><a href="#cb1-1"></a><span class="im">using</span> <span class="bu">LinearAlgebra</span>, <span class="bu">DSP</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <section id="preliminary-study" class="level1">
@@ -542,12 +566,184 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <p><span class="math display">\[h(z)=h_0z^0+h_1z^{-1}+\cdots +h_{N-1}z^{-(N-1)}\]</span></p>
 <p>where <span class="math inline">\(s_{n-1}=z^{-1}s_n\)</span>. In vector notation, and with respect to the standard basis <span class="math inline">\({\bf I}\)</span>, the filter is represented by the matrix <span class="math inline">\({\bf H}\)</span>, a polynomial in the cyclic shift</p>
 <p><span class="math display">\[{\bf H}=h({\bf B})=h_0{\bf B}^0+h_1{\bf B}^1+\cdots+h_{N-1}{\bf B}^{N-1}.\]</span></p>
+<p>Filters are shift invariant iff</p>
+<p><span class="math display">\[z\cdot h(z) = h(z) \cdot z\]</span></p>
+<p>or from the matrix representation</p>
+<p><span class="math display">\[\bf{B}h(\bf{B}) = h(\bf{B})\bf{B}.\]</span></p>
+<section id="example" class="level3">
+<h3 class="anchored" data-anchor-id="example">Example</h3>
+<p>Let <span class="math inline">\(\bf{B}\)</span> as</p>
+<div class="cell" data-execution_count="1">
+<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode numberSource julia number-lines code-with-copy"><code class="sourceCode julia"><span id="cb2-1"><a href="#cb2-1"></a>B<span class="op">=</span> [<span class="fl">0</span> <span class="fl">1</span> <span class="fl">0</span> <span class="fl">0</span> <span class="fl">0</span> <span class="fl">0</span> <span class="fl">0</span></span>
+<span id="cb2-2"><a href="#cb2-2"></a>    <span class="fl">0</span> <span class="fl">0</span> <span class="fl">1</span> <span class="fl">0</span> <span class="fl">0</span> <span class="fl">0</span> <span class="fl">0</span> </span>
+<span id="cb2-3"><a href="#cb2-3"></a>    <span class="fl">0</span> <span class="fl">0</span> <span class="fl">0</span> <span class="fl">1</span> <span class="fl">0</span> <span class="fl">0</span> <span class="fl">0</span> </span>
+<span id="cb2-4"><a href="#cb2-4"></a>    <span class="fl">0</span> <span class="fl">0</span> <span class="fl">0</span> <span class="fl">0</span> <span class="fl">1</span> <span class="fl">0</span> <span class="fl">0</span> </span>
+<span id="cb2-5"><a href="#cb2-5"></a>    <span class="fl">0</span> <span class="fl">0</span> <span class="fl">0</span> <span class="fl">0</span> <span class="fl">0</span> <span class="fl">1</span> <span class="fl">0</span> </span>
+<span id="cb2-6"><a href="#cb2-6"></a>    <span class="fl">0</span> <span class="fl">0</span> <span class="fl">0</span> <span class="fl">0</span> <span class="fl">0</span> <span class="fl">0</span> <span class="fl">1</span> </span>
+<span id="cb2-7"><a href="#cb2-7"></a>    <span class="fl">1</span> <span class="fl">0</span> <span class="fl">0</span> <span class="fl">0</span> <span class="fl">0</span> <span class="fl">0</span> <span class="fl">0</span>]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="1">
+<pre><code>7×7 Matrix{Int64}:
+ 0  1  0  0  0  0  0
+ 0  0  1  0  0  0  0
+ 0  0  0  1  0  0  0
+ 0  0  0  0  1  0  0
+ 0  0  0  0  0  1  0
+ 0  0  0  0  0  0  1
+ 1  0  0  0  0  0  0</code></pre>
+</div>
+</div>
+<p>Define <span class="math inline">\(h\)</span> as</p>
+<div class="cell" data-execution_count="2">
+<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode numberSource julia number-lines code-with-copy"><code class="sourceCode julia"><span id="cb4-1"><a href="#cb4-1"></a>h <span class="op">=</span> [<span class="fl">1</span><span class="op">/</span><span class="fl">3</span>,<span class="fl">1</span><span class="op">/</span><span class="fl">3</span>,<span class="fl">1</span><span class="op">/</span><span class="fl">3</span>]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="2">
+<pre><code>3-element Vector{Float64}:
+ 0.3333333333333333
+ 0.3333333333333333
+ 0.3333333333333333</code></pre>
+</div>
+</div>
+<p>Furthermore define <span class="math inline">\({\bf H}=h({\bf B})=h_0{\bf B}^0+h_1{\bf B}^1+h_2{\bf B}^2\)</span></p>
+<div class="cell" data-execution_count="3">
+<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode numberSource julia number-lines code-with-copy"><code class="sourceCode julia"><span id="cb6-1"><a href="#cb6-1"></a>B<span class="op">^</span><span class="fl">0</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="3">
+<pre><code>7×7 Matrix{Int64}:
+ 1  0  0  0  0  0  0
+ 0  1  0  0  0  0  0
+ 0  0  1  0  0  0  0
+ 0  0  0  1  0  0  0
+ 0  0  0  0  1  0  0
+ 0  0  0  0  0  1  0
+ 0  0  0  0  0  0  1</code></pre>
+</div>
+</div>
+<div class="cell" data-execution_count="4">
+<div class="sourceCode cell-code" id="cb8"><pre class="sourceCode numberSource julia number-lines code-with-copy"><code class="sourceCode julia"><span id="cb8-1"><a href="#cb8-1"></a>B<span class="op">^</span><span class="fl">1</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="4">
+<pre><code>7×7 Matrix{Int64}:
+ 0  1  0  0  0  0  0
+ 0  0  1  0  0  0  0
+ 0  0  0  1  0  0  0
+ 0  0  0  0  1  0  0
+ 0  0  0  0  0  1  0
+ 0  0  0  0  0  0  1
+ 1  0  0  0  0  0  0</code></pre>
+</div>
+</div>
+<div class="cell" data-execution_count="5">
+<div class="sourceCode cell-code" id="cb10"><pre class="sourceCode numberSource julia number-lines code-with-copy"><code class="sourceCode julia"><span id="cb10-1"><a href="#cb10-1"></a>B<span class="op">^</span><span class="fl">2</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="5">
+<pre><code>7×7 Matrix{Int64}:
+ 0  0  1  0  0  0  0
+ 0  0  0  1  0  0  0
+ 0  0  0  0  1  0  0
+ 0  0  0  0  0  1  0
+ 0  0  0  0  0  0  1
+ 1  0  0  0  0  0  0
+ 0  1  0  0  0  0  0</code></pre>
+</div>
+</div>
+<div class="cell" data-execution_count="6">
+<div class="sourceCode cell-code" id="cb12"><pre class="sourceCode numberSource julia number-lines code-with-copy"><code class="sourceCode julia"><span id="cb12-1"><a href="#cb12-1"></a>H <span class="op">=</span> (<span class="fl">1</span><span class="op">/</span><span class="fl">3</span>)<span class="op">*</span>B<span class="op">^</span><span class="fl">0</span> <span class="op">+</span> (<span class="fl">1</span><span class="op">/</span><span class="fl">3</span>)<span class="op">*</span>B<span class="op">^</span><span class="fl">1</span> <span class="op">+</span> (<span class="fl">1</span><span class="op">/</span><span class="fl">3</span>)<span class="op">*</span>B<span class="op">^</span><span class="fl">2</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="6">
+<pre><code>7×7 Matrix{Float64}:
+ 0.333333  0.333333  0.333333  0.0       0.0       0.0       0.0
+ 0.0       0.333333  0.333333  0.333333  0.0       0.0       0.0
+ 0.0       0.0       0.333333  0.333333  0.333333  0.0       0.0
+ 0.0       0.0       0.0       0.333333  0.333333  0.333333  0.0
+ 0.0       0.0       0.0       0.0       0.333333  0.333333  0.333333
+ 0.333333  0.0       0.0       0.0       0.0       0.333333  0.333333
+ 0.333333  0.333333  0.0       0.0       0.0       0.0       0.333333</code></pre>
+</div>
+</div>
+<p>Observe following</p>
+<div class="cell" data-execution_count="7">
+<div class="sourceCode cell-code" id="cb14"><pre class="sourceCode numberSource julia number-lines code-with-copy"><code class="sourceCode julia"><span id="cb14-1"><a href="#cb14-1"></a>B<span class="op">*</span>H <span class="op">==</span> H<span class="op">*</span>B</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="7">
+<pre><code>true</code></pre>
+</div>
+</div>
+<div class="cell" data-execution_count="8">
+<div class="sourceCode cell-code" id="cb16"><pre class="sourceCode numberSource julia number-lines code-with-copy"><code class="sourceCode julia"><span id="cb16-1"><a href="#cb16-1"></a>B<span class="op">*</span>H</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="8">
+<pre><code>7×7 Matrix{Float64}:
+ 0.0       0.333333  0.333333  0.333333  0.0       0.0       0.0
+ 0.0       0.0       0.333333  0.333333  0.333333  0.0       0.0
+ 0.0       0.0       0.0       0.333333  0.333333  0.333333  0.0
+ 0.0       0.0       0.0       0.0       0.333333  0.333333  0.333333
+ 0.333333  0.0       0.0       0.0       0.0       0.333333  0.333333
+ 0.333333  0.333333  0.0       0.0       0.0       0.0       0.333333
+ 0.333333  0.333333  0.333333  0.0       0.0       0.0       0.0</code></pre>
+</div>
+</div>
+<div class="cell" data-execution_count="9">
+<div class="sourceCode cell-code" id="cb18"><pre class="sourceCode numberSource julia number-lines code-with-copy"><code class="sourceCode julia"><span id="cb18-1"><a href="#cb18-1"></a>H<span class="op">*</span>B</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="9">
+<pre><code>7×7 Matrix{Float64}:
+ 0.0       0.333333  0.333333  0.333333  0.0       0.0       0.0
+ 0.0       0.0       0.333333  0.333333  0.333333  0.0       0.0
+ 0.0       0.0       0.0       0.333333  0.333333  0.333333  0.0
+ 0.0       0.0       0.0       0.0       0.333333  0.333333  0.333333
+ 0.333333  0.0       0.0       0.0       0.0       0.333333  0.333333
+ 0.333333  0.333333  0.0       0.0       0.0       0.0       0.333333
+ 0.333333  0.333333  0.333333  0.0       0.0       0.0       0.0</code></pre>
+</div>
+</div>
+<p>따라서 filter <span class="math inline">\(h\)</span>는 invariant filter이고, matrix <span class="math inline">\(\bf{H}\)</span>는 shift invariant operator이다.</p>
+<p><em>note</em>: <span class="math inline">\(h\)</span> 는 moving average filter<a href="#fn1" class="footnote-ref" id="fnref1" role="doc-noteref"><sup>1</sup></a>.</p>
+<p><em>note</em>: for any <span class="math inline">\(\bf{x}, \bf{Hx}\)</span> is definded by</p>
+<p><span class="math display">\[\left[\frac{x_{n-1}+x_n+x_1}{3},\frac{x_n+x_1+x_2}{3},\dots,\frac{x_{n-3}+x_{n-2}+x_n}{3}\right].\]</span></p>
+<div class="cell" data-execution_count="10">
+<div class="sourceCode cell-code" id="cb20"><pre class="sourceCode numberSource julia number-lines code-with-copy"><code class="sourceCode julia"><span id="cb20-1"><a href="#cb20-1"></a>x <span class="op">=</span> [<span class="fl">1</span>,<span class="fl">1</span>,<span class="fl">1</span>,<span class="fl">1</span>,<span class="fl">2</span>,<span class="fl">2</span>,<span class="fl">2</span>]</span>
+<span id="cb20-2"><a href="#cb20-2"></a>H<span class="op">*</span>x</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="10">
+<pre><code>7-element Vector{Float64}:
+ 1.0
+ 1.0
+ 1.3333333333333333
+ 1.6666666666666665
+ 2.0
+ 1.6666666666666665
+ 1.3333333333333333</code></pre>
+</div>
+</div>
+<p><em>note:</em> In some sense, the matrix <span class="math inline">\({\bf H}{\bf x}\)</span> can be thought as generalized version of <span class="math inline">\({\boldsymbol h}\star {\bf x}\)</span> where <span class="math inline">\(\star\)</span> is convolution up to shift</p>
+<div class="cell" data-execution_count="14">
+<div class="sourceCode cell-code" id="cb22"><pre class="sourceCode numberSource julia number-lines code-with-copy"><code class="sourceCode julia"><span id="cb22-1"><a href="#cb22-1"></a><span class="fu">conv</span>(h, x)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="14">
+<pre><code>9-element Vector{Float64}:
+ 0.3333333333333334
+ 0.6666666666666667
+ 1.0
+ 1.0
+ 1.3333333333333333
+ 1.6666666666666667
+ 2.0
+ 1.3333333333333333
+ 0.6666666666666667</code></pre>
+</div>
+</div>
+</section>
+</section>
+<section id="weakly-stationary-graph-processes" class="level2">
+<h2 class="anchored" data-anchor-id="weakly-stationary-graph-processes">Weakly Stationary Graph Processes</h2>
+<p>We extend three equivalent definitions of weak stationary in time to the graph domain, the most common being the invariance of the first and second moments to time shifts.</p>
+<p><strong>Definition 12.1.</strong> Given a normal shift operator <span class="math inline">\({\bf S}\)</span>, a zero-mean random process <span class="math inline">\({\bf x}\)</span> is weakly stationary with respect to <span class="math inline">\({\bf S}\)</span> if it can be written as the response of a linear shift-invariant graph filter <span class="math inline">\({\bf H}=\sum_{l=0}^{N-1}h_l{\bf S}^l\)</span> to a zero-mean white input <span class="math inline">\({\bf n}\)</span>.</p>
+<p><strong>Definition 12.2.</strong> Given a normal shift operator <span class="math inline">\({\bf S}\)</span>, a zero-mean random process <span class="math inline">\({\bf x}\)</span> is weakly stationary with respect to <span class="math inline">\({\bf S}\)</span> is the following two equivalent properties hold</p>
+<p><strong>(a)</strong> For any set of nonnegative integers <span class="math inline">\(a\)</span>,<span class="math inline">\(b\)</span>, and <span class="math inline">\(c\leq b\)</span> it holds that</p>
+<p><span class="math display">\[\mathbb{E} \bigg[ \big({\bf S}^a{\bf x}\big)\Big(\big({\bf S}^H)^b {\bf x}\Big)^H  \bigg]=\mathbb{E}\bigg[\big({\bf S}^{a+c}{\bf x}\big)\Big(\big({\bf S}^H\big)^{b-c}{\bf x} \Big)^H \bigg]\]</span></p>
+<p><strong>(b)</strong> Matrices <span class="math inline">\({\bf C}_{\bf x}\)</span> and <span class="math inline">\({\bf S}\)</span> are simultaneously diagonalizable.</p>
 
 
 </section>
 </section>
 
-</main> <!-- /main -->
+
+<div id="quarto-appendix" class="default"><section id="footnotes" class="footnotes footnotes-end-of-document" role="doc-endnotes"><h2 class="anchored quarto-appendix-heading">Footnotes</h2>
+
+<ol>
+<li id="fn1"><p>이전 n개의 데이터의 비가중 평균<a href="#fnref1" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+</ol>
+</section></div></main> <!-- /main -->
 <script id="quarto-html-after-body" type="application/javascript">
 window.document.addEventListener("DOMContentLoaded", function (event) {
   const toggleBodyColorMode = (bsSheetEl) => {
