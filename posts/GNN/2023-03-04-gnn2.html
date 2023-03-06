@@ -306,6 +306,11 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
   <a href="../../posts/GNN/2023-03-04-gnn2.html" class="sidebar-item-text sidebar-link active">2 GNN tuto2</a>
   </div>
 </li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../posts/GNN/2023-03-04-gnn2_guebin.html" class="sidebar-item-text sidebar-link">2 GNN tuto2</a>
+  </div>
+</li>
       </ul>
   </li>
           <li class="sidebar-item sidebar-item-section">
@@ -518,13 +523,22 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
   <li><a href="#학습전-gcn-network의-노드임베딩-시각화" id="toc-학습전-gcn-network의-노드임베딩-시각화" class="nav-link" data-scroll-target="#학습전-gcn-network의-노드임베딩-시각화"><code>-</code> 학습전 GCN network의 노드임베딩 시각화</a></li>
   <li><a href="#학습후-gcn-network의-노드임베딩-시각화" id="toc-학습후-gcn-network의-노드임베딩-시각화" class="nav-link" data-scroll-target="#학습후-gcn-network의-노드임베딩-시각화"><code>-</code> 학습후 GCN network의 노드임베딩 시각화</a></li>
   </ul></li>
-  <li><a href="#시도3-validation-set-이용---뭔가-잘못됨" id="toc-시도3-validation-set-이용---뭔가-잘못됨" class="nav-link" data-scroll-target="#시도3-validation-set-이용---뭔가-잘못됨">(시도3) Validation set 이용 - 뭔가 잘못됨</a></li>
+  <li><a href="#시도3-validation-set-이용---뭔가-잘못됨" id="toc-시도3-validation-set-이용---뭔가-잘못됨" class="nav-link" data-scroll-target="#시도3-validation-set-이용---뭔가-잘못됨">(시도3) Validation set 이용 - 뭔가 잘못됨</a>
+  <ul class="collapse">
+  <li><a href="#model1-hidden-chnnels16" id="toc-model1-hidden-chnnels16" class="nav-link" data-scroll-target="#model1-hidden-chnnels16">model1 (hidden chnnels=16)</a></li>
+  <li><a href="#model2-hidden-channels64" id="toc-model2-hidden-channels64" class="nav-link" data-scroll-target="#model2-hidden-channels64">model2 (hidden channels=64)</a></li>
+  <li><a href="#model3-hidden_channels256" id="toc-model3-hidden_channels256" class="nav-link" data-scroll-target="#model3-hidden_channels256">model3 (hidden_channels=256)</a></li>
+  </ul></li>
+  <li><a href="#dropout0.3" id="toc-dropout0.3" class="nav-link" data-scroll-target="#dropout0.3">dropout=0.3</a></li>
+  <li><a href="#dropout-0.4" id="toc-dropout-0.4" class="nav-link" data-scroll-target="#dropout-0.4">dropout = 0.4</a></li>
+  <li><a href="#section" id="toc-section" class="nav-link" data-scroll-target="#section">++++</a></li>
   <li><a href="#시도4-hidden-feature의-차원을-늘려보자." id="toc-시도4-hidden-feature의-차원을-늘려보자." class="nav-link" data-scroll-target="#시도4-hidden-feature의-차원을-늘려보자.">(시도4) hidden feature의 차원을 늘려보자.</a>
   <ul class="collapse">
   <li><a href="#hidden_channels-32" id="toc-hidden_channels-32" class="nav-link" data-scroll-target="#hidden_channels-32"><code>-</code> hidden_channels = 32</a></li>
   <li><a href="#hidden_channels-64" id="toc-hidden_channels-64" class="nav-link" data-scroll-target="#hidden_channels-64"><code>-</code> hidden_channels = 64</a></li>
   <li><a href="#hidden_channels-128" id="toc-hidden_channels-128" class="nav-link" data-scroll-target="#hidden_channels-128"><code>-</code> hidden_channels = 128</a></li>
   </ul></li>
+  <li><a href="#section-1" id="toc-section-1" class="nav-link" data-scroll-target="#section-1">+</a></li>
   <li><a href="#시도5-층을-더-쌓아보자." id="toc-시도5-층을-더-쌓아보자." class="nav-link" data-scroll-target="#시도5-층을-더-쌓아보자.">(시도5) 층을 더 쌓아보자.</a></li>
   <li><a href="#시도6-gatconv-layer-이용" id="toc-시도6-gatconv-layer-이용" class="nav-link" data-scroll-target="#시도6-gatconv-layer-이용">(시도6) GATConv layer 이용</a></li>
   <li><a href="#conclusion" id="toc-conclusion" class="nav-link" data-scroll-target="#conclusion">Conclusion</a></li>
@@ -560,7 +574,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <span id="cb1-9"><a href="#cb1-9"></a><span class="im">from</span> torch.nn <span class="im">import</span> Linear</span>
 <span id="cb1-10"><a href="#cb1-10"></a><span class="im">import</span> torch.nn.functional <span class="im">as</span> F</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<div class="cell" data-execution_count="4">
+<div class="cell" data-execution_count="3">
 <div class="sourceCode cell-code" id="cb2"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1"></a><span class="kw">def</span> visualize(h, color):</span>
 <span id="cb2-2"><a href="#cb2-2"></a>    z <span class="op">=</span> TSNE(n_components<span class="op">=</span><span class="dv">2</span>).fit_transform(h.detach().cpu().numpy())</span>
 <span id="cb2-3"><a href="#cb2-3"></a></span>
@@ -571,7 +585,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <span id="cb2-8"><a href="#cb2-8"></a>    plt.scatter(z[:, <span class="dv">0</span>], z[:, <span class="dv">1</span>], s<span class="op">=</span><span class="dv">70</span>, c<span class="op">=</span>color, cmap<span class="op">=</span><span class="st">"Set2"</span>)</span>
 <span id="cb2-9"><a href="#cb2-9"></a>    plt.show()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<div class="cell" data-execution_count="5">
+<div class="cell" data-execution_count="4">
 <div class="sourceCode cell-code" id="cb3"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1"></a><span class="im">from</span> torch_geometric.datasets <span class="im">import</span> Planetoid</span>
 <span id="cb3-2"><a href="#cb3-2"></a><span class="im">from</span> torch_geometric.transforms <span class="im">import</span> NormalizeFeatures</span>
 <span id="cb3-3"><a href="#cb3-3"></a></span>
@@ -592,7 +606,7 @@ Number of features: 1433
 Number of classes: 7</code></pre>
 </div>
 </div>
-<div class="cell" data-execution_count="6">
+<div class="cell" data-execution_count="5">
 <div class="sourceCode cell-code" id="cb5"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb5-1"><a href="#cb5-1"></a>data <span class="op">=</span> dataset[<span class="dv">0</span>]  <span class="co"># Get the first graph object.</span></span>
 <span id="cb5-2"><a href="#cb5-2"></a><span class="bu">print</span>()</span>
 <span id="cb5-3"><a href="#cb5-3"></a><span class="bu">print</span>(data)</span>
@@ -603,7 +617,7 @@ Data(x=[2708, 1433], edge_index=[2, 10556], y=[2708], train_mask=[2708], val_mas
 ===========================================================================================================</code></pre>
 </div>
 </div>
-<div class="cell" data-execution_count="20">
+<div class="cell" data-execution_count="6">
 <div class="sourceCode cell-code" id="cb7"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb7-1"><a href="#cb7-1"></a><span class="co"># Gather some statistics about the graph.</span></span>
 <span id="cb7-2"><a href="#cb7-2"></a><span class="bu">print</span>(<span class="ss">f'Number of nodes: </span><span class="sc">{</span>data<span class="sc">.</span>num_nodes<span class="sc">}</span><span class="ss">'</span>)</span>
 <span id="cb7-3"><a href="#cb7-3"></a><span class="bu">print</span>(<span class="ss">f'Number of edges: </span><span class="sc">{</span>data<span class="sc">.</span>num_edges<span class="sc">}</span><span class="ss">'</span>)</span>
@@ -624,9 +638,9 @@ Has self-loops: False
 Is undirected: True</code></pre>
 </div>
 </div>
-<div class="cell" data-execution_count="30">
+<div class="cell" data-execution_count="7">
 <div class="sourceCode cell-code" id="cb9"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb9-1"><a href="#cb9-1"></a>data.y.unique()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-display" data-execution_count="30">
+<div class="cell-output cell-output-display" data-execution_count="7">
 <pre><code>tensor([0, 1, 2, 3, 4, 5, 6])</code></pre>
 </div>
 </div>
@@ -640,12 +654,12 @@ Is undirected: True</code></pre>
 <h2 class="anchored" data-anchor-id="시도1-training-a-multi-layer-perception-networkmlp">(시도1 ) Training a Multi-layer Perception Network(MLP)</h2>
 <p>n theory, we should be able to infer the category of a document solely based on its content, i.e.&nbsp;its bag-of-words feature representation, without taking any relational information into account.</p>
 <p>Let’s verify that by constructing a simple MLP that solely operates on input node features (using shared weights across all nodes):</p>
-<div class="cell" data-execution_count="13">
+<div class="cell" data-execution_count="8">
 <div class="sourceCode cell-code" id="cb11"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb11-1"><a href="#cb11-1"></a><span class="im">import</span> torch</span>
 <span id="cb11-2"><a href="#cb11-2"></a><span class="im">from</span> torch.nn <span class="im">import</span> Linear</span>
 <span id="cb11-3"><a href="#cb11-3"></a><span class="im">import</span> torch.nn.functional <span class="im">as</span> F</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<div class="cell" data-execution_count="22">
+<div class="cell" data-execution_count="9">
 <div class="sourceCode cell-code" id="cb12"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb12-1"><a href="#cb12-1"></a><span class="kw">class</span> MLP(torch.nn.Module):</span>
 <span id="cb12-2"><a href="#cb12-2"></a>    <span class="kw">def</span> <span class="fu">__init__</span>(<span class="va">self</span>, hidden_channels):</span>
 <span id="cb12-3"><a href="#cb12-3"></a>        <span class="bu">super</span>().<span class="fu">__init__</span>()</span>
@@ -943,13 +957,13 @@ Epoch: 200, Loss: 0.3810</code></pre>
 <p>in contrast, a single <code>Linear</code> layer is defined as</p>
 <p><span class="math display">\[\bf{x}_v^{l+1} = \bf{W}^{l+1}\bf{x}_v^{l}\]</span></p>
 <p>which does not make use of neighboring node information.</p>
-<div class="cell" data-execution_count="9">
+<div class="cell" data-execution_count="10">
 <div class="sourceCode cell-code" id="cb23"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb23-1"><a href="#cb23-1"></a>dataset.num_features, dataset.num_classes</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-display" data-execution_count="9">
+<div class="cell-output cell-output-display" data-execution_count="10">
 <pre><code>(1433, 7)</code></pre>
 </div>
 </div>
-<div class="cell" data-execution_count="10">
+<div class="cell" data-execution_count="20">
 <div class="sourceCode cell-code" id="cb25"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb25-1"><a href="#cb25-1"></a><span class="im">from</span> torch_geometric.nn <span class="im">import</span> GCNConv</span>
 <span id="cb25-2"><a href="#cb25-2"></a></span>
 <span id="cb25-3"><a href="#cb25-3"></a></span>
@@ -1159,186 +1173,1290 @@ Epoch: 100, Loss: 0.5799, Test: 0.8020</code></pre>
 <pre><code>tensor(500)</code></pre>
 </div>
 </div>
-<div class="cell" data-execution_count="38">
-<div class="sourceCode cell-code" id="cb36"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb36-1"><a href="#cb36-1"></a>model <span class="op">=</span> GCN(hidden_channels<span class="op">=</span><span class="dv">16</span>)</span>
-<span id="cb36-2"><a href="#cb36-2"></a>optimizr <span class="op">=</span> torch.optim.Adam(model.parameters(), lr<span class="op">=</span><span class="fl">0.01</span>, weight_decay<span class="op">=</span><span class="fl">5e-4</span>)</span>
-<span id="cb36-3"><a href="#cb36-3"></a>loss_fn <span class="op">=</span> torch.nn.CrossEntropyLoss()</span>
-<span id="cb36-4"><a href="#cb36-4"></a></span>
-<span id="cb36-5"><a href="#cb36-5"></a><span class="kw">def</span> train():</span>
-<span id="cb36-6"><a href="#cb36-6"></a>      model.train()</span>
-<span id="cb36-7"><a href="#cb36-7"></a>      optimizr.zero_grad()  <span class="co"># Clear gradients.</span></span>
-<span id="cb36-8"><a href="#cb36-8"></a>      out <span class="op">=</span> model(data.x, data.edge_index)  <span class="co"># Perform a single forward pass.</span></span>
-<span id="cb36-9"><a href="#cb36-9"></a>      loss <span class="op">=</span> loss_fn(out[data.train_mask], data.y[data.train_mask])  <span class="co"># Compute the loss solely based on the training nodes.</span></span>
-<span id="cb36-10"><a href="#cb36-10"></a>      loss.backward()  <span class="co"># Derive gradients.</span></span>
-<span id="cb36-11"><a href="#cb36-11"></a>      optimizr.step()  <span class="co"># Update parameters based on gradients.</span></span>
-<span id="cb36-12"><a href="#cb36-12"></a>      <span class="cf">return</span> loss</span>
-<span id="cb36-13"><a href="#cb36-13"></a></span>
-<span id="cb36-14"><a href="#cb36-14"></a><span class="kw">def</span> test(mask):</span>
-<span id="cb36-15"><a href="#cb36-15"></a>      model.<span class="bu">eval</span>()</span>
-<span id="cb36-16"><a href="#cb36-16"></a>      out <span class="op">=</span> model(data.x, data.edge_index)</span>
-<span id="cb36-17"><a href="#cb36-17"></a>      pred <span class="op">=</span> out.argmax(dim<span class="op">=</span><span class="dv">1</span>)  <span class="co"># Use the class with highest probability.</span></span>
-<span id="cb36-18"><a href="#cb36-18"></a>      correct <span class="op">=</span> pred[mask] <span class="op">==</span> data.y[mask]  <span class="co"># Check against ground-truth labels.</span></span>
-<span id="cb36-19"><a href="#cb36-19"></a>      acc <span class="op">=</span> <span class="bu">int</span>(correct.<span class="bu">sum</span>()) <span class="op">/</span> <span class="bu">int</span>(mask.<span class="bu">sum</span>())  <span class="co"># Derive ratio of correct predictions.</span></span>
-<span id="cb36-20"><a href="#cb36-20"></a>      <span class="cf">return</span> acc</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell" data-execution_count="19">
+<div class="sourceCode cell-code" id="cb36"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb36-1"><a href="#cb36-1"></a>data.test_mask.<span class="bu">sum</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="19">
+<pre><code>tensor(1000)</code></pre>
 </div>
-<div class="cell" data-execution_count="42">
-<div class="sourceCode cell-code" id="cb37"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb37-1"><a href="#cb37-1"></a><span class="cf">for</span> epoch <span class="kw">in</span> <span class="bu">range</span>(<span class="dv">1</span>, <span class="dv">101</span>):</span>
-<span id="cb37-2"><a href="#cb37-2"></a>    loss <span class="op">=</span> train()</span>
-<span id="cb37-3"><a href="#cb37-3"></a>    val_acc <span class="op">=</span> test(data.val_mask)</span>
-<span id="cb37-4"><a href="#cb37-4"></a>    test_acc <span class="op">=</span> test(data.test_mask)</span>
-<span id="cb37-5"><a href="#cb37-5"></a>    <span class="bu">print</span>(<span class="ss">f'에폭: </span><span class="sc">{</span>epoch<span class="sc">:03d}</span><span class="ss">, Loss: </span><span class="sc">{</span>loss<span class="sc">:.4f}</span><span class="ss">, Val: </span><span class="sc">{</span>val_acc<span class="sc">:.4f}</span><span class="ss">, Test: </span><span class="sc">{</span>test_acc<span class="sc">:.4f}</span><span class="ss">'</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="sourceCode" id="cb38"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb38-1"><a href="#cb38-1"></a><span class="im">from</span> torch_geometric.nn <span class="im">import</span> GCNConv</span>
+<span id="cb38-2"><a href="#cb38-2"></a></span>
+<span id="cb38-3"><a href="#cb38-3"></a></span>
+<span id="cb38-4"><a href="#cb38-4"></a><span class="kw">class</span> GCN(torch.nn.Module):</span>
+<span id="cb38-5"><a href="#cb38-5"></a>    <span class="kw">def</span> <span class="fu">__init__</span>(<span class="va">self</span>, hidden_channels):</span>
+<span id="cb38-6"><a href="#cb38-6"></a>        <span class="bu">super</span>().<span class="fu">__init__</span>()</span>
+<span id="cb38-7"><a href="#cb38-7"></a>        <span class="co">## 우리가 사용할 레이어 정의</span></span>
+<span id="cb38-8"><a href="#cb38-8"></a>        torch.manual_seed(<span class="dv">1234567</span>)</span>
+<span id="cb38-9"><a href="#cb38-9"></a>        <span class="va">self</span>.conv1 <span class="op">=</span> GCNConv(dataset.num_features, hidden_channels)</span>
+<span id="cb38-10"><a href="#cb38-10"></a>        <span class="va">self</span>.conv2 <span class="op">=</span> GCNConv(hidden_channels, dataset.num_classes)</span>
+<span id="cb38-11"><a href="#cb38-11"></a>        <span class="co">## 레이어 정의 끝!</span></span>
+<span id="cb38-12"><a href="#cb38-12"></a>        </span>
+<span id="cb38-13"><a href="#cb38-13"></a>    <span class="kw">def</span> forward(<span class="va">self</span>, x, edge_index):</span>
+<span id="cb38-14"><a href="#cb38-14"></a>        <span class="co">## yhat을 어떻게 구할것인지 정의</span></span>
+<span id="cb38-15"><a href="#cb38-15"></a>        x <span class="op">=</span> <span class="va">self</span>.conv1(x, edge_index)</span>
+<span id="cb38-16"><a href="#cb38-16"></a>        x <span class="op">=</span> x.relu()</span>
+<span id="cb38-17"><a href="#cb38-17"></a>        x <span class="op">=</span> F.dropout(x, p<span class="op">=</span><span class="fl">0.5</span>, training<span class="op">=</span><span class="va">self</span>.training)</span>
+<span id="cb38-18"><a href="#cb38-18"></a>        x <span class="op">=</span> <span class="va">self</span>.conv2(x, edge_index)</span>
+<span id="cb38-19"><a href="#cb38-19"></a>        <span class="co">## 정의 끝!</span></span>
+<span id="cb38-20"><a href="#cb38-20"></a>        <span class="cf">return</span> x</span>
+<span id="cb38-21"><a href="#cb38-21"></a></span>
+<span id="cb38-22"><a href="#cb38-22"></a>model <span class="op">=</span> GCN(hidden_channels<span class="op">=</span><span class="dv">16</span>)</span>
+<span id="cb38-23"><a href="#cb38-23"></a><span class="bu">print</span>(model)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell" data-execution_count="36">
+<div class="sourceCode cell-code" id="cb39"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb39-1"><a href="#cb39-1"></a><span class="co"># model = GCN(hidden_channels=16)</span></span>
+<span id="cb39-2"><a href="#cb39-2"></a>optimizr <span class="op">=</span> torch.optim.Adam(model.parameters(), lr<span class="op">=</span><span class="fl">0.01</span>, weight_decay<span class="op">=</span><span class="fl">5e-4</span>)</span>
+<span id="cb39-3"><a href="#cb39-3"></a>loss_fn <span class="op">=</span> torch.nn.CrossEntropyLoss()</span>
+<span id="cb39-4"><a href="#cb39-4"></a></span>
+<span id="cb39-5"><a href="#cb39-5"></a><span class="kw">def</span> train():</span>
+<span id="cb39-6"><a href="#cb39-6"></a>      model.train()</span>
+<span id="cb39-7"><a href="#cb39-7"></a>      optimizr.zero_grad()  <span class="co"># Clear gradients.</span></span>
+<span id="cb39-8"><a href="#cb39-8"></a>      out <span class="op">=</span> model(data.x, data.edge_index)  <span class="co"># Perform a single forward pass.</span></span>
+<span id="cb39-9"><a href="#cb39-9"></a>      loss <span class="op">=</span> loss_fn(out[data.train_mask], data.y[data.train_mask])  <span class="co"># Compute the loss solely based on the training nodes.</span></span>
+<span id="cb39-10"><a href="#cb39-10"></a>      loss.backward()  <span class="co"># Derive gradients.</span></span>
+<span id="cb39-11"><a href="#cb39-11"></a>      optimizr.step()  <span class="co"># Update parameters based on gradients.</span></span>
+<span id="cb39-12"><a href="#cb39-12"></a>      <span class="cf">return</span> loss</span>
+<span id="cb39-13"><a href="#cb39-13"></a></span>
+<span id="cb39-14"><a href="#cb39-14"></a><span class="kw">def</span> test():</span>
+<span id="cb39-15"><a href="#cb39-15"></a>      model.<span class="bu">eval</span>()</span>
+<span id="cb39-16"><a href="#cb39-16"></a>      out <span class="op">=</span> model(data.x, data.edge_index)</span>
+<span id="cb39-17"><a href="#cb39-17"></a>      pred <span class="op">=</span> out.argmax(dim<span class="op">=</span><span class="dv">1</span>)  <span class="co"># Use the class with highest probability.</span></span>
+<span id="cb39-18"><a href="#cb39-18"></a>      test_correct <span class="op">=</span> pred[data.test_mask] <span class="op">==</span> data.y[data.test_mask]  <span class="co"># Check against ground-truth labels.</span></span>
+<span id="cb39-19"><a href="#cb39-19"></a>      test_acc <span class="op">=</span> <span class="bu">int</span>(test_correct.<span class="bu">sum</span>()) <span class="op">/</span> <span class="bu">int</span>(data.test_mask.<span class="bu">sum</span>())  <span class="co"># Derive ratio of correct predictions.</span></span>
+<span id="cb39-20"><a href="#cb39-20"></a>      <span class="cf">return</span> test_acc</span>
+<span id="cb39-21"><a href="#cb39-21"></a></span>
+<span id="cb39-22"><a href="#cb39-22"></a><span class="kw">def</span> val():</span>
+<span id="cb39-23"><a href="#cb39-23"></a>      model.<span class="bu">eval</span>()</span>
+<span id="cb39-24"><a href="#cb39-24"></a>      out <span class="op">=</span> model(data.x, data.edge_index)</span>
+<span id="cb39-25"><a href="#cb39-25"></a>      pred <span class="op">=</span> out.argmax(dim<span class="op">=</span><span class="dv">1</span>)  <span class="co"># Use the class with highest probability.</span></span>
+<span id="cb39-26"><a href="#cb39-26"></a>      val_correct <span class="op">=</span> pred[data.val_mask] <span class="op">==</span> data.y[data.val_mask]  <span class="co"># Check against ground-truth labels.</span></span>
+<span id="cb39-27"><a href="#cb39-27"></a>      val_acc <span class="op">=</span> <span class="bu">int</span>(val_correct.<span class="bu">sum</span>()) <span class="op">/</span> <span class="bu">int</span>(data.val_mask.<span class="bu">sum</span>())  <span class="co"># Derive ratio of correct predictions.</span></span>
+<span id="cb39-28"><a href="#cb39-28"></a>      <span class="cf">return</span> val_acc</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<section id="model1-hidden-chnnels16" class="level3">
+<h3 class="anchored" data-anchor-id="model1-hidden-chnnels16">model1 (hidden chnnels=16)</h3>
+<div class="cell" data-execution_count="37">
+<div class="sourceCode cell-code" id="cb40"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb40-1"><a href="#cb40-1"></a>model <span class="op">=</span> GCN(hidden_channels<span class="op">=</span><span class="dv">16</span>)</span>
+<span id="cb40-2"><a href="#cb40-2"></a>optimizr <span class="op">=</span> torch.optim.Adam(model.parameters(), lr<span class="op">=</span><span class="fl">0.01</span>, weight_decay<span class="op">=</span><span class="fl">5e-4</span>)</span>
+<span id="cb40-3"><a href="#cb40-3"></a>loss_fn <span class="op">=</span> torch.nn.CrossEntropyLoss()</span>
+<span id="cb40-4"><a href="#cb40-4"></a></span>
+<span id="cb40-5"><a href="#cb40-5"></a><span class="cf">for</span> epoch <span class="kw">in</span> <span class="bu">range</span>(<span class="dv">1</span>, <span class="dv">101</span>):</span>
+<span id="cb40-6"><a href="#cb40-6"></a>    loss <span class="op">=</span> train()</span>
+<span id="cb40-7"><a href="#cb40-7"></a>    val_acc <span class="op">=</span> val()</span>
+<span id="cb40-8"><a href="#cb40-8"></a>    test_acc <span class="op">=</span> test()</span>
+<span id="cb40-9"><a href="#cb40-9"></a>    <span class="bu">print</span>(<span class="ss">f'에폭: </span><span class="sc">{</span>epoch<span class="sc">:03d}</span><span class="ss">, Loss: </span><span class="sc">{</span>loss<span class="sc">:.4f}</span><span class="ss">, Val: </span><span class="sc">{</span>val_acc<span class="sc">:.4f}</span><span class="ss">, Test: </span><span class="sc">{</span>test_acc<span class="sc">:.4f}</span><span class="ss">'</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>에폭: 001, Loss: 0.3301, Val: 0.7980, Test: 0.8040
-에폭: 002, Loss: 0.3331, Val: 0.7940, Test: 0.8040
-에폭: 003, Loss: 0.3414, Val: 0.7940, Test: 0.8080
-에폭: 004, Loss: 0.3466, Val: 0.7920, Test: 0.8100
-에폭: 005, Loss: 0.3247, Val: 0.7980, Test: 0.8110
-에폭: 006, Loss: 0.3372, Val: 0.7960, Test: 0.8100
-에폭: 007, Loss: 0.3198, Val: 0.7900, Test: 0.8080
-에폭: 008, Loss: 0.3267, Val: 0.7900, Test: 0.8050
-에폭: 009, Loss: 0.3175, Val: 0.7900, Test: 0.8000
-에폭: 010, Loss: 0.3127, Val: 0.7940, Test: 0.8000
-에폭: 011, Loss: 0.3172, Val: 0.7980, Test: 0.8010
-에폭: 012, Loss: 0.3242, Val: 0.7940, Test: 0.8040
-에폭: 013, Loss: 0.3419, Val: 0.7920, Test: 0.8050
-에폭: 014, Loss: 0.3062, Val: 0.7940, Test: 0.8080
-에폭: 015, Loss: 0.3034, Val: 0.7980, Test: 0.8080
-에폭: 016, Loss: 0.3040, Val: 0.7980, Test: 0.8050
-에폭: 017, Loss: 0.3263, Val: 0.7960, Test: 0.8100
-에폭: 018, Loss: 0.3052, Val: 0.7920, Test: 0.8120
-에폭: 019, Loss: 0.2737, Val: 0.7940, Test: 0.8090
-에폭: 020, Loss: 0.3564, Val: 0.7980, Test: 0.8110
-에폭: 021, Loss: 0.3108, Val: 0.7980, Test: 0.8050
-에폭: 022, Loss: 0.2920, Val: 0.7900, Test: 0.8020
-에폭: 023, Loss: 0.2831, Val: 0.7860, Test: 0.8020
-에폭: 024, Loss: 0.3143, Val: 0.7800, Test: 0.8010
-에폭: 025, Loss: 0.2913, Val: 0.7800, Test: 0.8030
-에폭: 026, Loss: 0.3016, Val: 0.7860, Test: 0.8050
-에폭: 027, Loss: 0.2789, Val: 0.7880, Test: 0.8040
-에폭: 028, Loss: 0.2611, Val: 0.7880, Test: 0.8060
-에폭: 029, Loss: 0.3402, Val: 0.7940, Test: 0.8060
-에폭: 030, Loss: 0.3062, Val: 0.8020, Test: 0.8090
-에폭: 031, Loss: 0.2878, Val: 0.8000, Test: 0.8110
-에폭: 032, Loss: 0.2991, Val: 0.8000, Test: 0.8080
-에폭: 033, Loss: 0.2839, Val: 0.8020, Test: 0.8070
-에폭: 034, Loss: 0.3040, Val: 0.7980, Test: 0.8060
-에폭: 035, Loss: 0.3232, Val: 0.7940, Test: 0.8050
-에폭: 036, Loss: 0.2952, Val: 0.7920, Test: 0.8020
-에폭: 037, Loss: 0.3136, Val: 0.7900, Test: 0.8000
-에폭: 038, Loss: 0.2938, Val: 0.7880, Test: 0.7970
-에폭: 039, Loss: 0.3017, Val: 0.7900, Test: 0.7990
-에폭: 040, Loss: 0.2868, Val: 0.7880, Test: 0.8020
-에폭: 041, Loss: 0.2727, Val: 0.7940, Test: 0.8050
-에폭: 042, Loss: 0.3324, Val: 0.7980, Test: 0.8080
-에폭: 043, Loss: 0.2942, Val: 0.7940, Test: 0.8110
-에폭: 044, Loss: 0.2998, Val: 0.7940, Test: 0.8090
-에폭: 045, Loss: 0.2981, Val: 0.7900, Test: 0.8090
-에폭: 046, Loss: 0.2793, Val: 0.7840, Test: 0.8100
-에폭: 047, Loss: 0.2936, Val: 0.7920, Test: 0.8130
-에폭: 048, Loss: 0.2718, Val: 0.7900, Test: 0.8070
-에폭: 049, Loss: 0.3102, Val: 0.7900, Test: 0.8020
-에폭: 050, Loss: 0.3068, Val: 0.7880, Test: 0.8010
-에폭: 051, Loss: 0.3159, Val: 0.7840, Test: 0.8020
-에폭: 052, Loss: 0.2871, Val: 0.7840, Test: 0.8050
-에폭: 053, Loss: 0.2784, Val: 0.7840, Test: 0.8050
-에폭: 054, Loss: 0.2642, Val: 0.7820, Test: 0.8060
-에폭: 055, Loss: 0.2715, Val: 0.7880, Test: 0.8070
-에폭: 056, Loss: 0.2560, Val: 0.7900, Test: 0.8100
-에폭: 057, Loss: 0.2734, Val: 0.7900, Test: 0.8090
-에폭: 058, Loss: 0.2989, Val: 0.7940, Test: 0.8120
-에폭: 059, Loss: 0.2927, Val: 0.7900, Test: 0.8090
-에폭: 060, Loss: 0.2749, Val: 0.7840, Test: 0.8060
-에폭: 061, Loss: 0.2615, Val: 0.7860, Test: 0.8040
-에폭: 062, Loss: 0.2910, Val: 0.7840, Test: 0.8010
-에폭: 063, Loss: 0.2806, Val: 0.7820, Test: 0.8010
-에폭: 064, Loss: 0.3023, Val: 0.7800, Test: 0.8020
-에폭: 065, Loss: 0.3015, Val: 0.7860, Test: 0.8090
-에폭: 066, Loss: 0.2707, Val: 0.7860, Test: 0.8090
-에폭: 067, Loss: 0.2682, Val: 0.7920, Test: 0.8090
-에폭: 068, Loss: 0.2961, Val: 0.7980, Test: 0.8070
-에폭: 069, Loss: 0.2768, Val: 0.7980, Test: 0.8090
-에폭: 070, Loss: 0.2789, Val: 0.7980, Test: 0.8070
-에폭: 071, Loss: 0.2495, Val: 0.7940, Test: 0.8090
-에폭: 072, Loss: 0.2572, Val: 0.7960, Test: 0.8110
-에폭: 073, Loss: 0.2653, Val: 0.7980, Test: 0.8100
-에폭: 074, Loss: 0.2747, Val: 0.7940, Test: 0.8130
-에폭: 075, Loss: 0.2766, Val: 0.7920, Test: 0.8120
-에폭: 076, Loss: 0.2981, Val: 0.7900, Test: 0.8090
-에폭: 077, Loss: 0.2577, Val: 0.7840, Test: 0.8070
-에폭: 078, Loss: 0.2813, Val: 0.7840, Test: 0.8070
-에폭: 079, Loss: 0.2722, Val: 0.7860, Test: 0.8080
-에폭: 080, Loss: 0.2884, Val: 0.7900, Test: 0.8030
-에폭: 081, Loss: 0.2866, Val: 0.7980, Test: 0.8050
-에폭: 082, Loss: 0.2618, Val: 0.7940, Test: 0.8050
-에폭: 083, Loss: 0.2661, Val: 0.7960, Test: 0.8070
-에폭: 084, Loss: 0.2775, Val: 0.7900, Test: 0.8100
-에폭: 085, Loss: 0.2580, Val: 0.7960, Test: 0.8100
-에폭: 086, Loss: 0.2856, Val: 0.7980, Test: 0.8110
-에폭: 087, Loss: 0.2758, Val: 0.7980, Test: 0.8120
-에폭: 088, Loss: 0.2664, Val: 0.7960, Test: 0.8100
-에폭: 089, Loss: 0.2711, Val: 0.7960, Test: 0.8080
-에폭: 090, Loss: 0.2384, Val: 0.7880, Test: 0.8070
-에폭: 091, Loss: 0.2561, Val: 0.7880, Test: 0.8080
-에폭: 092, Loss: 0.2746, Val: 0.7900, Test: 0.8080
-에폭: 093, Loss: 0.2622, Val: 0.7920, Test: 0.8070
-에폭: 094, Loss: 0.2676, Val: 0.7920, Test: 0.8070
-에폭: 095, Loss: 0.2600, Val: 0.7960, Test: 0.8060
-에폭: 096, Loss: 0.2782, Val: 0.7980, Test: 0.8080
-에폭: 097, Loss: 0.2775, Val: 0.7980, Test: 0.8100
-에폭: 098, Loss: 0.2790, Val: 0.7940, Test: 0.8110
-에폭: 099, Loss: 0.2738, Val: 0.7940, Test: 0.8090
-에폭: 100, Loss: 0.2491, Val: 0.7940, Test: 0.8060</code></pre>
+<pre><code>에폭: 001, Loss: 1.9463, Val: 0.2880, Test: 0.2700
+에폭: 002, Loss: 1.9409, Val: 0.2580, Test: 0.2910
+에폭: 003, Loss: 1.9343, Val: 0.2560, Test: 0.2910
+에폭: 004, Loss: 1.9275, Val: 0.2640, Test: 0.3210
+에폭: 005, Loss: 1.9181, Val: 0.3220, Test: 0.3630
+에폭: 006, Loss: 1.9086, Val: 0.4000, Test: 0.4120
+에폭: 007, Loss: 1.9015, Val: 0.3900, Test: 0.4010
+에폭: 008, Loss: 1.8933, Val: 0.3900, Test: 0.4020
+에폭: 009, Loss: 1.8808, Val: 0.4220, Test: 0.4180
+에폭: 010, Loss: 1.8685, Val: 0.4560, Test: 0.4470
+에폭: 011, Loss: 1.8598, Val: 0.4760, Test: 0.4680
+에폭: 012, Loss: 1.8482, Val: 0.5120, Test: 0.5180
+에폭: 013, Loss: 1.8290, Val: 0.5380, Test: 0.5440
+에폭: 014, Loss: 1.8233, Val: 0.5580, Test: 0.5720
+에폭: 015, Loss: 1.8057, Val: 0.5820, Test: 0.5910
+에폭: 016, Loss: 1.7966, Val: 0.6060, Test: 0.6080
+에폭: 017, Loss: 1.7825, Val: 0.6200, Test: 0.6300
+에폭: 018, Loss: 1.7617, Val: 0.6280, Test: 0.6450
+에폭: 019, Loss: 1.7491, Val: 0.6280, Test: 0.6520
+에폭: 020, Loss: 1.7310, Val: 0.6320, Test: 0.6560
+에폭: 021, Loss: 1.7147, Val: 0.6360, Test: 0.6570
+에폭: 022, Loss: 1.7056, Val: 0.6420, Test: 0.6640
+에폭: 023, Loss: 1.6954, Val: 0.6720, Test: 0.6770
+에폭: 024, Loss: 1.6697, Val: 0.6920, Test: 0.6950
+에폭: 025, Loss: 1.6538, Val: 0.7080, Test: 0.7140
+에폭: 026, Loss: 1.6312, Val: 0.7160, Test: 0.7150
+에폭: 027, Loss: 1.6161, Val: 0.7160, Test: 0.7170
+에폭: 028, Loss: 1.5899, Val: 0.7200, Test: 0.7230
+에폭: 029, Loss: 1.5711, Val: 0.7160, Test: 0.7220
+에폭: 030, Loss: 1.5576, Val: 0.7220, Test: 0.7210
+에폭: 031, Loss: 1.5393, Val: 0.7260, Test: 0.7280
+에폭: 032, Loss: 1.5137, Val: 0.7340, Test: 0.7370
+에폭: 033, Loss: 1.4948, Val: 0.7340, Test: 0.7380
+에폭: 034, Loss: 1.4913, Val: 0.7360, Test: 0.7430
+에폭: 035, Loss: 1.4698, Val: 0.7400, Test: 0.7510
+에폭: 036, Loss: 1.3998, Val: 0.7520, Test: 0.7570
+에폭: 037, Loss: 1.4041, Val: 0.7540, Test: 0.7600
+에폭: 038, Loss: 1.3761, Val: 0.7560, Test: 0.7640
+에폭: 039, Loss: 1.3631, Val: 0.7620, Test: 0.7700
+에폭: 040, Loss: 1.3258, Val: 0.7620, Test: 0.7800
+에폭: 041, Loss: 1.3030, Val: 0.7640, Test: 0.7810
+에폭: 042, Loss: 1.3119, Val: 0.7600, Test: 0.7760
+에폭: 043, Loss: 1.2519, Val: 0.7580, Test: 0.7760
+에폭: 044, Loss: 1.2530, Val: 0.7600, Test: 0.7790
+에폭: 045, Loss: 1.2492, Val: 0.7660, Test: 0.7800
+에폭: 046, Loss: 1.2205, Val: 0.7640, Test: 0.7790
+에폭: 047, Loss: 1.2037, Val: 0.7620, Test: 0.7850
+에폭: 048, Loss: 1.1571, Val: 0.7660, Test: 0.7900
+에폭: 049, Loss: 1.1700, Val: 0.7620, Test: 0.7920
+에폭: 050, Loss: 1.1296, Val: 0.7600, Test: 0.7940
+에폭: 051, Loss: 1.0860, Val: 0.7600, Test: 0.7930
+에폭: 052, Loss: 1.1080, Val: 0.7600, Test: 0.7910
+에폭: 053, Loss: 1.0564, Val: 0.7580, Test: 0.7930
+에폭: 054, Loss: 1.0157, Val: 0.7560, Test: 0.7930
+에폭: 055, Loss: 1.0362, Val: 0.7580, Test: 0.7920
+에폭: 056, Loss: 1.0328, Val: 0.7660, Test: 0.7980
+에폭: 057, Loss: 1.0058, Val: 0.7680, Test: 0.8000
+에폭: 058, Loss: 0.9865, Val: 0.7680, Test: 0.7970
+에폭: 059, Loss: 0.9667, Val: 0.7700, Test: 0.8010
+에폭: 060, Loss: 0.9741, Val: 0.7680, Test: 0.8000
+에폭: 061, Loss: 0.9769, Val: 0.7700, Test: 0.8030
+에폭: 062, Loss: 0.9122, Val: 0.7720, Test: 0.8040
+에폭: 063, Loss: 0.8993, Val: 0.7760, Test: 0.8050
+에폭: 064, Loss: 0.8769, Val: 0.7760, Test: 0.8050
+에폭: 065, Loss: 0.8575, Val: 0.7800, Test: 0.8060
+에폭: 066, Loss: 0.8897, Val: 0.7760, Test: 0.8030
+에폭: 067, Loss: 0.8312, Val: 0.7720, Test: 0.8060
+에폭: 068, Loss: 0.8262, Val: 0.7680, Test: 0.8030
+에폭: 069, Loss: 0.8511, Val: 0.7660, Test: 0.8070
+에폭: 070, Loss: 0.7711, Val: 0.7700, Test: 0.8070
+에폭: 071, Loss: 0.8012, Val: 0.7680, Test: 0.8080
+에폭: 072, Loss: 0.7529, Val: 0.7740, Test: 0.8080
+에폭: 073, Loss: 0.7525, Val: 0.7740, Test: 0.8070
+에폭: 074, Loss: 0.7689, Val: 0.7740, Test: 0.8110
+에폭: 075, Loss: 0.7553, Val: 0.7760, Test: 0.8140
+에폭: 076, Loss: 0.7032, Val: 0.7780, Test: 0.8120
+에폭: 077, Loss: 0.7326, Val: 0.7800, Test: 0.8110
+에폭: 078, Loss: 0.7122, Val: 0.7840, Test: 0.8120
+에폭: 079, Loss: 0.7090, Val: 0.7880, Test: 0.8110
+에폭: 080, Loss: 0.6755, Val: 0.7800, Test: 0.8130
+에폭: 081, Loss: 0.6666, Val: 0.7780, Test: 0.8070
+에폭: 082, Loss: 0.6679, Val: 0.7700, Test: 0.8080
+에폭: 083, Loss: 0.7037, Val: 0.7700, Test: 0.8100
+에폭: 084, Loss: 0.6752, Val: 0.7700, Test: 0.8070
+에폭: 085, Loss: 0.6266, Val: 0.7680, Test: 0.8100
+에폭: 086, Loss: 0.6564, Val: 0.7660, Test: 0.8080
+에폭: 087, Loss: 0.6266, Val: 0.7660, Test: 0.8090
+에폭: 088, Loss: 0.6411, Val: 0.7660, Test: 0.8080
+에폭: 089, Loss: 0.6226, Val: 0.7700, Test: 0.8100
+에폭: 090, Loss: 0.6535, Val: 0.7780, Test: 0.8130
+에폭: 091, Loss: 0.6317, Val: 0.7820, Test: 0.8140
+에폭: 092, Loss: 0.5741, Val: 0.7840, Test: 0.8120
+에폭: 093, Loss: 0.5572, Val: 0.7860, Test: 0.8140
+에폭: 094, Loss: 0.5710, Val: 0.7820, Test: 0.8120
+에폭: 095, Loss: 0.5816, Val: 0.7820, Test: 0.8140
+에폭: 096, Loss: 0.5745, Val: 0.7780, Test: 0.8140
+에폭: 097, Loss: 0.5547, Val: 0.7740, Test: 0.8150
+에폭: 098, Loss: 0.5989, Val: 0.7800, Test: 0.8160
+에폭: 099, Loss: 0.6021, Val: 0.7720, Test: 0.8160
+에폭: 100, Loss: 0.5799, Val: 0.7780, Test: 0.8150</code></pre>
 </div>
 </div>
+</section>
+<section id="model2-hidden-channels64" class="level3">
+<h3 class="anchored" data-anchor-id="model2-hidden-channels64">model2 (hidden channels=64)</h3>
+<div class="cell" data-execution_count="39">
+<div class="sourceCode cell-code" id="cb42"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb42-1"><a href="#cb42-1"></a>model <span class="op">=</span> GCN(hidden_channels<span class="op">=</span><span class="dv">256</span>)</span>
+<span id="cb42-2"><a href="#cb42-2"></a>optimizr <span class="op">=</span> torch.optim.Adam(model.parameters(), lr<span class="op">=</span><span class="fl">0.01</span>, weight_decay<span class="op">=</span><span class="fl">5e-4</span>)</span>
+<span id="cb42-3"><a href="#cb42-3"></a>loss_fn <span class="op">=</span> torch.nn.CrossEntropyLoss()</span>
+<span id="cb42-4"><a href="#cb42-4"></a></span>
+<span id="cb42-5"><a href="#cb42-5"></a><span class="cf">for</span> epoch <span class="kw">in</span> <span class="bu">range</span>(<span class="dv">1</span>, <span class="dv">101</span>):</span>
+<span id="cb42-6"><a href="#cb42-6"></a>    loss <span class="op">=</span> train()</span>
+<span id="cb42-7"><a href="#cb42-7"></a>    val_acc <span class="op">=</span> val()</span>
+<span id="cb42-8"><a href="#cb42-8"></a>    test_acc <span class="op">=</span> test()</span>
+<span id="cb42-9"><a href="#cb42-9"></a>    <span class="bu">print</span>(<span class="ss">f'에폭: </span><span class="sc">{</span>epoch<span class="sc">:03d}</span><span class="ss">, Loss: </span><span class="sc">{</span>loss<span class="sc">:.4f}</span><span class="ss">, Val: </span><span class="sc">{</span>val_acc<span class="sc">:.4f}</span><span class="ss">, Test: </span><span class="sc">{</span>test_acc<span class="sc">:.4f}</span><span class="ss">'</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>에폭: 001, Loss: 1.9448, Val: 0.2460, Test: 0.2360
+에폭: 002, Loss: 1.9221, Val: 0.3020, Test: 0.3060
+에폭: 003, Loss: 1.8922, Val: 0.3200, Test: 0.3270
+에폭: 004, Loss: 1.8556, Val: 0.3940, Test: 0.4060
+에폭: 005, Loss: 1.8123, Val: 0.4800, Test: 0.4960
+에폭: 006, Loss: 1.7614, Val: 0.5400, Test: 0.5510
+에폭: 007, Loss: 1.7012, Val: 0.5900, Test: 0.6140
+에폭: 008, Loss: 1.6528, Val: 0.6440, Test: 0.6740
+에폭: 009, Loss: 1.5808, Val: 0.6740, Test: 0.7130
+에폭: 010, Loss: 1.5118, Val: 0.7080, Test: 0.7390
+에폭: 011, Loss: 1.4335, Val: 0.7220, Test: 0.7500
+에폭: 012, Loss: 1.3561, Val: 0.7400, Test: 0.7590
+에폭: 013, Loss: 1.2777, Val: 0.7500, Test: 0.7660
+에폭: 014, Loss: 1.2094, Val: 0.7560, Test: 0.7750
+에폭: 015, Loss: 1.1225, Val: 0.7680, Test: 0.7820
+에폭: 016, Loss: 1.0417, Val: 0.7720, Test: 0.7920
+에폭: 017, Loss: 0.9676, Val: 0.7800, Test: 0.7990
+에폭: 018, Loss: 0.9025, Val: 0.7900, Test: 0.8060
+에폭: 019, Loss: 0.8258, Val: 0.7920, Test: 0.8100
+에폭: 020, Loss: 0.7598, Val: 0.7940, Test: 0.8150
+에폭: 021, Loss: 0.7166, Val: 0.7920, Test: 0.8140
+에폭: 022, Loss: 0.6533, Val: 0.7920, Test: 0.8130
+에폭: 023, Loss: 0.6075, Val: 0.7880, Test: 0.8100
+에폭: 024, Loss: 0.5647, Val: 0.7900, Test: 0.8140
+에폭: 025, Loss: 0.5216, Val: 0.7940, Test: 0.8160
+에폭: 026, Loss: 0.4843, Val: 0.7960, Test: 0.8170
+에폭: 027, Loss: 0.4597, Val: 0.7960, Test: 0.8210
+에폭: 028, Loss: 0.4341, Val: 0.8040, Test: 0.8240
+에폭: 029, Loss: 0.3999, Val: 0.8040, Test: 0.8310
+에폭: 030, Loss: 0.3885, Val: 0.8000, Test: 0.8310
+에폭: 031, Loss: 0.3755, Val: 0.7980, Test: 0.8290
+에폭: 032, Loss: 0.3532, Val: 0.7960, Test: 0.8240
+에폭: 033, Loss: 0.3327, Val: 0.7940, Test: 0.8220
+에폭: 034, Loss: 0.3176, Val: 0.7960, Test: 0.8180
+에폭: 035, Loss: 0.3280, Val: 0.7960, Test: 0.8190
+에폭: 036, Loss: 0.3020, Val: 0.7980, Test: 0.8200
+에폭: 037, Loss: 0.3077, Val: 0.7960, Test: 0.8140
+에폭: 038, Loss: 0.3007, Val: 0.7980, Test: 0.8140
+에폭: 039, Loss: 0.2771, Val: 0.8000, Test: 0.8190
+에폭: 040, Loss: 0.2912, Val: 0.8020, Test: 0.8190
+에폭: 041, Loss: 0.2674, Val: 0.8020, Test: 0.8170
+에폭: 042, Loss: 0.2737, Val: 0.7920, Test: 0.8110
+에폭: 043, Loss: 0.2506, Val: 0.7960, Test: 0.8070
+에폭: 044, Loss: 0.2429, Val: 0.7960, Test: 0.8070
+에폭: 045, Loss: 0.2518, Val: 0.7940, Test: 0.8110
+에폭: 046, Loss: 0.2412, Val: 0.7880, Test: 0.8090
+에폭: 047, Loss: 0.2537, Val: 0.7980, Test: 0.8010
+에폭: 048, Loss: 0.2303, Val: 0.7960, Test: 0.8030
+에폭: 049, Loss: 0.2341, Val: 0.7900, Test: 0.8090
+에폭: 050, Loss: 0.2295, Val: 0.7960, Test: 0.8050
+에폭: 051, Loss: 0.2180, Val: 0.7940, Test: 0.8060
+에폭: 052, Loss: 0.2149, Val: 0.7940, Test: 0.8040
+에폭: 053, Loss: 0.2350, Val: 0.7920, Test: 0.8040
+에폭: 054, Loss: 0.2234, Val: 0.7980, Test: 0.7990
+에폭: 055, Loss: 0.2126, Val: 0.7940, Test: 0.8040
+에폭: 056, Loss: 0.2107, Val: 0.7920, Test: 0.8120
+에폭: 057, Loss: 0.2117, Val: 0.7940, Test: 0.8080
+에폭: 058, Loss: 0.2034, Val: 0.7920, Test: 0.8110
+에폭: 059, Loss: 0.2032, Val: 0.7940, Test: 0.8080
+에폭: 060, Loss: 0.2053, Val: 0.8000, Test: 0.8030
+에폭: 061, Loss: 0.2004, Val: 0.7980, Test: 0.7990
+에폭: 062, Loss: 0.1933, Val: 0.7980, Test: 0.8050
+에폭: 063, Loss: 0.1882, Val: 0.7960, Test: 0.8120
+에폭: 064, Loss: 0.1891, Val: 0.7960, Test: 0.8150
+에폭: 065, Loss: 0.1982, Val: 0.7960, Test: 0.8080
+에폭: 066, Loss: 0.1794, Val: 0.7900, Test: 0.8050
+에폭: 067, Loss: 0.1883, Val: 0.7940, Test: 0.8010
+에폭: 068, Loss: 0.1840, Val: 0.7900, Test: 0.8010
+에폭: 069, Loss: 0.1801, Val: 0.7900, Test: 0.8030
+에폭: 070, Loss: 0.1845, Val: 0.7960, Test: 0.8070
+에폭: 071, Loss: 0.1839, Val: 0.7920, Test: 0.8120
+에폭: 072, Loss: 0.1820, Val: 0.7980, Test: 0.8080
+에폭: 073, Loss: 0.1787, Val: 0.7940, Test: 0.8000
+에폭: 074, Loss: 0.1813, Val: 0.7920, Test: 0.8060
+에폭: 075, Loss: 0.1793, Val: 0.7860, Test: 0.8050
+에폭: 076, Loss: 0.1785, Val: 0.7960, Test: 0.8070
+에폭: 077, Loss: 0.1644, Val: 0.7980, Test: 0.8090
+에폭: 078, Loss: 0.1687, Val: 0.7940, Test: 0.8090
+에폭: 079, Loss: 0.1673, Val: 0.7880, Test: 0.8080
+에폭: 080, Loss: 0.1705, Val: 0.7960, Test: 0.8140
+에폭: 081, Loss: 0.1713, Val: 0.7900, Test: 0.8070
+에폭: 082, Loss: 0.1720, Val: 0.7940, Test: 0.8080
+에폭: 083, Loss: 0.1683, Val: 0.7940, Test: 0.8040
+에폭: 084, Loss: 0.1672, Val: 0.7880, Test: 0.8080
+에폭: 085, Loss: 0.1657, Val: 0.7900, Test: 0.8140
+에폭: 086, Loss: 0.1592, Val: 0.7940, Test: 0.8060
+에폭: 087, Loss: 0.1635, Val: 0.8000, Test: 0.8100
+에폭: 088, Loss: 0.1593, Val: 0.7920, Test: 0.8090
+에폭: 089, Loss: 0.1666, Val: 0.7900, Test: 0.8040
+에폭: 090, Loss: 0.1593, Val: 0.7940, Test: 0.7980
+에폭: 091, Loss: 0.1669, Val: 0.7940, Test: 0.8010
+에폭: 092, Loss: 0.1540, Val: 0.7900, Test: 0.8010
+에폭: 093, Loss: 0.1513, Val: 0.7940, Test: 0.8100
+에폭: 094, Loss: 0.1569, Val: 0.7940, Test: 0.8150
+에폭: 095, Loss: 0.1561, Val: 0.7880, Test: 0.8080
+에폭: 096, Loss: 0.1497, Val: 0.7840, Test: 0.8020
+에폭: 097, Loss: 0.1497, Val: 0.7880, Test: 0.8000
+에폭: 098, Loss: 0.1559, Val: 0.7920, Test: 0.8020
+에폭: 099, Loss: 0.1493, Val: 0.7940, Test: 0.8090
+에폭: 100, Loss: 0.1488, Val: 0.8000, Test: 0.8090</code></pre>
+</div>
+</div>
+<div class="cell" data-execution_count="41">
+<div class="sourceCode cell-code" id="cb44"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb44-1"><a href="#cb44-1"></a>test_acc <span class="op">=</span> test()</span>
+<span id="cb44-2"><a href="#cb44-2"></a>test_acc</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="41">
+<pre><code>0.809</code></pre>
+</div>
+</div>
+</section>
+<section id="model3-hidden_channels256" class="level3">
+<h3 class="anchored" data-anchor-id="model3-hidden_channels256">model3 (hidden_channels=256)</h3>
 <div class="cell" data-execution_count="43">
-<div class="sourceCode cell-code" id="cb39"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb39-1"><a href="#cb39-1"></a>test_acc <span class="op">=</span> test(data.test_mask)</span>
-<span id="cb39-2"><a href="#cb39-2"></a>test_acc</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-display" data-execution_count="43">
-<pre><code>0.806</code></pre>
-</div>
-</div>
-<div class="cell" data-execution_count="44">
-<div class="sourceCode cell-code" id="cb41"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb41-1"><a href="#cb41-1"></a>test(data.val_mask)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-display" data-execution_count="44">
-<pre><code>0.794</code></pre>
+<div class="sourceCode cell-code" id="cb46"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb46-1"><a href="#cb46-1"></a>model <span class="op">=</span> GCN(hidden_channels<span class="op">=</span><span class="dv">256</span>)</span>
+<span id="cb46-2"><a href="#cb46-2"></a>optimizr <span class="op">=</span> torch.optim.Adam(model.parameters(), lr<span class="op">=</span><span class="fl">0.01</span>, weight_decay<span class="op">=</span><span class="fl">5e-4</span>)</span>
+<span id="cb46-3"><a href="#cb46-3"></a>loss_fn <span class="op">=</span> torch.nn.CrossEntropyLoss()</span>
+<span id="cb46-4"><a href="#cb46-4"></a></span>
+<span id="cb46-5"><a href="#cb46-5"></a><span class="cf">for</span> epoch <span class="kw">in</span> <span class="bu">range</span>(<span class="dv">1</span>, <span class="dv">101</span>):</span>
+<span id="cb46-6"><a href="#cb46-6"></a>    loss <span class="op">=</span> train()</span>
+<span id="cb46-7"><a href="#cb46-7"></a>    val_acc <span class="op">=</span> val()</span>
+<span id="cb46-8"><a href="#cb46-8"></a>    test_acc <span class="op">=</span> test()</span>
+<span id="cb46-9"><a href="#cb46-9"></a>    <span class="bu">print</span>(<span class="ss">f'에폭: </span><span class="sc">{</span>epoch<span class="sc">:03d}</span><span class="ss">, Loss: </span><span class="sc">{</span>loss<span class="sc">:.4f}</span><span class="ss">, Val: </span><span class="sc">{</span>val_acc<span class="sc">:.4f}</span><span class="ss">, Test: </span><span class="sc">{</span>test_acc<span class="sc">:.4f}</span><span class="ss">'</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>에폭: 001, Loss: 1.9448, Val: 0.2460, Test: 0.2360
+에폭: 002, Loss: 1.9221, Val: 0.3020, Test: 0.3060
+에폭: 003, Loss: 1.8922, Val: 0.3200, Test: 0.3270
+에폭: 004, Loss: 1.8556, Val: 0.3940, Test: 0.4060
+에폭: 005, Loss: 1.8123, Val: 0.4800, Test: 0.4960
+에폭: 006, Loss: 1.7614, Val: 0.5400, Test: 0.5510
+에폭: 007, Loss: 1.7012, Val: 0.5900, Test: 0.6140
+에폭: 008, Loss: 1.6528, Val: 0.6440, Test: 0.6740
+에폭: 009, Loss: 1.5808, Val: 0.6740, Test: 0.7130
+에폭: 010, Loss: 1.5118, Val: 0.7080, Test: 0.7390
+에폭: 011, Loss: 1.4335, Val: 0.7220, Test: 0.7500
+에폭: 012, Loss: 1.3561, Val: 0.7400, Test: 0.7590
+에폭: 013, Loss: 1.2777, Val: 0.7500, Test: 0.7660
+에폭: 014, Loss: 1.2094, Val: 0.7560, Test: 0.7750
+에폭: 015, Loss: 1.1225, Val: 0.7680, Test: 0.7820
+에폭: 016, Loss: 1.0417, Val: 0.7720, Test: 0.7920
+에폭: 017, Loss: 0.9676, Val: 0.7800, Test: 0.7990
+에폭: 018, Loss: 0.9025, Val: 0.7900, Test: 0.8060
+에폭: 019, Loss: 0.8258, Val: 0.7920, Test: 0.8100
+에폭: 020, Loss: 0.7598, Val: 0.7940, Test: 0.8150
+에폭: 021, Loss: 0.7166, Val: 0.7920, Test: 0.8140
+에폭: 022, Loss: 0.6533, Val: 0.7920, Test: 0.8130
+에폭: 023, Loss: 0.6075, Val: 0.7880, Test: 0.8100
+에폭: 024, Loss: 0.5647, Val: 0.7900, Test: 0.8140
+에폭: 025, Loss: 0.5216, Val: 0.7940, Test: 0.8160
+에폭: 026, Loss: 0.4843, Val: 0.7960, Test: 0.8170
+에폭: 027, Loss: 0.4597, Val: 0.7960, Test: 0.8210
+에폭: 028, Loss: 0.4341, Val: 0.8040, Test: 0.8240
+에폭: 029, Loss: 0.3999, Val: 0.8040, Test: 0.8310
+에폭: 030, Loss: 0.3885, Val: 0.8000, Test: 0.8310
+에폭: 031, Loss: 0.3755, Val: 0.7980, Test: 0.8290
+에폭: 032, Loss: 0.3532, Val: 0.7960, Test: 0.8240
+에폭: 033, Loss: 0.3327, Val: 0.7940, Test: 0.8220
+에폭: 034, Loss: 0.3176, Val: 0.7960, Test: 0.8180
+에폭: 035, Loss: 0.3280, Val: 0.7960, Test: 0.8190
+에폭: 036, Loss: 0.3020, Val: 0.7980, Test: 0.8200
+에폭: 037, Loss: 0.3077, Val: 0.7960, Test: 0.8140
+에폭: 038, Loss: 0.3007, Val: 0.7980, Test: 0.8140
+에폭: 039, Loss: 0.2771, Val: 0.8000, Test: 0.8190
+에폭: 040, Loss: 0.2912, Val: 0.8020, Test: 0.8190
+에폭: 041, Loss: 0.2674, Val: 0.8020, Test: 0.8170
+에폭: 042, Loss: 0.2737, Val: 0.7920, Test: 0.8110
+에폭: 043, Loss: 0.2506, Val: 0.7960, Test: 0.8070
+에폭: 044, Loss: 0.2429, Val: 0.7960, Test: 0.8070
+에폭: 045, Loss: 0.2518, Val: 0.7940, Test: 0.8110
+에폭: 046, Loss: 0.2412, Val: 0.7880, Test: 0.8090
+에폭: 047, Loss: 0.2537, Val: 0.7980, Test: 0.8010
+에폭: 048, Loss: 0.2303, Val: 0.7960, Test: 0.8030
+에폭: 049, Loss: 0.2341, Val: 0.7900, Test: 0.8090
+에폭: 050, Loss: 0.2295, Val: 0.7960, Test: 0.8050
+에폭: 051, Loss: 0.2180, Val: 0.7940, Test: 0.8060
+에폭: 052, Loss: 0.2149, Val: 0.7940, Test: 0.8040
+에폭: 053, Loss: 0.2350, Val: 0.7920, Test: 0.8040
+에폭: 054, Loss: 0.2234, Val: 0.7980, Test: 0.7990
+에폭: 055, Loss: 0.2126, Val: 0.7940, Test: 0.8040
+에폭: 056, Loss: 0.2107, Val: 0.7920, Test: 0.8120
+에폭: 057, Loss: 0.2117, Val: 0.7940, Test: 0.8080
+에폭: 058, Loss: 0.2034, Val: 0.7920, Test: 0.8110
+에폭: 059, Loss: 0.2032, Val: 0.7940, Test: 0.8080
+에폭: 060, Loss: 0.2053, Val: 0.8000, Test: 0.8030
+에폭: 061, Loss: 0.2004, Val: 0.7980, Test: 0.7990
+에폭: 062, Loss: 0.1933, Val: 0.7980, Test: 0.8050
+에폭: 063, Loss: 0.1882, Val: 0.7960, Test: 0.8120
+에폭: 064, Loss: 0.1891, Val: 0.7960, Test: 0.8150
+에폭: 065, Loss: 0.1982, Val: 0.7960, Test: 0.8080
+에폭: 066, Loss: 0.1794, Val: 0.7900, Test: 0.8050
+에폭: 067, Loss: 0.1883, Val: 0.7940, Test: 0.8010
+에폭: 068, Loss: 0.1840, Val: 0.7900, Test: 0.8010
+에폭: 069, Loss: 0.1801, Val: 0.7900, Test: 0.8030
+에폭: 070, Loss: 0.1845, Val: 0.7960, Test: 0.8070
+에폭: 071, Loss: 0.1839, Val: 0.7920, Test: 0.8120
+에폭: 072, Loss: 0.1820, Val: 0.7980, Test: 0.8080
+에폭: 073, Loss: 0.1787, Val: 0.7940, Test: 0.8000
+에폭: 074, Loss: 0.1813, Val: 0.7920, Test: 0.8060
+에폭: 075, Loss: 0.1793, Val: 0.7860, Test: 0.8050
+에폭: 076, Loss: 0.1785, Val: 0.7960, Test: 0.8070
+에폭: 077, Loss: 0.1644, Val: 0.7980, Test: 0.8090
+에폭: 078, Loss: 0.1687, Val: 0.7940, Test: 0.8090
+에폭: 079, Loss: 0.1673, Val: 0.7880, Test: 0.8080
+에폭: 080, Loss: 0.1705, Val: 0.7960, Test: 0.8140
+에폭: 081, Loss: 0.1713, Val: 0.7900, Test: 0.8070
+에폭: 082, Loss: 0.1720, Val: 0.7940, Test: 0.8080
+에폭: 083, Loss: 0.1683, Val: 0.7940, Test: 0.8040
+에폭: 084, Loss: 0.1672, Val: 0.7880, Test: 0.8080
+에폭: 085, Loss: 0.1657, Val: 0.7900, Test: 0.8140
+에폭: 086, Loss: 0.1592, Val: 0.7940, Test: 0.8060
+에폭: 087, Loss: 0.1635, Val: 0.8000, Test: 0.8100
+에폭: 088, Loss: 0.1593, Val: 0.7920, Test: 0.8090
+에폭: 089, Loss: 0.1666, Val: 0.7900, Test: 0.8040
+에폭: 090, Loss: 0.1593, Val: 0.7940, Test: 0.7980
+에폭: 091, Loss: 0.1669, Val: 0.7940, Test: 0.8010
+에폭: 092, Loss: 0.1540, Val: 0.7900, Test: 0.8010
+에폭: 093, Loss: 0.1513, Val: 0.7940, Test: 0.8100
+에폭: 094, Loss: 0.1569, Val: 0.7940, Test: 0.8150
+에폭: 095, Loss: 0.1561, Val: 0.7880, Test: 0.8080
+에폭: 096, Loss: 0.1497, Val: 0.7840, Test: 0.8020
+에폭: 097, Loss: 0.1497, Val: 0.7880, Test: 0.8000
+에폭: 098, Loss: 0.1559, Val: 0.7920, Test: 0.8020
+에폭: 099, Loss: 0.1493, Val: 0.7940, Test: 0.8090
+에폭: 100, Loss: 0.1488, Val: 0.8000, Test: 0.8090</code></pre>
 </div>
 </div>
 <ul>
 <li>올라가야하는데 오히려 떨어졌는데?? (에폭수 늘려봐도 똑같다..)</li>
 </ul>
 </section>
+</section>
+<section id="dropout0.3" class="level2">
+<h2 class="anchored" data-anchor-id="dropout0.3">dropout=0.3</h2>
+<div class="cell" data-execution_count="44">
+<div class="sourceCode cell-code" id="cb48"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb48-1"><a href="#cb48-1"></a><span class="im">from</span> torch_geometric.nn <span class="im">import</span> GCNConv</span>
+<span id="cb48-2"><a href="#cb48-2"></a></span>
+<span id="cb48-3"><a href="#cb48-3"></a></span>
+<span id="cb48-4"><a href="#cb48-4"></a><span class="kw">class</span> GCN(torch.nn.Module):</span>
+<span id="cb48-5"><a href="#cb48-5"></a>    <span class="kw">def</span> <span class="fu">__init__</span>(<span class="va">self</span>, hidden_channels):</span>
+<span id="cb48-6"><a href="#cb48-6"></a>        <span class="bu">super</span>().<span class="fu">__init__</span>()</span>
+<span id="cb48-7"><a href="#cb48-7"></a>        <span class="co">## 우리가 사용할 레이어 정의</span></span>
+<span id="cb48-8"><a href="#cb48-8"></a>        torch.manual_seed(<span class="dv">1234567</span>)</span>
+<span id="cb48-9"><a href="#cb48-9"></a>        <span class="va">self</span>.conv1 <span class="op">=</span> GCNConv(dataset.num_features, hidden_channels)</span>
+<span id="cb48-10"><a href="#cb48-10"></a>        <span class="va">self</span>.conv2 <span class="op">=</span> GCNConv(hidden_channels, dataset.num_classes)</span>
+<span id="cb48-11"><a href="#cb48-11"></a>        <span class="co">## 레이어 정의 끝!</span></span>
+<span id="cb48-12"><a href="#cb48-12"></a>        </span>
+<span id="cb48-13"><a href="#cb48-13"></a>    <span class="kw">def</span> forward(<span class="va">self</span>, x, edge_index):</span>
+<span id="cb48-14"><a href="#cb48-14"></a>        <span class="co">## yhat을 어떻게 구할것인지 정의</span></span>
+<span id="cb48-15"><a href="#cb48-15"></a>        x <span class="op">=</span> <span class="va">self</span>.conv1(x, edge_index)</span>
+<span id="cb48-16"><a href="#cb48-16"></a>        x <span class="op">=</span> x.relu()</span>
+<span id="cb48-17"><a href="#cb48-17"></a>        x <span class="op">=</span> F.dropout(x, p<span class="op">=</span><span class="fl">0.3</span>, training<span class="op">=</span><span class="va">self</span>.training)</span>
+<span id="cb48-18"><a href="#cb48-18"></a>        x <span class="op">=</span> <span class="va">self</span>.conv2(x, edge_index)</span>
+<span id="cb48-19"><a href="#cb48-19"></a>        <span class="co">## 정의 끝!</span></span>
+<span id="cb48-20"><a href="#cb48-20"></a>        <span class="cf">return</span> x</span>
+<span id="cb48-21"><a href="#cb48-21"></a></span>
+<span id="cb48-22"><a href="#cb48-22"></a>model <span class="op">=</span> GCN(hidden_channels<span class="op">=</span><span class="dv">16</span>)</span>
+<span id="cb48-23"><a href="#cb48-23"></a><span class="bu">print</span>(model)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>GCN(
+  (conv1): GCNConv(1433, 16)
+  (conv2): GCNConv(16, 7)
+)</code></pre>
+</div>
+</div>
+<div class="cell" data-execution_count="45">
+<div class="sourceCode cell-code" id="cb50"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb50-1"><a href="#cb50-1"></a>model <span class="op">=</span> GCN(hidden_channels<span class="op">=</span><span class="dv">16</span>)</span>
+<span id="cb50-2"><a href="#cb50-2"></a>optimizr <span class="op">=</span> torch.optim.Adam(model.parameters(), lr<span class="op">=</span><span class="fl">0.01</span>, weight_decay<span class="op">=</span><span class="fl">5e-4</span>)</span>
+<span id="cb50-3"><a href="#cb50-3"></a>loss_fn <span class="op">=</span> torch.nn.CrossEntropyLoss()</span>
+<span id="cb50-4"><a href="#cb50-4"></a></span>
+<span id="cb50-5"><a href="#cb50-5"></a><span class="cf">for</span> epoch <span class="kw">in</span> <span class="bu">range</span>(<span class="dv">1</span>, <span class="dv">101</span>):</span>
+<span id="cb50-6"><a href="#cb50-6"></a>    loss <span class="op">=</span> train()</span>
+<span id="cb50-7"><a href="#cb50-7"></a>    val_acc <span class="op">=</span> val()</span>
+<span id="cb50-8"><a href="#cb50-8"></a>    test_acc <span class="op">=</span> test()</span>
+<span id="cb50-9"><a href="#cb50-9"></a>    <span class="bu">print</span>(<span class="ss">f'에폭: </span><span class="sc">{</span>epoch<span class="sc">:03d}</span><span class="ss">, Loss: </span><span class="sc">{</span>loss<span class="sc">:.4f}</span><span class="ss">, Val: </span><span class="sc">{</span>val_acc<span class="sc">:.4f}</span><span class="ss">, Test: </span><span class="sc">{</span>test_acc<span class="sc">:.4f}</span><span class="ss">'</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>에폭: 001, Loss: 1.9464, Val: 0.2780, Test: 0.2740
+에폭: 002, Loss: 1.9407, Val: 0.4700, Test: 0.4760
+에폭: 003, Loss: 1.9337, Val: 0.2860, Test: 0.3320
+에폭: 004, Loss: 1.9258, Val: 0.2960, Test: 0.3550
+에폭: 005, Loss: 1.9156, Val: 0.3040, Test: 0.3420
+에폭: 006, Loss: 1.9056, Val: 0.3220, Test: 0.3490
+에폭: 007, Loss: 1.8976, Val: 0.3720, Test: 0.3790
+에폭: 008, Loss: 1.8855, Val: 0.3900, Test: 0.3810
+에폭: 009, Loss: 1.8749, Val: 0.4040, Test: 0.4030
+에폭: 010, Loss: 1.8610, Val: 0.4240, Test: 0.4150
+에폭: 011, Loss: 1.8510, Val: 0.4460, Test: 0.4290
+에폭: 012, Loss: 1.8393, Val: 0.4700, Test: 0.4650
+에폭: 013, Loss: 1.8186, Val: 0.4920, Test: 0.4850
+에폭: 014, Loss: 1.8061, Val: 0.5000, Test: 0.5010
+에폭: 015, Loss: 1.7972, Val: 0.5120, Test: 0.5220
+에폭: 016, Loss: 1.7835, Val: 0.5160, Test: 0.5360
+에폭: 017, Loss: 1.7636, Val: 0.5440, Test: 0.5580
+에폭: 018, Loss: 1.7460, Val: 0.5580, Test: 0.5740
+에폭: 019, Loss: 1.7369, Val: 0.5640, Test: 0.5900
+에폭: 020, Loss: 1.7162, Val: 0.5800, Test: 0.6060
+에폭: 021, Loss: 1.6970, Val: 0.5940, Test: 0.6260
+에폭: 022, Loss: 1.6831, Val: 0.6080, Test: 0.6390
+에폭: 023, Loss: 1.6674, Val: 0.6420, Test: 0.6470
+에폭: 024, Loss: 1.6391, Val: 0.6480, Test: 0.6610
+에폭: 025, Loss: 1.6216, Val: 0.6600, Test: 0.6730
+에폭: 026, Loss: 1.6116, Val: 0.6680, Test: 0.6860
+에폭: 027, Loss: 1.5808, Val: 0.6800, Test: 0.6940
+에폭: 028, Loss: 1.5628, Val: 0.6880, Test: 0.7000
+에폭: 029, Loss: 1.5349, Val: 0.7000, Test: 0.7040
+에폭: 030, Loss: 1.5208, Val: 0.7100, Test: 0.7100
+에폭: 031, Loss: 1.4980, Val: 0.7300, Test: 0.7130
+에폭: 032, Loss: 1.4797, Val: 0.7360, Test: 0.7190
+에폭: 033, Loss: 1.4533, Val: 0.7400, Test: 0.7330
+에폭: 034, Loss: 1.4457, Val: 0.7420, Test: 0.7400
+에폭: 035, Loss: 1.3973, Val: 0.7380, Test: 0.7480
+에폭: 036, Loss: 1.3577, Val: 0.7380, Test: 0.7570
+에폭: 037, Loss: 1.3596, Val: 0.7480, Test: 0.7600
+에폭: 038, Loss: 1.3399, Val: 0.7500, Test: 0.7630
+에폭: 039, Loss: 1.3004, Val: 0.7480, Test: 0.7640
+에폭: 040, Loss: 1.2785, Val: 0.7600, Test: 0.7660
+에폭: 041, Loss: 1.2550, Val: 0.7640, Test: 0.7710
+에폭: 042, Loss: 1.2501, Val: 0.7640, Test: 0.7750
+에폭: 043, Loss: 1.1990, Val: 0.7680, Test: 0.7800
+에폭: 044, Loss: 1.1957, Val: 0.7640, Test: 0.7810
+에폭: 045, Loss: 1.1835, Val: 0.7620, Test: 0.7840
+에폭: 046, Loss: 1.1654, Val: 0.7620, Test: 0.7860
+에폭: 047, Loss: 1.1340, Val: 0.7680, Test: 0.7850
+에폭: 048, Loss: 1.0928, Val: 0.7640, Test: 0.7870
+에폭: 049, Loss: 1.0673, Val: 0.7620, Test: 0.7890
+에폭: 050, Loss: 1.0424, Val: 0.7600, Test: 0.7950
+에폭: 051, Loss: 1.0307, Val: 0.7700, Test: 0.7960
+에폭: 052, Loss: 1.0354, Val: 0.7700, Test: 0.7960
+에폭: 053, Loss: 0.9902, Val: 0.7680, Test: 0.7960
+에폭: 054, Loss: 0.9670, Val: 0.7660, Test: 0.7990
+에폭: 055, Loss: 0.9509, Val: 0.7720, Test: 0.8010
+에폭: 056, Loss: 0.9346, Val: 0.7720, Test: 0.7990
+에폭: 057, Loss: 0.9241, Val: 0.7720, Test: 0.8010
+에폭: 058, Loss: 0.9048, Val: 0.7700, Test: 0.8060
+에폭: 059, Loss: 0.8751, Val: 0.7760, Test: 0.8070
+에폭: 060, Loss: 0.8744, Val: 0.7760, Test: 0.8070
+에폭: 061, Loss: 0.8741, Val: 0.7760, Test: 0.8060
+에폭: 062, Loss: 0.8382, Val: 0.7760, Test: 0.8060
+에폭: 063, Loss: 0.8386, Val: 0.7760, Test: 0.8050
+에폭: 064, Loss: 0.8064, Val: 0.7740, Test: 0.8050
+에폭: 065, Loss: 0.7937, Val: 0.7700, Test: 0.8050
+에폭: 066, Loss: 0.7756, Val: 0.7700, Test: 0.8060
+에폭: 067, Loss: 0.7719, Val: 0.7740, Test: 0.8060
+에폭: 068, Loss: 0.7680, Val: 0.7760, Test: 0.8080
+에폭: 069, Loss: 0.7578, Val: 0.7740, Test: 0.8060
+에폭: 070, Loss: 0.6947, Val: 0.7760, Test: 0.8060
+에폭: 071, Loss: 0.6947, Val: 0.7740, Test: 0.8060
+에폭: 072, Loss: 0.7084, Val: 0.7800, Test: 0.8090
+에폭: 073, Loss: 0.6902, Val: 0.7820, Test: 0.8110
+에폭: 074, Loss: 0.6982, Val: 0.7840, Test: 0.8120
+에폭: 075, Loss: 0.6644, Val: 0.7860, Test: 0.8130
+에폭: 076, Loss: 0.6464, Val: 0.7840, Test: 0.8140
+에폭: 077, Loss: 0.6493, Val: 0.7820, Test: 0.8110
+에폭: 078, Loss: 0.6318, Val: 0.7820, Test: 0.8090
+에폭: 079, Loss: 0.6261, Val: 0.7820, Test: 0.8100
+에폭: 080, Loss: 0.6206, Val: 0.7840, Test: 0.8090
+에폭: 081, Loss: 0.6000, Val: 0.7820, Test: 0.8080
+에폭: 082, Loss: 0.5981, Val: 0.7820, Test: 0.8050
+에폭: 083, Loss: 0.6003, Val: 0.7840, Test: 0.8070
+에폭: 084, Loss: 0.5982, Val: 0.7780, Test: 0.8070
+에폭: 085, Loss: 0.5790, Val: 0.7780, Test: 0.8090
+에폭: 086, Loss: 0.5735, Val: 0.7760, Test: 0.8100
+에폭: 087, Loss: 0.5556, Val: 0.7700, Test: 0.8110
+에폭: 088, Loss: 0.5661, Val: 0.7720, Test: 0.8090
+에폭: 089, Loss: 0.5532, Val: 0.7720, Test: 0.8090
+에폭: 090, Loss: 0.5643, Val: 0.7720, Test: 0.8110
+에폭: 091, Loss: 0.5254, Val: 0.7800, Test: 0.8120
+에폭: 092, Loss: 0.5273, Val: 0.7800, Test: 0.8120
+에폭: 093, Loss: 0.4899, Val: 0.7800, Test: 0.8120
+에폭: 094, Loss: 0.5018, Val: 0.7840, Test: 0.8120
+에폭: 095, Loss: 0.5108, Val: 0.7820, Test: 0.8100
+에폭: 096, Loss: 0.4899, Val: 0.7800, Test: 0.8090
+에폭: 097, Loss: 0.5016, Val: 0.7780, Test: 0.8080
+에폭: 098, Loss: 0.5214, Val: 0.7800, Test: 0.8110
+에폭: 099, Loss: 0.5047, Val: 0.7820, Test: 0.8130
+에폭: 100, Loss: 0.5089, Val: 0.7820, Test: 0.8120</code></pre>
+</div>
+</div>
+<div class="cell" data-execution_count="47">
+<div class="sourceCode cell-code" id="cb52"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb52-1"><a href="#cb52-1"></a>test_acc <span class="op">=</span> test()</span>
+<span id="cb52-2"><a href="#cb52-2"></a>test_acc</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="47">
+<pre><code>0.812</code></pre>
+</div>
+</div>
+</section>
+<section id="dropout-0.4" class="level2">
+<h2 class="anchored" data-anchor-id="dropout-0.4">dropout = 0.4</h2>
+<div class="cell" data-execution_count="78">
+<div class="sourceCode cell-code" id="cb54"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb54-1"><a href="#cb54-1"></a><span class="im">from</span> torch_geometric.nn <span class="im">import</span> GCNConv</span>
+<span id="cb54-2"><a href="#cb54-2"></a></span>
+<span id="cb54-3"><a href="#cb54-3"></a></span>
+<span id="cb54-4"><a href="#cb54-4"></a><span class="kw">class</span> GCN(torch.nn.Module):</span>
+<span id="cb54-5"><a href="#cb54-5"></a>    <span class="kw">def</span> <span class="fu">__init__</span>(<span class="va">self</span>, hidden_channels):</span>
+<span id="cb54-6"><a href="#cb54-6"></a>        <span class="bu">super</span>().<span class="fu">__init__</span>()</span>
+<span id="cb54-7"><a href="#cb54-7"></a>        <span class="co">## 우리가 사용할 레이어 정의</span></span>
+<span id="cb54-8"><a href="#cb54-8"></a>        torch.manual_seed(<span class="dv">1234567</span>)</span>
+<span id="cb54-9"><a href="#cb54-9"></a>        <span class="va">self</span>.conv1 <span class="op">=</span> GCNConv(dataset.num_features, hidden_channels)</span>
+<span id="cb54-10"><a href="#cb54-10"></a>        <span class="va">self</span>.conv2 <span class="op">=</span> GCNConv(hidden_channels, dataset.num_classes)</span>
+<span id="cb54-11"><a href="#cb54-11"></a>        <span class="co">## 레이어 정의 끝!</span></span>
+<span id="cb54-12"><a href="#cb54-12"></a>        </span>
+<span id="cb54-13"><a href="#cb54-13"></a>    <span class="kw">def</span> forward(<span class="va">self</span>, x, edge_index):</span>
+<span id="cb54-14"><a href="#cb54-14"></a>        <span class="co">## yhat을 어떻게 구할것인지 정의</span></span>
+<span id="cb54-15"><a href="#cb54-15"></a>        x <span class="op">=</span> <span class="va">self</span>.conv1(x, edge_index)</span>
+<span id="cb54-16"><a href="#cb54-16"></a>        x <span class="op">=</span> x.relu()</span>
+<span id="cb54-17"><a href="#cb54-17"></a>        x <span class="op">=</span> F.dropout(x, p<span class="op">=</span><span class="fl">0.8</span>, training<span class="op">=</span><span class="va">self</span>.training)</span>
+<span id="cb54-18"><a href="#cb54-18"></a>        x <span class="op">=</span> <span class="va">self</span>.conv2(x, edge_index)</span>
+<span id="cb54-19"><a href="#cb54-19"></a>        <span class="co">## 정의 끝!</span></span>
+<span id="cb54-20"><a href="#cb54-20"></a>        <span class="cf">return</span> x</span>
+<span id="cb54-21"><a href="#cb54-21"></a></span>
+<span id="cb54-22"><a href="#cb54-22"></a>model <span class="op">=</span> GCN(hidden_channels<span class="op">=</span><span class="dv">16</span>)</span>
+<span id="cb54-23"><a href="#cb54-23"></a><span class="bu">print</span>(model)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>GCN(
+  (conv1): GCNConv(1433, 16)
+  (conv2): GCNConv(16, 7)
+)</code></pre>
+</div>
+</div>
+<div class="cell" data-execution_count="105">
+<div class="sourceCode cell-code" id="cb56"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb56-1"><a href="#cb56-1"></a>model <span class="op">=</span> GCN(hidden_channels<span class="op">=</span><span class="dv">16</span>)</span>
+<span id="cb56-2"><a href="#cb56-2"></a>optimizr <span class="op">=</span> torch.optim.Adam(model.parameters(), lr<span class="op">=</span><span class="fl">0.01</span>, weight_decay<span class="op">=</span><span class="fl">5e-4</span>)</span>
+<span id="cb56-3"><a href="#cb56-3"></a>loss_fn <span class="op">=</span> torch.nn.CrossEntropyLoss()</span>
+<span id="cb56-4"><a href="#cb56-4"></a></span>
+<span id="cb56-5"><a href="#cb56-5"></a><span class="cf">for</span> epoch <span class="kw">in</span> <span class="bu">range</span>(<span class="dv">1</span>, <span class="dv">201</span>):</span>
+<span id="cb56-6"><a href="#cb56-6"></a>    loss <span class="op">=</span> train()</span>
+<span id="cb56-7"><a href="#cb56-7"></a>    val_acc <span class="op">=</span> val()</span>
+<span id="cb56-8"><a href="#cb56-8"></a>    test_acc <span class="op">=</span> test()</span>
+<span id="cb56-9"><a href="#cb56-9"></a>    <span class="bu">print</span>(<span class="ss">f'에폭: </span><span class="sc">{</span>epoch<span class="sc">:03d}</span><span class="ss">, Loss: </span><span class="sc">{</span>loss<span class="sc">:.4f}</span><span class="ss">, Val: </span><span class="sc">{</span>val_acc<span class="sc">:.4f}</span><span class="ss">, Test: </span><span class="sc">{</span>test_acc<span class="sc">:.4f}</span><span class="ss">'</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>에폭: 001, Loss: 1.9458, Val: 0.2020, Test: 0.1960
+에폭: 002, Loss: 1.9416, Val: 0.2400, Test: 0.2860
+에폭: 003, Loss: 1.9351, Val: 0.3300, Test: 0.3690
+에폭: 004, Loss: 1.9282, Val: 0.4040, Test: 0.4650
+에폭: 005, Loss: 1.9185, Val: 0.3680, Test: 0.4170
+에폭: 006, Loss: 1.9111, Val: 0.3900, Test: 0.4140
+에폭: 007, Loss: 1.8986, Val: 0.4080, Test: 0.4130
+에폭: 008, Loss: 1.8979, Val: 0.4600, Test: 0.4520
+에폭: 009, Loss: 1.8901, Val: 0.5200, Test: 0.5100
+에폭: 010, Loss: 1.8813, Val: 0.5640, Test: 0.5850
+에폭: 011, Loss: 1.8684, Val: 0.6020, Test: 0.6290
+에폭: 012, Loss: 1.8647, Val: 0.6440, Test: 0.6660
+에폭: 013, Loss: 1.8531, Val: 0.6880, Test: 0.6890
+에폭: 014, Loss: 1.8475, Val: 0.7000, Test: 0.7020
+에폭: 015, Loss: 1.8369, Val: 0.7060, Test: 0.7150
+에폭: 016, Loss: 1.8176, Val: 0.7060, Test: 0.7240
+에폭: 017, Loss: 1.8216, Val: 0.7060, Test: 0.7200
+에폭: 018, Loss: 1.7893, Val: 0.7040, Test: 0.7210
+에폭: 019, Loss: 1.7926, Val: 0.6860, Test: 0.7170
+에폭: 020, Loss: 1.7799, Val: 0.6900, Test: 0.7260
+에폭: 021, Loss: 1.7596, Val: 0.7000, Test: 0.7390
+에폭: 022, Loss: 1.7663, Val: 0.7240, Test: 0.7400
+에폭: 023, Loss: 1.7646, Val: 0.7340, Test: 0.7380
+에폭: 024, Loss: 1.7265, Val: 0.7400, Test: 0.7450
+에폭: 025, Loss: 1.7286, Val: 0.7440, Test: 0.7500
+에폭: 026, Loss: 1.7099, Val: 0.7500, Test: 0.7600
+에폭: 027, Loss: 1.7036, Val: 0.7620, Test: 0.7630
+에폭: 028, Loss: 1.6803, Val: 0.7500, Test: 0.7580
+에폭: 029, Loss: 1.6761, Val: 0.7400, Test: 0.7500
+에폭: 030, Loss: 1.6506, Val: 0.7220, Test: 0.7440
+에폭: 031, Loss: 1.6554, Val: 0.7240, Test: 0.7410
+에폭: 032, Loss: 1.6095, Val: 0.7220, Test: 0.7410
+에폭: 033, Loss: 1.6285, Val: 0.7220, Test: 0.7430
+에폭: 034, Loss: 1.6106, Val: 0.7320, Test: 0.7400
+에폭: 035, Loss: 1.6100, Val: 0.7380, Test: 0.7450
+에폭: 036, Loss: 1.5603, Val: 0.7440, Test: 0.7510
+에폭: 037, Loss: 1.5641, Val: 0.7540, Test: 0.7610
+에폭: 038, Loss: 1.5882, Val: 0.7660, Test: 0.7630
+에폭: 039, Loss: 1.5333, Val: 0.7660, Test: 0.7650
+에폭: 040, Loss: 1.5253, Val: 0.7680, Test: 0.7730
+에폭: 041, Loss: 1.4916, Val: 0.7640, Test: 0.7720
+에폭: 042, Loss: 1.4735, Val: 0.7660, Test: 0.7760
+에폭: 043, Loss: 1.4675, Val: 0.7640, Test: 0.7760
+에폭: 044, Loss: 1.4731, Val: 0.7680, Test: 0.7800
+에폭: 045, Loss: 1.4620, Val: 0.7760, Test: 0.7800
+에폭: 046, Loss: 1.4686, Val: 0.7780, Test: 0.7830
+에폭: 047, Loss: 1.4724, Val: 0.7760, Test: 0.7820
+에폭: 048, Loss: 1.4250, Val: 0.7720, Test: 0.7820
+에폭: 049, Loss: 1.3989, Val: 0.7700, Test: 0.7830
+에폭: 050, Loss: 1.3982, Val: 0.7740, Test: 0.7830
+에폭: 051, Loss: 1.3753, Val: 0.7660, Test: 0.7830
+에폭: 052, Loss: 1.4042, Val: 0.7560, Test: 0.7800
+에폭: 053, Loss: 1.3423, Val: 0.7500, Test: 0.7840
+에폭: 054, Loss: 1.2905, Val: 0.7460, Test: 0.7830
+에폭: 055, Loss: 1.2963, Val: 0.7500, Test: 0.7860
+에폭: 056, Loss: 1.2941, Val: 0.7500, Test: 0.7850
+에폭: 057, Loss: 1.2831, Val: 0.7440, Test: 0.7850
+에폭: 058, Loss: 1.2691, Val: 0.7460, Test: 0.7840
+에폭: 059, Loss: 1.2550, Val: 0.7480, Test: 0.7850
+에폭: 060, Loss: 1.2946, Val: 0.7560, Test: 0.7860
+에폭: 061, Loss: 1.2388, Val: 0.7600, Test: 0.7950
+에폭: 062, Loss: 1.2063, Val: 0.7740, Test: 0.7980
+에폭: 063, Loss: 1.1728, Val: 0.7800, Test: 0.8000
+에폭: 064, Loss: 1.2194, Val: 0.7800, Test: 0.8000
+에폭: 065, Loss: 1.1645, Val: 0.7780, Test: 0.7950
+에폭: 066, Loss: 1.1883, Val: 0.7800, Test: 0.7940
+에폭: 067, Loss: 1.1799, Val: 0.7820, Test: 0.8000
+에폭: 068, Loss: 1.1352, Val: 0.7820, Test: 0.8040
+에폭: 069, Loss: 1.1565, Val: 0.7800, Test: 0.8030
+에폭: 070, Loss: 1.1607, Val: 0.7800, Test: 0.8100
+에폭: 071, Loss: 1.1702, Val: 0.7820, Test: 0.8060
+에폭: 072, Loss: 1.0625, Val: 0.7780, Test: 0.8070
+에폭: 073, Loss: 1.0763, Val: 0.7760, Test: 0.8040
+에폭: 074, Loss: 1.1284, Val: 0.7760, Test: 0.8050
+에폭: 075, Loss: 1.1192, Val: 0.7760, Test: 0.8050
+에폭: 076, Loss: 1.1223, Val: 0.7760, Test: 0.8020
+에폭: 077, Loss: 1.0909, Val: 0.7780, Test: 0.8020
+에폭: 078, Loss: 1.0818, Val: 0.7820, Test: 0.8000
+에폭: 079, Loss: 1.0401, Val: 0.7860, Test: 0.8020
+에폭: 080, Loss: 1.0602, Val: 0.7840, Test: 0.8060
+에폭: 081, Loss: 0.9867, Val: 0.7780, Test: 0.8080
+에폭: 082, Loss: 1.0140, Val: 0.7720, Test: 0.8100
+에폭: 083, Loss: 1.0588, Val: 0.7760, Test: 0.8100
+에폭: 084, Loss: 1.0348, Val: 0.7800, Test: 0.8080
+에폭: 085, Loss: 0.9942, Val: 0.7760, Test: 0.8090
+에폭: 086, Loss: 1.0048, Val: 0.7780, Test: 0.8100
+에폭: 087, Loss: 1.0674, Val: 0.7760, Test: 0.8120
+에폭: 088, Loss: 0.9671, Val: 0.7760, Test: 0.8110
+에폭: 089, Loss: 0.9774, Val: 0.7720, Test: 0.8070
+에폭: 090, Loss: 0.9716, Val: 0.7680, Test: 0.8060
+에폭: 091, Loss: 0.9963, Val: 0.7700, Test: 0.8040
+에폭: 092, Loss: 0.8949, Val: 0.7720, Test: 0.8010
+에폭: 093, Loss: 0.8726, Val: 0.7760, Test: 0.8000
+에폭: 094, Loss: 0.9658, Val: 0.7740, Test: 0.7990
+에폭: 095, Loss: 0.9384, Val: 0.7720, Test: 0.8010
+에폭: 096, Loss: 0.9093, Val: 0.7680, Test: 0.8010
+에폭: 097, Loss: 0.9431, Val: 0.7700, Test: 0.8080
+에폭: 098, Loss: 0.9662, Val: 0.7700, Test: 0.8080
+에폭: 099, Loss: 0.9925, Val: 0.7760, Test: 0.8130
+에폭: 100, Loss: 0.9153, Val: 0.7840, Test: 0.8140
+에폭: 101, Loss: 0.9061, Val: 0.7900, Test: 0.8170
+에폭: 102, Loss: 0.9155, Val: 0.7900, Test: 0.8160
+에폭: 103, Loss: 0.8827, Val: 0.7900, Test: 0.8180
+에폭: 104, Loss: 0.8179, Val: 0.7860, Test: 0.8130
+에폭: 105, Loss: 0.8969, Val: 0.7820, Test: 0.8100
+에폭: 106, Loss: 0.8547, Val: 0.7760, Test: 0.8050
+에폭: 107, Loss: 0.8653, Val: 0.7760, Test: 0.8020
+에폭: 108, Loss: 0.8104, Val: 0.7760, Test: 0.8040
+에폭: 109, Loss: 0.8001, Val: 0.7740, Test: 0.8060
+에폭: 110, Loss: 0.8422, Val: 0.7760, Test: 0.8060
+에폭: 111, Loss: 0.9050, Val: 0.7780, Test: 0.8110
+에폭: 112, Loss: 0.8356, Val: 0.7780, Test: 0.8130
+에폭: 113, Loss: 0.8479, Val: 0.7800, Test: 0.8130
+에폭: 114, Loss: 0.8365, Val: 0.7840, Test: 0.8170
+에폭: 115, Loss: 0.9083, Val: 0.7840, Test: 0.8160
+에폭: 116, Loss: 0.8513, Val: 0.7880, Test: 0.8170
+에폭: 117, Loss: 0.8496, Val: 0.7920, Test: 0.8180
+에폭: 118, Loss: 0.8252, Val: 0.7900, Test: 0.8160
+에폭: 119, Loss: 0.7529, Val: 0.7840, Test: 0.8140
+에폭: 120, Loss: 0.7785, Val: 0.7800, Test: 0.8060
+에폭: 121, Loss: 0.7831, Val: 0.7780, Test: 0.8040
+에폭: 122, Loss: 0.8178, Val: 0.7780, Test: 0.8060
+에폭: 123, Loss: 0.8424, Val: 0.7800, Test: 0.8060
+에폭: 124, Loss: 0.8058, Val: 0.7920, Test: 0.8120
+에폭: 125, Loss: 0.8109, Val: 0.7860, Test: 0.8140
+에폭: 126, Loss: 0.9267, Val: 0.7900, Test: 0.8180
+에폭: 127, Loss: 0.8643, Val: 0.7900, Test: 0.8230
+에폭: 128, Loss: 0.8750, Val: 0.7920, Test: 0.8190
+에폭: 129, Loss: 0.7682, Val: 0.7940, Test: 0.8210
+에폭: 130, Loss: 0.7139, Val: 0.7920, Test: 0.8210
+에폭: 131, Loss: 0.7753, Val: 0.7880, Test: 0.8200
+에폭: 132, Loss: 0.7781, Val: 0.7860, Test: 0.8190
+에폭: 133, Loss: 0.7629, Val: 0.7800, Test: 0.8110
+에폭: 134, Loss: 0.7910, Val: 0.7760, Test: 0.8100
+에폭: 135, Loss: 0.7783, Val: 0.7740, Test: 0.8100
+에폭: 136, Loss: 0.8048, Val: 0.7740, Test: 0.8080
+에폭: 137, Loss: 0.7612, Val: 0.7780, Test: 0.8110
+에폭: 138, Loss: 0.8078, Val: 0.7760, Test: 0.8110
+에폭: 139, Loss: 0.7353, Val: 0.7780, Test: 0.8090
+에폭: 140, Loss: 0.7109, Val: 0.7780, Test: 0.8100
+에폭: 141, Loss: 0.7260, Val: 0.7760, Test: 0.8080
+에폭: 142, Loss: 0.7270, Val: 0.7820, Test: 0.8120
+에폭: 143, Loss: 0.7693, Val: 0.7820, Test: 0.8130
+에폭: 144, Loss: 0.7005, Val: 0.7880, Test: 0.8150
+에폭: 145, Loss: 0.7636, Val: 0.7920, Test: 0.8170
+에폭: 146, Loss: 0.6755, Val: 0.7900, Test: 0.8190
+에폭: 147, Loss: 0.7066, Val: 0.7880, Test: 0.8220
+에폭: 148, Loss: 0.8002, Val: 0.7860, Test: 0.8150
+에폭: 149, Loss: 0.7052, Val: 0.7820, Test: 0.8130
+에폭: 150, Loss: 0.6868, Val: 0.7820, Test: 0.8120
+에폭: 151, Loss: 0.8008, Val: 0.7860, Test: 0.8110
+에폭: 152, Loss: 0.7013, Val: 0.7900, Test: 0.8170
+에폭: 153, Loss: 0.7111, Val: 0.7840, Test: 0.8160
+에폭: 154, Loss: 0.7770, Val: 0.7860, Test: 0.8140
+에폭: 155, Loss: 0.6190, Val: 0.7840, Test: 0.8130
+에폭: 156, Loss: 0.7086, Val: 0.7880, Test: 0.8140
+에폭: 157, Loss: 0.7659, Val: 0.7860, Test: 0.8120
+에폭: 158, Loss: 0.6668, Val: 0.7880, Test: 0.8140
+에폭: 159, Loss: 0.7966, Val: 0.7840, Test: 0.8140
+에폭: 160, Loss: 0.6869, Val: 0.7840, Test: 0.8130
+에폭: 161, Loss: 0.6813, Val: 0.7840, Test: 0.8160
+에폭: 162, Loss: 0.7920, Val: 0.7880, Test: 0.8170
+에폭: 163, Loss: 0.6930, Val: 0.7880, Test: 0.8140
+에폭: 164, Loss: 0.6697, Val: 0.7880, Test: 0.8160
+에폭: 165, Loss: 0.6838, Val: 0.7860, Test: 0.8160
+에폭: 166, Loss: 0.7552, Val: 0.7880, Test: 0.8200
+에폭: 167, Loss: 0.6565, Val: 0.7840, Test: 0.8170
+에폭: 168, Loss: 0.7334, Val: 0.7840, Test: 0.8170
+에폭: 169, Loss: 0.6458, Val: 0.7800, Test: 0.8160
+에폭: 170, Loss: 0.6736, Val: 0.7760, Test: 0.8100
+에폭: 171, Loss: 0.6916, Val: 0.7820, Test: 0.8090
+에폭: 172, Loss: 0.6412, Val: 0.7860, Test: 0.8130
+에폭: 173, Loss: 0.6597, Val: 0.7860, Test: 0.8130
+에폭: 174, Loss: 0.6520, Val: 0.7840, Test: 0.8120
+에폭: 175, Loss: 0.7054, Val: 0.7840, Test: 0.8100
+에폭: 176, Loss: 0.7224, Val: 0.7900, Test: 0.8150
+에폭: 177, Loss: 0.6752, Val: 0.7940, Test: 0.8170
+에폭: 178, Loss: 0.6656, Val: 0.7920, Test: 0.8170
+에폭: 179, Loss: 0.6480, Val: 0.7940, Test: 0.8170
+에폭: 180, Loss: 0.7027, Val: 0.7940, Test: 0.8170
+에폭: 181, Loss: 0.7168, Val: 0.7900, Test: 0.8150
+에폭: 182, Loss: 0.6241, Val: 0.7900, Test: 0.8160
+에폭: 183, Loss: 0.7406, Val: 0.7920, Test: 0.8160
+에폭: 184, Loss: 0.7012, Val: 0.7920, Test: 0.8160
+에폭: 185, Loss: 0.6843, Val: 0.7920, Test: 0.8150
+에폭: 186, Loss: 0.7048, Val: 0.7880, Test: 0.8140
+에폭: 187, Loss: 0.7023, Val: 0.7860, Test: 0.8110
+에폭: 188, Loss: 0.6913, Val: 0.7800, Test: 0.8110
+에폭: 189, Loss: 0.6709, Val: 0.7740, Test: 0.8110
+에폭: 190, Loss: 0.7192, Val: 0.7760, Test: 0.8140
+에폭: 191, Loss: 0.6530, Val: 0.7780, Test: 0.8150
+에폭: 192, Loss: 0.6445, Val: 0.7880, Test: 0.8160
+에폭: 193, Loss: 0.6452, Val: 0.7920, Test: 0.8180
+에폭: 194, Loss: 0.6139, Val: 0.7940, Test: 0.8170
+에폭: 195, Loss: 0.6351, Val: 0.7920, Test: 0.8170
+에폭: 196, Loss: 0.6723, Val: 0.7900, Test: 0.8160
+에폭: 197, Loss: 0.6876, Val: 0.7860, Test: 0.8180
+에폭: 198, Loss: 0.6398, Val: 0.7860, Test: 0.8150
+에폭: 199, Loss: 0.7049, Val: 0.7900, Test: 0.8110
+에폭: 200, Loss: 0.6410, Val: 0.7880, Test: 0.8110</code></pre>
+</div>
+</div>
+<div class="cell" data-execution_count="104">
+<div class="sourceCode cell-code" id="cb58"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb58-1"><a href="#cb58-1"></a>test_acc</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="104">
+<pre><code>0.812</code></pre>
+</div>
+</div>
+<div class="cell" data-execution_count="120">
+<div class="sourceCode cell-code" id="cb60"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb60-1"><a href="#cb60-1"></a>model</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="120">
+<pre><code>GCN(
+  (conv1): GCNConv(1433, 16)
+  (conv2): GCNConv(16, 7)
+)</code></pre>
+</div>
+</div>
+</section>
+<section id="section" class="level2">
+<h2 class="anchored" data-anchor-id="section">++++</h2>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb62"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb62-1"><a href="#cb62-1"></a><span class="co"># def train():</span></span>
+<span id="cb62-2"><a href="#cb62-2"></a><span class="co">#       model.train()</span></span>
+<span id="cb62-3"><a href="#cb62-3"></a><span class="co">#       optimizr.zero_grad()  # Clear gradients.</span></span>
+<span id="cb62-4"><a href="#cb62-4"></a><span class="co">#       out = model(data.x, data.edge_index)  # Perform a single forward pass.</span></span>
+<span id="cb62-5"><a href="#cb62-5"></a><span class="co">#       loss = loss_fn(out[data.train_mask], data.y[data.train_mask])  # Compute the loss solely based on the training nodes.</span></span>
+<span id="cb62-6"><a href="#cb62-6"></a><span class="co">#       loss.backward()  # Derive gradients.</span></span>
+<span id="cb62-7"><a href="#cb62-7"></a><span class="co">#       optimizr.step()  # Update parameters based on gradients.</span></span>
+<span id="cb62-8"><a href="#cb62-8"></a><span class="co">#       return loss</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="cell" data-execution_count="121">
+<div class="sourceCode cell-code" id="cb63"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb63-1"><a href="#cb63-1"></a><span class="kw">class</span> EarlyStopping:</span>
+<span id="cb63-2"><a href="#cb63-2"></a>    <span class="co">"""주어진 patience 이후로 validation loss가 개선되지 않으면 학습을 조기 중지"""</span></span>
+<span id="cb63-3"><a href="#cb63-3"></a>    <span class="kw">def</span> <span class="fu">__init__</span>(<span class="va">self</span>, patience<span class="op">=</span><span class="dv">7</span>, verbose<span class="op">=</span><span class="va">False</span>, delta<span class="op">=</span><span class="dv">0</span>, path<span class="op">=</span><span class="st">'checkpoint.pt'</span>):</span>
+<span id="cb63-4"><a href="#cb63-4"></a>        <span class="co">"""</span></span>
+<span id="cb63-5"><a href="#cb63-5"></a><span class="co">        Args:</span></span>
+<span id="cb63-6"><a href="#cb63-6"></a><span class="co">            patience (int): validation loss가 개선된 후 기다리는 기간</span></span>
+<span id="cb63-7"><a href="#cb63-7"></a><span class="co">                            Default: 7</span></span>
+<span id="cb63-8"><a href="#cb63-8"></a><span class="co">            verbose (bool): True일 경우 각 validation loss의 개선 사항 메세지 출력</span></span>
+<span id="cb63-9"><a href="#cb63-9"></a><span class="co">                            Default: False</span></span>
+<span id="cb63-10"><a href="#cb63-10"></a><span class="co">            delta (float): 개선되었다고 인정되는 monitered quantity의 최소 변화</span></span>
+<span id="cb63-11"><a href="#cb63-11"></a><span class="co">                            Default: 0</span></span>
+<span id="cb63-12"><a href="#cb63-12"></a><span class="co">            path (str): checkpoint저장 경로</span></span>
+<span id="cb63-13"><a href="#cb63-13"></a><span class="co">                            Default: 'checkpoint.pt'</span></span>
+<span id="cb63-14"><a href="#cb63-14"></a><span class="co">        """</span></span>
+<span id="cb63-15"><a href="#cb63-15"></a>        <span class="va">self</span>.patience <span class="op">=</span> patience</span>
+<span id="cb63-16"><a href="#cb63-16"></a>        <span class="va">self</span>.verbose <span class="op">=</span> verbose</span>
+<span id="cb63-17"><a href="#cb63-17"></a>        <span class="va">self</span>.counter <span class="op">=</span> <span class="dv">0</span></span>
+<span id="cb63-18"><a href="#cb63-18"></a>        <span class="va">self</span>.best_score <span class="op">=</span> <span class="va">None</span></span>
+<span id="cb63-19"><a href="#cb63-19"></a>        <span class="va">self</span>.early_stop <span class="op">=</span> <span class="va">False</span></span>
+<span id="cb63-20"><a href="#cb63-20"></a>        <span class="va">self</span>.val_loss_min <span class="op">=</span> np.Inf</span>
+<span id="cb63-21"><a href="#cb63-21"></a>        <span class="va">self</span>.delta <span class="op">=</span> delta</span>
+<span id="cb63-22"><a href="#cb63-22"></a>        <span class="va">self</span>.path <span class="op">=</span> path</span>
+<span id="cb63-23"><a href="#cb63-23"></a></span>
+<span id="cb63-24"><a href="#cb63-24"></a>    <span class="kw">def</span> <span class="fu">__call__</span>(<span class="va">self</span>, val_loss, model):</span>
+<span id="cb63-25"><a href="#cb63-25"></a></span>
+<span id="cb63-26"><a href="#cb63-26"></a>        score <span class="op">=</span> <span class="op">-</span>val_loss</span>
+<span id="cb63-27"><a href="#cb63-27"></a></span>
+<span id="cb63-28"><a href="#cb63-28"></a>        <span class="cf">if</span> <span class="va">self</span>.best_score <span class="kw">is</span> <span class="va">None</span>:</span>
+<span id="cb63-29"><a href="#cb63-29"></a>            <span class="va">self</span>.best_score <span class="op">=</span> score</span>
+<span id="cb63-30"><a href="#cb63-30"></a>            <span class="va">self</span>.save_checkpoint(val_loss, model)</span>
+<span id="cb63-31"><a href="#cb63-31"></a>        <span class="cf">elif</span> score <span class="op">&lt;</span> <span class="va">self</span>.best_score <span class="op">+</span> <span class="va">self</span>.delta:</span>
+<span id="cb63-32"><a href="#cb63-32"></a>            <span class="va">self</span>.counter <span class="op">+=</span> <span class="dv">1</span></span>
+<span id="cb63-33"><a href="#cb63-33"></a>            <span class="bu">print</span>(<span class="ss">f'EarlyStopping counter: </span><span class="sc">{</span><span class="va">self</span><span class="sc">.</span>counter<span class="sc">}</span><span class="ss"> out of </span><span class="sc">{</span><span class="va">self</span><span class="sc">.</span>patience<span class="sc">}</span><span class="ss">'</span>)</span>
+<span id="cb63-34"><a href="#cb63-34"></a>            <span class="cf">if</span> <span class="va">self</span>.counter <span class="op">&gt;=</span> <span class="va">self</span>.patience:</span>
+<span id="cb63-35"><a href="#cb63-35"></a>                <span class="va">self</span>.early_stop <span class="op">=</span> <span class="va">True</span></span>
+<span id="cb63-36"><a href="#cb63-36"></a>        <span class="cf">else</span>:</span>
+<span id="cb63-37"><a href="#cb63-37"></a>            <span class="va">self</span>.best_score <span class="op">=</span> score</span>
+<span id="cb63-38"><a href="#cb63-38"></a>            <span class="va">self</span>.save_checkpoint(val_loss, model)</span>
+<span id="cb63-39"><a href="#cb63-39"></a>            <span class="va">self</span>.counter <span class="op">=</span> <span class="dv">0</span></span>
+<span id="cb63-40"><a href="#cb63-40"></a></span>
+<span id="cb63-41"><a href="#cb63-41"></a>    <span class="kw">def</span> save_checkpoint(<span class="va">self</span>, val_loss, model):</span>
+<span id="cb63-42"><a href="#cb63-42"></a>        <span class="co">'''validation loss가 감소하면 모델을 저장한다.'''</span></span>
+<span id="cb63-43"><a href="#cb63-43"></a>        <span class="cf">if</span> <span class="va">self</span>.verbose:</span>
+<span id="cb63-44"><a href="#cb63-44"></a>            <span class="bu">print</span>(<span class="ss">f'Validation loss decreased (</span><span class="sc">{</span><span class="va">self</span><span class="sc">.</span>val_loss_min<span class="sc">:.6f}</span><span class="ss"> --&gt; </span><span class="sc">{</span>val_loss<span class="sc">:.6f}</span><span class="ss">).  Saving model ...'</span>)</span>
+<span id="cb63-45"><a href="#cb63-45"></a>        torch.save(model.state_dict(), <span class="va">self</span>.path)</span>
+<span id="cb63-46"><a href="#cb63-46"></a>        <span class="va">self</span>.val_loss_min <span class="op">=</span> val_loss</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="cell" data-execution_count="133">
+<div class="sourceCode cell-code" id="cb64"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb64-1"><a href="#cb64-1"></a><span class="im">import</span> numpy <span class="im">as</span> np </span>
+<span id="cb64-2"><a href="#cb64-2"></a></span>
+<span id="cb64-3"><a href="#cb64-3"></a><span class="kw">def</span> train_model(model, patience, n_epochs): <span class="co"># remove batch_size</span></span>
+<span id="cb64-4"><a href="#cb64-4"></a></span>
+<span id="cb64-5"><a href="#cb64-5"></a>    <span class="co"># 모델이 학습되는 동안 trainning loss를 track</span></span>
+<span id="cb64-6"><a href="#cb64-6"></a>    train_losses <span class="op">=</span> []</span>
+<span id="cb64-7"><a href="#cb64-7"></a>    <span class="co"># 모델이 학습되는 동안 validation loss를 track</span></span>
+<span id="cb64-8"><a href="#cb64-8"></a>    valid_losses <span class="op">=</span> []</span>
+<span id="cb64-9"><a href="#cb64-9"></a>    <span class="co"># epoch당 average training loss를 track</span></span>
+<span id="cb64-10"><a href="#cb64-10"></a>    avg_train_losses <span class="op">=</span> []</span>
+<span id="cb64-11"><a href="#cb64-11"></a>    <span class="co"># epoch당 average validation loss를 track</span></span>
+<span id="cb64-12"><a href="#cb64-12"></a>    avg_valid_losses <span class="op">=</span> []</span>
+<span id="cb64-13"><a href="#cb64-13"></a></span>
+<span id="cb64-14"><a href="#cb64-14"></a>    <span class="co"># early_stopping object의 초기화</span></span>
+<span id="cb64-15"><a href="#cb64-15"></a>    early_stopping <span class="op">=</span> EarlyStopping(patience <span class="op">=</span> patience, verbose <span class="op">=</span> <span class="va">True</span>)</span>
+<span id="cb64-16"><a href="#cb64-16"></a></span>
+<span id="cb64-17"><a href="#cb64-17"></a>    <span class="cf">for</span> epoch <span class="kw">in</span> <span class="bu">range</span>(<span class="dv">1</span>, n_epochs <span class="op">+</span> <span class="dv">1</span>):</span>
+<span id="cb64-18"><a href="#cb64-18"></a></span>
+<span id="cb64-19"><a href="#cb64-19"></a>        <span class="co">###################</span></span>
+<span id="cb64-20"><a href="#cb64-20"></a>        <span class="co"># train the model #</span></span>
+<span id="cb64-21"><a href="#cb64-21"></a>        <span class="co">###################</span></span>
+<span id="cb64-22"><a href="#cb64-22"></a>        model.train() <span class="co"># prep model for training</span></span>
+<span id="cb64-23"><a href="#cb64-23"></a>        <span class="co"># for batch, (data, target) in enumerate(train_loader, 1):</span></span>
+<span id="cb64-24"><a href="#cb64-24"></a>        <span class="co">#     # clear the gradients of all optimized variables</span></span>
+<span id="cb64-25"><a href="#cb64-25"></a>        <span class="co">#     optimizer.zero_grad()    </span></span>
+<span id="cb64-26"><a href="#cb64-26"></a>        <span class="co">#     # forward pass: 입력된 값을 모델로 전달하여 예측 출력 계산</span></span>
+<span id="cb64-27"><a href="#cb64-27"></a>        <span class="co">#     output = model(data)</span></span>
+<span id="cb64-28"><a href="#cb64-28"></a>        <span class="co">#     # calculate the loss</span></span>
+<span id="cb64-29"><a href="#cb64-29"></a>        <span class="co">#     loss = loss_fn(output, target)</span></span>
+<span id="cb64-30"><a href="#cb64-30"></a>        <span class="co">#     # backward pass: 모델의 파라미터와 관련된 loss의 그래디언트 계산</span></span>
+<span id="cb64-31"><a href="#cb64-31"></a>        <span class="co">#     loss.backward()</span></span>
+<span id="cb64-32"><a href="#cb64-32"></a>        <span class="co">#     # perform a single optimization step (parameter update)</span></span>
+<span id="cb64-33"><a href="#cb64-33"></a>        <span class="co">#     optimizer.step()</span></span>
+<span id="cb64-34"><a href="#cb64-34"></a>        <span class="co">#     # record training loss</span></span>
+<span id="cb64-35"><a href="#cb64-35"></a>        <span class="co">#     train_losses.append(loss.item())</span></span>
+<span id="cb64-36"><a href="#cb64-36"></a></span>
+<span id="cb64-37"><a href="#cb64-37"></a>        <span class="co"># model.train()</span></span>
+<span id="cb64-38"><a href="#cb64-38"></a>        optimizr.zero_grad()  <span class="co"># Clear gradients.</span></span>
+<span id="cb64-39"><a href="#cb64-39"></a>        output <span class="op">=</span> model(data.x, data.edge_index)  <span class="co"># Perform a single forward pass.</span></span>
+<span id="cb64-40"><a href="#cb64-40"></a>        loss <span class="op">=</span> loss_fn(output[data.train_mask], data.y[data.train_mask])  <span class="co"># Compute the loss solely based on the training nodes.</span></span>
+<span id="cb64-41"><a href="#cb64-41"></a>        loss.backward()  <span class="co"># Derive gradients.</span></span>
+<span id="cb64-42"><a href="#cb64-42"></a>        optimizr.step()  <span class="co"># Update parameters based on gradients.</span></span>
+<span id="cb64-43"><a href="#cb64-43"></a>        <span class="co"># return loss</span></span>
+<span id="cb64-44"><a href="#cb64-44"></a>        train_losses.append(loss.item())</span>
+<span id="cb64-45"><a href="#cb64-45"></a>            </span>
+<span id="cb64-46"><a href="#cb64-46"></a>            </span>
+<span id="cb64-47"><a href="#cb64-47"></a></span>
+<span id="cb64-48"><a href="#cb64-48"></a>        <span class="co">######################    </span></span>
+<span id="cb64-49"><a href="#cb64-49"></a>        <span class="co"># validate the model #</span></span>
+<span id="cb64-50"><a href="#cb64-50"></a>        <span class="co">######################</span></span>
+<span id="cb64-51"><a href="#cb64-51"></a>        model.<span class="bu">eval</span>() <span class="co"># prep model for evaluation</span></span>
+<span id="cb64-52"><a href="#cb64-52"></a>        <span class="co"># for data , target in valid_loader :</span></span>
+<span id="cb64-53"><a href="#cb64-53"></a>        <span class="co">#     # forward pass: 입력된 값을 모델로 전달하여 예측 출력 계산</span></span>
+<span id="cb64-54"><a href="#cb64-54"></a>        <span class="co">#     output = model(data)</span></span>
+<span id="cb64-55"><a href="#cb64-55"></a>        <span class="co">#     # calculate the loss</span></span>
+<span id="cb64-56"><a href="#cb64-56"></a>        <span class="co">#     loss = loss_fn(output, target)</span></span>
+<span id="cb64-57"><a href="#cb64-57"></a>        <span class="co">#     # record validation loss</span></span>
+<span id="cb64-58"><a href="#cb64-58"></a>        <span class="co">#     valid_losses.append(loss.item())</span></span>
+<span id="cb64-59"><a href="#cb64-59"></a>        output <span class="op">=</span> model(data.x, data.edge_index)</span>
+<span id="cb64-60"><a href="#cb64-60"></a>        <span class="co"># pred = output.argmax(dim=1)  # Use the class with highest probability.</span></span>
+<span id="cb64-61"><a href="#cb64-61"></a>        <span class="co"># test_correct = pred[data.test_mask] == data.y[data.test_mask]  # Check against ground-truth labels.</span></span>
+<span id="cb64-62"><a href="#cb64-62"></a>        loss <span class="op">=</span> loss_fn(output[data.val_mask], data.y[data.val_mask])</span>
+<span id="cb64-63"><a href="#cb64-63"></a>        <span class="co"># test_acc = int(test_correct.sum()) / int(data.test_mask.sum())  # Derive ratio of correct predictions.</span></span>
+<span id="cb64-64"><a href="#cb64-64"></a>        <span class="co"># return test_acc</span></span>
+<span id="cb64-65"><a href="#cb64-65"></a>        valid_losses.append(loss.item())</span>
+<span id="cb64-66"><a href="#cb64-66"></a></span>
+<span id="cb64-67"><a href="#cb64-67"></a>        <span class="co"># print 학습/검증 statistics</span></span>
+<span id="cb64-68"><a href="#cb64-68"></a>        <span class="co"># epoch당 평균 loss 계산</span></span>
+<span id="cb64-69"><a href="#cb64-69"></a>        train_loss <span class="op">=</span> np.average(train_losses)</span>
+<span id="cb64-70"><a href="#cb64-70"></a>        valid_loss <span class="op">=</span> np.average(valid_losses)</span>
+<span id="cb64-71"><a href="#cb64-71"></a>        avg_train_losses.append(train_loss)</span>
+<span id="cb64-72"><a href="#cb64-72"></a>        avg_valid_losses.append(valid_loss)</span>
+<span id="cb64-73"><a href="#cb64-73"></a></span>
+<span id="cb64-74"><a href="#cb64-74"></a>        epoch_len <span class="op">=</span> <span class="bu">len</span>(<span class="bu">str</span>(n_epochs))</span>
+<span id="cb64-75"><a href="#cb64-75"></a></span>
+<span id="cb64-76"><a href="#cb64-76"></a></span>
+<span id="cb64-77"><a href="#cb64-77"></a>        print_msg <span class="op">=</span> (<span class="ss">f'[</span><span class="sc">{</span>epoch<span class="sc">:</span><span class="op">&gt;</span>{epoch_len}<span class="sc">}</span><span class="ss">/</span><span class="sc">{</span>n_epochs<span class="sc">:</span><span class="op">&gt;</span>{epoch_len}<span class="sc">}</span><span class="ss">] '</span> <span class="op">+</span></span>
+<span id="cb64-78"><a href="#cb64-78"></a>                     <span class="ss">f'train_loss: </span><span class="sc">{</span>train_loss<span class="sc">:.5f}</span><span class="ss"> '</span> <span class="op">+</span></span>
+<span id="cb64-79"><a href="#cb64-79"></a>                     <span class="ss">f'valid_loss: </span><span class="sc">{</span>valid_loss<span class="sc">:.5f}</span><span class="ss">'</span>)</span>
+<span id="cb64-80"><a href="#cb64-80"></a></span>
+<span id="cb64-81"><a href="#cb64-81"></a>        <span class="bu">print</span>(print_msg)</span>
+<span id="cb64-82"><a href="#cb64-82"></a></span>
+<span id="cb64-83"><a href="#cb64-83"></a>        <span class="co"># clear lists to track next epoch</span></span>
+<span id="cb64-84"><a href="#cb64-84"></a>        train_losses <span class="op">=</span> []</span>
+<span id="cb64-85"><a href="#cb64-85"></a>        valid_losses <span class="op">=</span> []</span>
+<span id="cb64-86"><a href="#cb64-86"></a></span>
+<span id="cb64-87"><a href="#cb64-87"></a>        <span class="co"># early_stopping는 validation loss가 감소하였는지 확인이 필요하며,</span></span>
+<span id="cb64-88"><a href="#cb64-88"></a>        <span class="co"># 만약 감소하였을경우 현제 모델을 checkpoint로 만든다.</span></span>
+<span id="cb64-89"><a href="#cb64-89"></a>        early_stopping(valid_loss, model)</span>
+<span id="cb64-90"><a href="#cb64-90"></a></span>
+<span id="cb64-91"><a href="#cb64-91"></a>        <span class="cf">if</span> early_stopping.early_stop:</span>
+<span id="cb64-92"><a href="#cb64-92"></a>            <span class="bu">print</span>(<span class="st">"Early stopping"</span>)</span>
+<span id="cb64-93"><a href="#cb64-93"></a>            <span class="cf">break</span></span>
+<span id="cb64-94"><a href="#cb64-94"></a></span>
+<span id="cb64-95"><a href="#cb64-95"></a>   <span class="co"># best model이 저장되어있는 last checkpoint를 로드한다.</span></span>
+<span id="cb64-96"><a href="#cb64-96"></a>    model.load_state_dict(torch.load(<span class="st">'checkpoint.pt'</span>))</span>
+<span id="cb64-97"><a href="#cb64-97"></a></span>
+<span id="cb64-98"><a href="#cb64-98"></a>    <span class="cf">return</span>  model, avg_train_losses, avg_valid_losses</span>
+<span id="cb64-99"><a href="#cb64-99"></a></span>
+<span id="cb64-100"><a href="#cb64-100"></a></span>
+<span id="cb64-101"><a href="#cb64-101"></a></span>
+<span id="cb64-102"><a href="#cb64-102"></a><span class="co"># batch_size = 256</span></span>
+<span id="cb64-103"><a href="#cb64-103"></a>n_epochs <span class="op">=</span> <span class="dv">100</span></span>
+<span id="cb64-104"><a href="#cb64-104"></a></span>
+<span id="cb64-105"><a href="#cb64-105"></a><span class="co"># train_loader, test_loader, valid_loader = create_datasets(batch_size)</span></span>
+<span id="cb64-106"><a href="#cb64-106"></a></span>
+<span id="cb64-107"><a href="#cb64-107"></a><span class="co"># early stopping patience;</span></span>
+<span id="cb64-108"><a href="#cb64-108"></a><span class="co"># validation loss가 개선된 마지막 시간 이후로 얼마나 기다릴지 지정</span></span>
+<span id="cb64-109"><a href="#cb64-109"></a>patience <span class="op">=</span> <span class="dv">20</span></span>
+<span id="cb64-110"><a href="#cb64-110"></a></span>
+<span id="cb64-111"><a href="#cb64-111"></a>model, train_loss, valid_loss <span class="op">=</span> train_model(model, patience, n_epochs) </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[  1/100] train_loss: 0.67796 valid_loss: 0.95776
+Validation loss decreased (inf --&gt; 0.957755).  Saving model ...
+[  2/100] train_loss: 0.61688 valid_loss: 0.95922
+EarlyStopping counter: 1 out of 20
+[  3/100] train_loss: 0.67162 valid_loss: 0.95922
+EarlyStopping counter: 2 out of 20
+[  4/100] train_loss: 0.57669 valid_loss: 0.95875
+EarlyStopping counter: 3 out of 20
+[  5/100] train_loss: 0.68805 valid_loss: 0.95579
+Validation loss decreased (0.957755 --&gt; 0.955787).  Saving model ...
+[  6/100] train_loss: 0.58459 valid_loss: 0.95003
+Validation loss decreased (0.955787 --&gt; 0.950032).  Saving model ...
+[  7/100] train_loss: 0.64618 valid_loss: 0.94362
+Validation loss decreased (0.950032 --&gt; 0.943624).  Saving model ...
+[  8/100] train_loss: 0.59602 valid_loss: 0.93712
+Validation loss decreased (0.943624 --&gt; 0.937119).  Saving model ...
+[  9/100] train_loss: 0.61017 valid_loss: 0.93243
+Validation loss decreased (0.937119 --&gt; 0.932428).  Saving model ...
+[ 10/100] train_loss: 0.71341 valid_loss: 0.92939
+Validation loss decreased (0.932428 --&gt; 0.929394).  Saving model ...
+[ 11/100] train_loss: 0.67122 valid_loss: 0.92670
+Validation loss decreased (0.929394 --&gt; 0.926697).  Saving model ...
+[ 12/100] train_loss: 0.60232 valid_loss: 0.92578
+Validation loss decreased (0.926697 --&gt; 0.925781).  Saving model ...
+[ 13/100] train_loss: 0.61272 valid_loss: 0.92593
+EarlyStopping counter: 1 out of 20
+[ 14/100] train_loss: 0.59195 valid_loss: 0.92595
+EarlyStopping counter: 2 out of 20
+[ 15/100] train_loss: 0.55446 valid_loss: 0.92900
+EarlyStopping counter: 3 out of 20
+[ 16/100] train_loss: 0.64656 valid_loss: 0.93121
+EarlyStopping counter: 4 out of 20
+[ 17/100] train_loss: 0.62910 valid_loss: 0.93232
+EarlyStopping counter: 5 out of 20
+[ 18/100] train_loss: 0.65218 valid_loss: 0.92960
+EarlyStopping counter: 6 out of 20
+[ 19/100] train_loss: 0.67554 valid_loss: 0.92758
+EarlyStopping counter: 7 out of 20
+[ 20/100] train_loss: 0.64499 valid_loss: 0.92626
+EarlyStopping counter: 8 out of 20
+[ 21/100] train_loss: 0.66611 valid_loss: 0.92627
+EarlyStopping counter: 9 out of 20
+[ 22/100] train_loss: 0.59128 valid_loss: 0.92625
+EarlyStopping counter: 10 out of 20
+[ 23/100] train_loss: 0.54588 valid_loss: 0.92631
+EarlyStopping counter: 11 out of 20
+[ 24/100] train_loss: 0.67022 valid_loss: 0.92633
+EarlyStopping counter: 12 out of 20
+[ 25/100] train_loss: 0.61526 valid_loss: 0.92509
+Validation loss decreased (0.925781 --&gt; 0.925085).  Saving model ...
+[ 26/100] train_loss: 0.57268 valid_loss: 0.92232
+Validation loss decreased (0.925085 --&gt; 0.922324).  Saving model ...
+[ 27/100] train_loss: 0.57209 valid_loss: 0.91922
+Validation loss decreased (0.922324 --&gt; 0.919220).  Saving model ...
+[ 28/100] train_loss: 0.64545 valid_loss: 0.91637
+Validation loss decreased (0.919220 --&gt; 0.916367).  Saving model ...
+[ 29/100] train_loss: 0.55633 valid_loss: 0.91464
+Validation loss decreased (0.916367 --&gt; 0.914638).  Saving model ...
+[ 30/100] train_loss: 0.54547 valid_loss: 0.91445
+Validation loss decreased (0.914638 --&gt; 0.914451).  Saving model ...
+[ 31/100] train_loss: 0.60748 valid_loss: 0.91653
+EarlyStopping counter: 1 out of 20
+[ 32/100] train_loss: 0.59862 valid_loss: 0.91876
+EarlyStopping counter: 2 out of 20
+[ 33/100] train_loss: 0.60621 valid_loss: 0.92147
+EarlyStopping counter: 3 out of 20
+[ 34/100] train_loss: 0.63797 valid_loss: 0.92367
+EarlyStopping counter: 4 out of 20
+[ 35/100] train_loss: 0.57273 valid_loss: 0.92191
+EarlyStopping counter: 5 out of 20
+[ 36/100] train_loss: 0.65794 valid_loss: 0.91897
+EarlyStopping counter: 6 out of 20
+[ 37/100] train_loss: 0.58989 valid_loss: 0.91499
+EarlyStopping counter: 7 out of 20
+[ 38/100] train_loss: 0.53900 valid_loss: 0.90869
+Validation loss decreased (0.914451 --&gt; 0.908694).  Saving model ...
+[ 39/100] train_loss: 0.57348 valid_loss: 0.90590
+Validation loss decreased (0.908694 --&gt; 0.905898).  Saving model ...
+[ 40/100] train_loss: 0.59498 valid_loss: 0.90398
+Validation loss decreased (0.905898 --&gt; 0.903980).  Saving model ...
+[ 41/100] train_loss: 0.69129 valid_loss: 0.90252
+Validation loss decreased (0.903980 --&gt; 0.902520).  Saving model ...
+[ 42/100] train_loss: 0.64195 valid_loss: 0.90214
+Validation loss decreased (0.902520 --&gt; 0.902137).  Saving model ...
+[ 43/100] train_loss: 0.61597 valid_loss: 0.90229
+EarlyStopping counter: 1 out of 20
+[ 44/100] train_loss: 0.64604 valid_loss: 0.90195
+Validation loss decreased (0.902137 --&gt; 0.901945).  Saving model ...
+[ 45/100] train_loss: 0.56099 valid_loss: 0.90150
+Validation loss decreased (0.901945 --&gt; 0.901495).  Saving model ...
+[ 46/100] train_loss: 0.59896 valid_loss: 0.90038
+Validation loss decreased (0.901495 --&gt; 0.900384).  Saving model ...
+[ 47/100] train_loss: 0.54718 valid_loss: 0.90242
+EarlyStopping counter: 1 out of 20
+[ 48/100] train_loss: 0.57060 valid_loss: 0.90402
+EarlyStopping counter: 2 out of 20
+[ 49/100] train_loss: 0.56843 valid_loss: 0.90558
+EarlyStopping counter: 3 out of 20
+[ 50/100] train_loss: 0.59121 valid_loss: 0.90836
+EarlyStopping counter: 4 out of 20
+[ 51/100] train_loss: 0.58596 valid_loss: 0.91165
+EarlyStopping counter: 5 out of 20
+[ 52/100] train_loss: 0.55847 valid_loss: 0.91298
+EarlyStopping counter: 6 out of 20
+[ 53/100] train_loss: 0.56998 valid_loss: 0.91110
+EarlyStopping counter: 7 out of 20
+[ 54/100] train_loss: 0.50700 valid_loss: 0.90972
+EarlyStopping counter: 8 out of 20
+[ 55/100] train_loss: 0.51038 valid_loss: 0.90544
+EarlyStopping counter: 9 out of 20
+[ 56/100] train_loss: 0.58324 valid_loss: 0.90178
+EarlyStopping counter: 10 out of 20
+[ 57/100] train_loss: 0.56044 valid_loss: 0.89820
+Validation loss decreased (0.900384 --&gt; 0.898203).  Saving model ...
+[ 58/100] train_loss: 0.59401 valid_loss: 0.89667
+Validation loss decreased (0.898203 --&gt; 0.896668).  Saving model ...
+[ 59/100] train_loss: 0.58025 valid_loss: 0.89661
+Validation loss decreased (0.896668 --&gt; 0.896608).  Saving model ...
+[ 60/100] train_loss: 0.58941 valid_loss: 0.89756
+EarlyStopping counter: 1 out of 20
+[ 61/100] train_loss: 0.56879 valid_loss: 0.89814
+EarlyStopping counter: 2 out of 20
+[ 62/100] train_loss: 0.54840 valid_loss: 0.89761
+EarlyStopping counter: 3 out of 20
+[ 63/100] train_loss: 0.60313 valid_loss: 0.89855
+EarlyStopping counter: 4 out of 20
+[ 64/100] train_loss: 0.59426 valid_loss: 0.89874
+EarlyStopping counter: 5 out of 20
+[ 65/100] train_loss: 0.59992 valid_loss: 0.89700
+EarlyStopping counter: 6 out of 20
+[ 66/100] train_loss: 0.54776 valid_loss: 0.89420
+Validation loss decreased (0.896608 --&gt; 0.894205).  Saving model ...
+[ 67/100] train_loss: 0.62771 valid_loss: 0.89148
+Validation loss decreased (0.894205 --&gt; 0.891481).  Saving model ...
+[ 68/100] train_loss: 0.52845 valid_loss: 0.88837
+Validation loss decreased (0.891481 --&gt; 0.888368).  Saving model ...
+[ 69/100] train_loss: 0.56790 valid_loss: 0.88500
+Validation loss decreased (0.888368 --&gt; 0.885004).  Saving model ...
+[ 70/100] train_loss: 0.52835 valid_loss: 0.88261
+Validation loss decreased (0.885004 --&gt; 0.882610).  Saving model ...
+[ 71/100] train_loss: 0.53185 valid_loss: 0.88000
+Validation loss decreased (0.882610 --&gt; 0.880004).  Saving model ...
+[ 72/100] train_loss: 0.60623 valid_loss: 0.87762
+Validation loss decreased (0.880004 --&gt; 0.877622).  Saving model ...
+[ 73/100] train_loss: 0.54703 valid_loss: 0.87525
+Validation loss decreased (0.877622 --&gt; 0.875255).  Saving model ...
+[ 74/100] train_loss: 0.65688 valid_loss: 0.87456
+Validation loss decreased (0.875255 --&gt; 0.874556).  Saving model ...
+[ 75/100] train_loss: 0.61495 valid_loss: 0.87529
+EarlyStopping counter: 1 out of 20
+[ 76/100] train_loss: 0.64215 valid_loss: 0.87712
+EarlyStopping counter: 2 out of 20
+[ 77/100] train_loss: 0.59042 valid_loss: 0.88031
+EarlyStopping counter: 3 out of 20
+[ 78/100] train_loss: 0.55076 valid_loss: 0.88463
+EarlyStopping counter: 4 out of 20
+[ 79/100] train_loss: 0.60081 valid_loss: 0.88736
+EarlyStopping counter: 5 out of 20
+[ 80/100] train_loss: 0.57376 valid_loss: 0.88939
+EarlyStopping counter: 6 out of 20
+[ 81/100] train_loss: 0.53080 valid_loss: 0.88820
+EarlyStopping counter: 7 out of 20
+[ 82/100] train_loss: 0.55229 valid_loss: 0.88455
+EarlyStopping counter: 8 out of 20
+[ 83/100] train_loss: 0.57142 valid_loss: 0.88010
+EarlyStopping counter: 9 out of 20
+[ 84/100] train_loss: 0.56419 valid_loss: 0.87556
+EarlyStopping counter: 10 out of 20
+[ 85/100] train_loss: 0.55523 valid_loss: 0.86975
+Validation loss decreased (0.874556 --&gt; 0.869755).  Saving model ...
+[ 86/100] train_loss: 0.56123 valid_loss: 0.86506
+Validation loss decreased (0.869755 --&gt; 0.865062).  Saving model ...
+[ 87/100] train_loss: 0.59029 valid_loss: 0.86247
+Validation loss decreased (0.865062 --&gt; 0.862472).  Saving model ...
+[ 88/100] train_loss: 0.54015 valid_loss: 0.86212
+Validation loss decreased (0.862472 --&gt; 0.862118).  Saving model ...
+[ 89/100] train_loss: 0.57392 valid_loss: 0.86337
+EarlyStopping counter: 1 out of 20
+[ 90/100] train_loss: 0.57409 valid_loss: 0.86653
+EarlyStopping counter: 2 out of 20
+[ 91/100] train_loss: 0.55576 valid_loss: 0.87126
+EarlyStopping counter: 3 out of 20
+[ 92/100] train_loss: 0.52200 valid_loss: 0.87639
+EarlyStopping counter: 4 out of 20
+[ 93/100] train_loss: 0.56837 valid_loss: 0.87889
+EarlyStopping counter: 5 out of 20
+[ 94/100] train_loss: 0.51530 valid_loss: 0.88067
+EarlyStopping counter: 6 out of 20
+[ 95/100] train_loss: 0.65431 valid_loss: 0.87953
+EarlyStopping counter: 7 out of 20
+[ 96/100] train_loss: 0.65442 valid_loss: 0.87448
+EarlyStopping counter: 8 out of 20
+[ 97/100] train_loss: 0.52674 valid_loss: 0.86960
+EarlyStopping counter: 9 out of 20
+[ 98/100] train_loss: 0.59140 valid_loss: 0.86565
+EarlyStopping counter: 10 out of 20
+[ 99/100] train_loss: 0.52239 valid_loss: 0.86216
+EarlyStopping counter: 11 out of 20
+[100/100] train_loss: 0.64239 valid_loss: 0.86181
+Validation loss decreased (0.862118 --&gt; 0.861814).  Saving model ...</code></pre>
+</div>
+</div>
+<div class="cell" data-execution_count="134">
+<div class="sourceCode cell-code" id="cb66"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb66-1"><a href="#cb66-1"></a><span class="im">import</span> matplotlib.pyplot <span class="im">as</span> plt</span>
+<span id="cb66-2"><a href="#cb66-2"></a></span>
+<span id="cb66-3"><a href="#cb66-3"></a><span class="co"># 훈련이 진행되는 과정에 따라 loss를 시각화</span></span>
+<span id="cb66-4"><a href="#cb66-4"></a>fig <span class="op">=</span> plt.figure(figsize<span class="op">=</span>(<span class="dv">10</span>,<span class="dv">8</span>))</span>
+<span id="cb66-5"><a href="#cb66-5"></a>plt.plot(<span class="bu">range</span>(<span class="dv">1</span>,<span class="bu">len</span>(train_loss)<span class="op">+</span><span class="dv">1</span>),train_loss, label<span class="op">=</span><span class="st">'Training Loss'</span>)</span>
+<span id="cb66-6"><a href="#cb66-6"></a>plt.plot(<span class="bu">range</span>(<span class="dv">1</span>,<span class="bu">len</span>(valid_loss)<span class="op">+</span><span class="dv">1</span>),valid_loss,label<span class="op">=</span><span class="st">'Validation Loss'</span>)</span>
+<span id="cb66-7"><a href="#cb66-7"></a></span>
+<span id="cb66-8"><a href="#cb66-8"></a><span class="co"># validation loss의 최저값 지점을 찾기</span></span>
+<span id="cb66-9"><a href="#cb66-9"></a>minposs <span class="op">=</span> valid_loss.index(<span class="bu">min</span>(valid_loss))<span class="op">+</span><span class="dv">1</span></span>
+<span id="cb66-10"><a href="#cb66-10"></a>plt.axvline(minposs, linestyle<span class="op">=</span><span class="st">'--'</span>, color<span class="op">=</span><span class="st">'r'</span>,label<span class="op">=</span><span class="st">'Early Stopping Checkpoint'</span>)</span>
+<span id="cb66-11"><a href="#cb66-11"></a></span>
+<span id="cb66-12"><a href="#cb66-12"></a>plt.xlabel(<span class="st">'epochs'</span>)</span>
+<span id="cb66-13"><a href="#cb66-13"></a>plt.ylabel(<span class="st">'loss'</span>)</span>
+<span id="cb66-14"><a href="#cb66-14"></a>plt.ylim(<span class="dv">0</span>, <span class="fl">0.5</span>) <span class="co"># 일정한 scale</span></span>
+<span id="cb66-15"><a href="#cb66-15"></a>plt.xlim(<span class="dv">0</span>, <span class="bu">len</span>(train_loss)<span class="op">+</span><span class="dv">1</span>) <span class="co"># 일정한 scale</span></span>
+<span id="cb66-16"><a href="#cb66-16"></a>plt.grid(<span class="va">True</span>)</span>
+<span id="cb66-17"><a href="#cb66-17"></a>plt.legend()</span>
+<span id="cb66-18"><a href="#cb66-18"></a>plt.tight_layout()</span>
+<span id="cb66-19"><a href="#cb66-19"></a>plt.show()</span>
+<span id="cb66-20"><a href="#cb66-20"></a>fig.savefig(<span class="st">'loss_plot.png'</span>, bbox_inches <span class="op">=</span> <span class="st">'tight'</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display">
+<p><img src="2023-03-04-gnn2_files/figure-html/cell-39-output-1.png" class="img-fluid"></p>
+</div>
+</div>
+<hr>
+</section>
 <section id="시도4-hidden-feature의-차원을-늘려보자." class="level2">
 <h2 class="anchored" data-anchor-id="시도4-hidden-feature의-차원을-늘려보자.">(시도4) hidden feature의 차원을 늘려보자.</h2>
 <section id="hidden_channels-32" class="level3">
 <h3 class="anchored" data-anchor-id="hidden_channels-32"><code>-</code> hidden_channels = 32</h3>
-<div class="cell" data-execution_count="58">
-<div class="sourceCode cell-code" id="cb43"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb43-1"><a href="#cb43-1"></a>model <span class="op">=</span> GCN(hidden_channels<span class="op">=</span><span class="dv">32</span>)</span>
-<span id="cb43-2"><a href="#cb43-2"></a>optimizr <span class="op">=</span> torch.optim.Adam(model.parameters(), lr<span class="op">=</span><span class="fl">0.01</span>, weight_decay<span class="op">=</span><span class="fl">5e-4</span>)</span>
-<span id="cb43-3"><a href="#cb43-3"></a>loss_fn <span class="op">=</span> torch.nn.CrossEntropyLoss()</span>
-<span id="cb43-4"><a href="#cb43-4"></a></span>
-<span id="cb43-5"><a href="#cb43-5"></a><span class="kw">def</span> train():</span>
-<span id="cb43-6"><a href="#cb43-6"></a>      model.train()</span>
-<span id="cb43-7"><a href="#cb43-7"></a>      optimizr.zero_grad()  <span class="co"># Clear gradients.</span></span>
-<span id="cb43-8"><a href="#cb43-8"></a>      out <span class="op">=</span> model(data.x, data.edge_index)  <span class="co"># Perform a single forward pass.</span></span>
-<span id="cb43-9"><a href="#cb43-9"></a>      loss <span class="op">=</span> loss_fn(out[data.train_mask], data.y[data.train_mask])  <span class="co"># Compute the loss solely based on the training nodes.</span></span>
-<span id="cb43-10"><a href="#cb43-10"></a>      loss.backward()  <span class="co"># Derive gradients.</span></span>
-<span id="cb43-11"><a href="#cb43-11"></a>      optimizr.step()  <span class="co"># Update parameters based on gradients.</span></span>
-<span id="cb43-12"><a href="#cb43-12"></a>      <span class="cf">return</span> loss</span>
-<span id="cb43-13"><a href="#cb43-13"></a></span>
-<span id="cb43-14"><a href="#cb43-14"></a><span class="kw">def</span> test(mask):</span>
-<span id="cb43-15"><a href="#cb43-15"></a>      model.<span class="bu">eval</span>()</span>
-<span id="cb43-16"><a href="#cb43-16"></a>      out <span class="op">=</span> model(data.x, data.edge_index)</span>
-<span id="cb43-17"><a href="#cb43-17"></a>      pred <span class="op">=</span> out.argmax(dim<span class="op">=</span><span class="dv">1</span>)  <span class="co"># Use the class with highest probability.</span></span>
-<span id="cb43-18"><a href="#cb43-18"></a>      correct <span class="op">=</span> pred[mask] <span class="op">==</span> data.y[mask]  <span class="co"># Check against ground-truth labels.</span></span>
-<span id="cb43-19"><a href="#cb43-19"></a>      acc <span class="op">=</span> <span class="bu">int</span>(correct.<span class="bu">sum</span>()) <span class="op">/</span> <span class="bu">int</span>(mask.<span class="bu">sum</span>())  <span class="co"># Derive ratio of correct predictions.</span></span>
-<span id="cb43-20"><a href="#cb43-20"></a>      <span class="cf">return</span> acc</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell" data-execution_count="85">
+<div class="sourceCode cell-code" id="cb67"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb67-1"><a href="#cb67-1"></a>model <span class="op">=</span> GCN(hidden_channels<span class="op">=</span><span class="dv">32</span>)</span>
+<span id="cb67-2"><a href="#cb67-2"></a>optimizr <span class="op">=</span> torch.optim.Adam(model.parameters(), lr<span class="op">=</span><span class="fl">0.01</span>, weight_decay<span class="op">=</span><span class="fl">5e-4</span>)</span>
+<span id="cb67-3"><a href="#cb67-3"></a>loss_fn <span class="op">=</span> torch.nn.CrossEntropyLoss()</span>
+<span id="cb67-4"><a href="#cb67-4"></a></span>
+<span id="cb67-5"><a href="#cb67-5"></a><span class="kw">def</span> train():</span>
+<span id="cb67-6"><a href="#cb67-6"></a>      model.train()</span>
+<span id="cb67-7"><a href="#cb67-7"></a>      optimizr.zero_grad()  <span class="co"># Clear gradients.</span></span>
+<span id="cb67-8"><a href="#cb67-8"></a>      out <span class="op">=</span> model(data.x, data.edge_index)  <span class="co"># Perform a single forward pass.</span></span>
+<span id="cb67-9"><a href="#cb67-9"></a>      loss <span class="op">=</span> loss_fn(out[data.train_mask], data.y[data.train_mask])  <span class="co"># Compute the loss solely based on the training nodes.</span></span>
+<span id="cb67-10"><a href="#cb67-10"></a>      loss.backward()  <span class="co"># Derive gradients.</span></span>
+<span id="cb67-11"><a href="#cb67-11"></a>      optimizr.step()  <span class="co"># Update parameters based on gradients.</span></span>
+<span id="cb67-12"><a href="#cb67-12"></a>      <span class="cf">return</span> loss</span>
+<span id="cb67-13"><a href="#cb67-13"></a></span>
+<span id="cb67-14"><a href="#cb67-14"></a><span class="co"># def test(mask):</span></span>
+<span id="cb67-15"><a href="#cb67-15"></a><span class="co">#       model.eval()</span></span>
+<span id="cb67-16"><a href="#cb67-16"></a><span class="co">#       out = model(data.x, data.edge_index)</span></span>
+<span id="cb67-17"><a href="#cb67-17"></a><span class="co">#       pred = out.argmax(dim=1)  # Use the class with highest probability.</span></span>
+<span id="cb67-18"><a href="#cb67-18"></a><span class="co">#       correct = pred[mask] == data.y[mask]  # Check against ground-truth labels.</span></span>
+<span id="cb67-19"><a href="#cb67-19"></a><span class="co">#       acc = int(correct.sum()) / int(mask.sum())  # Derive ratio of correct predictions.</span></span>
+<span id="cb67-20"><a href="#cb67-20"></a><span class="co">#       return acc</span></span>
+<span id="cb67-21"><a href="#cb67-21"></a><span class="kw">def</span> test(mask):</span>
+<span id="cb67-22"><a href="#cb67-22"></a>      model.<span class="bu">eval</span>()</span>
+<span id="cb67-23"><a href="#cb67-23"></a>      out <span class="op">=</span> model(data.x, data.edge_index)</span>
+<span id="cb67-24"><a href="#cb67-24"></a>      pred <span class="op">=</span> out.argmax(dim<span class="op">=</span><span class="dv">1</span>)  <span class="co"># Use the class with highest probability.</span></span>
+<span id="cb67-25"><a href="#cb67-25"></a>      correct <span class="op">=</span> pred[mask] <span class="op">==</span> data.y[mask]  <span class="co"># Check against ground-truth labels.</span></span>
+<span id="cb67-26"><a href="#cb67-26"></a>      acc <span class="op">=</span> <span class="bu">int</span>(correct.<span class="bu">sum</span>()) <span class="op">/</span> <span class="bu">int</span>(mask.<span class="bu">sum</span>())  <span class="co"># Derive ratio of correct predictions.</span></span>
+<span id="cb67-27"><a href="#cb67-27"></a>      <span class="cf">return</span> acc</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="cell" data-execution_count="90">
+<div class="sourceCode cell-code" id="cb68"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb68-1"><a href="#cb68-1"></a>_out <span class="op">=</span> model(data.x, data.edge_index)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="cell" data-execution_count="93">
+<div class="sourceCode cell-code" id="cb69"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb69-1"><a href="#cb69-1"></a>_out</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="93">
+<pre><code>torch.Size([2708, 7])</code></pre>
+</div>
 </div>
 <div class="cell" data-execution_count="59">
-<div class="sourceCode cell-code" id="cb44"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb44-1"><a href="#cb44-1"></a><span class="cf">for</span> epoch <span class="kw">in</span> <span class="bu">range</span>(<span class="dv">1</span>, <span class="dv">101</span>):</span>
-<span id="cb44-2"><a href="#cb44-2"></a>    loss <span class="op">=</span> train()</span>
-<span id="cb44-3"><a href="#cb44-3"></a>    val_acc <span class="op">=</span> test(data.val_mask)</span>
-<span id="cb44-4"><a href="#cb44-4"></a>    test_acc <span class="op">=</span> test(data.test_mask)</span>
-<span id="cb44-5"><a href="#cb44-5"></a>    <span class="bu">print</span>(<span class="ss">f'에폭: </span><span class="sc">{</span>epoch<span class="sc">:03d}</span><span class="ss">, Loss: </span><span class="sc">{</span>loss<span class="sc">:.4f}</span><span class="ss">, Val: </span><span class="sc">{</span>val_acc<span class="sc">:.4f}</span><span class="ss">, Test: </span><span class="sc">{</span>test_acc<span class="sc">:.4f}</span><span class="ss">'</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb71"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb71-1"><a href="#cb71-1"></a><span class="cf">for</span> epoch <span class="kw">in</span> <span class="bu">range</span>(<span class="dv">1</span>, <span class="dv">101</span>):</span>
+<span id="cb71-2"><a href="#cb71-2"></a>    loss <span class="op">=</span> train()</span>
+<span id="cb71-3"><a href="#cb71-3"></a>    val_acc <span class="op">=</span> test(data.val_mask)</span>
+<span id="cb71-4"><a href="#cb71-4"></a>    test_acc <span class="op">=</span> test(data.test_mask)</span>
+<span id="cb71-5"><a href="#cb71-5"></a>    <span class="bu">print</span>(<span class="ss">f'에폭: </span><span class="sc">{</span>epoch<span class="sc">:03d}</span><span class="ss">, Loss: </span><span class="sc">{</span>loss<span class="sc">:.4f}</span><span class="ss">, Val: </span><span class="sc">{</span>val_acc<span class="sc">:.4f}</span><span class="ss">, Test: </span><span class="sc">{</span>test_acc<span class="sc">:.4f}</span><span class="ss">'</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>에폭: 001, Loss: 1.9455, Val: 0.2040, Test: 0.2490
 에폭: 002, Loss: 1.9400, Val: 0.4880, Test: 0.4600
@@ -1443,8 +2561,8 @@ Epoch: 100, Loss: 0.5799, Test: 0.8020</code></pre>
 </div>
 </div>
 <div class="cell" data-execution_count="60">
-<div class="sourceCode cell-code" id="cb46"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb46-1"><a href="#cb46-1"></a>test_acc <span class="op">=</span> test(data.test_mask)</span>
-<span id="cb46-2"><a href="#cb46-2"></a>test_acc</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb73"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb73-1"><a href="#cb73-1"></a>test_acc <span class="op">=</span> test(data.test_mask)</span>
+<span id="cb73-2"><a href="#cb73-2"></a>test_acc</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-display" data-execution_count="60">
 <pre><code>0.811</code></pre>
 </div>
@@ -1453,33 +2571,33 @@ Epoch: 100, Loss: 0.5799, Test: 0.8020</code></pre>
 <section id="hidden_channels-64" class="level3">
 <h3 class="anchored" data-anchor-id="hidden_channels-64"><code>-</code> hidden_channels = 64</h3>
 <div class="cell" data-execution_count="61">
-<div class="sourceCode cell-code" id="cb48"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb48-1"><a href="#cb48-1"></a>model <span class="op">=</span> GCN(hidden_channels<span class="op">=</span><span class="dv">64</span>)</span>
-<span id="cb48-2"><a href="#cb48-2"></a>optimizr <span class="op">=</span> torch.optim.Adam(model.parameters(), lr<span class="op">=</span><span class="fl">0.01</span>, weight_decay<span class="op">=</span><span class="fl">5e-4</span>)</span>
-<span id="cb48-3"><a href="#cb48-3"></a>loss_fn <span class="op">=</span> torch.nn.CrossEntropyLoss()</span>
-<span id="cb48-4"><a href="#cb48-4"></a></span>
-<span id="cb48-5"><a href="#cb48-5"></a><span class="kw">def</span> train():</span>
-<span id="cb48-6"><a href="#cb48-6"></a>      model.train()</span>
-<span id="cb48-7"><a href="#cb48-7"></a>      optimizr.zero_grad()  <span class="co"># Clear gradients.</span></span>
-<span id="cb48-8"><a href="#cb48-8"></a>      out <span class="op">=</span> model(data.x, data.edge_index)  <span class="co"># Perform a single forward pass.</span></span>
-<span id="cb48-9"><a href="#cb48-9"></a>      loss <span class="op">=</span> loss_fn(out[data.train_mask], data.y[data.train_mask])  <span class="co"># Compute the loss solely based on the training nodes.</span></span>
-<span id="cb48-10"><a href="#cb48-10"></a>      loss.backward()  <span class="co"># Derive gradients.</span></span>
-<span id="cb48-11"><a href="#cb48-11"></a>      optimizr.step()  <span class="co"># Update parameters based on gradients.</span></span>
-<span id="cb48-12"><a href="#cb48-12"></a>      <span class="cf">return</span> loss</span>
-<span id="cb48-13"><a href="#cb48-13"></a></span>
-<span id="cb48-14"><a href="#cb48-14"></a><span class="kw">def</span> test(mask):</span>
-<span id="cb48-15"><a href="#cb48-15"></a>      model.<span class="bu">eval</span>()</span>
-<span id="cb48-16"><a href="#cb48-16"></a>      out <span class="op">=</span> model(data.x, data.edge_index)</span>
-<span id="cb48-17"><a href="#cb48-17"></a>      pred <span class="op">=</span> out.argmax(dim<span class="op">=</span><span class="dv">1</span>)  <span class="co"># Use the class with highest probability.</span></span>
-<span id="cb48-18"><a href="#cb48-18"></a>      correct <span class="op">=</span> pred[mask] <span class="op">==</span> data.y[mask]  <span class="co"># Check against ground-truth labels.</span></span>
-<span id="cb48-19"><a href="#cb48-19"></a>      acc <span class="op">=</span> <span class="bu">int</span>(correct.<span class="bu">sum</span>()) <span class="op">/</span> <span class="bu">int</span>(mask.<span class="bu">sum</span>())  <span class="co"># Derive ratio of correct predictions.</span></span>
-<span id="cb48-20"><a href="#cb48-20"></a>      <span class="cf">return</span> acc</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb75"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb75-1"><a href="#cb75-1"></a>model <span class="op">=</span> GCN(hidden_channels<span class="op">=</span><span class="dv">64</span>)</span>
+<span id="cb75-2"><a href="#cb75-2"></a>optimizr <span class="op">=</span> torch.optim.Adam(model.parameters(), lr<span class="op">=</span><span class="fl">0.01</span>, weight_decay<span class="op">=</span><span class="fl">5e-4</span>)</span>
+<span id="cb75-3"><a href="#cb75-3"></a>loss_fn <span class="op">=</span> torch.nn.CrossEntropyLoss()</span>
+<span id="cb75-4"><a href="#cb75-4"></a></span>
+<span id="cb75-5"><a href="#cb75-5"></a><span class="kw">def</span> train():</span>
+<span id="cb75-6"><a href="#cb75-6"></a>      model.train()</span>
+<span id="cb75-7"><a href="#cb75-7"></a>      optimizr.zero_grad()  <span class="co"># Clear gradients.</span></span>
+<span id="cb75-8"><a href="#cb75-8"></a>      out <span class="op">=</span> model(data.x, data.edge_index)  <span class="co"># Perform a single forward pass.</span></span>
+<span id="cb75-9"><a href="#cb75-9"></a>      loss <span class="op">=</span> loss_fn(out[data.train_mask], data.y[data.train_mask])  <span class="co"># Compute the loss solely based on the training nodes.</span></span>
+<span id="cb75-10"><a href="#cb75-10"></a>      loss.backward()  <span class="co"># Derive gradients.</span></span>
+<span id="cb75-11"><a href="#cb75-11"></a>      optimizr.step()  <span class="co"># Update parameters based on gradients.</span></span>
+<span id="cb75-12"><a href="#cb75-12"></a>      <span class="cf">return</span> loss</span>
+<span id="cb75-13"><a href="#cb75-13"></a></span>
+<span id="cb75-14"><a href="#cb75-14"></a><span class="kw">def</span> test(mask):</span>
+<span id="cb75-15"><a href="#cb75-15"></a>      model.<span class="bu">eval</span>()</span>
+<span id="cb75-16"><a href="#cb75-16"></a>      out <span class="op">=</span> model(data.x, data.edge_index)</span>
+<span id="cb75-17"><a href="#cb75-17"></a>      pred <span class="op">=</span> out.argmax(dim<span class="op">=</span><span class="dv">1</span>)  <span class="co"># Use the class with highest probability.</span></span>
+<span id="cb75-18"><a href="#cb75-18"></a>      correct <span class="op">=</span> pred[mask] <span class="op">==</span> data.y[mask]  <span class="co"># Check against ground-truth labels.</span></span>
+<span id="cb75-19"><a href="#cb75-19"></a>      acc <span class="op">=</span> <span class="bu">int</span>(correct.<span class="bu">sum</span>()) <span class="op">/</span> <span class="bu">int</span>(mask.<span class="bu">sum</span>())  <span class="co"># Derive ratio of correct predictions.</span></span>
+<span id="cb75-20"><a href="#cb75-20"></a>      <span class="cf">return</span> acc</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <div class="cell" data-execution_count="62">
-<div class="sourceCode cell-code" id="cb49"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb49-1"><a href="#cb49-1"></a><span class="cf">for</span> epoch <span class="kw">in</span> <span class="bu">range</span>(<span class="dv">1</span>, <span class="dv">101</span>):</span>
-<span id="cb49-2"><a href="#cb49-2"></a>    loss <span class="op">=</span> train()</span>
-<span id="cb49-3"><a href="#cb49-3"></a>    val_acc <span class="op">=</span> test(data.val_mask)</span>
-<span id="cb49-4"><a href="#cb49-4"></a>    test_acc <span class="op">=</span> test(data.test_mask)</span>
-<span id="cb49-5"><a href="#cb49-5"></a>    <span class="bu">print</span>(<span class="ss">f'에폭: </span><span class="sc">{</span>epoch<span class="sc">:03d}</span><span class="ss">, Loss: </span><span class="sc">{</span>loss<span class="sc">:.4f}</span><span class="ss">, Val: </span><span class="sc">{</span>val_acc<span class="sc">:.4f}</span><span class="ss">, Test: </span><span class="sc">{</span>test_acc<span class="sc">:.4f}</span><span class="ss">'</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb76"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb76-1"><a href="#cb76-1"></a><span class="cf">for</span> epoch <span class="kw">in</span> <span class="bu">range</span>(<span class="dv">1</span>, <span class="dv">101</span>):</span>
+<span id="cb76-2"><a href="#cb76-2"></a>    loss <span class="op">=</span> train()</span>
+<span id="cb76-3"><a href="#cb76-3"></a>    val_acc <span class="op">=</span> test(data.val_mask)</span>
+<span id="cb76-4"><a href="#cb76-4"></a>    test_acc <span class="op">=</span> test(data.test_mask)</span>
+<span id="cb76-5"><a href="#cb76-5"></a>    <span class="bu">print</span>(<span class="ss">f'에폭: </span><span class="sc">{</span>epoch<span class="sc">:03d}</span><span class="ss">, Loss: </span><span class="sc">{</span>loss<span class="sc">:.4f}</span><span class="ss">, Val: </span><span class="sc">{</span>val_acc<span class="sc">:.4f}</span><span class="ss">, Test: </span><span class="sc">{</span>test_acc<span class="sc">:.4f}</span><span class="ss">'</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>에폭: 001, Loss: 1.9461, Val: 0.2280, Test: 0.2530
 에폭: 002, Loss: 1.9347, Val: 0.3720, Test: 0.3930
@@ -1584,8 +2702,8 @@ Epoch: 100, Loss: 0.5799, Test: 0.8020</code></pre>
 </div>
 </div>
 <div class="cell" data-execution_count="63">
-<div class="sourceCode cell-code" id="cb51"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb51-1"><a href="#cb51-1"></a>test_acc <span class="op">=</span> test(data.test_mask)</span>
-<span id="cb51-2"><a href="#cb51-2"></a>test_acc</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb78"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb78-1"><a href="#cb78-1"></a>test_acc <span class="op">=</span> test(data.test_mask)</span>
+<span id="cb78-2"><a href="#cb78-2"></a>test_acc</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-display" data-execution_count="63">
 <pre><code>0.813</code></pre>
 </div>
@@ -1595,33 +2713,33 @@ Epoch: 100, Loss: 0.5799, Test: 0.8020</code></pre>
 <section id="hidden_channels-128" class="level3">
 <h3 class="anchored" data-anchor-id="hidden_channels-128"><code>-</code> hidden_channels = 128</h3>
 <div class="cell" data-execution_count="66">
-<div class="sourceCode cell-code" id="cb53"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb53-1"><a href="#cb53-1"></a>model <span class="op">=</span> GCN(hidden_channels<span class="op">=</span><span class="dv">128</span>)</span>
-<span id="cb53-2"><a href="#cb53-2"></a>optimizr <span class="op">=</span> torch.optim.Adam(model.parameters(), lr<span class="op">=</span><span class="fl">0.01</span>, weight_decay<span class="op">=</span><span class="fl">5e-4</span>)</span>
-<span id="cb53-3"><a href="#cb53-3"></a>loss_fn <span class="op">=</span> torch.nn.CrossEntropyLoss()</span>
-<span id="cb53-4"><a href="#cb53-4"></a></span>
-<span id="cb53-5"><a href="#cb53-5"></a><span class="kw">def</span> train():</span>
-<span id="cb53-6"><a href="#cb53-6"></a>      model.train()</span>
-<span id="cb53-7"><a href="#cb53-7"></a>      optimizr.zero_grad()  <span class="co"># Clear gradients.</span></span>
-<span id="cb53-8"><a href="#cb53-8"></a>      out <span class="op">=</span> model(data.x, data.edge_index)  <span class="co"># Perform a single forward pass.</span></span>
-<span id="cb53-9"><a href="#cb53-9"></a>      loss <span class="op">=</span> loss_fn(out[data.train_mask], data.y[data.train_mask])  <span class="co"># Compute the loss solely based on the training nodes.</span></span>
-<span id="cb53-10"><a href="#cb53-10"></a>      loss.backward()  <span class="co"># Derive gradients.</span></span>
-<span id="cb53-11"><a href="#cb53-11"></a>      optimizr.step()  <span class="co"># Update parameters based on gradients.</span></span>
-<span id="cb53-12"><a href="#cb53-12"></a>      <span class="cf">return</span> loss</span>
-<span id="cb53-13"><a href="#cb53-13"></a></span>
-<span id="cb53-14"><a href="#cb53-14"></a><span class="kw">def</span> test(mask):</span>
-<span id="cb53-15"><a href="#cb53-15"></a>      model.<span class="bu">eval</span>()</span>
-<span id="cb53-16"><a href="#cb53-16"></a>      out <span class="op">=</span> model(data.x, data.edge_index)</span>
-<span id="cb53-17"><a href="#cb53-17"></a>      pred <span class="op">=</span> out.argmax(dim<span class="op">=</span><span class="dv">1</span>)  <span class="co"># Use the class with highest probability.</span></span>
-<span id="cb53-18"><a href="#cb53-18"></a>      correct <span class="op">=</span> pred[mask] <span class="op">==</span> data.y[mask]  <span class="co"># Check against ground-truth labels.</span></span>
-<span id="cb53-19"><a href="#cb53-19"></a>      acc <span class="op">=</span> <span class="bu">int</span>(correct.<span class="bu">sum</span>()) <span class="op">/</span> <span class="bu">int</span>(mask.<span class="bu">sum</span>())  <span class="co"># Derive ratio of correct predictions.</span></span>
-<span id="cb53-20"><a href="#cb53-20"></a>      <span class="cf">return</span> acc</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb80"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb80-1"><a href="#cb80-1"></a>model <span class="op">=</span> GCN(hidden_channels<span class="op">=</span><span class="dv">128</span>)</span>
+<span id="cb80-2"><a href="#cb80-2"></a>optimizr <span class="op">=</span> torch.optim.Adam(model.parameters(), lr<span class="op">=</span><span class="fl">0.01</span>, weight_decay<span class="op">=</span><span class="fl">5e-4</span>)</span>
+<span id="cb80-3"><a href="#cb80-3"></a>loss_fn <span class="op">=</span> torch.nn.CrossEntropyLoss()</span>
+<span id="cb80-4"><a href="#cb80-4"></a></span>
+<span id="cb80-5"><a href="#cb80-5"></a><span class="kw">def</span> train():</span>
+<span id="cb80-6"><a href="#cb80-6"></a>      model.train()</span>
+<span id="cb80-7"><a href="#cb80-7"></a>      optimizr.zero_grad()  <span class="co"># Clear gradients.</span></span>
+<span id="cb80-8"><a href="#cb80-8"></a>      out <span class="op">=</span> model(data.x, data.edge_index)  <span class="co"># Perform a single forward pass.</span></span>
+<span id="cb80-9"><a href="#cb80-9"></a>      loss <span class="op">=</span> loss_fn(out[data.train_mask], data.y[data.train_mask])  <span class="co"># Compute the loss solely based on the training nodes.</span></span>
+<span id="cb80-10"><a href="#cb80-10"></a>      loss.backward()  <span class="co"># Derive gradients.</span></span>
+<span id="cb80-11"><a href="#cb80-11"></a>      optimizr.step()  <span class="co"># Update parameters based on gradients.</span></span>
+<span id="cb80-12"><a href="#cb80-12"></a>      <span class="cf">return</span> loss</span>
+<span id="cb80-13"><a href="#cb80-13"></a></span>
+<span id="cb80-14"><a href="#cb80-14"></a><span class="kw">def</span> test(mask):</span>
+<span id="cb80-15"><a href="#cb80-15"></a>      model.<span class="bu">eval</span>()</span>
+<span id="cb80-16"><a href="#cb80-16"></a>      out <span class="op">=</span> model(data.x, data.edge_index)</span>
+<span id="cb80-17"><a href="#cb80-17"></a>      pred <span class="op">=</span> out.argmax(dim<span class="op">=</span><span class="dv">1</span>)  <span class="co"># Use the class with highest probability.</span></span>
+<span id="cb80-18"><a href="#cb80-18"></a>      correct <span class="op">=</span> pred[mask] <span class="op">==</span> data.y[mask]  <span class="co"># Check against ground-truth labels.</span></span>
+<span id="cb80-19"><a href="#cb80-19"></a>      acc <span class="op">=</span> <span class="bu">int</span>(correct.<span class="bu">sum</span>()) <span class="op">/</span> <span class="bu">int</span>(mask.<span class="bu">sum</span>())  <span class="co"># Derive ratio of correct predictions.</span></span>
+<span id="cb80-20"><a href="#cb80-20"></a>      <span class="cf">return</span> acc</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <div class="cell" data-execution_count="67">
-<div class="sourceCode cell-code" id="cb54"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb54-1"><a href="#cb54-1"></a><span class="cf">for</span> epoch <span class="kw">in</span> <span class="bu">range</span>(<span class="dv">1</span>, <span class="dv">101</span>):</span>
-<span id="cb54-2"><a href="#cb54-2"></a>    loss <span class="op">=</span> train()</span>
-<span id="cb54-3"><a href="#cb54-3"></a>    val_acc <span class="op">=</span> test(data.val_mask)</span>
-<span id="cb54-4"><a href="#cb54-4"></a>    test_acc <span class="op">=</span> test(data.test_mask)</span>
-<span id="cb54-5"><a href="#cb54-5"></a>    <span class="bu">print</span>(<span class="ss">f'에폭: </span><span class="sc">{</span>epoch<span class="sc">:03d}</span><span class="ss">, Loss: </span><span class="sc">{</span>loss<span class="sc">:.4f}</span><span class="ss">, Val: </span><span class="sc">{</span>val_acc<span class="sc">:.4f}</span><span class="ss">, Test: </span><span class="sc">{</span>test_acc<span class="sc">:.4f}</span><span class="ss">'</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb81"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb81-1"><a href="#cb81-1"></a><span class="cf">for</span> epoch <span class="kw">in</span> <span class="bu">range</span>(<span class="dv">1</span>, <span class="dv">101</span>):</span>
+<span id="cb81-2"><a href="#cb81-2"></a>    loss <span class="op">=</span> train()</span>
+<span id="cb81-3"><a href="#cb81-3"></a>    val_acc <span class="op">=</span> test(data.val_mask)</span>
+<span id="cb81-4"><a href="#cb81-4"></a>    test_acc <span class="op">=</span> test(data.test_mask)</span>
+<span id="cb81-5"><a href="#cb81-5"></a>    <span class="bu">print</span>(<span class="ss">f'에폭: </span><span class="sc">{</span>epoch<span class="sc">:03d}</span><span class="ss">, Loss: </span><span class="sc">{</span>loss<span class="sc">:.4f}</span><span class="ss">, Val: </span><span class="sc">{</span>val_acc<span class="sc">:.4f}</span><span class="ss">, Test: </span><span class="sc">{</span>test_acc<span class="sc">:.4f}</span><span class="ss">'</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>에폭: 001, Loss: 1.9459, Val: 0.2920, Test: 0.3330
 에폭: 002, Loss: 1.9297, Val: 0.2880, Test: 0.3140
@@ -1726,8 +2844,8 @@ Epoch: 100, Loss: 0.5799, Test: 0.8020</code></pre>
 </div>
 </div>
 <div class="cell" data-execution_count="68">
-<div class="sourceCode cell-code" id="cb56"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb56-1"><a href="#cb56-1"></a>test_acc <span class="op">=</span> test(data.test_mask)</span>
-<span id="cb56-2"><a href="#cb56-2"></a>test_acc</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb83"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb83-1"><a href="#cb83-1"></a>test_acc <span class="op">=</span> test(data.test_mask)</span>
+<span id="cb83-2"><a href="#cb83-2"></a>test_acc</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-display" data-execution_count="68">
 <pre><code>0.802</code></pre>
 </div>
@@ -1735,36 +2853,39 @@ Epoch: 100, Loss: 0.5799, Test: 0.8020</code></pre>
 <p><strong><em>실패: hidden channels=16일때가 제일 좋았다..</em></strong></p>
 </section>
 </section>
+<section id="section-1" class="level2">
+<h2 class="anchored" data-anchor-id="section-1">+</h2>
+</section>
 <section id="시도5-층을-더-쌓아보자." class="level2">
 <h2 class="anchored" data-anchor-id="시도5-층을-더-쌓아보자.">(시도5) 층을 더 쌓아보자.</h2>
 <div class="cell" data-execution_count="79">
-<div class="sourceCode cell-code" id="cb58"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb58-1"><a href="#cb58-1"></a><span class="im">from</span> torch_geometric.nn <span class="im">import</span> GCNConv</span>
-<span id="cb58-2"><a href="#cb58-2"></a></span>
-<span id="cb58-3"><a href="#cb58-3"></a></span>
-<span id="cb58-4"><a href="#cb58-4"></a><span class="kw">class</span> GCN(torch.nn.Module):</span>
-<span id="cb58-5"><a href="#cb58-5"></a>    <span class="kw">def</span> <span class="fu">__init__</span>(<span class="va">self</span>, hidden_channels):</span>
-<span id="cb58-6"><a href="#cb58-6"></a>        <span class="bu">super</span>().<span class="fu">__init__</span>()</span>
-<span id="cb58-7"><a href="#cb58-7"></a>        <span class="co">## 우리가 사용할 레이어 정의</span></span>
-<span id="cb58-8"><a href="#cb58-8"></a>        torch.manual_seed(<span class="dv">1234567</span>)</span>
-<span id="cb58-9"><a href="#cb58-9"></a>        <span class="va">self</span>.conv1 <span class="op">=</span> GCNConv(dataset.num_features, hidden_channels)</span>
-<span id="cb58-10"><a href="#cb58-10"></a>        <span class="va">self</span>.conv2 <span class="op">=</span> GCNConv(hidden_channels, <span class="dv">32</span>)</span>
-<span id="cb58-11"><a href="#cb58-11"></a>        <span class="va">self</span>.conv3 <span class="op">=</span> GCNConv(<span class="dv">32</span>, dataset.num_classes)</span>
-<span id="cb58-12"><a href="#cb58-12"></a>        <span class="co">## 레이어 정의 끝!</span></span>
-<span id="cb58-13"><a href="#cb58-13"></a>        </span>
-<span id="cb58-14"><a href="#cb58-14"></a>    <span class="kw">def</span> forward(<span class="va">self</span>, x, edge_index):</span>
-<span id="cb58-15"><a href="#cb58-15"></a>        <span class="co">## yhat을 어떻게 구할것인지 정의</span></span>
-<span id="cb58-16"><a href="#cb58-16"></a>        x <span class="op">=</span> <span class="va">self</span>.conv1(x, edge_index)</span>
-<span id="cb58-17"><a href="#cb58-17"></a>        x <span class="op">=</span> x.relu()</span>
-<span id="cb58-18"><a href="#cb58-18"></a>        x <span class="op">=</span> F.dropout(x, p<span class="op">=</span><span class="fl">0.5</span>, training<span class="op">=</span><span class="va">self</span>.training)</span>
-<span id="cb58-19"><a href="#cb58-19"></a>        x <span class="op">=</span> <span class="va">self</span>.conv2(x, edge_index)</span>
-<span id="cb58-20"><a href="#cb58-20"></a>        x <span class="op">=</span> x.relu()</span>
-<span id="cb58-21"><a href="#cb58-21"></a>        x <span class="op">=</span> F.dropout(x, p <span class="op">=</span> <span class="fl">0.5</span>, training<span class="op">=</span><span class="va">self</span>.training)</span>
-<span id="cb58-22"><a href="#cb58-22"></a>        x <span class="op">=</span> <span class="va">self</span>.conv3(x, edge_index)</span>
-<span id="cb58-23"><a href="#cb58-23"></a>        <span class="co">## 정의 끝!</span></span>
-<span id="cb58-24"><a href="#cb58-24"></a>        <span class="cf">return</span> x</span>
-<span id="cb58-25"><a href="#cb58-25"></a></span>
-<span id="cb58-26"><a href="#cb58-26"></a>model <span class="op">=</span> GCN(hidden_channels<span class="op">=</span><span class="dv">16</span>)</span>
-<span id="cb58-27"><a href="#cb58-27"></a><span class="bu">print</span>(model)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb85"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb85-1"><a href="#cb85-1"></a><span class="im">from</span> torch_geometric.nn <span class="im">import</span> GCNConv</span>
+<span id="cb85-2"><a href="#cb85-2"></a></span>
+<span id="cb85-3"><a href="#cb85-3"></a></span>
+<span id="cb85-4"><a href="#cb85-4"></a><span class="kw">class</span> GCN(torch.nn.Module):</span>
+<span id="cb85-5"><a href="#cb85-5"></a>    <span class="kw">def</span> <span class="fu">__init__</span>(<span class="va">self</span>, hidden_channels):</span>
+<span id="cb85-6"><a href="#cb85-6"></a>        <span class="bu">super</span>().<span class="fu">__init__</span>()</span>
+<span id="cb85-7"><a href="#cb85-7"></a>        <span class="co">## 우리가 사용할 레이어 정의</span></span>
+<span id="cb85-8"><a href="#cb85-8"></a>        torch.manual_seed(<span class="dv">1234567</span>)</span>
+<span id="cb85-9"><a href="#cb85-9"></a>        <span class="va">self</span>.conv1 <span class="op">=</span> GCNConv(dataset.num_features, hidden_channels)</span>
+<span id="cb85-10"><a href="#cb85-10"></a>        <span class="va">self</span>.conv2 <span class="op">=</span> GCNConv(hidden_channels, <span class="dv">32</span>)</span>
+<span id="cb85-11"><a href="#cb85-11"></a>        <span class="va">self</span>.conv3 <span class="op">=</span> GCNConv(<span class="dv">32</span>, dataset.num_classes)</span>
+<span id="cb85-12"><a href="#cb85-12"></a>        <span class="co">## 레이어 정의 끝!</span></span>
+<span id="cb85-13"><a href="#cb85-13"></a>        </span>
+<span id="cb85-14"><a href="#cb85-14"></a>    <span class="kw">def</span> forward(<span class="va">self</span>, x, edge_index):</span>
+<span id="cb85-15"><a href="#cb85-15"></a>        <span class="co">## yhat을 어떻게 구할것인지 정의</span></span>
+<span id="cb85-16"><a href="#cb85-16"></a>        x <span class="op">=</span> <span class="va">self</span>.conv1(x, edge_index)</span>
+<span id="cb85-17"><a href="#cb85-17"></a>        x <span class="op">=</span> x.relu()</span>
+<span id="cb85-18"><a href="#cb85-18"></a>        x <span class="op">=</span> F.dropout(x, p<span class="op">=</span><span class="fl">0.5</span>, training<span class="op">=</span><span class="va">self</span>.training)</span>
+<span id="cb85-19"><a href="#cb85-19"></a>        x <span class="op">=</span> <span class="va">self</span>.conv2(x, edge_index)</span>
+<span id="cb85-20"><a href="#cb85-20"></a>        x <span class="op">=</span> x.relu()</span>
+<span id="cb85-21"><a href="#cb85-21"></a>        x <span class="op">=</span> F.dropout(x, p <span class="op">=</span> <span class="fl">0.5</span>, training<span class="op">=</span><span class="va">self</span>.training)</span>
+<span id="cb85-22"><a href="#cb85-22"></a>        x <span class="op">=</span> <span class="va">self</span>.conv3(x, edge_index)</span>
+<span id="cb85-23"><a href="#cb85-23"></a>        <span class="co">## 정의 끝!</span></span>
+<span id="cb85-24"><a href="#cb85-24"></a>        <span class="cf">return</span> x</span>
+<span id="cb85-25"><a href="#cb85-25"></a></span>
+<span id="cb85-26"><a href="#cb85-26"></a>model <span class="op">=</span> GCN(hidden_channels<span class="op">=</span><span class="dv">16</span>)</span>
+<span id="cb85-27"><a href="#cb85-27"></a><span class="bu">print</span>(model)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>GCN(
   (conv1): GCNConv(1433, 16)
@@ -1774,33 +2895,33 @@ Epoch: 100, Loss: 0.5799, Test: 0.8020</code></pre>
 </div>
 </div>
 <div class="cell" data-execution_count="80">
-<div class="sourceCode cell-code" id="cb60"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb60-1"><a href="#cb60-1"></a>model <span class="op">=</span> GCN(hidden_channels<span class="op">=</span><span class="dv">16</span>)  <span class="co">## 다시 처음처럼</span></span>
-<span id="cb60-2"><a href="#cb60-2"></a>optimizr <span class="op">=</span> torch.optim.Adam(model.parameters(), lr<span class="op">=</span><span class="fl">0.01</span>, weight_decay<span class="op">=</span><span class="fl">5e-4</span>)</span>
-<span id="cb60-3"><a href="#cb60-3"></a>loss_fn <span class="op">=</span> torch.nn.CrossEntropyLoss()</span>
-<span id="cb60-4"><a href="#cb60-4"></a></span>
-<span id="cb60-5"><a href="#cb60-5"></a><span class="kw">def</span> train():</span>
-<span id="cb60-6"><a href="#cb60-6"></a>      model.train()</span>
-<span id="cb60-7"><a href="#cb60-7"></a>      optimizr.zero_grad()  <span class="co"># Clear gradients.</span></span>
-<span id="cb60-8"><a href="#cb60-8"></a>      out <span class="op">=</span> model(data.x, data.edge_index)  <span class="co"># Perform a single forward pass.</span></span>
-<span id="cb60-9"><a href="#cb60-9"></a>      loss <span class="op">=</span> loss_fn(out[data.train_mask], data.y[data.train_mask])  <span class="co"># Compute the loss solely based on the training nodes.</span></span>
-<span id="cb60-10"><a href="#cb60-10"></a>      loss.backward()  <span class="co"># Derive gradients.</span></span>
-<span id="cb60-11"><a href="#cb60-11"></a>      optimizr.step()  <span class="co"># Update parameters based on gradients.</span></span>
-<span id="cb60-12"><a href="#cb60-12"></a>      <span class="cf">return</span> loss</span>
-<span id="cb60-13"><a href="#cb60-13"></a></span>
-<span id="cb60-14"><a href="#cb60-14"></a><span class="kw">def</span> test(mask):</span>
-<span id="cb60-15"><a href="#cb60-15"></a>      model.<span class="bu">eval</span>()</span>
-<span id="cb60-16"><a href="#cb60-16"></a>      out <span class="op">=</span> model(data.x, data.edge_index)</span>
-<span id="cb60-17"><a href="#cb60-17"></a>      pred <span class="op">=</span> out.argmax(dim<span class="op">=</span><span class="dv">1</span>)  <span class="co"># Use the class with highest probability.</span></span>
-<span id="cb60-18"><a href="#cb60-18"></a>      correct <span class="op">=</span> pred[mask] <span class="op">==</span> data.y[mask]  <span class="co"># Check against ground-truth labels.</span></span>
-<span id="cb60-19"><a href="#cb60-19"></a>      acc <span class="op">=</span> <span class="bu">int</span>(correct.<span class="bu">sum</span>()) <span class="op">/</span> <span class="bu">int</span>(mask.<span class="bu">sum</span>())  <span class="co"># Derive ratio of correct predictions.</span></span>
-<span id="cb60-20"><a href="#cb60-20"></a>      <span class="cf">return</span> acc</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb87"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb87-1"><a href="#cb87-1"></a>model <span class="op">=</span> GCN(hidden_channels<span class="op">=</span><span class="dv">16</span>)  <span class="co">## 다시 처음처럼</span></span>
+<span id="cb87-2"><a href="#cb87-2"></a>optimizr <span class="op">=</span> torch.optim.Adam(model.parameters(), lr<span class="op">=</span><span class="fl">0.01</span>, weight_decay<span class="op">=</span><span class="fl">5e-4</span>)</span>
+<span id="cb87-3"><a href="#cb87-3"></a>loss_fn <span class="op">=</span> torch.nn.CrossEntropyLoss()</span>
+<span id="cb87-4"><a href="#cb87-4"></a></span>
+<span id="cb87-5"><a href="#cb87-5"></a><span class="kw">def</span> train():</span>
+<span id="cb87-6"><a href="#cb87-6"></a>      model.train()</span>
+<span id="cb87-7"><a href="#cb87-7"></a>      optimizr.zero_grad()  <span class="co"># Clear gradients.</span></span>
+<span id="cb87-8"><a href="#cb87-8"></a>      out <span class="op">=</span> model(data.x, data.edge_index)  <span class="co"># Perform a single forward pass.</span></span>
+<span id="cb87-9"><a href="#cb87-9"></a>      loss <span class="op">=</span> loss_fn(out[data.train_mask], data.y[data.train_mask])  <span class="co"># Compute the loss solely based on the training nodes.</span></span>
+<span id="cb87-10"><a href="#cb87-10"></a>      loss.backward()  <span class="co"># Derive gradients.</span></span>
+<span id="cb87-11"><a href="#cb87-11"></a>      optimizr.step()  <span class="co"># Update parameters based on gradients.</span></span>
+<span id="cb87-12"><a href="#cb87-12"></a>      <span class="cf">return</span> loss</span>
+<span id="cb87-13"><a href="#cb87-13"></a></span>
+<span id="cb87-14"><a href="#cb87-14"></a><span class="kw">def</span> test(mask):</span>
+<span id="cb87-15"><a href="#cb87-15"></a>      model.<span class="bu">eval</span>()</span>
+<span id="cb87-16"><a href="#cb87-16"></a>      out <span class="op">=</span> model(data.x, data.edge_index)</span>
+<span id="cb87-17"><a href="#cb87-17"></a>      pred <span class="op">=</span> out.argmax(dim<span class="op">=</span><span class="dv">1</span>)  <span class="co"># Use the class with highest probability.</span></span>
+<span id="cb87-18"><a href="#cb87-18"></a>      correct <span class="op">=</span> pred[mask] <span class="op">==</span> data.y[mask]  <span class="co"># Check against ground-truth labels.</span></span>
+<span id="cb87-19"><a href="#cb87-19"></a>      acc <span class="op">=</span> <span class="bu">int</span>(correct.<span class="bu">sum</span>()) <span class="op">/</span> <span class="bu">int</span>(mask.<span class="bu">sum</span>())  <span class="co"># Derive ratio of correct predictions.</span></span>
+<span id="cb87-20"><a href="#cb87-20"></a>      <span class="cf">return</span> acc</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <div class="cell" data-execution_count="81">
-<div class="sourceCode cell-code" id="cb61"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb61-1"><a href="#cb61-1"></a><span class="cf">for</span> epoch <span class="kw">in</span> <span class="bu">range</span>(<span class="dv">1</span>, <span class="dv">101</span>):</span>
-<span id="cb61-2"><a href="#cb61-2"></a>    loss <span class="op">=</span> train()</span>
-<span id="cb61-3"><a href="#cb61-3"></a>    val_acc <span class="op">=</span> test(data.val_mask)</span>
-<span id="cb61-4"><a href="#cb61-4"></a>    test_acc <span class="op">=</span> test(data.test_mask)</span>
-<span id="cb61-5"><a href="#cb61-5"></a>    <span class="bu">print</span>(<span class="ss">f'에폭: </span><span class="sc">{</span>epoch<span class="sc">:03d}</span><span class="ss">, Loss: </span><span class="sc">{</span>loss<span class="sc">:.4f}</span><span class="ss">, Val: </span><span class="sc">{</span>val_acc<span class="sc">:.4f}</span><span class="ss">, Test: </span><span class="sc">{</span>test_acc<span class="sc">:.4f}</span><span class="ss">'</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb88"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb88-1"><a href="#cb88-1"></a><span class="cf">for</span> epoch <span class="kw">in</span> <span class="bu">range</span>(<span class="dv">1</span>, <span class="dv">101</span>):</span>
+<span id="cb88-2"><a href="#cb88-2"></a>    loss <span class="op">=</span> train()</span>
+<span id="cb88-3"><a href="#cb88-3"></a>    val_acc <span class="op">=</span> test(data.val_mask)</span>
+<span id="cb88-4"><a href="#cb88-4"></a>    test_acc <span class="op">=</span> test(data.test_mask)</span>
+<span id="cb88-5"><a href="#cb88-5"></a>    <span class="bu">print</span>(<span class="ss">f'에폭: </span><span class="sc">{</span>epoch<span class="sc">:03d}</span><span class="ss">, Loss: </span><span class="sc">{</span>loss<span class="sc">:.4f}</span><span class="ss">, Val: </span><span class="sc">{</span>val_acc<span class="sc">:.4f}</span><span class="ss">, Test: </span><span class="sc">{</span>test_acc<span class="sc">:.4f}</span><span class="ss">'</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>에폭: 001, Loss: 1.9463, Val: 0.0600, Test: 0.0680
 에폭: 002, Loss: 1.9436, Val: 0.0960, Test: 0.1230
@@ -1905,8 +3026,8 @@ Epoch: 100, Loss: 0.5799, Test: 0.8020</code></pre>
 </div>
 </div>
 <div class="cell" data-execution_count="83">
-<div class="sourceCode cell-code" id="cb63"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb63-1"><a href="#cb63-1"></a>test_acc <span class="op">=</span> test(data.test_mask)</span>
-<span id="cb63-2"><a href="#cb63-2"></a>test_acc</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb90"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb90-1"><a href="#cb90-1"></a>test_acc <span class="op">=</span> test(data.test_mask)</span>
+<span id="cb90-2"><a href="#cb90-2"></a>test_acc</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-display" data-execution_count="83">
 <pre><code>0.777</code></pre>
 </div>
@@ -1917,23 +3038,23 @@ Epoch: 100, Loss: 0.5799, Test: 0.8020</code></pre>
 <h2 class="anchored" data-anchor-id="시도6-gatconv-layer-이용">(시도6) GATConv layer 이용</h2>
 <p><code>GCNConv</code> 인스턴스를 attention을 이용한 <code>GATConv</code>로 바꿔보자.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb65"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb65-1"><a href="#cb65-1"></a><span class="im">from</span> torch_geometric.nn <span class="im">import</span> GATConv</span>
-<span id="cb65-2"><a href="#cb65-2"></a></span>
-<span id="cb65-3"><a href="#cb65-3"></a></span>
-<span id="cb65-4"><a href="#cb65-4"></a><span class="kw">class</span> GAT(torch.nn.Module):</span>
-<span id="cb65-5"><a href="#cb65-5"></a>    <span class="kw">def</span> <span class="fu">__init__</span>(<span class="va">self</span>, hidden_channels, heads):</span>
-<span id="cb65-6"><a href="#cb65-6"></a>        <span class="bu">super</span>().<span class="fu">__init__</span>()</span>
-<span id="cb65-7"><a href="#cb65-7"></a>        torch.manual_seed(<span class="dv">1234567</span>)</span>
-<span id="cb65-8"><a href="#cb65-8"></a>        <span class="va">self</span>.conv1 <span class="op">=</span> GATConv(...)  <span class="co"># </span><span class="al">TODO</span></span>
-<span id="cb65-9"><a href="#cb65-9"></a>        <span class="va">self</span>.conv2 <span class="op">=</span> GATConv(...)  <span class="co"># </span><span class="al">TODO</span></span>
-<span id="cb65-10"><a href="#cb65-10"></a></span>
-<span id="cb65-11"><a href="#cb65-11"></a>    <span class="kw">def</span> forward(<span class="va">self</span>, x, edge_index):</span>
-<span id="cb65-12"><a href="#cb65-12"></a>        x <span class="op">=</span> F.dropout(x, p<span class="op">=</span><span class="fl">0.6</span>, training<span class="op">=</span><span class="va">self</span>.training)</span>
-<span id="cb65-13"><a href="#cb65-13"></a>        x <span class="op">=</span> <span class="va">self</span>.conv1(x, edge_index)</span>
-<span id="cb65-14"><a href="#cb65-14"></a>        x <span class="op">=</span> F.elu(x)</span>
-<span id="cb65-15"><a href="#cb65-15"></a>        x <span class="op">=</span> F.dropout(x, p<span class="op">=</span><span class="fl">0.6</span>, training<span class="op">=</span><span class="va">self</span>.training)</span>
-<span id="cb65-16"><a href="#cb65-16"></a>        x <span class="op">=</span> <span class="va">self</span>.conv2(x, edge_index)</span>
-<span id="cb65-17"><a href="#cb65-17"></a>        <span class="cf">return</span> x</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb92"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb92-1"><a href="#cb92-1"></a><span class="im">from</span> torch_geometric.nn <span class="im">import</span> GATConv</span>
+<span id="cb92-2"><a href="#cb92-2"></a></span>
+<span id="cb92-3"><a href="#cb92-3"></a></span>
+<span id="cb92-4"><a href="#cb92-4"></a><span class="kw">class</span> GAT(torch.nn.Module):</span>
+<span id="cb92-5"><a href="#cb92-5"></a>    <span class="kw">def</span> <span class="fu">__init__</span>(<span class="va">self</span>, hidden_channels, heads):</span>
+<span id="cb92-6"><a href="#cb92-6"></a>        <span class="bu">super</span>().<span class="fu">__init__</span>()</span>
+<span id="cb92-7"><a href="#cb92-7"></a>        torch.manual_seed(<span class="dv">1234567</span>)</span>
+<span id="cb92-8"><a href="#cb92-8"></a>        <span class="va">self</span>.conv1 <span class="op">=</span> GATConv(...)  <span class="co"># </span><span class="al">TODO</span></span>
+<span id="cb92-9"><a href="#cb92-9"></a>        <span class="va">self</span>.conv2 <span class="op">=</span> GATConv(...)  <span class="co"># </span><span class="al">TODO</span></span>
+<span id="cb92-10"><a href="#cb92-10"></a></span>
+<span id="cb92-11"><a href="#cb92-11"></a>    <span class="kw">def</span> forward(<span class="va">self</span>, x, edge_index):</span>
+<span id="cb92-12"><a href="#cb92-12"></a>        x <span class="op">=</span> F.dropout(x, p<span class="op">=</span><span class="fl">0.6</span>, training<span class="op">=</span><span class="va">self</span>.training)</span>
+<span id="cb92-13"><a href="#cb92-13"></a>        x <span class="op">=</span> <span class="va">self</span>.conv1(x, edge_index)</span>
+<span id="cb92-14"><a href="#cb92-14"></a>        x <span class="op">=</span> F.elu(x)</span>
+<span id="cb92-15"><a href="#cb92-15"></a>        x <span class="op">=</span> F.dropout(x, p<span class="op">=</span><span class="fl">0.6</span>, training<span class="op">=</span><span class="va">self</span>.training)</span>
+<span id="cb92-16"><a href="#cb92-16"></a>        x <span class="op">=</span> <span class="va">self</span>.conv2(x, edge_index)</span>
+<span id="cb92-17"><a href="#cb92-17"></a>        <span class="cf">return</span> x</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <ul>
 <li><a href="https://arxiv.org/pdf/1710.10903.pdf">관련논문</a><a href="#fn3" class="footnote-ref" id="fnref3" role="doc-noteref"><sup>3</sup></a></li>
