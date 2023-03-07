@@ -423,6 +423,11 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
       <ul id="quarto-sidebar-section-10" class="collapse list-unstyled sidebar-section depth2 ">  
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
+  <a href="../../posts/study/2023-03-07-intro.html" class="sidebar-item-text sidebar-link">2023 03 07 Intro</a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
   <a href="../../posts/study/2023-03-05-test27.html" class="sidebar-item-text sidebar-link">27_test</a>
   </div>
 </li>
@@ -444,6 +449,11 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../../posts/study/2023-02-24-Chap8.3.html" class="sidebar-item-text sidebar-link">Chap 8.3: Discrete Fourier Transform</a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../posts/study/test-ts.html" class="sidebar-item-text sidebar-link">test</a>
   </div>
 </li>
           <li class="sidebar-item sidebar-item-section">
@@ -2058,7 +2068,7 @@ Epoch: 100, Loss: 0.5799, Test: 0.8020</code></pre>
 <span id="cb61-45"><a href="#cb61-45"></a>        torch.save(model.state_dict(), <span class="va">self</span>.path)</span>
 <span id="cb61-46"><a href="#cb61-46"></a>        <span class="va">self</span>.val_loss_min <span class="op">=</span> val_loss</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<div class="cell" data-execution_count="256">
+<div class="cell" data-execution_count="261">
 <div class="sourceCode cell-code" id="cb62"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb62-1"><a href="#cb62-1"></a><span class="im">import</span> numpy <span class="im">as</span> np </span>
 <span id="cb62-2"><a href="#cb62-2"></a></span>
 <span id="cb62-3"><a href="#cb62-3"></a><span class="kw">def</span> train_model(model, patience, n_epochs): <span class="co"># remove batch_size</span></span>
@@ -2186,413 +2196,46 @@ Epoch: 100, Loss: 0.5799, Test: 0.8020</code></pre>
 <span id="cb62-125"><a href="#cb62-125"></a></span>
 <span id="cb62-126"><a href="#cb62-126"></a><span class="co"># early stopping patience;</span></span>
 <span id="cb62-127"><a href="#cb62-127"></a><span class="co"># validation loss가 개선된 마지막 시간 이후로 얼마나 기다릴지 지정</span></span>
-<span id="cb62-128"><a href="#cb62-128"></a>patience <span class="op">=</span> <span class="dv">100</span></span>
+<span id="cb62-128"><a href="#cb62-128"></a>patience <span class="op">=</span> <span class="dv">7</span></span>
 <span id="cb62-129"><a href="#cb62-129"></a></span>
 <span id="cb62-130"><a href="#cb62-130"></a>model, train_loss, valid_loss <span class="op">=</span> train_model(model, patience, n_epochs) </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>[  1/200] train_loss: 0.23408 valid_loss: 0.79899 test_acc: 0.81600
-Validation loss decreased (inf --&gt; 0.798991).  Saving model ...
-[  2/200] train_loss: 0.23447 valid_loss: 0.80037 test_acc: 0.81600
-EarlyStopping counter: 1 out of 100
-[  3/200] train_loss: 0.23478 valid_loss: 0.80024 test_acc: 0.81500
-EarlyStopping counter: 2 out of 100
-[  4/200] train_loss: 0.22765 valid_loss: 0.80219 test_acc: 0.81500
-EarlyStopping counter: 3 out of 100
-[  5/200] train_loss: 0.23861 valid_loss: 0.80169 test_acc: 0.81600
-EarlyStopping counter: 4 out of 100
-[  6/200] train_loss: 0.23334 valid_loss: 0.79994 test_acc: 0.81500
-EarlyStopping counter: 5 out of 100
-[  7/200] train_loss: 0.21286 valid_loss: 0.79879 test_acc: 0.81500
-Validation loss decreased (0.798991 --&gt; 0.798791).  Saving model ...
-[  8/200] train_loss: 0.22910 valid_loss: 0.80020 test_acc: 0.81000
-EarlyStopping counter: 1 out of 100
-[  9/200] train_loss: 0.22697 valid_loss: 0.80095 test_acc: 0.81000
-EarlyStopping counter: 2 out of 100
-[ 10/200] train_loss: 0.23007 valid_loss: 0.79831 test_acc: 0.81100
-Validation loss decreased (0.798791 --&gt; 0.798310).  Saving model ...
-[ 11/200] train_loss: 0.22697 valid_loss: 0.79491 test_acc: 0.81000
-Validation loss decreased (0.798310 --&gt; 0.794915).  Saving model ...
-[ 12/200] train_loss: 0.22556 valid_loss: 0.79206 test_acc: 0.81000
-Validation loss decreased (0.794915 --&gt; 0.792058).  Saving model ...
-[ 13/200] train_loss: 0.25384 valid_loss: 0.78720 test_acc: 0.81200
-Validation loss decreased (0.792058 --&gt; 0.787200).  Saving model ...
-[ 14/200] train_loss: 0.22057 valid_loss: 0.78512 test_acc: 0.81300
-Validation loss decreased (0.787200 --&gt; 0.785118).  Saving model ...
-[ 15/200] train_loss: 0.23777 valid_loss: 0.78553 test_acc: 0.81000
-EarlyStopping counter: 1 out of 100
-[ 16/200] train_loss: 0.22866 valid_loss: 0.78869 test_acc: 0.81100
-EarlyStopping counter: 2 out of 100
-[ 17/200] train_loss: 0.22724 valid_loss: 0.79133 test_acc: 0.81100
-EarlyStopping counter: 3 out of 100
-[ 18/200] train_loss: 0.22583 valid_loss: 0.79308 test_acc: 0.80800
-EarlyStopping counter: 4 out of 100
-[ 19/200] train_loss: 0.22410 valid_loss: 0.79022 test_acc: 0.80800
-EarlyStopping counter: 5 out of 100
-[ 20/200] train_loss: 0.23103 valid_loss: 0.78926 test_acc: 0.81200
-EarlyStopping counter: 6 out of 100
-[ 21/200] train_loss: 0.23057 valid_loss: 0.78861 test_acc: 0.81400
-EarlyStopping counter: 7 out of 100
-[ 22/200] train_loss: 0.22398 valid_loss: 0.79027 test_acc: 0.81200
-EarlyStopping counter: 8 out of 100
-[ 23/200] train_loss: 0.21775 valid_loss: 0.79349 test_acc: 0.81100
-EarlyStopping counter: 9 out of 100
-[ 24/200] train_loss: 0.20645 valid_loss: 0.79547 test_acc: 0.81100
-EarlyStopping counter: 10 out of 100
-[ 25/200] train_loss: 0.21857 valid_loss: 0.79622 test_acc: 0.81200
-EarlyStopping counter: 11 out of 100
-[ 26/200] train_loss: 0.22324 valid_loss: 0.79212 test_acc: 0.81000
-EarlyStopping counter: 12 out of 100
-[ 27/200] train_loss: 0.21403 valid_loss: 0.78613 test_acc: 0.80900
-EarlyStopping counter: 13 out of 100
-[ 28/200] train_loss: 0.21610 valid_loss: 0.78118 test_acc: 0.81500
-Validation loss decreased (0.785118 --&gt; 0.781179).  Saving model ...
-[ 29/200] train_loss: 0.22429 valid_loss: 0.77884 test_acc: 0.81300
-Validation loss decreased (0.781179 --&gt; 0.778839).  Saving model ...
-[ 30/200] train_loss: 0.21679 valid_loss: 0.77846 test_acc: 0.81500
-Validation loss decreased (0.778839 --&gt; 0.778461).  Saving model ...
-[ 31/200] train_loss: 0.20613 valid_loss: 0.77950 test_acc: 0.81500
-EarlyStopping counter: 1 out of 100
-[ 32/200] train_loss: 0.22323 valid_loss: 0.78175 test_acc: 0.81400
-EarlyStopping counter: 2 out of 100
-[ 33/200] train_loss: 0.22119 valid_loss: 0.78373 test_acc: 0.81300
-EarlyStopping counter: 3 out of 100
-[ 34/200] train_loss: 0.21672 valid_loss: 0.78748 test_acc: 0.80900
-EarlyStopping counter: 4 out of 100
-[ 35/200] train_loss: 0.21166 valid_loss: 0.78920 test_acc: 0.80800
-EarlyStopping counter: 5 out of 100
-[ 36/200] train_loss: 0.22190 valid_loss: 0.78579 test_acc: 0.80600
-EarlyStopping counter: 6 out of 100
-[ 37/200] train_loss: 0.21166 valid_loss: 0.78519 test_acc: 0.80900
-EarlyStopping counter: 7 out of 100
-[ 38/200] train_loss: 0.21323 valid_loss: 0.78472 test_acc: 0.80900
-EarlyStopping counter: 8 out of 100
-[ 39/200] train_loss: 0.20473 valid_loss: 0.78584 test_acc: 0.80900
-EarlyStopping counter: 9 out of 100
-[ 40/200] train_loss: 0.20222 valid_loss: 0.78444 test_acc: 0.81400
-EarlyStopping counter: 10 out of 100
-[ 41/200] train_loss: 0.21490 valid_loss: 0.78261 test_acc: 0.81700
-EarlyStopping counter: 11 out of 100
-[ 42/200] train_loss: 0.21039 valid_loss: 0.78180 test_acc: 0.81300
-EarlyStopping counter: 12 out of 100
-[ 43/200] train_loss: 0.20394 valid_loss: 0.78026 test_acc: 0.80700
-EarlyStopping counter: 13 out of 100
-[ 44/200] train_loss: 0.20996 valid_loss: 0.77776 test_acc: 0.80800
-Validation loss decreased (0.778461 --&gt; 0.777756).  Saving model ...
-[ 45/200] train_loss: 0.21198 valid_loss: 0.77598 test_acc: 0.81000
-Validation loss decreased (0.777756 --&gt; 0.775983).  Saving model ...
-[ 46/200] train_loss: 0.21193 valid_loss: 0.77712 test_acc: 0.80700
-EarlyStopping counter: 1 out of 100
-[ 47/200] train_loss: 0.20296 valid_loss: 0.77769 test_acc: 0.80800
-EarlyStopping counter: 2 out of 100
-[ 48/200] train_loss: 0.19401 valid_loss: 0.77807 test_acc: 0.81100
-EarlyStopping counter: 3 out of 100
-[ 49/200] train_loss: 0.19974 valid_loss: 0.77908 test_acc: 0.81100
-EarlyStopping counter: 4 out of 100
-[ 50/200] train_loss: 0.21564 valid_loss: 0.77874 test_acc: 0.81200
-EarlyStopping counter: 5 out of 100
-[ 51/200] train_loss: 0.21116 valid_loss: 0.77906 test_acc: 0.81100
-EarlyStopping counter: 6 out of 100
-[ 52/200] train_loss: 0.19833 valid_loss: 0.77977 test_acc: 0.80800
-EarlyStopping counter: 7 out of 100
-[ 53/200] train_loss: 0.20886 valid_loss: 0.78008 test_acc: 0.80700
-EarlyStopping counter: 8 out of 100
-[ 54/200] train_loss: 0.20072 valid_loss: 0.77541 test_acc: 0.80900
-Validation loss decreased (0.775983 --&gt; 0.775408).  Saving model ...
-[ 55/200] train_loss: 0.20754 valid_loss: 0.77195 test_acc: 0.81200
-Validation loss decreased (0.775408 --&gt; 0.771951).  Saving model ...
-[ 56/200] train_loss: 0.19589 valid_loss: 0.76844 test_acc: 0.80900
-Validation loss decreased (0.771951 --&gt; 0.768444).  Saving model ...
-[ 57/200] train_loss: 0.20873 valid_loss: 0.76637 test_acc: 0.81000
-Validation loss decreased (0.768444 --&gt; 0.766371).  Saving model ...
-[ 58/200] train_loss: 0.20117 valid_loss: 0.76504 test_acc: 0.81000
-Validation loss decreased (0.766371 --&gt; 0.765041).  Saving model ...
-[ 59/200] train_loss: 0.19149 valid_loss: 0.76607 test_acc: 0.81100
-EarlyStopping counter: 1 out of 100
-[ 60/200] train_loss: 0.20882 valid_loss: 0.76851 test_acc: 0.81400
-EarlyStopping counter: 2 out of 100
-[ 61/200] train_loss: 0.18296 valid_loss: 0.77100 test_acc: 0.81100
-EarlyStopping counter: 3 out of 100
-[ 62/200] train_loss: 0.19364 valid_loss: 0.77432 test_acc: 0.81200
-EarlyStopping counter: 4 out of 100
-[ 63/200] train_loss: 0.18773 valid_loss: 0.77626 test_acc: 0.80800
-EarlyStopping counter: 5 out of 100
-[ 64/200] train_loss: 0.20077 valid_loss: 0.77622 test_acc: 0.80600
-EarlyStopping counter: 6 out of 100
-[ 65/200] train_loss: 0.21501 valid_loss: 0.77060 test_acc: 0.81000
-EarlyStopping counter: 7 out of 100
-[ 66/200] train_loss: 0.19691 valid_loss: 0.76401 test_acc: 0.82100
-Validation loss decreased (0.765041 --&gt; 0.764006).  Saving model ...
-[ 67/200] train_loss: 0.19632 valid_loss: 0.75862 test_acc: 0.81700
-Validation loss decreased (0.764006 --&gt; 0.758621).  Saving model ...
-[ 68/200] train_loss: 0.19103 valid_loss: 0.75928 test_acc: 0.81400
-EarlyStopping counter: 1 out of 100
-[ 69/200] train_loss: 0.19148 valid_loss: 0.76329 test_acc: 0.81400
-EarlyStopping counter: 2 out of 100
-[ 70/200] train_loss: 0.19964 valid_loss: 0.76663 test_acc: 0.81400
-EarlyStopping counter: 3 out of 100
-[ 71/200] train_loss: 0.19261 valid_loss: 0.76975 test_acc: 0.81400
-EarlyStopping counter: 4 out of 100
-[ 72/200] train_loss: 0.18687 valid_loss: 0.77070 test_acc: 0.81300
-EarlyStopping counter: 5 out of 100
-[ 73/200] train_loss: 0.18132 valid_loss: 0.76858 test_acc: 0.81200
-EarlyStopping counter: 6 out of 100
-[ 74/200] train_loss: 0.19859 valid_loss: 0.76680 test_acc: 0.81400
-EarlyStopping counter: 7 out of 100
-[ 75/200] train_loss: 0.19468 valid_loss: 0.76691 test_acc: 0.81500
-EarlyStopping counter: 8 out of 100
-[ 76/200] train_loss: 0.18740 valid_loss: 0.76869 test_acc: 0.81500
-EarlyStopping counter: 9 out of 100
-[ 77/200] train_loss: 0.19659 valid_loss: 0.76933 test_acc: 0.81300
-EarlyStopping counter: 10 out of 100
-[ 78/200] train_loss: 0.19236 valid_loss: 0.76702 test_acc: 0.81600
-EarlyStopping counter: 11 out of 100
-[ 79/200] train_loss: 0.18774 valid_loss: 0.76386 test_acc: 0.81900
-EarlyStopping counter: 12 out of 100
-[ 80/200] train_loss: 0.19160 valid_loss: 0.76067 test_acc: 0.81200
-EarlyStopping counter: 13 out of 100
-[ 81/200] train_loss: 0.18808 valid_loss: 0.75954 test_acc: 0.81300
-EarlyStopping counter: 14 out of 100
-[ 82/200] train_loss: 0.18497 valid_loss: 0.76111 test_acc: 0.80900
-EarlyStopping counter: 15 out of 100
-[ 83/200] train_loss: 0.19967 valid_loss: 0.76415 test_acc: 0.81000
-EarlyStopping counter: 16 out of 100
-[ 84/200] train_loss: 0.18736 valid_loss: 0.76590 test_acc: 0.80900
-EarlyStopping counter: 17 out of 100
-[ 85/200] train_loss: 0.19094 valid_loss: 0.76705 test_acc: 0.81500
-EarlyStopping counter: 18 out of 100
-[ 86/200] train_loss: 0.18086 valid_loss: 0.76444 test_acc: 0.81300
-EarlyStopping counter: 19 out of 100
-[ 87/200] train_loss: 0.18279 valid_loss: 0.76375 test_acc: 0.81400
-EarlyStopping counter: 20 out of 100
-[ 88/200] train_loss: 0.17844 valid_loss: 0.76239 test_acc: 0.81300
-EarlyStopping counter: 21 out of 100
-[ 89/200] train_loss: 0.18200 valid_loss: 0.76088 test_acc: 0.81000
-EarlyStopping counter: 22 out of 100
-[ 90/200] train_loss: 0.19262 valid_loss: 0.75957 test_acc: 0.80900
-EarlyStopping counter: 23 out of 100
-[ 91/200] train_loss: 0.18134 valid_loss: 0.75989 test_acc: 0.80700
-EarlyStopping counter: 24 out of 100
-[ 92/200] train_loss: 0.17425 valid_loss: 0.75882 test_acc: 0.80900
-EarlyStopping counter: 25 out of 100
-[ 93/200] train_loss: 0.19177 valid_loss: 0.75852 test_acc: 0.80700
-Validation loss decreased (0.758621 --&gt; 0.758524).  Saving model ...
-[ 94/200] train_loss: 0.19668 valid_loss: 0.75839 test_acc: 0.81100
-Validation loss decreased (0.758524 --&gt; 0.758387).  Saving model ...
-[ 95/200] train_loss: 0.19458 valid_loss: 0.76090 test_acc: 0.81000
-EarlyStopping counter: 1 out of 100
-[ 96/200] train_loss: 0.19467 valid_loss: 0.76241 test_acc: 0.81100
-EarlyStopping counter: 2 out of 100
-[ 97/200] train_loss: 0.17848 valid_loss: 0.76281 test_acc: 0.81100
-EarlyStopping counter: 3 out of 100
-[ 98/200] train_loss: 0.18881 valid_loss: 0.76361 test_acc: 0.80900
-EarlyStopping counter: 4 out of 100
-[ 99/200] train_loss: 0.18373 valid_loss: 0.76232 test_acc: 0.81100
-EarlyStopping counter: 5 out of 100
-[100/200] train_loss: 0.17457 valid_loss: 0.75480 test_acc: 0.81100
-Validation loss decreased (0.758387 --&gt; 0.754802).  Saving model ...
-[101/200] train_loss: 0.18201 valid_loss: 0.74990 test_acc: 0.81600
-Validation loss decreased (0.754802 --&gt; 0.749902).  Saving model ...
-[102/200] train_loss: 0.18431 valid_loss: 0.74896 test_acc: 0.81300
-Validation loss decreased (0.749902 --&gt; 0.748963).  Saving model ...
-[103/200] train_loss: 0.19386 valid_loss: 0.74781 test_acc: 0.81600
-Validation loss decreased (0.748963 --&gt; 0.747809).  Saving model ...
-[104/200] train_loss: 0.18360 valid_loss: 0.75110 test_acc: 0.81400
-EarlyStopping counter: 1 out of 100
-[105/200] train_loss: 0.18308 valid_loss: 0.75441 test_acc: 0.81300
-EarlyStopping counter: 2 out of 100
-[106/200] train_loss: 0.16928 valid_loss: 0.75931 test_acc: 0.81100
-EarlyStopping counter: 3 out of 100
-[107/200] train_loss: 0.16556 valid_loss: 0.76233 test_acc: 0.81100
-EarlyStopping counter: 4 out of 100
-[108/200] train_loss: 0.17638 valid_loss: 0.76074 test_acc: 0.81100
-EarlyStopping counter: 5 out of 100
-[109/200] train_loss: 0.18323 valid_loss: 0.75772 test_acc: 0.81200
-EarlyStopping counter: 6 out of 100
-[110/200] train_loss: 0.17300 valid_loss: 0.75313 test_acc: 0.81300
-EarlyStopping counter: 7 out of 100
-[111/200] train_loss: 0.17278 valid_loss: 0.74692 test_acc: 0.81400
-Validation loss decreased (0.747809 --&gt; 0.746920).  Saving model ...
-[112/200] train_loss: 0.17394 valid_loss: 0.74325 test_acc: 0.81600
-Validation loss decreased (0.746920 --&gt; 0.743254).  Saving model ...
-[113/200] train_loss: 0.18696 valid_loss: 0.74128 test_acc: 0.81700
-Validation loss decreased (0.743254 --&gt; 0.741281).  Saving model ...
-[114/200] train_loss: 0.17069 valid_loss: 0.74101 test_acc: 0.81800
-Validation loss decreased (0.741281 --&gt; 0.741012).  Saving model ...
-[115/200] train_loss: 0.17892 valid_loss: 0.74531 test_acc: 0.81500
-EarlyStopping counter: 1 out of 100
-[116/200] train_loss: 0.17241 valid_loss: 0.75209 test_acc: 0.81200
-EarlyStopping counter: 2 out of 100
-[117/200] train_loss: 0.18873 valid_loss: 0.76138 test_acc: 0.80900
-EarlyStopping counter: 3 out of 100
-[118/200] train_loss: 0.17716 valid_loss: 0.76938 test_acc: 0.80600
-EarlyStopping counter: 4 out of 100
-[119/200] train_loss: 0.18020 valid_loss: 0.77071 test_acc: 0.80600
-EarlyStopping counter: 5 out of 100
-[120/200] train_loss: 0.16721 valid_loss: 0.76739 test_acc: 0.80800
-EarlyStopping counter: 6 out of 100
-[121/200] train_loss: 0.18151 valid_loss: 0.75936 test_acc: 0.81000
-EarlyStopping counter: 7 out of 100
-[122/200] train_loss: 0.18565 valid_loss: 0.74868 test_acc: 0.81800
-EarlyStopping counter: 8 out of 100
-[123/200] train_loss: 0.16319 valid_loss: 0.73934 test_acc: 0.81700
-Validation loss decreased (0.741012 --&gt; 0.739338).  Saving model ...
-[124/200] train_loss: 0.18164 valid_loss: 0.73558 test_acc: 0.82000
-Validation loss decreased (0.739338 --&gt; 0.735581).  Saving model ...
-[125/200] train_loss: 0.18204 valid_loss: 0.73752 test_acc: 0.81500
-EarlyStopping counter: 1 out of 100
-[126/200] train_loss: 0.16412 valid_loss: 0.74190 test_acc: 0.81200
-EarlyStopping counter: 2 out of 100
-[127/200] train_loss: 0.17012 valid_loss: 0.74721 test_acc: 0.81100
-EarlyStopping counter: 3 out of 100
-[128/200] train_loss: 0.17325 valid_loss: 0.75343 test_acc: 0.80700
-EarlyStopping counter: 4 out of 100
-[129/200] train_loss: 0.17000 valid_loss: 0.75641 test_acc: 0.80600
-EarlyStopping counter: 5 out of 100
-[130/200] train_loss: 0.16675 valid_loss: 0.75564 test_acc: 0.81300
-EarlyStopping counter: 6 out of 100
-[131/200] train_loss: 0.17652 valid_loss: 0.75224 test_acc: 0.81600
-EarlyStopping counter: 7 out of 100
-[132/200] train_loss: 0.17985 valid_loss: 0.74749 test_acc: 0.81400
-EarlyStopping counter: 8 out of 100
-[133/200] train_loss: 0.17978 valid_loss: 0.74163 test_acc: 0.81500
-EarlyStopping counter: 9 out of 100
-[134/200] train_loss: 0.16779 valid_loss: 0.73564 test_acc: 0.81900
-EarlyStopping counter: 10 out of 100
-[135/200] train_loss: 0.18312 valid_loss: 0.73238 test_acc: 0.82000
-Validation loss decreased (0.735581 --&gt; 0.732383).  Saving model ...
-[136/200] train_loss: 0.17586 valid_loss: 0.73460 test_acc: 0.81700
-EarlyStopping counter: 1 out of 100
-[137/200] train_loss: 0.16006 valid_loss: 0.73934 test_acc: 0.81100
-EarlyStopping counter: 2 out of 100
-[138/200] train_loss: 0.18151 valid_loss: 0.74418 test_acc: 0.81000
-EarlyStopping counter: 3 out of 100
-[139/200] train_loss: 0.16251 valid_loss: 0.74865 test_acc: 0.80900
-EarlyStopping counter: 4 out of 100
-[140/200] train_loss: 0.16971 valid_loss: 0.74896 test_acc: 0.81000
-EarlyStopping counter: 5 out of 100
-[141/200] train_loss: 0.17802 valid_loss: 0.74798 test_acc: 0.81400
-EarlyStopping counter: 6 out of 100
-[142/200] train_loss: 0.15804 valid_loss: 0.74515 test_acc: 0.81600
-EarlyStopping counter: 7 out of 100
-[143/200] train_loss: 0.16565 valid_loss: 0.74276 test_acc: 0.82100
-EarlyStopping counter: 8 out of 100
-[144/200] train_loss: 0.17105 valid_loss: 0.74022 test_acc: 0.82100
-EarlyStopping counter: 9 out of 100
-[145/200] train_loss: 0.16094 valid_loss: 0.73883 test_acc: 0.81900
-EarlyStopping counter: 10 out of 100
-[146/200] train_loss: 0.17339 valid_loss: 0.74113 test_acc: 0.81600
-EarlyStopping counter: 11 out of 100
-[147/200] train_loss: 0.16465 valid_loss: 0.74599 test_acc: 0.81200
-EarlyStopping counter: 12 out of 100
-[148/200] train_loss: 0.16726 valid_loss: 0.74729 test_acc: 0.81000
-EarlyStopping counter: 13 out of 100
-[149/200] train_loss: 0.15529 valid_loss: 0.74396 test_acc: 0.80900
-EarlyStopping counter: 14 out of 100
-[150/200] train_loss: 0.16305 valid_loss: 0.74096 test_acc: 0.80900
-EarlyStopping counter: 15 out of 100
-[151/200] train_loss: 0.18374 valid_loss: 0.73800 test_acc: 0.81100
-EarlyStopping counter: 16 out of 100
-[152/200] train_loss: 0.16546 valid_loss: 0.73707 test_acc: 0.81700
-EarlyStopping counter: 17 out of 100
-[153/200] train_loss: 0.17666 valid_loss: 0.73307 test_acc: 0.82100
-EarlyStopping counter: 18 out of 100
-[154/200] train_loss: 0.17150 valid_loss: 0.73490 test_acc: 0.81900
-EarlyStopping counter: 19 out of 100
-[155/200] train_loss: 0.15324 valid_loss: 0.73974 test_acc: 0.82000
-EarlyStopping counter: 20 out of 100
-[156/200] train_loss: 0.16115 valid_loss: 0.74395 test_acc: 0.82000
-EarlyStopping counter: 21 out of 100
-[157/200] train_loss: 0.15927 valid_loss: 0.74785 test_acc: 0.81800
-EarlyStopping counter: 22 out of 100
-[158/200] train_loss: 0.15966 valid_loss: 0.75089 test_acc: 0.81400
-EarlyStopping counter: 23 out of 100
-[159/200] train_loss: 0.16296 valid_loss: 0.75172 test_acc: 0.80900
-EarlyStopping counter: 24 out of 100
-[160/200] train_loss: 0.16128 valid_loss: 0.75120 test_acc: 0.80600
-EarlyStopping counter: 25 out of 100
-[161/200] train_loss: 0.17893 valid_loss: 0.75001 test_acc: 0.80300
-EarlyStopping counter: 26 out of 100
-[162/200] train_loss: 0.16016 valid_loss: 0.74673 test_acc: 0.80100
-EarlyStopping counter: 27 out of 100
-[163/200] train_loss: 0.17196 valid_loss: 0.74335 test_acc: 0.80600
-EarlyStopping counter: 28 out of 100
-[164/200] train_loss: 0.15937 valid_loss: 0.74019 test_acc: 0.81000
-EarlyStopping counter: 29 out of 100
-[165/200] train_loss: 0.16348 valid_loss: 0.73728 test_acc: 0.81600
-EarlyStopping counter: 30 out of 100
-[166/200] train_loss: 0.15755 valid_loss: 0.73575 test_acc: 0.82000
-EarlyStopping counter: 31 out of 100
-[167/200] train_loss: 0.17057 valid_loss: 0.73459 test_acc: 0.81900
-EarlyStopping counter: 32 out of 100
-[168/200] train_loss: 0.15580 valid_loss: 0.73667 test_acc: 0.81800
-EarlyStopping counter: 33 out of 100
-[169/200] train_loss: 0.17026 valid_loss: 0.74301 test_acc: 0.81700
-EarlyStopping counter: 34 out of 100
-[170/200] train_loss: 0.16610 valid_loss: 0.74841 test_acc: 0.81200
-EarlyStopping counter: 35 out of 100
-[171/200] train_loss: 0.15853 valid_loss: 0.75286 test_acc: 0.80600
-EarlyStopping counter: 36 out of 100
-[172/200] train_loss: 0.16501 valid_loss: 0.75404 test_acc: 0.80400
-EarlyStopping counter: 37 out of 100
-[173/200] train_loss: 0.16027 valid_loss: 0.75114 test_acc: 0.80000
-EarlyStopping counter: 38 out of 100
-[174/200] train_loss: 0.15861 valid_loss: 0.74351 test_acc: 0.80400
-EarlyStopping counter: 39 out of 100
-[175/200] train_loss: 0.15967 valid_loss: 0.73754 test_acc: 0.81100
-EarlyStopping counter: 40 out of 100
-[176/200] train_loss: 0.15788 valid_loss: 0.73248 test_acc: 0.81900
-EarlyStopping counter: 41 out of 100
-[177/200] train_loss: 0.17010 valid_loss: 0.73047 test_acc: 0.81900
-Validation loss decreased (0.732383 --&gt; 0.730474).  Saving model ...
-[178/200] train_loss: 0.15679 valid_loss: 0.73248 test_acc: 0.81700
-EarlyStopping counter: 1 out of 100
-[179/200] train_loss: 0.15926 valid_loss: 0.73698 test_acc: 0.81900
-EarlyStopping counter: 2 out of 100
-[180/200] train_loss: 0.16641 valid_loss: 0.73908 test_acc: 0.81500
-EarlyStopping counter: 3 out of 100
-[181/200] train_loss: 0.15505 valid_loss: 0.74234 test_acc: 0.81300
-EarlyStopping counter: 4 out of 100
-[182/200] train_loss: 0.15755 valid_loss: 0.74229 test_acc: 0.80500
-EarlyStopping counter: 5 out of 100
-[183/200] train_loss: 0.16211 valid_loss: 0.74135 test_acc: 0.80300
-EarlyStopping counter: 6 out of 100
-[184/200] train_loss: 0.16403 valid_loss: 0.73852 test_acc: 0.80500
-EarlyStopping counter: 7 out of 100
-[185/200] train_loss: 0.16205 valid_loss: 0.73474 test_acc: 0.81400
-EarlyStopping counter: 8 out of 100
-[186/200] train_loss: 0.15432 valid_loss: 0.73077 test_acc: 0.81500
-EarlyStopping counter: 9 out of 100
-[187/200] train_loss: 0.15844 valid_loss: 0.73103 test_acc: 0.81700
-EarlyStopping counter: 10 out of 100
-[188/200] train_loss: 0.15984 valid_loss: 0.73350 test_acc: 0.81900
-EarlyStopping counter: 11 out of 100
-[189/200] train_loss: 0.15945 valid_loss: 0.73575 test_acc: 0.82000
-EarlyStopping counter: 12 out of 100
-[190/200] train_loss: 0.16814 valid_loss: 0.73693 test_acc: 0.81900
-EarlyStopping counter: 13 out of 100
-[191/200] train_loss: 0.15983 valid_loss: 0.73638 test_acc: 0.82000
-EarlyStopping counter: 14 out of 100
-[192/200] train_loss: 0.15568 valid_loss: 0.73592 test_acc: 0.81500
-EarlyStopping counter: 15 out of 100
-[193/200] train_loss: 0.16649 valid_loss: 0.73471 test_acc: 0.81400
-EarlyStopping counter: 16 out of 100
-[194/200] train_loss: 0.15851 valid_loss: 0.73303 test_acc: 0.81400
-EarlyStopping counter: 17 out of 100
-[195/200] train_loss: 0.15829 valid_loss: 0.73137 test_acc: 0.81500
-EarlyStopping counter: 18 out of 100
-[196/200] train_loss: 0.15817 valid_loss: 0.73049 test_acc: 0.81600
-EarlyStopping counter: 19 out of 100
-[197/200] train_loss: 0.15078 valid_loss: 0.72838 test_acc: 0.81800
-Validation loss decreased (0.730474 --&gt; 0.728385).  Saving model ...
-[198/200] train_loss: 0.16117 valid_loss: 0.73074 test_acc: 0.81600
-EarlyStopping counter: 1 out of 100
-[199/200] train_loss: 0.15701 valid_loss: 0.73352 test_acc: 0.81600
-EarlyStopping counter: 2 out of 100
-[200/200] train_loss: 0.15724 valid_loss: 0.73720 test_acc: 0.81300
-EarlyStopping counter: 3 out of 100</code></pre>
+<pre><code>[  1/200] train_loss: 0.13977 valid_loss: 0.71796 test_acc: 0.81400
+Validation loss decreased (inf --&gt; 0.717956).  Saving model ...
+[  2/200] train_loss: 0.14062 valid_loss: 0.72924 test_acc: 0.81000
+EarlyStopping counter: 1 out of 7
+[  3/200] train_loss: 0.13907 valid_loss: 0.74173 test_acc: 0.80100
+EarlyStopping counter: 2 out of 7
+[  4/200] train_loss: 0.13587 valid_loss: 0.74482 test_acc: 0.80000
+EarlyStopping counter: 3 out of 7
+[  5/200] train_loss: 0.13762 valid_loss: 0.73790 test_acc: 0.80600
+EarlyStopping counter: 4 out of 7
+[  6/200] train_loss: 0.14008 valid_loss: 0.72733 test_acc: 0.80600
+EarlyStopping counter: 5 out of 7
+[  7/200] train_loss: 0.13915 valid_loss: 0.71572 test_acc: 0.81300
+Validation loss decreased (0.717956 --&gt; 0.715715).  Saving model ...
+[  8/200] train_loss: 0.14486 valid_loss: 0.70914 test_acc: 0.82000
+Validation loss decreased (0.715715 --&gt; 0.709141).  Saving model ...
+[  9/200] train_loss: 0.13368 valid_loss: 0.70767 test_acc: 0.81900
+Validation loss decreased (0.709141 --&gt; 0.707673).  Saving model ...
+[ 10/200] train_loss: 0.14246 valid_loss: 0.70954 test_acc: 0.81900
+EarlyStopping counter: 1 out of 7
+[ 11/200] train_loss: 0.13961 valid_loss: 0.71373 test_acc: 0.81600
+EarlyStopping counter: 2 out of 7
+[ 12/200] train_loss: 0.12674 valid_loss: 0.71963 test_acc: 0.81200
+EarlyStopping counter: 3 out of 7
+[ 13/200] train_loss: 0.13681 valid_loss: 0.72552 test_acc: 0.81100
+EarlyStopping counter: 4 out of 7
+[ 14/200] train_loss: 0.13652 valid_loss: 0.72897 test_acc: 0.81200
+EarlyStopping counter: 5 out of 7
+[ 15/200] train_loss: 0.13501 valid_loss: 0.72768 test_acc: 0.80900
+EarlyStopping counter: 6 out of 7
+[ 16/200] train_loss: 0.13654 valid_loss: 0.71993 test_acc: 0.81300
+EarlyStopping counter: 7 out of 7
+Early stopping</code></pre>
 </div>
 </div>
-<div class="cell" data-execution_count="257">
+<div class="cell" data-execution_count="262">
 <div class="sourceCode cell-code" id="cb64"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb64-1"><a href="#cb64-1"></a><span class="im">import</span> matplotlib.pyplot <span class="im">as</span> plt</span>
 <span id="cb64-2"><a href="#cb64-2"></a></span>
 <span id="cb64-3"><a href="#cb64-3"></a><span class="co"># 훈련이 진행되는 과정에 따라 loss를 시각화</span></span>
@@ -2618,6 +2261,9 @@ EarlyStopping counter: 3 out of 100</code></pre>
 <p><img src="2023-03-04-gnn2_files/figure-html/cell-38-output-1.png" class="img-fluid"></p>
 </div>
 </div>
+<ul>
+<li>왜 이따구야…</li>
+</ul>
 <hr>
 </section>
 <section id="시도4-hidden-feature의-차원을-늘려보자." class="level2">
