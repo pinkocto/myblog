@@ -61,6 +61,7 @@ ul.task-list li input[type="checkbox"] {
   }
 }</script>
 
+  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
 
 <link rel="stylesheet" href="../../styles.css">
 </head>
@@ -375,6 +376,11 @@ ul.task-list li input[type="checkbox"] {
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
+  <a href="../../posts/study/2023-03-03-arima.html" class="sidebar-item-text sidebar-link">arima</a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
   <a href="../../posts/study/2023-02-25-chap12.2.html" class="sidebar-item-text sidebar-link">Chap 12.2: Weakly Stationary Graph process</a>
   </div>
 </li>
@@ -464,7 +470,11 @@ ul.task-list li input[type="checkbox"] {
   <li><a href="#a-comprehensive-survey-on-geometric-deep-learning" id="toc-a-comprehensive-survey-on-geometric-deep-learning" class="nav-link active" data-scroll-target="#a-comprehensive-survey-on-geometric-deep-learning">A Comprehensive Survey on Geometric Deep Learning</a>
   <ul class="collapse">
   <li><a href="#i.-introduction" id="toc-i.-introduction" class="nav-link" data-scroll-target="#i.-introduction">I. INTRODUCTION</a></li>
-  <li><a href="#ii.-background" id="toc-ii.-background" class="nav-link" data-scroll-target="#ii.-background">II. BACKGROUND</a></li>
+  <li><a href="#ii.-background" id="toc-ii.-background" class="nav-link" data-scroll-target="#ii.-background">II. BACKGROUND</a>
+  <ul class="collapse">
+  <li><a href="#a.-graph-and-laplacian-matrix" id="toc-a.-graph-and-laplacian-matrix" class="nav-link" data-scroll-target="#a.-graph-and-laplacian-matrix"><strong><em>A. Graph and Laplacian Matrix</em></strong></a></li>
+  <li><a href="#b.-fourier-transformation-on-graphs" id="toc-b.-fourier-transformation-on-graphs" class="nav-link" data-scroll-target="#b.-fourier-transformation-on-graphs"><strong><em>B. Fourier Transformation on Graphs</em></strong></a></li>
+  </ul></li>
   <li><a href="#iii.-methods" id="toc-iii.-methods" class="nav-link" data-scroll-target="#iii.-methods">III. METHODS</a></li>
   <li><a href="#iv.-applications" id="toc-iv.-applications" class="nav-link" data-scroll-target="#iv.-applications">IV. APPLICATIONS</a></li>
   <li><a href="#v.-future-work-and-open-problems" id="toc-v.-future-work-and-open-problems" class="nav-link" data-scroll-target="#v.-future-work-and-open-problems">V. FUTURE WORK AND OPEN PROBLEMS</a></li>
@@ -484,13 +494,57 @@ ul.task-list li input[type="checkbox"] {
 <blockquote class="blockquote">
 <p>Convolutional neural networks, geometric deep learnig, graph, manifold</p>
 </blockquote>
-<p>The deep Learning [1] technologies, for example, the convolutional neural networks [2], have achieved unprecedented good results in some machine learning applications such as object detection [3]–[5], image classification [6], speech recognition [7], and machine translation [8]. Different from traditional neural networks, the deep neural networks, especially convolutional neural networks, make use of the basic statistical characteristics of data including local stationarity and multi-scale component structure to capture deeper local information and features. Although deep learning technology is very successful in processing traditional signals such as image, sound, video or text, the current research on deep learning still mainly focuses on the data mentioned above which are defined in the Euclidean domain, namely grid-like data. With the emergence of larger data scale and more powerful GPU computing ability, people begin to be more and more interested in processing data in non-Euclidean domain, such as graphs and manifolds. This type of data is ubiquitous in real life. It is of great significance to study deep learning techniques in non-Euclidean domains. This is called geometric deep learning.</p>
-<p>The geometric deep learning mainly study graph and manifold data. The graph is composed of nodes and edges of the network structure data. For instance, in social network, each node represent a person’s information and the edge represent the relationship between people. The edges can be directed or undirected depending on the relationship of the connecting vertices. The Manifold data are usually used to describe geometric shapes, such as surface of objects returned by radar scanning. These geometric data are irregularly arranged and randomly distributed, which makes it difficult for people to find out the underlying pattern. Specifically, it is difficult to find the neighbor nodes of a certain point in the data, or the number of a node’s neighbor is different in [9]. This makes it difficult to define convolution operations like those on images. On the other hand, data like images in the Euclidean domain can be regarded as a special graph data, with vertices arranged in a regular way. Another issue is that non-Euclidean data usually has extraordinarily large scale. For example, molecular graph can have hundreds of millions of nodes. For this case, it is unlikely to use the traditional deep learning technology to carry out analysis and prediction tasks. This is why deep learning is so important in the field of geometric data. The purpose of this survey is to review and summarize the geometric deep learning frameworks and algorithms developed on graphs and manifolds data, and to introduce the practical difficulties and development directions in this new rising field.</p>
+<p>The deep Learning [1] technologies, for example, the convolutional neural networks [2], have achieved unprecedented good results in some machine learning applications such as object detection [3]–[5], image classification [6], speech recognition [7], and machine translation [8]. Different from traditional neural networks, the deep neural networks, especially convolutional neural networks, make use of the basic statistical characteristics of data including local stationarity and multi-scale component structure to capture deeper local information and features. Although deep learning technology is very successful in processing traditional signals such as image, sound, video or text, the current research on deep learning still mainly focuses on the data mentioned above which are defined in the Euclidean domain, namely grid-like data. With the emergence of larger data scale and more powerful GPU computing ability, people begin to be more and more interested in processing data in non-Euclidean domain, such as graphs and manifolds. This type of data is ubiquitous in real life. It is of great significance to study deep learning techniques in non-Euclidean domains. This is called geometric deep learning.</p>
+<p>The geometric deep learning mainly study graph and manifold data. The graph is composed of nodes and edges of the network structure data. For instance, in social network, each node represent a person’s information and the edge represent the relationship between people. The edges can be directed or undirected depending on the relationship of the connecting vertices. The Manifold data are usually used to describe geometric shapes, such as surface of objects returned by radar scanning. These geometric data are irregularly arranged and randomly distributed, which makes it difficult for people to find out the underlying pattern. Specifically, it is difficult to find the neighbor nodes of a certain point in the data, or the number of a node’s neighbor is different in [9]. This makes it difficult to define convolution operations like those on images. On the other hand, data like images in the Euclidean domain can be regarded as a special graph data, with vertices arranged in a regular way. Another issue is that non-Euclidean data usually has extraordinarily large scale. For example, molecular graph can have hundreds of millions of nodes. For this case, it is unlikely to use the traditional deep learning technology to carry out analysis and prediction tasks. This is why deep learning is so important in the field of geometric data. The purpose of this survey is to review and summarize the geometric deep learning frameworks and algorithms developed on graphs and manifolds data, and to introduce the practical difficulties and development directions in this new rising field.</p>
 <section id="i.-introduction" class="level2">
 <h2 class="anchored" data-anchor-id="i.-introduction">I. INTRODUCTION</h2>
+<p>With the emergence of larger data scale and more powerful GPU computing ability, people begin to be more and more interested in processing data in non-Euclidean domain, such as graphs and manifolds. This type of data is ubiquitous in real life. It is of great significance to study deep learning techniques in non-Euclidean domains. This is called geometric deep learning.</p>
+<ul>
+<li><em>minifold data?</em></li>
+</ul>
+<p>The geometric deep learning mainly study graph and manifold data. The graph is composed of nodes and edges of the network structure data. For instance, in social network, each node represent a person’s information and the edge represent the relationship between people. The edges can be directed or undirected depending on the relationship of the connecting vertices. The Manifold data are usually used to describe geometric shapes, such as surface of objects returned by radar scanning. These geometric data are irregularly arranged and randomly distributed, which makes it difficult for people to find out the underlying pattern. Specifically, it is difficult to find the neighbor nodes of a certain point in the data, or the number of a node’s neighbor is different in [9]. This makes it difficult to define convolution operations like those on images. On the other hand, data like images in the Euclidean domain can be regarded as a special graph data, with vertices arranged in a regular way. Another issue is that non-Euclidean data usually has extraordinarily large scale. For example, molecular graph can have hundreds of millions of nodes. For this case, it is unlikely to use the traditional deep learning technology to carry out analysis and prediction tasks. This is why deep learning is so important in the field of geometric data.</p>
+<p>The purpose of this survey is to review and summarize the geometric deep learning frameworks and algorithms developed on graphs and manifolds data, and to introduce the practical difficulties and development directions in this new rising field</p>
+<p><strong><em>BRIEF HISTORY</em></strong></p>
+<p>The history of geometric deep learning filed is not very long. Although it seems that this area is in its infancy, the deep learning behind its development has a long history. The rapid development of deep learning technologies such as convolutional neural network greatly pushes the progress of geometric deep learning. After all, studying geometric deep learning is to study how to define the non-Euclidean world mathematically, and how to transplant the existing frameworks and algorithms of deep learning to handle graphs and manifolds data effectively. In general, geometric deep learning can be mainly divided into two major research directions, one is for processing graph data (i.e.&nbsp;graph networks or grid-like data); the other is for processing manifold data (i.e.&nbsp;generally for processing 3D point cloud data). Among them, graph data processing is more popular, and people aim to extend the deep learning technologies to non-Euclidean structural data.</p>
+<p>As early as in <strong>2005, M. Gori</strong> et al.&nbsp;first proposed <strong><em>a graph neural network (GNN)</em></strong> to process graph data [10] such as directed graphs, undirected graphs, labeled graphs, and recurrent graphs. The work of [11] published by Scarselli et al. in 2009 brought back the graph neural network model to the public’s horizon, defined a function that can map graph and any node to a dimensional Euclidean space, and proposed an algorithm to estimate the neural network model parameter with supervised learning.</p>
+<p>In the work of [12] proposed spectral convolutional neural networks on graphs. Work of [13] extended the spectral network by combining a graph estimation process. diffusion convolutional neural network (DCNN) was next proposed in [14] to learning diffusion based representation from graph data for node classification. The work of [9], similar to image based convolutional network operating on the input locally connected region, proposed a general method to extract the locally connected region from the graph.</p>
+<p>In <strong>2016, M. Defferrard</strong> et al.&nbsp;proposed <strong><em>ChebNet</em></strong>[15], and then a <strong><em>simplified version GCN</em></strong> (graph convolutional network) was proposed [16]. One year later, <strong><em>CayleyNet</em></strong> was proposed by Levie et al.&nbsp;[17]. All the above research results were based on the idea of convolutional network. Besides graph convolution model, there are other similar studies conducted in parallel, such as <strong><em>graph attention networks, graph generative networks, and graph auto-encoders</em></strong> that will be seen in section III.</p>
+<p>At the same time, research of deep learning theory on manifold data are also carried out. There have been two traditional research methods on manifolds, one is to fill 3D shapes with many voxel grids (cube blocks), and each</p>
 </section>
 <section id="ii.-background" class="level2">
 <h2 class="anchored" data-anchor-id="ii.-background">II. BACKGROUND</h2>
+<p>In this section, we give a basic background introduction on graph and manifold theories. voxel can be processed by 3D CNN opreation, called 3D volumetric CNN.</p>
+<section id="a.-graph-and-laplacian-matrix" class="level3">
+<h3 class="anchored" data-anchor-id="a.-graph-and-laplacian-matrix"><strong><em>A. Graph and Laplacian Matrix</em></strong></h3>
+<p><span class="math display">\[ \bf{G} = (\bf{V},\bf{E})\]</span></p>
+<p>Let <span class="math inline">\(v_i \in \bf{V}\)</span> represent a node and <span class="math inline">\(e_{ij} = (v_i, v_j) \in \bf{E}\)</span> to represent an edge between <span class="math inline">\(v_i\)</span> and <span class="math inline">\(v_j\)</span> .</p>
+<ul>
+<li><span class="math inline">\(\bf{V}\)</span>: the set of vertices or nodes.</li>
+<li><span class="math inline">\(\bf{E}\)</span>: the set of edges.</li>
+<li><span class="math inline">\(M = |\bf{E}|\)</span> : total number of edges</li>
+<li><span class="math inline">\(\bf{A}\)</span> : <span class="math inline">\(N \times N\)</span> matrix of edge weights where:</li>
+</ul>
+<span class="math display">\[\begin{cases}
+&amp; \bf{A}_{ij} = a_{ij} &gt; 0 &amp;&amp;  \text{if } e_{ij}  \in \bf{E} \\
+&amp; \bf{A}_{ij} = 0 &amp;&amp;  \text{if } e_{ij} \notin \bf{E}
+\end{cases}\]</span>
+<p>The edges in an undirected graph are all undirected, <em>i.e.</em> an undirected graph’s edges are all undirected, any two nodes are just connected without direction. - For an undirected graph, <span class="math inline">\(\bf{A}_{ij}=\bf{A}_{ji} = 1\)</span>.</p>
+<p>directed graph has edges going from one node to another. - For a directed graph, <span class="math inline">\(\bf{A}_{ij} \neq \bf{A}_{ji}\)</span></p>
+<p>The Laplacian matrix of a graph is defined as - <span class="math inline">\(\bf{L} = \bf{D} - \bf{A}\)</span> - <span class="math inline">\(\bf{D}\)</span>: degree matrix, which is diagonal.</p>
+<p><em>the diagonal elements are the degrees of nodes, which is defined as the number of connecting edges, namely, <span class="math inline">\(\bf{D}_{ii} = \sum_j \bf{A}_{ij}\)</span></em></p>
+<p>The common Laplacian matrix usually has the following three forms, Combinatorial Laplacian:</p>
+<p><code>-</code> Combinatorial Laplacian:</p>
+<p><span class="math display">\[ \bf{L} = \bf{D} - \bf{A}\]</span></p>
+<p><code>-</code> Symmetric Nomalized Laplacian:</p>
+<p><span class="math display">\[ \bf{L}^{sym}  = \bf{D}^{-\frac{1}{2}}\bf{L}\bf{D}^{-\frac{1}{2}} = \bf{I} - \bf{D}^{-\frac{1}{2}}\bf{A}\bf{D}^{-\frac{1}{2}}\]</span></p>
+<p><code>-</code> Random Walk Nomalized Laplacian:</p>
+<p><span class="math display">\[\bf{L}^{rw} = \bf{D}^{-1}\bf{L} = \bf{I} - \bf{D}^{-1}\bf{A}\]</span></p>
+</section>
+<section id="b.-fourier-transformation-on-graphs" class="level3">
+<h3 class="anchored" data-anchor-id="b.-fourier-transformation-on-graphs"><strong><em>B. Fourier Transformation on Graphs</em></strong></h3>
+<p>The key of graph convolutional network based on spectral method is the eigen-decomposition of Laplacian matrix, so Laplacian matrix plays a very important role. The normalized Laplacian matrix is a semi-positive definite symmetric matrix, it has N linearly independent and mutually orthogonal eigenvectors, and N non-negative eigenvalues. Therefore, Laplacian matrix can be decomposed into the following formula:</p>
+<p><span class="math display">\[\bf{L} = \bf{U}\Lambda\bf{U}^{-1}\]</span></p>
+</section>
 </section>
 <section id="iii.-methods" class="level2">
 <h2 class="anchored" data-anchor-id="iii.-methods">III. METHODS</h2>

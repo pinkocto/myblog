@@ -375,6 +375,11 @@ ul.task-list li input[type="checkbox"] {
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
+  <a href="../../posts/study/2023-03-03-arima.html" class="sidebar-item-text sidebar-link">arima</a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
   <a href="../../posts/study/2023-02-25-chap12.2.html" class="sidebar-item-text sidebar-link">Chap 12.2: Weakly Stationary Graph process</a>
   </div>
 </li>
@@ -609,9 +614,19 @@ ul.task-list li input[type="checkbox"] {
 <li><p>GCN</p></li>
 <li><p>AGCN</p></li>
 </ul>
+<p><code>-</code> Spectral network</p>
+<p>spectral network는 Brana et al.&nbsp;2014가 제안했다. 합성곱 연산은 푸리에 영역에서 라플라시안(graph Laplacian)의 고유분해를 계산하는 것으로 정의한다. 이 연산은 각 노드의 스칼라로 이루어진 신호 <span class="math inline">\(\bf{x}^N \in \mathbb{R}^N\)</span>로 파라미터화된 필터 <span class="math inline">\(g_{\theta} = diga(\theta)\)</span>의 곱이다.</p>
+<p><span class="math display">\[ g_{\theta} \star \bf{x} = \bf{U}g_{\theta}(\Lambda)\bf{U}^T \bf{x}\]</span></p>
+<ul>
+<li><span class="math inline">\(\bf{D}\)</span> : 차수행렬</li>
+<li><span class="math inline">\(\bf{A}\)</span>: 인접행렬</li>
+<li><span class="math inline">\(\bf{L} = \bf{I}_N - \bf{D}^{-\frac{1}{2}}\bf{A}\bf{D}^{-\frac{1}{2}} = \bf{U}\Lambda\bf{U}^T\)</span> (정규화된 그래프 라플라시안)</li>
+</ul>
 </section>
 <section id="spatial-methods" class="level3">
 <h3 class="anchored" data-anchor-id="spatial-methods">2. Spatial methods</h3>
+<p>스펙트럼 방법들은 모두 라플라시안 고유기저로 만들어진 학습된 필터로 사용하는데, 이 값은 그래프 구조로부터 나온다. 따라서 모델이 특정한 구조에 학습되어 있고 새로운 구조의 그래프가 있을 때 바로 적용하지 못하게 된다.</p>
+<p>반면에 spatial approach는 공간적으로 가까운 이웃노드에 직접 적용하는 합성곱을 정의한다. spatial method에서 중요한 문제는 다른 크기를 갖는 이웃들에 적용할 수 있는 합성곱을 정의하고 CNN의 지역불변성을 잃지 않는것이다.</p>
 <ul>
 <li><p>Neural FPs</p></li>
 <li><p>PATCHY-SAN</p></li>
