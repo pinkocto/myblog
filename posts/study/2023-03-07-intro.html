@@ -6,8 +6,10 @@
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
+<meta name="author" content="jiyun Lim">
+<meta name="dcterms.date" content="2023-03-09">
 
-<title>myblog – intro</title>
+<title>myblog - 측도론 intro</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -96,7 +98,7 @@ ul.task-list li input[type="checkbox"] {
     </nav>
   <nav class="quarto-secondary-nav" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
     <div class="container-fluid d-flex justify-content-between">
-      <h1 class="quarto-secondary-nav-title"></h1>
+      <h1 class="quarto-secondary-nav-title">측도론 intro</h1>
       <button type="button" class="quarto-btn-toggle btn" aria-label="Show secondary navigation">
         <i class="bi bi-chevron-right"></i>
       </button>
@@ -104,7 +106,38 @@ ul.task-list li input[type="checkbox"] {
   </nav>
 </header>
 <!-- content -->
-<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
+<header id="title-block-header" class="quarto-title-block default page-columns page-full">
+  <div class="quarto-title-banner page-columns page-full">
+    <div class="quarto-title column-body">
+      <h1 class="title d-none d-lg-block">측도론 intro</h1>
+                                <div class="quarto-categories">
+                <div class="quarto-category">Measure Theory</div>
+              </div>
+                  </div>
+  </div>
+    
+  
+  <div class="quarto-title-meta">
+
+      <div>
+      <div class="quarto-title-meta-heading">Author</div>
+      <div class="quarto-title-meta-contents">
+               <p>jiyun Lim </p>
+            </div>
+    </div>
+      
+      <div>
+      <div class="quarto-title-meta-heading">Published</div>
+      <div class="quarto-title-meta-contents">
+        <p class="date">March 9, 2023</p>
+      </div>
+    </div>
+    
+      
+    </div>
+    
+  
+  </header><div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
 <!-- sidebar -->
   <nav id="quarto-sidebar" class="sidebar collapse sidebar-navigation docked overflow-auto">
       <div class="mt-2 flex-shrink-0 align-items-center">
@@ -327,11 +360,6 @@ ul.task-list li input[type="checkbox"] {
       <ul id="quarto-sidebar-section-10" class="collapse list-unstyled sidebar-section depth2 show">  
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="../../posts/study/2023-03-07-intro.html" class="sidebar-item-text sidebar-link active">2023 03 07 Intro</a>
-  </div>
-</li>
-          <li class="sidebar-item">
-  <div class="sidebar-item-container"> 
   <a href="../../posts/study/2023-03-05-survey-review.html" class="sidebar-item-text sidebar-link">A Comprehensive Survey on Geometric Deep Learning</a>
   </div>
 </li>
@@ -348,6 +376,11 @@ ul.task-list li input[type="checkbox"] {
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../../posts/study/2023-02-24-Chap8.3.html" class="sidebar-item-text sidebar-link">Chap 8.3: Discrete Fourier Transform</a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../posts/study/2023-03-07-intro.html" class="sidebar-item-text sidebar-link active">측도론 intro</a>
   </div>
 </li>
           <li class="sidebar-item sidebar-item-section">
@@ -454,21 +487,49 @@ ul.task-list li input[type="checkbox"] {
 </nav>
 <!-- margin-sidebar -->
     <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
-        
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">On this page</h2>
+   
+  <ul>
+  <li><a href="#예제1-동전" id="toc-예제1-동전" class="nav-link active" data-scroll-target="#예제1-동전">예제1: 동전</a></li>
+  <li><a href="#예제2-바늘이-하나만-있는-시계" id="toc-예제2-바늘이-하나만-있는-시계" class="nav-link" data-scroll-target="#예제2-바늘이-하나만-있는-시계">예제2: 바늘이 하나만 있는 시계</a></li>
+  </ul>
+</nav>
     </div>
 <!-- main -->
 <main class="content quarto-banner-title-block" id="quarto-document-content">
 
 
 
+
+<section id="예제1-동전" class="level1">
+<h1>예제1: 동전</h1>
+<p><code>-</code> <span class="math inline">\(\Omega = \{H,T\}\)</span> <span class="math inline">\(\to\)</span> sample space</p>
+<p><code>-</code> <span class="math inline">\(P(\{H\}) = P(\{T\}) = \frac{1}{2}: \text{prob}\)</span></p>
+<p><code>-</code> 질문: <span class="math inline">\(\Omega\)</span>의 임의의 (=모든) 부분집합 <span class="math inline">\(\Omega^*\)</span>에 대하여 <span class="math inline">\(P(\Omega^*)\)</span>를 <strong>모순없이!</strong> 정의할 수 있을까?</p>
 <p>오메가(<span class="math inline">\(\Omega\)</span>) &gt; Sample Space 라고함..</p>
 <p>오메가의 부분집합은? 공집합, {H},{T}, {H,T}</p>
 <p>공집합이 나올확률은 0?</p>
 <p>공리1,2,3은 지켜야함.</p>
-<p><span class="math inline">\(\Omega\)</span></p>
-<p>여기서 m은 길이를 재는 함수임.</p>
+</section>
+<section id="예제2-바늘이-하나만-있는-시계" class="level1">
+<h1>예제2: 바늘이 하나만 있는 시계</h1>
+<p><code>-</code> <span class="math inline">\(\Omega = [0, 2\pi)\)</span></p>
+<ul>
+<li>시계바늘을 돌려서 나오는 각도를 재는 일 <span class="math inline">\(\Leftrightarrow [0,2\pi)\)</span> 사이의 숫자 중에 하나를 뽑는 일</li>
+</ul>
+<p><code>-</code> 질문: 바늘을 랜덤으로 돌렸을 때 12시~6시 사이에 바늘이 있을 확률 <span class="math inline">\(\Rightarrow \frac{1}{2}\)</span></p>
+<ul>
+<li><span class="math inline">\(\Omega^* = [0, \pi)\)</span></li>
+<li><span class="math inline">\(P(\Omega^*) = \frac{1}{2}\)</span></li>
+</ul>
+<p><code>-</code> 계산하는 방법? 아래와 같이 계산하면 가능!</p>
+<p><span class="math display">\[\forall \Omega^* \subset \Omega, \quad P(\Omega^*) = \frac{m(\Omega^*)}{m(\Omega)}\]</span></p>
+<p>단, 여기에서 <span class="math inline">\(m\)</span>은 길이를 재는 함수라고 하자.</p>
+<p><strong>연습</strong> : <span class="math inline">\(m\)</span>의 사용</p>
 <ul>
 <li><span class="math inline">\(m(\Omega) = m([0,2\pi))=2\pi\)</span></li>
+<li><span class="math inline">\(m(\Omega^*) = m([0,\pi)) = \pi\)</span></li>
 </ul>
 <p>개구간/폐구간 똑같?</p>
 <p><span class="math inline">\(m([0,2\pi]) = m((0,2\pi))\)</span></p>
@@ -478,6 +539,7 @@ ul.task-list li input[type="checkbox"] {
 <p><span class="math display">\[P(Q_{\sqrt{2}})\]</span></p>
 
 
+</section>
 
 </main> <!-- /main -->
 <script id="quarto-html-after-body" type="application/javascript">
