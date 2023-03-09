@@ -7,6 +7,13 @@
     "text": "welcome!"
   },
   {
+    "objectID": "Tip/2023-03-09-linux.html",
+    "href": "Tip/2023-03-09-linux.html",
+    "title": "리눅스 명령어",
+    "section": "",
+    "text": "!ls / !ls . / !ls ./\n\n!ls # 현재디렉토리 파일 + 폴더출력 \n\n2023-02-20-tips.ipynb  2023-02-28-link.ipynb\n2023-02-24-tips.ipynb  Untitled.ipynb\n\n\n\n!ls .\n\n2023-02-20-tips.ipynb  2023-02-28-link.ipynb\n2023-02-24-tips.ipynb  Untitled.ipynb\n\n\n\n!ls ./\n\n2023-02-20-tips.ipynb  2023-02-28-link.ipynb\n2023-02-24-tips.ipynb  Untitled.ipynb\n\n\n\n\n!ls -a\n\n!ls -a # 현재디렉토리파일 + 폴더출력, ++ 숨겨진 항목까지 출력\n\n.   2023-02-20-tips.ipynb  2023-02-28-link.ipynb  Untitled.ipynb\n..  2023-02-24-tips.ipynb  .ipynb_checkpoints\n\n\n\n\n!ls ..\n\n!ls .. # 현재디렉토리보다 상위디렉토리의 파일 + 폴더출력\n\nabout.qmd  _freeze    posts    _quarto.yml  _site       Tip\netc    index.qmd  profile.jpg  README.md    styles.css\n\n\n\n\n!ls sample\n\n!ls sample # 현재 디렉토리에서 sample 디렉토리 출력 (나는 샘플디렉토가 없으니까 없다고 나오는것..)\n\nls: cannot access 'sample': No such file or directory\n\n\n\n\n!mkdir asdf\n\n!mkdir asdf # asdf 폴더 생성\n\nmkdir: cannot create directory ‘asdf’: File exists\n\n\n\n\n\nimage.png\n\n\n\n\n!wget\nurl에 있는 파일을 다운로드하여 현재 디렉토리에 저장\n\n!wget https://raw.githubusercontent.com/pinkocto/BP2022/master/_notebooks/autompg.csv\n\n--2023-03-09 13:45:20--  https://raw.githubusercontent.com/pinkocto/BP2022/master/_notebooks/autompg.csv\nResolving raw.githubusercontent.com (raw.githubusercontent.com)... 185.199.111.133, 185.199.108.133, 185.199.109.133, ...\nConnecting to raw.githubusercontent.com (raw.githubusercontent.com)|185.199.111.133|:443... connected.\nHTTP request sent, awaiting response... 200 OK\nLength: 18685 (18K) [text/plain]\nSaving to: ‘autompg.csv’\n\nautompg.csv         100%[===================>]  18.25K  --.-KB/s    in 0s      \n\n2023-03-09 13:45:20 (39.7 MB/s) - ‘autompg.csv’ saved [18685/18685]\n\n\n\n\n\n\nimage.png\n\n\n\n\n!cp autompg.csv ./asdf\nautompg 파일을 ./asdf로 복사\n\n!cp autompg.csv ./asdf\n\n\n\n\nimage.png\n\n\n\n\n!ls ./asdf\n현재디렉토리에서 asdf 디렉토리의 내용 출력 (!ls asdf와 동일)\n\n!ls ./asdf\n\nautompg.csv\n\n\n\n\n!rm automgp.csv\n\n!rm autompg.csv # 현재 디렉토리에서 autompg.csv 파일삭제\n\n\n\n!rm -rf asdf\n\nr은 recursively, f는 force의 약자\n\n\n!rm -rf asdf # 현재 디렉토리에서 asdf삭제 (asdf폴더 내에 파일이 존재하면 같이 삭제)\n\n\n\n\nimage.png"
+  },
+  {
     "objectID": "Tip/2023-02-28-link.html",
     "href": "Tip/2023-02-28-link.html",
     "title": "some links",
