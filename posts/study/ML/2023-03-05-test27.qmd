@@ -1,0 +1,160 @@
+---
+title: "Test 27"
+author: 'jiyun Lim'
+date: '03/08/2023'
+categories: 
+  - R
+  - test
+  - Classification
+format:
+  html:
+    theme: default
+---
+
+```{r,message=FALSE}
+library(tidyverse)
+library(recipes)
+library(caret)
+library(rsample)
+```
+
+
+```{r}
+dat <- read_csv('fraud.csv')
+dat %>% head()
+dat %>% dim()
+dat %>% colnames()
+```
+```{r}
+
+dat %>% .[,15:20] %>% head()
+```
+```{r}
+dat$calss <- factor(dat$class, labels = c("No","Yes"))
+```
+
+```{r}
+dat %>% summary()
+```
+
+```{r}
+dat %>%
+  select(starts_with("V")) %>% 
+  pivot_longer(cols = everything()) %>% 
+  ggplot(aes(x = value, fill = name)) + 
+  geom_histogram() + 
+  facet_wrap(~name, scales = "free")
+
+```
+
+```{r}
+dat %>% 
+    select(time, amount) %>% 
+    pivot_longer(cols = everything()) %>% 
+    ggplot(aes(x = value, fill = name)) + 
+    geom_histogram() + 
+    facet_wrap(~name, scales = "free")
+```
+
+
+```{r}
+dat %>% 
+  ggplot(aes(x=class)) +
+  geom_bar()
+```
+
+
+
+```{r}
+dat %>% is.na %>% colSums()
+```
+
+```{r, message=FALSE}
+library(corrplot)
+dat %>% 
+  select_if(is.numeric) %>% 
+  cor() %>% 
+  corrplot::corrplot()
+```
+
+
+```{r}
+dat %>% 
+  ggplot(aes(x=v1, y=amount)) + 
+  geom_point()
+```
+
+
+```{r}
+splits <- initial_split(dat, prop=0.7, strata=class)
+train <- training(splits)
+test <- testing(splits)
+```
+
+
+```{r}
+pc_dat <- train %>% 
+  recipe(calss ~.) %>% 
+  step_rm(time) %>% 
+  step_normalize(all_numeric_predictors()) %>% 
+  prep() %>% 
+  juice()
+```
+
+
+```{r,message=FALSE}
+library(kernlab)
+result2 <- kernlab::kpca(~., pc_dat, kernel = "rbfdot", kpar = list(sigma = 0.01))
+```
+
+
+```{r}
+pca_plot <- function(kpc, kernel_name){
+  var_explained = kpc@eig
+  for(i in 2:length(var_explained)){
+    var_explained[i] = var_explained[i] + var_explained[i-1]
+  }
+  var_explained <- var_explained  / var_explained[length(var_explained)]
+  
+  pc_number <- min(which(var_explained > .80))
+  
+  plot(var_explained,
+       type = 'l',
+       main = paste('Var Explained vs PC', kernel_name,'80% at',pc_number ), 
+       xlab = 'Component Number', 
+       ylab = 'Variance Explained')
+}
+```
+
+
+
+```{r}
+pca_plot(result2, "rbf")
+```
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

@@ -2,7 +2,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
 
 <meta charset="utf-8">
-<meta name="generator" content="quarto-1.2.313">
+<meta name="generator" content="quarto-1.2.335">
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
@@ -71,7 +71,8 @@ ul.task-list li input[type="checkbox"] {
 
     const options = {
       valueNames: ['listing-date','listing-title','listing-author','listing-image','listing-description','listing-categories',{ data: ['index'] },{ data: ['categories'] },{ data: ['listing-date-sort'] },{ data: ['listing-file-modified-sort'] }],
-      
+      page: 25,
+    pagination: { item: "<li class='page-item'><a class='page page-link' href='#'></a></li>" },
       searchColumns: ["listing-date","listing-title","listing-author","listing-image","listing-description","listing-categories"],
     };
 
@@ -95,7 +96,7 @@ ul.task-list li input[type="checkbox"] {
 <link rel="stylesheet" href="styles.css">
 </head>
 
-<body class="nav-fixed">
+<body class="nav-sidebar docked nav-fixed">
 
 <div id="quarto-search-results"></div>
   <header id="quarto-header" class="headroom fixed-top">
@@ -112,16 +113,11 @@ ul.task-list li input[type="checkbox"] {
           <div class="collapse navbar-collapse" id="navbarCollapse">
             <ul class="navbar-nav navbar-nav-scroll ms-auto">
   <li class="nav-item">
-    <a class="nav-link" href="./about.html">
+    <a class="nav-link active" href="./about.html" aria-current="page">
  <span class="menu-text">About</span></a>
   </li>  
   <li class="nav-item compact">
-    <a class="nav-link" href="https://github.com/"><i class="bi bi-github" role="img">
-</i> 
- <span class="menu-text"></span></a>
-  </li>  
-  <li class="nav-item compact">
-    <a class="nav-link" href="https://twitter.com"><i class="bi bi-twitter" role="img">
+    <a class="nav-link" href="https://github.com/pinkocto"><i class="bi bi-github" role="img">
 </i> 
  <span class="menu-text"></span></a>
   </li>  
@@ -130,12 +126,20 @@ ul.task-list li input[type="checkbox"] {
           </div> <!-- /navcollapse -->
       </div> <!-- /container-fluid -->
     </nav>
+  <nav class="quarto-secondary-nav" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+    <div class="container-fluid d-flex justify-content-between">
+      <h1 class="quarto-secondary-nav-title">myblog</h1>
+      <button type="button" class="quarto-btn-toggle btn" aria-label="Show secondary navigation">
+        <i class="bi bi-chevron-right"></i>
+      </button>
+    </div>
+  </nav>
 </header>
 <!-- content -->
 <header id="title-block-header" class="quarto-title-block default page-columns page-full">
   <div class="quarto-title-banner page-columns page-full">
-    <div class="quarto-title column-page-left">
-      <h1 class="title">myblog</h1>
+    <div class="quarto-title column-body">
+      <h1 class="title d-none d-lg-block">myblog</h1>
                       </div>
   </div>
     
@@ -150,12 +154,363 @@ ul.task-list li input[type="checkbox"] {
   
   </header><div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-full page-navbar">
 <!-- sidebar -->
+  <nav id="quarto-sidebar" class="sidebar collapse sidebar-navigation docked overflow-auto">
+      <div class="mt-2 flex-shrink-0 align-items-center">
+        <div class="sidebar-search">
+        <div id="quarto-search" class="" title="Search"></div>
+        </div>
+      </div>
+    <div class="sidebar-menu-container"> 
+    <ul class="list-unstyled mt-1">
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./about.html" class="sidebar-item-text sidebar-link">About</a>
+  </div>
+</li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" aria-expanded="true">Etc</a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" aria-expanded="true">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-1" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./etc/2023-02-20-memo.html" class="sidebar-item-text sidebar-link">메모장</a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./etc/2023-02-28.html" class="sidebar-item-text sidebar-link">클래스 암기</a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" aria-expanded="true">Posts</a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" aria-expanded="true">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-2" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-3" aria-expanded="false">DNN</a>
+          <a class="sidebar-item-toggle text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-3" aria-expanded="false">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-3" class="collapse list-unstyled sidebar-section depth2 ">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./posts/DNN/2023-03-01-dnn1.html" class="sidebar-item-text sidebar-link">딥러닝 기초 (1)</a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./posts/DNN/2023-03-01-dnn2.html" class="sidebar-item-text sidebar-link">딥러닝 기초 (2)</a>
+  </div>
+</li>
+      </ul>
+  </li>
+          <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-4" aria-expanded="false">GCN</a>
+          <a class="sidebar-item-toggle text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-4" aria-expanded="false">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-4" class="collapse list-unstyled sidebar-section depth2 ">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./posts/GCN/2023-02-27-gcn-prac.html" class="sidebar-item-text sidebar-link">GCN Implementation</a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./posts/GCN/2023-02-21-gcn1.html" class="sidebar-item-text sidebar-link">Graph Convolutional Network</a>
+  </div>
+</li>
+      </ul>
+  </li>
+          <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-5" aria-expanded="false">GNN</a>
+          <a class="sidebar-item-toggle text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-5" aria-expanded="false">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-5" class="collapse list-unstyled sidebar-section depth2 ">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./posts/GNN/2023-03-03-gnn1.html" class="sidebar-item-text sidebar-link">0 Introductino to GNN</a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./posts/GNN/2023-03-04-gnn-intro.html" class="sidebar-item-text sidebar-link">1 GNN tuto1</a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./posts/GNN/2023-03-04-gnn2.html" class="sidebar-item-text sidebar-link">2 GNN tuto2</a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./posts/GNN/2023-03-04-gnn2_guebin.html" class="sidebar-item-text sidebar-link">2 GNN tuto2</a>
+  </div>
+</li>
+      </ul>
+  </li>
+          <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-6" aria-expanded="false">RNN</a>
+          <a class="sidebar-item-toggle text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-6" aria-expanded="false">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-6" class="collapse list-unstyled sidebar-section depth2 ">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./posts/RNN/2023-02-25-rnn1.html" class="sidebar-item-text sidebar-link">순환신경망 (1)</a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./posts/RNN/2023-02-25-rnn2.html" class="sidebar-item-text sidebar-link">순환신경망 (2)</a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./posts/RNN/2023-02-28-rnn3.html" class="sidebar-item-text sidebar-link">순환신경망 (3)</a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./posts/RNN/2023-02-28-rnn4.html" class="sidebar-item-text sidebar-link">순환신경망 (4)</a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./posts/RNN/2023-03-01-rnn5.html" class="sidebar-item-text sidebar-link">순환신경망 (5)</a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./posts/RNN/2023-03-01-rnn6.html" class="sidebar-item-text sidebar-link">순환신경망 (6)</a>
+  </div>
+</li>
+      </ul>
+  </li>
+          <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-7" aria-expanded="false">STGCN</a>
+          <a class="sidebar-item-toggle text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-7" aria-expanded="false">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-7" class="collapse list-unstyled sidebar-section depth2 ">  
+          <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-8" aria-expanded="false">STGCN 공부</a>
+          <a class="sidebar-item-toggle text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-8" aria-expanded="false">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-8" class="collapse list-unstyled sidebar-section depth3 ">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./posts/STGCN/STGCN 공부/traffic_prediction.html" class="sidebar-item-text sidebar-link">Traffic Forecasting review</a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./posts/STGCN/STGCN 공부/Untitled.html" class="sidebar-item-text sidebar-link">Untitled</a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./posts/STGCN/STGCN 공부/2023-02-21-STGCN-tutorial1.html" class="sidebar-item-text sidebar-link">튜토리얼 따라가기1</a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./posts/STGCN/STGCN 공부/2023-02-23-stgcn-tutorial2.html" class="sidebar-item-text sidebar-link">튜토리얼 따라가기2</a>
+  </div>
+</li>
+      </ul>
+  </li>
+          <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-9" aria-expanded="false">튜토리얼</a>
+          <a class="sidebar-item-toggle text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-9" aria-expanded="false">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-9" class="collapse list-unstyled sidebar-section depth3 ">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./posts/STGCN/튜토리얼/2022-12-29-STGCN-tutorial.html" class="sidebar-item-text sidebar-link">STGCN 튜토리얼</a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./posts/STGCN/튜토리얼/2022-12-30-STGCN-Toy Example.html" class="sidebar-item-text sidebar-link">Toy Example</a>
+  </div>
+</li>
+      </ul>
+  </li>
+      </ul>
+  </li>
+          <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-10" aria-expanded="false">Study</a>
+          <a class="sidebar-item-toggle text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-10" aria-expanded="false">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-10" class="collapse list-unstyled sidebar-section depth2 ">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./posts/study/2023-03-05-survey-review.html" class="sidebar-item-text sidebar-link">A Comprehensive Survey on Geometric Deep Learning</a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./posts/study/2023-02-25-chap12.2.html" class="sidebar-item-text sidebar-link">Chap 12.2: Weakly Stationary Graph process</a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./posts/study/2023-03-05-chap-12.2.1~12.3.1.html" class="sidebar-item-text sidebar-link">Chap 12.2: Weakly Stationary Graph process</a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./posts/study/2023-02-24-Chap8.3.html" class="sidebar-item-text sidebar-link">Chap 8.3: Discrete Fourier Transform</a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./posts/study/2023-03-07-intro.html" class="sidebar-item-text sidebar-link">측도론 intro</a>
+  </div>
+</li>
+          <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-11" aria-expanded="false">ML</a>
+          <a class="sidebar-item-toggle text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-11" aria-expanded="false">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-11" class="collapse list-unstyled sidebar-section depth3 ">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./posts/study/ML/2023-03-03-arima.html" class="sidebar-item-text sidebar-link">ARIMA</a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./posts/study/ML/2023-03-09-penaly-regression.html" class="sidebar-item-text sidebar-link">Ridge, Lasso, Elastic Net</a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./posts/study/ML/2023-03-05-test27.html" class="sidebar-item-text sidebar-link">Test 27</a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./posts/study/ML/test-ts.html" class="sidebar-item-text sidebar-link">time series intro</a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./posts/study/ML/2023-03-07-train-valid.html" class="sidebar-item-text sidebar-link">Train/Valid</a>
+  </div>
+</li>
+      </ul>
+  </li>
+          <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-12" aria-expanded="false">Prof</a>
+          <a class="sidebar-item-toggle text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-12" aria-expanded="false">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-12" class="collapse list-unstyled sidebar-section depth3 ">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./posts/study/prof/2022-12-27-Chap-12.2.1~12.3.1.html" class="sidebar-item-text sidebar-link">Chap 12.2 ~ 3: Power Spectral Density and its Estimators</a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./posts/study/prof/2022-12-26-Chap-12.2.html" class="sidebar-item-text sidebar-link">Chap 12.2: Weakly Stationary Graph Processes</a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./posts/study/prof/2023-01-15-Chap-12.4.html" class="sidebar-item-text sidebar-link">Chap 12.4: Node Subsampling for PSD Estimation</a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./posts/study/prof/2022-12-24-Chap 8.3.html" class="sidebar-item-text sidebar-link">Chap 8.3: Discrete Fourier Transform</a>
+  </div>
+</li>
+      </ul>
+  </li>
+      </ul>
+  </li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-13" aria-expanded="true">Tip</a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-13" aria-expanded="true">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-13" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./Tip/2023-02-20-tips.html" class="sidebar-item-text sidebar-link">download files from Github</a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./Tip/2023-03-09-github-link.html" class="sidebar-item-text sidebar-link">github 연동</a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./Tip/2023-02-24-tips.html" class="sidebar-item-text sidebar-link">Julia 연동</a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./Tip/2023-02-28-link.html" class="sidebar-item-text sidebar-link">some links</a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./Tip/2023-03-09-linux.html" class="sidebar-item-text sidebar-link">리눅스 명령어</a>
+  </div>
+</li>
+      </ul>
+  </li>
+    </ul>
+    </div>
+</nav>
 <!-- margin-sidebar -->
     <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
         
-    <h5 class="quarto-listing-category-title">Categories</h5><div class="quarto-listing-category category-default"><div class="category" data-category="">All <span class="quarto-category-count">(2)</span></div><div class="category" data-category="analysis">analysis <span class="quarto-category-count">(1)</span></div><div class="category" data-category="code">code <span class="quarto-category-count">(1)</span></div><div class="category" data-category="news">news <span class="quarto-category-count">(2)</span></div></div></div>
+    <h5 class="quarto-listing-category-title">Categories</h5><div class="quarto-listing-category category-default"><div class="category" data-category="">All <span class="quarto-category-count">(34)</span></div><div class="category" data-category="BASIC">BASIC <span class="quarto-category-count">(5)</span></div><div class="category" data-category="CGSP">CGSP <span class="quarto-category-count">(3)</span></div><div class="category" data-category="Classification">Classification <span class="quarto-category-count">(1)</span></div><div class="category" data-category="DL2022">DL2022 <span class="quarto-category-count">(8)</span></div><div class="category" data-category="DNN">DNN <span class="quarto-category-count">(2)</span></div><div class="category" data-category="GCN">GCN <span class="quarto-category-count">(2)</span></div><div class="category" data-category="GNN">GNN <span class="quarto-category-count">(4)</span></div><div class="category" data-category="Implementation">Implementation <span class="quarto-category-count">(1)</span></div><div class="category" data-category="ML">ML <span class="quarto-category-count">(4)</span></div><div class="category" data-category="Measure Theory">Measure Theory <span class="quarto-category-count">(1)</span></div><div class="category" data-category="Pytorch">Pytorch <span class="quarto-category-count">(1)</span></div><div class="category" data-category="R">R <span class="quarto-category-count">(5)</span></div><div class="category" data-category="RNN">RNN <span class="quarto-category-count">(6)</span></div><div class="category" data-category="STGCN">STGCN <span class="quarto-category-count">(3)</span></div><div class="category" data-category="TS">TS <span class="quarto-category-count">(2)</span></div><div class="category" data-category="study">study <span class="quarto-category-count">(4)</span></div><div class="category" data-category="test">test <span class="quarto-category-count">(1)</span></div><div class="category" data-category="논문리뷰">논문리뷰 <span class="quarto-category-count">(1)</span></div></div></div>
 <!-- main -->
-<main class="content quarto-banner-title-block column-page-left" id="quarto-document-content">
+<main class="content quarto-banner-title-block column-body" id="quarto-document-content">
 
 
 
@@ -166,78 +521,1308 @@ ul.task-list li input[type="checkbox"] {
 
 <div class="quarto-listing quarto-listing-container-default" id="listing-listing">
 <div class="list quarto-listing-default">
-<div class="quarto-post image-right" data-index="0" data-categories="news,code,analysis" data-listing-date-sort="1676818800000" data-listing-file-modified-sort="1676895673923" data-listing-reading-time-sort="0.035">
+<div class="quarto-post image-right" data-index="0" data-listing-file-modified-sort="1677999016162" data-listing-reading-time-sort="0">
 <div class="thumbnail">
-<p><a href="./posts/post-with-code/index.html"> <img src="./posts/post-with-code/image.jpg" class="thumnail-image"> </a></p>
+<a href="./posts/STGCN/STGCN 공부/Untitled.html">
+<div class="thumbnail-image">
+
+</div>
+</a><p><a href="./posts/STGCN/STGCN 공부/Untitled.html"></a></p>
 </div>
 <div class="body">
-<a href="./posts/post-with-code/index.html">
+<a href="./posts/STGCN/STGCN 공부/Untitled.html">
 <h3 class="no-anchor listing-title">
-Post With Code
+</h3>
+<div class="listing-subtitle">
+
+</div>
+<div class="listing-description">
+
+</div>
+</a>
+</div>
+<div class="metadata">
+<a href="./posts/STGCN/STGCN 공부/Untitled.html"> </a>
+</div>
+</div>
+<div class="quarto-post image-right" data-index="1" data-categories="Measure Theory" data-listing-date-sort="1678287600000" data-listing-file-modified-sort="1678346816040" data-listing-reading-time-sort="0.735">
+<div class="thumbnail">
+<a href="./posts/study/2023-03-07-intro.html">
+<div class="thumbnail-image">
+
+</div>
+</a><p><a href="./posts/study/2023-03-07-intro.html"></a></p>
+</div>
+<div class="body">
+<a href="./posts/study/2023-03-07-intro.html">
+<h3 class="no-anchor listing-title">
+측도론 intro
 </h3>
 <div class="listing-subtitle">
 
 </div>
 </a>
 <div class="listing-categories">
-<div class="listing-category" onclick="window.quartoListingCategory('news'); return false;">
-news
-</div>
-<div class="listing-category" onclick="window.quartoListingCategory('code'); return false;">
-code
-</div>
-<div class="listing-category" onclick="window.quartoListingCategory('analysis'); return false;">
-analysis
+<div class="listing-category" onclick="window.quartoListingCategory('Measure Theory'); return false;">
+Measure Theory
 </div>
 </div>
-<a href="./posts/post-with-code/index.html">
+<a href="./posts/study/2023-03-07-intro.html">
 <div class="listing-description">
-This is a post with executable code.
+<code>-</code> <span class="math inline">\(\Omega = \{H,T\}\)</span> <span class="math inline">\(\to\)</span> sample space
 </div>
 </a>
 </div>
 <div class="metadata">
-<a href="./posts/post-with-code/index.html">
+<a href="./posts/study/2023-03-07-intro.html">
+<div class="listing-date">
+Mar 9, 2023
+</div>
+<div class="listing-author">
+jiyun Lim
+</div>
+</a>
+</div>
+</div>
+<div class="quarto-post image-right" data-index="2" data-categories="R,test,Classification" data-listing-date-sort="1678201200000" data-listing-file-modified-sort="1678340420011" data-listing-reading-time-sort="1.26">
+<div class="thumbnail">
+<a href="./posts/study/ML/2023-03-05-test27.html">
+<div class="thumbnail-image">
+
+</div>
+</a><p><a href="./posts/study/ML/2023-03-05-test27.html"></a></p>
+</div>
+<div class="body">
+<a href="./posts/study/ML/2023-03-05-test27.html">
+<h3 class="no-anchor listing-title">
+Test 27
+</h3>
+<div class="listing-subtitle">
+
+</div>
+</a>
+<div class="listing-categories">
+<div class="listing-category" onclick="window.quartoListingCategory('R'); return false;">
+R
+</div>
+<div class="listing-category" onclick="window.quartoListingCategory('test'); return false;">
+test
+</div>
+<div class="listing-category" onclick="window.quartoListingCategory('Classification'); return false;">
+Classification
+</div>
+</div>
+<a href="./posts/study/ML/2023-03-05-test27.html">
+<div class="listing-description">
+
+</div>
+</a>
+</div>
+<div class="metadata">
+<a href="./posts/study/ML/2023-03-05-test27.html">
+<div class="listing-date">
+Mar 8, 2023
+</div>
+<div class="listing-author">
+jiyun Lim
+</div>
+</a>
+</div>
+</div>
+<div class="quarto-post image-right" data-index="3" data-categories="논문리뷰,study" data-listing-date-sort="1677942000000" data-listing-file-modified-sort="1678249201000" data-listing-reading-time-sort="7.03">
+<div class="thumbnail">
+<a href="./posts/study/2023-03-05-survey-review.html">
+<div class="thumbnail-image">
+
+</div>
+</a><p><a href="./posts/study/2023-03-05-survey-review.html"></a></p>
+</div>
+<div class="body">
+<a href="./posts/study/2023-03-05-survey-review.html">
+<h3 class="no-anchor listing-title">
+A Comprehensive Survey on Geometric Deep Learning
+</h3>
+<div class="listing-subtitle">
+
+</div>
+</a>
+<div class="listing-categories">
+<div class="listing-category" onclick="window.quartoListingCategory('논문리뷰'); return false;">
+논문리뷰
+</div>
+<div class="listing-category" onclick="window.quartoListingCategory('study'); return false;">
+study
+</div>
+</div>
+<a href="./posts/study/2023-03-05-survey-review.html">
+<div class="listing-description">
+Convolutional neural networks, geometric deep learnig, graph, manifold
+</div>
+</a>
+</div>
+<div class="metadata">
+<a href="./posts/study/2023-03-05-survey-review.html">
+<div class="listing-date">
+Mar 5, 2023
+</div>
+<div class="listing-author">
+jiyun Lim
+</div>
+</a>
+</div>
+</div>
+<div class="quarto-post image-right" data-index="4" data-categories="CGSP,study" data-listing-date-sort="1677942000000" data-listing-file-modified-sort="1678029114000" data-listing-reading-time-sort="4.25">
+<div class="thumbnail">
+<p><a href="./posts/study/2023-03-05-chap-12.2.1~12.3.1.html"> <img src="./posts/study/attachment:b886fce0-9a7f-4485-b668-5f574a568f4e.png" class="thumnail-image"> </a></p>
+</div>
+<div class="body">
+<a href="./posts/study/2023-03-05-chap-12.2.1~12.3.1.html">
+<h3 class="no-anchor listing-title">
+Chap 12.2: Weakly Stationary Graph process
+</h3>
+<div class="listing-subtitle">
+
+</div>
+</a>
+<div class="listing-categories">
+<div class="listing-category" onclick="window.quartoListingCategory('CGSP'); return false;">
+CGSP
+</div>
+<div class="listing-category" onclick="window.quartoListingCategory('study'); return false;">
+study
+</div>
+</div>
+<a href="./posts/study/2023-03-05-chap-12.2.1~12.3.1.html">
+<div class="listing-description">
+(예제)
+</div>
+</a>
+</div>
+<div class="metadata">
+<a href="./posts/study/2023-03-05-chap-12.2.1~12.3.1.html">
+<div class="listing-date">
+Mar 5, 2023
+</div>
+<div class="listing-author">
+jiyun Lim
+</div>
+</a>
+</div>
+</div>
+<div class="quarto-post image-right" data-index="5" data-categories="GNN" data-listing-date-sort="1677855600000" data-listing-file-modified-sort="1677997223000" data-listing-reading-time-sort="4.45">
+<div class="thumbnail">
+<a href="./posts/GNN/2023-03-04-gnn-intro.html">
+<div class="thumbnail-image">
+
+</div>
+</a><p><a href="./posts/GNN/2023-03-04-gnn-intro.html"></a></p>
+</div>
+<div class="body">
+<a href="./posts/GNN/2023-03-04-gnn-intro.html">
+<h3 class="no-anchor listing-title">
+1 GNN tuto1
+</h3>
+<div class="listing-subtitle">
+
+</div>
+</a>
+<div class="listing-categories">
+<div class="listing-category" onclick="window.quartoListingCategory('GNN'); return false;">
+GNN
+</div>
+</div>
+<a href="./posts/GNN/2023-03-04-gnn-intro.html">
+<div class="listing-description">
+Zachary’s karate club network example
+</div>
+</a>
+</div>
+<div class="metadata">
+<a href="./posts/GNN/2023-03-04-gnn-intro.html">
+<div class="listing-date">
+Mar 4, 2023
+</div>
+<div class="listing-author">
+jiyun Lim
+</div>
+</a>
+</div>
+</div>
+<div class="quarto-post image-right" data-index="6" data-categories="GNN" data-listing-date-sort="1677855600000" data-listing-file-modified-sort="1678117266467" data-listing-reading-time-sort="3.93">
+<div class="thumbnail">
+<a href="./posts/GNN/2023-03-04-gnn2.html">
+<div class="thumbnail-image">
+
+</div>
+</a><p><a href="./posts/GNN/2023-03-04-gnn2.html"></a></p>
+</div>
+<div class="body">
+<a href="./posts/GNN/2023-03-04-gnn2.html">
+<h3 class="no-anchor listing-title">
+2 GNN tuto2
+</h3>
+<div class="listing-subtitle">
+
+</div>
+</a>
+<div class="listing-categories">
+<div class="listing-category" onclick="window.quartoListingCategory('GNN'); return false;">
+GNN
+</div>
+</div>
+<a href="./posts/GNN/2023-03-04-gnn2.html">
+<div class="listing-description">
+Node calssification with GNN (Cora dataset)
+</div>
+</a>
+</div>
+<div class="metadata">
+<a href="./posts/GNN/2023-03-04-gnn2.html">
+<div class="listing-date">
+Mar 4, 2023
+</div>
+<div class="listing-author">
+jiyun Lim
+</div>
+</a>
+</div>
+</div>
+<div class="quarto-post image-right" data-index="7" data-categories="GNN" data-listing-date-sort="1677855600000" data-listing-file-modified-sort="1678090672688" data-listing-reading-time-sort="3.445">
+<div class="thumbnail">
+<a href="./posts/GNN/2023-03-04-gnn2_guebin.html">
+<div class="thumbnail-image">
+
+</div>
+</a><p><a href="./posts/GNN/2023-03-04-gnn2_guebin.html"></a></p>
+</div>
+<div class="body">
+<a href="./posts/GNN/2023-03-04-gnn2_guebin.html">
+<h3 class="no-anchor listing-title">
+2 GNN tuto2
+</h3>
+<div class="listing-subtitle">
+
+</div>
+</a>
+<div class="listing-categories">
+<div class="listing-category" onclick="window.quartoListingCategory('GNN'); return false;">
+GNN
+</div>
+</div>
+<a href="./posts/GNN/2023-03-04-gnn2_guebin.html">
+<div class="listing-description">
+Node calssification with GNN (Cora dataset)
+</div>
+</a>
+</div>
+<div class="metadata">
+<a href="./posts/GNN/2023-03-04-gnn2_guebin.html">
+<div class="listing-date">
+Mar 4, 2023
+</div>
+<div class="listing-author">
+jiyun Lim
+</div>
+</a>
+</div>
+</div>
+<div class="quarto-post image-right" data-index="8" data-categories="GNN" data-listing-date-sort="1677769200000" data-listing-file-modified-sort="1678246486000" data-listing-reading-time-sort="7.845">
+<div class="thumbnail">
+<p><a href="./posts/GNN/2023-03-03-gnn1.html"> <img src="./posts/GNN/gnn_graph.png" class="thumnail-image"> </a></p>
+</div>
+<div class="body">
+<a href="./posts/GNN/2023-03-03-gnn1.html">
+<h3 class="no-anchor listing-title">
+0 Introductino to GNN
+</h3>
+<div class="listing-subtitle">
+
+</div>
+</a>
+<div class="listing-categories">
+<div class="listing-category" onclick="window.quartoListingCategory('GNN'); return false;">
+GNN
+</div>
+</div>
+<a href="./posts/GNN/2023-03-03-gnn1.html">
+<div class="listing-description">
+The GNN is designed specifically to handle graph-structured data, such as social networks, molecular structures, knowledge graphs, etc.
+</div>
+</a>
+</div>
+<div class="metadata">
+<a href="./posts/GNN/2023-03-03-gnn1.html">
+<div class="listing-date">
+Mar 3, 2023
+</div>
+<div class="listing-author">
+jiyun Lim
+</div>
+</a>
+</div>
+</div>
+<div class="quarto-post image-right" data-index="9" data-categories="DNN,BASIC,DL2022" data-listing-date-sort="1677596400000" data-listing-file-modified-sort="1677675383285" data-listing-reading-time-sort="1.48">
+<div class="thumbnail">
+<a href="./posts/DNN/2023-03-01-dnn2.html">
+<div class="thumbnail-image">
+
+</div>
+</a><p><a href="./posts/DNN/2023-03-01-dnn2.html"></a></p>
+</div>
+<div class="body">
+<a href="./posts/DNN/2023-03-01-dnn2.html">
+<h3 class="no-anchor listing-title">
+딥러닝 기초 (2)
+</h3>
+<div class="listing-subtitle">
+
+</div>
+</a>
+<div class="listing-categories">
+<div class="listing-category" onclick="window.quartoListingCategory('DNN'); return false;">
+DNN
+</div>
+<div class="listing-category" onclick="window.quartoListingCategory('BASIC'); return false;">
+BASIC
+</div>
+<div class="listing-category" onclick="window.quartoListingCategory('DL2022'); return false;">
+DL2022
+</div>
+</div>
+<a href="./posts/DNN/2023-03-01-dnn2.html">
+<div class="listing-description">
+회귀분석(2)– SSE와 MSE, step1의 다른버전 (torch.nn.Linear)
+</div>
+</a>
+</div>
+<div class="metadata">
+<a href="./posts/DNN/2023-03-01-dnn2.html">
+<div class="listing-date">
+Mar 1, 2023
+</div>
+<div class="listing-author">
+jiyun Lim
+</div>
+</a>
+</div>
+</div>
+<div class="quarto-post image-right" data-index="10" data-categories="DNN,BASIC,DL2022" data-listing-date-sort="1677596400000" data-listing-file-modified-sort="1677675243724" data-listing-reading-time-sort="4.65">
+<div class="thumbnail">
+<a href="./posts/DNN/2023-03-01-dnn1.html">
+<div class="thumbnail-image">
+
+</div>
+</a><p><a href="./posts/DNN/2023-03-01-dnn1.html"></a></p>
+</div>
+<div class="body">
+<a href="./posts/DNN/2023-03-01-dnn1.html">
+<h3 class="no-anchor listing-title">
+딥러닝 기초 (1)
+</h3>
+<div class="listing-subtitle">
+
+</div>
+</a>
+<div class="listing-categories">
+<div class="listing-category" onclick="window.quartoListingCategory('DNN'); return false;">
+DNN
+</div>
+<div class="listing-category" onclick="window.quartoListingCategory('BASIC'); return false;">
+BASIC
+</div>
+<div class="listing-category" onclick="window.quartoListingCategory('DL2022'); return false;">
+DL2022
+</div>
+</div>
+<a href="./posts/DNN/2023-03-01-dnn1.html">
+<div class="listing-description">
+회귀분석(1)– 회귀모형의 소개, 회귀모형에서 데이터생성, 회귀모형에서 학습이란? 파라메터를 학습하는 방법, 파라메터의 학습과정 음미, 학습률
+</div>
+</a>
+</div>
+<div class="metadata">
+<a href="./posts/DNN/2023-03-01-dnn1.html">
+<div class="listing-date">
+Mar 1, 2023
+</div>
+<div class="listing-author">
+jiyun Lim
+</div>
+</a>
+</div>
+</div>
+<div class="quarto-post image-right" data-index="11" data-categories="R,ML" data-listing-date-sort="1677596400000" data-listing-file-modified-sort="1678338996173" data-listing-reading-time-sort="1.785">
+<div class="thumbnail">
+<a href="./posts/study/ML/2023-03-09-penaly-regression.html">
+<div class="thumbnail-image">
+
+</div>
+</a><p><a href="./posts/study/ML/2023-03-09-penaly-regression.html"></a></p>
+</div>
+<div class="body">
+<a href="./posts/study/ML/2023-03-09-penaly-regression.html">
+<h3 class="no-anchor listing-title">
+Ridge, Lasso, Elastic Net
+</h3>
+<div class="listing-subtitle">
+
+</div>
+</a>
+<div class="listing-categories">
+<div class="listing-category" onclick="window.quartoListingCategory('R'); return false;">
+R
+</div>
+<div class="listing-category" onclick="window.quartoListingCategory('ML'); return false;">
+ML
+</div>
+</div>
+<a href="./posts/study/ML/2023-03-09-penaly-regression.html">
+<div class="listing-description">
+<code>-</code> 손실함수 정의
+</div>
+</a>
+</div>
+<div class="metadata">
+<a href="./posts/study/ML/2023-03-09-penaly-regression.html">
+<div class="listing-date">
+Mar 1, 2023
+</div>
+<div class="listing-author">
+jiyun Lim
+</div>
+</a>
+</div>
+</div>
+<div class="quarto-post image-right" data-index="12" data-categories="R,TS,ML" data-listing-date-sort="1677596400000" data-listing-file-modified-sort="1678338758967" data-listing-reading-time-sort="1.525">
+<div class="thumbnail">
+<a href="./posts/study/ML/test-ts.html">
+<div class="thumbnail-image">
+
+</div>
+</a><p><a href="./posts/study/ML/test-ts.html"></a></p>
+</div>
+<div class="body">
+<a href="./posts/study/ML/test-ts.html">
+<h3 class="no-anchor listing-title">
+time series intro
+</h3>
+<div class="listing-subtitle">
+
+</div>
+</a>
+<div class="listing-categories">
+<div class="listing-category" onclick="window.quartoListingCategory('R'); return false;">
+R
+</div>
+<div class="listing-category" onclick="window.quartoListingCategory('TS'); return false;">
+TS
+</div>
+<div class="listing-category" onclick="window.quartoListingCategory('ML'); return false;">
+ML
+</div>
+</div>
+<a href="./posts/study/ML/test-ts.html">
+<div class="listing-description">
+시계열 결측치 대치법에는 크게 평균대치와 exponential moving average 방법이 있다. exponential moving average방법은 결측치와 가까운 시점에 더 큰 가중치를 부여하므로, 시계열의 경향성을 반영할 수 있다.
+</div>
+</a>
+</div>
+<div class="metadata">
+<a href="./posts/study/ML/test-ts.html">
+<div class="listing-date">
+Mar 1, 2023
+</div>
+<div class="listing-author">
+jiyun Lim
+</div>
+</a>
+</div>
+</div>
+<div class="quarto-post image-right" data-index="13" data-categories="R,TS,ML" data-listing-date-sort="1677596400000" data-listing-file-modified-sort="1678438409763" data-listing-reading-time-sort="1.29">
+<div class="thumbnail">
+<a href="./posts/study/ML/2023-03-03-arima.html">
+<div class="thumbnail-image">
+
+</div>
+</a><p><a href="./posts/study/ML/2023-03-03-arima.html"></a></p>
+</div>
+<div class="body">
+<a href="./posts/study/ML/2023-03-03-arima.html">
+<h3 class="no-anchor listing-title">
+ARIMA
+</h3>
+<div class="listing-subtitle">
+
+</div>
+</a>
+<div class="listing-categories">
+<div class="listing-category" onclick="window.quartoListingCategory('R'); return false;">
+R
+</div>
+<div class="listing-category" onclick="window.quartoListingCategory('TS'); return false;">
+TS
+</div>
+<div class="listing-category" onclick="window.quartoListingCategory('ML'); return false;">
+ML
+</div>
+</div>
+<a href="./posts/study/ML/2023-03-03-arima.html">
+<div class="listing-description">
+1996.1월부터 2006.8 미국 maine 주의 월별 실업률
+</div>
+</a>
+</div>
+<div class="metadata">
+<a href="./posts/study/ML/2023-03-03-arima.html">
+<div class="listing-date">
+Mar 1, 2023
+</div>
+<div class="listing-author">
+jiyun Lim
+</div>
+</a>
+</div>
+</div>
+<div class="quarto-post image-right" data-index="14" data-categories="R,ML" data-listing-date-sort="1677596400000" data-listing-file-modified-sort="1678338829754" data-listing-reading-time-sort="0.495">
+<div class="thumbnail">
+<a href="./posts/study/ML/2023-03-07-train-valid.html">
+<div class="thumbnail-image">
+
+</div>
+</a><p><a href="./posts/study/ML/2023-03-07-train-valid.html"></a></p>
+</div>
+<div class="body">
+<a href="./posts/study/ML/2023-03-07-train-valid.html">
+<h3 class="no-anchor listing-title">
+Train/Valid
+</h3>
+<div class="listing-subtitle">
+
+</div>
+</a>
+<div class="listing-categories">
+<div class="listing-category" onclick="window.quartoListingCategory('R'); return false;">
+R
+</div>
+<div class="listing-category" onclick="window.quartoListingCategory('ML'); return false;">
+ML
+</div>
+</div>
+<a href="./posts/study/ML/2023-03-07-train-valid.html">
+<div class="listing-description">
+
+</div>
+</a>
+</div>
+<div class="metadata">
+<a href="./posts/study/ML/2023-03-07-train-valid.html">
+<div class="listing-date">
+Mar 1, 2023
+</div>
+<div class="listing-author">
+jiyun Lim
+</div>
+</a>
+</div>
+</div>
+<div class="quarto-post image-right" data-index="15" data-categories="DL2022,RNN" data-listing-date-sort="1677596400000" data-listing-file-modified-sort="1677675101819" data-listing-reading-time-sort="1.855">
+<div class="thumbnail">
+<a href="./posts/RNN/2023-03-01-rnn5.html">
+<div class="thumbnail-image">
+
+</div>
+</a><p><a href="./posts/RNN/2023-03-01-rnn5.html"></a></p>
+</div>
+<div class="body">
+<a href="./posts/RNN/2023-03-01-rnn5.html">
+<h3 class="no-anchor listing-title">
+순환신경망 (5)
+</h3>
+<div class="listing-subtitle">
+
+</div>
+</a>
+<div class="listing-categories">
+<div class="listing-category" onclick="window.quartoListingCategory('DL2022'); return false;">
+DL2022
+</div>
+<div class="listing-category" onclick="window.quartoListingCategory('RNN'); return false;">
+RNN
+</div>
+</div>
+<a href="./posts/RNN/2023-03-01-rnn5.html">
+<div class="listing-description">
+LSTM (1) - GPU실험, abcabC예제, abcdabcD예제
+</div>
+</a>
+</div>
+<div class="metadata">
+<a href="./posts/RNN/2023-03-01-rnn5.html">
+<div class="listing-date">
+Mar 1, 2023
+</div>
+<div class="listing-author">
+jiyun Lim
+</div>
+</a>
+</div>
+</div>
+<div class="quarto-post image-right" data-index="16" data-categories="DL2022,RNN" data-listing-date-sort="1677596400000" data-listing-file-modified-sort="1677751699761" data-listing-reading-time-sort="5.22">
+<div class="thumbnail">
+<p><a href="./posts/RNN/2023-03-01-rnn6.html"> <img src="./posts/RNN/lstm_str.png" class="thumnail-image"> </a></p>
+</div>
+<div class="body">
+<a href="./posts/RNN/2023-03-01-rnn6.html">
+<h3 class="no-anchor listing-title">
+순환신경망 (6)
+</h3>
+<div class="listing-subtitle">
+
+</div>
+</a>
+<div class="listing-categories">
+<div class="listing-category" onclick="window.quartoListingCategory('DL2022'); return false;">
+DL2022
+</div>
+<div class="listing-category" onclick="window.quartoListingCategory('RNN'); return false;">
+RNN
+</div>
+</div>
+<a href="./posts/RNN/2023-03-01-rnn6.html">
+<div class="listing-description">
+LSTM (2) - LSTM의 계산과정, LSTM은 왜 강한가?
+</div>
+</a>
+</div>
+<div class="metadata">
+<a href="./posts/RNN/2023-03-01-rnn6.html">
+<div class="listing-date">
+Mar 1, 2023
+</div>
+<div class="listing-author">
+jiyun Lim
+</div>
+</a>
+</div>
+</div>
+<div class="quarto-post image-right" data-index="17" data-categories="DL2022,RNN" data-listing-date-sort="1677510000000" data-listing-file-modified-sort="1677652367000" data-listing-reading-time-sort="1.02">
+<div class="thumbnail">
+<a href="./posts/RNN/2023-02-28-rnn4.html">
+<div class="thumbnail-image">
+
+</div>
+</a><p><a href="./posts/RNN/2023-02-28-rnn4.html"></a></p>
+</div>
+<div class="body">
+<a href="./posts/RNN/2023-02-28-rnn4.html">
+<h3 class="no-anchor listing-title">
+순환신경망 (4)
+</h3>
+<div class="listing-subtitle">
+
+</div>
+</a>
+<div class="listing-categories">
+<div class="listing-category" onclick="window.quartoListingCategory('DL2022'); return false;">
+DL2022
+</div>
+<div class="listing-category" onclick="window.quartoListingCategory('RNN'); return false;">
+RNN
+</div>
+</div>
+<a href="./posts/RNN/2023-02-28-rnn4.html">
+<div class="listing-description">
+RNN (2)-AbAcAd예제(3)
+</div>
+</a>
+</div>
+<div class="metadata">
+<a href="./posts/RNN/2023-02-28-rnn4.html">
+<div class="listing-date">
+Feb 28, 2023
+</div>
+<div class="listing-author">
+jiyun Lim
+</div>
+</a>
+</div>
+</div>
+<div class="quarto-post image-right" data-index="18" data-categories="DL2022,RNN" data-listing-date-sort="1677510000000" data-listing-file-modified-sort="1677652278000" data-listing-reading-time-sort="4.075">
+<div class="thumbnail">
+<a href="./posts/RNN/2023-02-28-rnn3.html">
+<div class="thumbnail-image">
+
+</div>
+</a><p><a href="./posts/RNN/2023-02-28-rnn3.html"></a></p>
+</div>
+<div class="body">
+<a href="./posts/RNN/2023-02-28-rnn3.html">
+<h3 class="no-anchor listing-title">
+순환신경망 (3)
+</h3>
+<div class="listing-subtitle">
+
+</div>
+</a>
+<div class="listing-categories">
+<div class="listing-category" onclick="window.quartoListingCategory('DL2022'); return false;">
+DL2022
+</div>
+<div class="listing-category" onclick="window.quartoListingCategory('RNN'); return false;">
+RNN
+</div>
+</div>
+<a href="./posts/RNN/2023-02-28-rnn3.html">
+<div class="listing-description">
+RNN1 - AbAcAd예제(2)
+</div>
+</a>
+</div>
+<div class="metadata">
+<a href="./posts/RNN/2023-02-28-rnn3.html">
+<div class="listing-date">
+Feb 28, 2023
+</div>
+<div class="listing-author">
+jiyun Lim
+</div>
+</a>
+</div>
+</div>
+<div class="quarto-post image-right" data-index="19" data-categories="GCN,Implementation" data-listing-date-sort="1677423600000" data-listing-file-modified-sort="1677482110253" data-listing-reading-time-sort="0.285">
+<div class="thumbnail">
+<a href="./posts/GCN/2023-02-27-gcn-prac.html">
+<div class="thumbnail-image">
+
+</div>
+</a><p><a href="./posts/GCN/2023-02-27-gcn-prac.html"></a></p>
+</div>
+<div class="body">
+<a href="./posts/GCN/2023-02-27-gcn-prac.html">
+<h3 class="no-anchor listing-title">
+GCN Implementation
+</h3>
+<div class="listing-subtitle">
+
+</div>
+</a>
+<div class="listing-categories">
+<div class="listing-category" onclick="window.quartoListingCategory('GCN'); return false;">
+GCN
+</div>
+<div class="listing-category" onclick="window.quartoListingCategory('Implementation'); return false;">
+Implementation
+</div>
+</div>
+<a href="./posts/GCN/2023-02-27-gcn-prac.html">
+<div class="listing-description">
+cora dataset
+</div>
+</a>
+</div>
+<div class="metadata">
+<a href="./posts/GCN/2023-02-27-gcn-prac.html">
+<div class="listing-date">
+Feb 27, 2023
+</div>
+<div class="listing-author">
+jiyun Lim
+</div>
+</a>
+</div>
+</div>
+<div class="quarto-post image-right" data-index="20" data-categories="DL2022,RNN" data-listing-date-sort="1677250800000" data-listing-file-modified-sort="1677652349692" data-listing-reading-time-sort="3.605">
+<div class="thumbnail">
+<p><a href="./posts/RNN/2023-02-25-rnn2.html"> <img src="./posts/RNN/rnn2_viz.png" class="thumnail-image"> </a></p>
+</div>
+<div class="body">
+<a href="./posts/RNN/2023-02-25-rnn2.html">
+<h3 class="no-anchor listing-title">
+순환신경망 (2)
+</h3>
+<div class="listing-subtitle">
+
+</div>
+</a>
+<div class="listing-categories">
+<div class="listing-category" onclick="window.quartoListingCategory('DL2022'); return false;">
+DL2022
+</div>
+<div class="listing-category" onclick="window.quartoListingCategory('RNN'); return false;">
+RNN
+</div>
+</div>
+<a href="./posts/RNN/2023-02-25-rnn2.html">
+<div class="listing-description">
+순환신경망 intro(2)- abc예제, abdc예제, AbAcAd예제(1)
+</div>
+</a>
+</div>
+<div class="metadata">
+<a href="./posts/RNN/2023-02-25-rnn2.html">
+<div class="listing-date">
+Feb 25, 2023
+</div>
+<div class="listing-author">
+jiyun Lim
+</div>
+</a>
+</div>
+</div>
+<div class="quarto-post image-right" data-index="21" data-categories="DL2022,RNN" data-listing-date-sort="1677250800000" data-listing-file-modified-sort="1677652340988" data-listing-reading-time-sort="4.955">
+<div class="thumbnail">
+<a href="./posts/RNN/2023-02-25-rnn1.html">
+<div class="thumbnail-image">
+
+</div>
+</a><p><a href="./posts/RNN/2023-02-25-rnn1.html"></a></p>
+</div>
+<div class="body">
+<a href="./posts/RNN/2023-02-25-rnn1.html">
+<h3 class="no-anchor listing-title">
+순환신경망 (1)
+</h3>
+<div class="listing-subtitle">
+
+</div>
+</a>
+<div class="listing-categories">
+<div class="listing-category" onclick="window.quartoListingCategory('DL2022'); return false;">
+DL2022
+</div>
+<div class="listing-category" onclick="window.quartoListingCategory('RNN'); return false;">
+RNN
+</div>
+</div>
+<a href="./posts/RNN/2023-02-25-rnn1.html">
+<div class="listing-description">
+순환신경망 intro(1)- ab예제, embedding layer
+</div>
+</a>
+</div>
+<div class="metadata">
+<a href="./posts/RNN/2023-02-25-rnn1.html">
+<div class="listing-date">
+Feb 25, 2023
+</div>
+<div class="listing-author">
+jiyun Lim
+</div>
+</a>
+</div>
+</div>
+<div class="quarto-post image-right" data-index="22" data-categories="CGSP,study" data-listing-date-sort="1677164400000" data-listing-file-modified-sort="1678021765000" data-listing-reading-time-sort="2.34">
+<div class="thumbnail">
+<a href="./posts/study/2023-02-25-chap12.2.html">
+<div class="thumbnail-image">
+
+</div>
+</a><p><a href="./posts/study/2023-02-25-chap12.2.html"></a></p>
+</div>
+<div class="body">
+<a href="./posts/study/2023-02-25-chap12.2.html">
+<h3 class="no-anchor listing-title">
+Chap 12.2: Weakly Stationary Graph process
+</h3>
+<div class="listing-subtitle">
+
+</div>
+</a>
+<div class="listing-categories">
+<div class="listing-category" onclick="window.quartoListingCategory('CGSP'); return false;">
+CGSP
+</div>
+<div class="listing-category" onclick="window.quartoListingCategory('study'); return false;">
+study
+</div>
+</div>
+<a href="./posts/study/2023-02-25-chap12.2.html">
+<div class="listing-description">
+매트릭스 <span class="math inline">\(\bf{A}\)</span>와 <span class="math inline">\(\bf{B}\)</span>가 대각화 가능하다는 것은 아래의 표현을 만족한 적당한 invertible matrix와 <span class="math inline">\({\bf \Psi}_A,{\bf \Psi}_B\)</span>와 대각행렬 <span class="math inline">\({\bf \Lambda}_A,{\bf \Lambda}_B\)</span>가 존재한다는 의미가 된다.
+</div>
+</a>
+</div>
+<div class="metadata">
+<a href="./posts/study/2023-02-25-chap12.2.html">
+<div class="listing-date">
+Feb 24, 2023
+</div>
+<div class="listing-author">
+jiyun Lim
+</div>
+</a>
+</div>
+</div>
+<div class="quarto-post image-right" data-index="23" data-categories="CGSP,study" data-listing-date-sort="1677164400000" data-listing-file-modified-sort="1677411825000" data-listing-reading-time-sort="2.08">
+<div class="thumbnail">
+<p><a href="./posts/study/2023-02-24-Chap8.3.html"> <img src="./posts/study/cyclic_shift2.png" class="thumnail-image"> </a></p>
+</div>
+<div class="body">
+<a href="./posts/study/2023-02-24-Chap8.3.html">
+<h3 class="no-anchor listing-title">
+Chap 8.3: Discrete Fourier Transform
+</h3>
+<div class="listing-subtitle">
+
+</div>
+</a>
+<div class="listing-categories">
+<div class="listing-category" onclick="window.quartoListingCategory('CGSP'); return false;">
+CGSP
+</div>
+<div class="listing-category" onclick="window.quartoListingCategory('study'); return false;">
+study
+</div>
+</div>
+<a href="./posts/study/2023-02-24-Chap8.3.html">
+<div class="listing-description">
+이산 푸리에 변환에 대해 알아보자.
+</div>
+</a>
+</div>
+<div class="metadata">
+<a href="./posts/study/2023-02-24-Chap8.3.html">
+<div class="listing-date">
+Feb 24, 2023
+</div>
+<div class="listing-author">
+jiyun Lim
+</div>
+</a>
+</div>
+</div>
+<div class="quarto-post image-right" data-index="24" data-categories="STGCN,BASIC" data-listing-date-sort="1677078000000" data-listing-file-modified-sort="1677168600000" data-listing-reading-time-sort="0.19">
+<div class="thumbnail">
+<a href="./posts/STGCN/STGCN 공부/2023-02-23-stgcn-tutorial2.html">
+<div class="thumbnail-image">
+
+</div>
+</a><p><a href="./posts/STGCN/STGCN 공부/2023-02-23-stgcn-tutorial2.html"></a></p>
+</div>
+<div class="body">
+<a href="./posts/STGCN/STGCN 공부/2023-02-23-stgcn-tutorial2.html">
+<h3 class="no-anchor listing-title">
+튜토리얼 따라가기2
+</h3>
+<div class="listing-subtitle">
+
+</div>
+</a>
+<div class="listing-categories">
+<div class="listing-category" onclick="window.quartoListingCategory('STGCN'); return false;">
+STGCN
+</div>
+<div class="listing-category" onclick="window.quartoListingCategory('BASIC'); return false;">
+BASIC
+</div>
+</div>
+<a href="./posts/STGCN/STGCN 공부/2023-02-23-stgcn-tutorial2.html">
+<div class="listing-description">
+Toy Example
+</div>
+</a>
+</div>
+<div class="metadata">
+<a href="./posts/STGCN/STGCN 공부/2023-02-23-stgcn-tutorial2.html">
+<div class="listing-date">
+Feb 23, 2023
+</div>
+<div class="listing-author">
+jiyun Lim
+</div>
+</a>
+</div>
+</div>
+<div class="quarto-post image-right" data-index="25" data-listing-date-sort="1676905200000" data-listing-file-modified-sort="1676958058000" data-listing-reading-time-sort="2.505">
+<div class="thumbnail">
+<a href="./posts/STGCN/STGCN 공부/traffic_prediction.html">
+<div class="thumbnail-image">
+
+</div>
+</a><p><a href="./posts/STGCN/STGCN 공부/traffic_prediction.html"></a></p>
+</div>
+<div class="body">
+<a href="./posts/STGCN/STGCN 공부/traffic_prediction.html">
+<h3 class="no-anchor listing-title">
+Traffic Forecasting review
+</h3>
+<div class="listing-subtitle">
+
+</div>
+<div class="listing-description">
+https://www.youtube.com/watch?v=Rws9mf1aWUs
+</div>
+</a>
+</div>
+<div class="metadata">
+<a href="./posts/STGCN/STGCN 공부/traffic_prediction.html">
+<div class="listing-date">
+Feb 21, 2023
+</div>
+<div class="listing-author">
+jiyun Lim
+</div>
+</a>
+</div>
+</div>
+<div class="quarto-post image-right" data-index="26" data-categories="GCN,BASIC" data-listing-date-sort="1676905200000" data-listing-file-modified-sort="1677253539000" data-listing-reading-time-sort="7.505">
+<div class="thumbnail">
+<p><a href="./posts/GCN/2023-02-21-gcn1.html"> <img data-src="./posts/GCN/gcn_str.png" class="thumnail-image"> </a></p>
+</div>
+<div class="body">
+<a href="./posts/GCN/2023-02-21-gcn1.html">
+<h3 class="no-anchor listing-title">
+Graph Convolutional Network
+</h3>
+<div class="listing-subtitle">
+
+</div>
+</a>
+<div class="listing-categories">
+<div class="listing-category" onclick="window.quartoListingCategory('GCN'); return false;">
+GCN
+</div>
+<div class="listing-category" onclick="window.quartoListingCategory('BASIC'); return false;">
+BASIC
+</div>
+</div>
+<a href="./posts/GCN/2023-02-21-gcn1.html">
+<div class="listing-description">
+GCN의 개념에 대해 학습해보자.
+</div>
+</a>
+</div>
+<div class="metadata">
+<a href="./posts/GCN/2023-02-21-gcn1.html">
+<div class="listing-date">
+Feb 21, 2023
+</div>
+<div class="listing-author">
+jiyun Lim
+</div>
+</a>
+</div>
+</div>
+<div class="quarto-post image-right" data-index="27" data-categories="STGCN,BASIC" data-listing-date-sort="1676818800000" data-listing-file-modified-sort="1677999645645" data-listing-reading-time-sort="2.94">
+<div class="thumbnail">
+<p><a href="./posts/STGCN/STGCN 공부/2023-02-21-STGCN-tutorial1.html"> <img data-src="https://pytorch-geometric.readthedocs.io/en/latest/_images/graph.svg" class="thumnail-image"> </a></p>
+</div>
+<div class="body">
+<a href="./posts/STGCN/STGCN 공부/2023-02-21-STGCN-tutorial1.html">
+<h3 class="no-anchor listing-title">
+튜토리얼 따라가기1
+</h3>
+<div class="listing-subtitle">
+
+</div>
+</a>
+<div class="listing-categories">
+<div class="listing-category" onclick="window.quartoListingCategory('STGCN'); return false;">
+STGCN
+</div>
+<div class="listing-category" onclick="window.quartoListingCategory('BASIC'); return false;">
+BASIC
+</div>
+</div>
+<a href="./posts/STGCN/STGCN 공부/2023-02-21-STGCN-tutorial1.html">
+<div class="listing-description">
+DNN <span class="math inline">\(\to\)</span> CNN <span class="math inline">\(\to\)</span> GCN <span class="math inline">\(\to\)</span> STGCN (순환망 + GCN)
+</div>
+</a>
+</div>
+<div class="metadata">
+<a href="./posts/STGCN/STGCN 공부/2023-02-21-STGCN-tutorial1.html">
 <div class="listing-date">
 Feb 20, 2023
 </div>
 <div class="listing-author">
-Harlow Malloc
+jiyun Lim
 </div>
 </a>
 </div>
 </div>
-<div class="quarto-post image-right" data-index="1" data-categories="news" data-listing-date-sort="1676559600000" data-listing-file-modified-sort="1676895673923" data-listing-reading-time-sort="0.16">
+<div class="quarto-post image-right" data-index="28" data-listing-date-sort="1673708400000" data-listing-file-modified-sort="1677417755000" data-listing-reading-time-sort="0.29">
 <div class="thumbnail">
-<p><a href="./posts/welcome/index.html"> <img src="./posts/welcome/thumbnail.jpg" class="thumnail-image"> </a></p>
+<a href="./posts/study/prof/2023-01-15-Chap-12.4.html">
+<div class="thumbnail-image">
+
+</div>
+</a><p><a href="./posts/study/prof/2023-01-15-Chap-12.4.html"></a></p>
 </div>
 <div class="body">
-<a href="./posts/welcome/index.html">
+<a href="./posts/study/prof/2023-01-15-Chap-12.4.html">
 <h3 class="no-anchor listing-title">
-Welcome To My Blog
+Chap 12.4: Node Subsampling for PSD Estimation
+</h3>
+<div class="listing-subtitle">
+
+</div>
+<div class="listing-description">
+아래와 같이 길이가 <span class="math inline">\(N=10\)</span> 인 신호 <span class="math inline">\({\bf x}\)</span>를 고려하자.
+</div>
+</a>
+</div>
+<div class="metadata">
+<a href="./posts/study/prof/2023-01-15-Chap-12.4.html">
+<div class="listing-date">
+Jan 15, 2023
+</div>
+<div class="listing-author">
+신록예찬
+</div>
+</a>
+</div>
+</div>
+<div class="quarto-post image-right" data-index="29" data-categories="STGCN,Pytorch" data-listing-date-sort="1672326000000" data-listing-file-modified-sort="1676950681000" data-listing-reading-time-sort="0.175">
+<div class="thumbnail">
+<a href="./posts/STGCN/튜토리얼/2022-12-30-STGCN-Toy Example.html">
+<div class="thumbnail-image">
+
+</div>
+</a><p><a href="./posts/STGCN/튜토리얼/2022-12-30-STGCN-Toy Example.html"></a></p>
+</div>
+<div class="body">
+<a href="./posts/STGCN/튜토리얼/2022-12-30-STGCN-Toy Example.html">
+<h3 class="no-anchor listing-title">
+Toy Example
 </h3>
 <div class="listing-subtitle">
 
 </div>
 </a>
 <div class="listing-categories">
-<div class="listing-category" onclick="window.quartoListingCategory('news'); return false;">
-news
+<div class="listing-category" onclick="window.quartoListingCategory('STGCN'); return false;">
+STGCN
+</div>
+<div class="listing-category" onclick="window.quartoListingCategory('Pytorch'); return false;">
+Pytorch
 </div>
 </div>
-<a href="./posts/welcome/index.html">
+<a href="./posts/STGCN/튜토리얼/2022-12-30-STGCN-Toy Example.html">
 <div class="listing-description">
-This is the first post in a Quarto blog. Welcome!
+
 </div>
 </a>
 </div>
 <div class="metadata">
-<a href="./posts/welcome/index.html">
+<a href="./posts/STGCN/튜토리얼/2022-12-30-STGCN-Toy Example.html">
 <div class="listing-date">
-Feb 17, 2023
+Dec 30, 2022
 </div>
 <div class="listing-author">
-Tristan O’Malley
+신록예찬
+</div>
+</a>
+</div>
+</div>
+<div class="quarto-post image-right" data-index="30" data-listing-date-sort="1672239600000" data-listing-file-modified-sort="1676950823000" data-listing-reading-time-sort="3.485">
+<div class="thumbnail">
+<p><a href="./posts/STGCN/튜토리얼/2022-12-29-STGCN-tutorial.html"> <img data-src="https://pytorch-geometric.readthedocs.io/en/latest/_images/graph.svg" class="thumnail-image"> </a></p>
+</div>
+<div class="body">
+<a href="./posts/STGCN/튜토리얼/2022-12-29-STGCN-tutorial.html">
+<h3 class="no-anchor listing-title">
+STGCN 튜토리얼
+</h3>
+<div class="listing-subtitle">
+
+</div>
+<div class="listing-description">
+<code>-</code> 이 문서는 공식홈페이지의 예제와 최서연학생의 블로그 내용을 재구성하여 만듦
+</div>
+</a>
+</div>
+<div class="metadata">
+<a href="./posts/STGCN/튜토리얼/2022-12-29-STGCN-tutorial.html">
+<div class="listing-date">
+Dec 29, 2022
+</div>
+<div class="listing-author">
+신록예찬, 최서연
+</div>
+</a>
+</div>
+</div>
+<div class="quarto-post image-right" data-index="31" data-listing-date-sort="1672066800000" data-listing-file-modified-sort="1677417870000" data-listing-reading-time-sort="23.175">
+<div class="thumbnail">
+<p><a href="./posts/study/prof/2022-12-27-Chap-12.2.1~12.3.1.html"> <img data-src="./posts/study/prof/attachment:46db00cb-96a5-45b0-b8c4-3042c7e3bc33.png" class="thumnail-image"> </a></p>
+</div>
+<div class="body">
+<a href="./posts/study/prof/2022-12-27-Chap-12.2.1~12.3.1.html">
+<h3 class="no-anchor listing-title">
+Chap 12.2 ~ 3: Power Spectral Density and its Estimators
+</h3>
+<div class="listing-subtitle">
+
+</div>
+<div class="listing-description">
+(예제)
+</div>
+</a>
+</div>
+<div class="metadata">
+<a href="./posts/study/prof/2022-12-27-Chap-12.2.1~12.3.1.html">
+<div class="listing-date">
+Dec 27, 2022
+</div>
+<div class="listing-author">
+신록예찬
+</div>
+</a>
+</div>
+</div>
+<div class="quarto-post image-right" data-index="32" data-listing-date-sort="1671980400000" data-listing-file-modified-sort="1677417742000" data-listing-reading-time-sort="6.49">
+<div class="thumbnail">
+<p><a href="./posts/study/prof/2022-12-26-Chap-12.2.html"> <img data-src="./posts/study/prof/attachment:fcc7a188-7a4c-4e41-b896-f1b6a1f6f87d.png" class="thumnail-image"> </a></p>
+</div>
+<div class="body">
+<a href="./posts/study/prof/2022-12-26-Chap-12.2.html">
+<h3 class="no-anchor listing-title">
+Chap 12.2: Weakly Stationary Graph Processes
+</h3>
+<div class="listing-subtitle">
+
+</div>
+<div class="listing-description">
+매트릭스 <span class="math inline">\({\bf A}\)</span>와 <span class="math inline">\({\bf B}\)</span>가 대각화 가능하다는 것은 아래의 표현을 만족하는 적당한 invertible matrix <span class="math inline">\({\bf \Psi}_A\)</span>, <span class="math inline">\({\bf \Psi}_B\)</span>와 대각행렬 <span class="math inline">\({\bf \Lambda}_A\)</span>, <span class="math inline">\({\bf \Lambda}_B\)</span>가 존재한다는 의미가 된다.
+</div>
+</a>
+</div>
+<div class="metadata">
+<a href="./posts/study/prof/2022-12-26-Chap-12.2.html">
+<div class="listing-date">
+Dec 26, 2022
+</div>
+<div class="listing-author">
+신록예찬
+</div>
+</a>
+</div>
+</div>
+<div class="quarto-post image-right" data-index="33" data-listing-date-sort="1671807600000" data-listing-file-modified-sort="1677580641881" data-listing-reading-time-sort="5.375">
+<div class="thumbnail">
+<p><a href="./posts/study/prof/2022-12-24-Chap 8.3.html"> <img data-src="./posts/study/prof/attachment:dc959f65-92d6-4bb1-b619-347494d65a1c.png" class="thumnail-image"> </a></p>
+</div>
+<div class="body">
+<a href="./posts/study/prof/2022-12-24-Chap 8.3.html">
+<h3 class="no-anchor listing-title">
+Chap 8.3: Discrete Fourier Transform
+</h3>
+<div class="listing-subtitle">
+
+</div>
+<div class="listing-description">
+<span class="citation" data-cites="djuric2018cooperative">@djuric2018cooperative</span> 의 Chap. 8.3 의 내용중 일부를 요약함.
+</div>
+</a>
+</div>
+<div class="metadata">
+<a href="./posts/study/prof/2022-12-24-Chap 8.3.html">
+<div class="listing-date">
+Dec 24, 2022
+</div>
+<div class="listing-author">
+신록예찬
 </div>
 </a>
 </div>
@@ -246,6 +1831,9 @@ Tristan O’Malley
 <div class="listing-no-matching d-none">
 No matching items
 </div>
+<nav id="listing-pagination" class="listing-pagination" aria-label="Page Navigation">
+  <ul class="pagination"></ul>
+</nav>
 </div></main> <!-- /main -->
 <script id="quarto-html-after-body" type="application/javascript">
 window.document.addEventListener("DOMContentLoaded", function (event) {

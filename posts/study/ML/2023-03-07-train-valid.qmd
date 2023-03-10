@@ -1,0 +1,67 @@
+---
+title: "Train/Valid"
+author: 'jiyun Lim'
+date: '03/01/2023'
+categories: 
+  - R
+  - ML
+format:
+  html:
+    theme: default
+---
+
+```{r}
+library(tidyverse)
+```
+
+```{r}
+set.seed(2021)
+x <- sample(seq(0,1,by=0.05),
+            100, replace=TRUE)
+
+y <- sin(2*pi*x) +
+  rnorm(length(x), sd=0.2)
+
+data_for_learning <- tibble(x=x, y=y)
+data_for_learning
+```
+```{r}
+x <- sample(seq(0,1,by=0.05),
+            5, replace=TRUE)
+
+true_val_y <- sin(2*pi*x) + 
+  rnorm(length(x), sd = 0.2)
+
+data_for_testing <- tibble(x=x,y=NA)
+data_for_testing
+```
+
+
+```{r}
+library(caret)
+set.seed(1234)
+train_index <- createDataPartition(data_for_learning$y, p=0.7, list=F)
+
+train <- data_for_learning[train_index,]
+valid <- data_for_learning[-train_index,]
+
+dim(train);dim(valid)
+```
+
+
+```{r}
+perform_train <- rep(0, 20)
+perform_valid <- rep(0, 20)
+for(i in 1:20){
+  result <- lm(y ~ poly(x, i), data=train)
+  perform_train[i] <- mean(result$residuals^2)
+  valid_y_hat <- predict(result, newdata=valid)
+  perform_valid[i] <- mean((valid$y -  valid_y_hat)^2)
+}
+which.min(perform_valid)
+```
+```{r}
+plot(perform_train, type='l', col='blue')
+points(perform_valid, type='l', col='red')
+title('MSE according to model complexity')
+```

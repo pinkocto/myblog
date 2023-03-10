@@ -1,0 +1,183 @@
+---
+title: "time series intro"
+author: 'jiyun Lim'
+date: '03/01/2023'
+categories: 
+  - R
+  - TS
+  - ML
+format:
+  html:
+    theme: default
+---
+
+```{r}
+library(tidyverse)
+library(forecast)
+library(recipes)
+```
+
+```{r}
+tourist <- scan('./tourist.txt')
+tourist[10:13] <- NA
+tour <- scan('./tour.txt')
+
+tour <- c(tourist, tour)
+```
+
+```{r}
+tour.ts <- ts(tour, start=1981, frequency=12)
+
+tour.ts %>% 
+  autoplot()
+```
+```{r}
+tour.ts %>% 
+  ggtsdisplay()
+```
+
+
+
+```{r}
+ggseasonplot(tour.ts)
+```
+- 결측치 존재
+- 추세존재
+- 계절성 존재
+
+```{r}
+train <- window(tour.ts, end = c(1991, 12), freq=12)
+test <- window(tour.ts, start = c(1992, 1), freq=12)
+```
+
+```{r}
+library(imputeTS)
+imputeTS::ggplot_na_distribution(train)
+```
+- 1981년 말부터 1982년 사이에 결측치가 존재함.
+
+```{r}
+# 평균대치
+imp_na <- na_mean(train)
+imputeTS::ggplot_na_imputations(train, imp_na)
+```
+
+```{r}
+## exponential moving average
+imp_movmean <- na_ma(train, weighting='exponential', k=3)
+imputeTS::ggplot_na_imputations(train, imp_movmean)
+```
+시계열 결측치 대치법에는 크게 평균대치와 exponential moving average 방법이 있다.
+exponential moving average방법은 결측치와 가까운 시점에 더 큰 가중치를 부여하므로, 시계열의 경향성을 반영할 수 있다.
+
+그림을 통해서도 알수있듯이, 평균대치법에 비해 exponential moving average를 이용한 방법이 시계열의 경향성을 반영하며, 적절하게 결측치를 대치해주는 것을 확인할 수 있다..
+
+
+```{r}
+forecast::BoxCox.lambda(imp_movmean)
+```
+
+- 로그변환 실시
+
+```{r}
+lntour <- log(imp_movmean)
+lntour %>% autoplot()
+```
+
+- 로그변환 결과, 시간에 따라 분산이 일정하게 안정화된 것을 볼 수 있음.
+
+
+`-` 추세와 계절성이 함께 존재하므로, 일반차분과 계절차분을 고려해볼 수 있을 것 같다.
+
+```{r}
+tour_1 <- diff(lntour)
+ggtsdisplay(tour_1, lag.max = 48)
+
+```
+
+- 계절차분을 고려해볼 수 있을 것 같다..
+
+```{r}
+tour_12 <- diff(lntour, lag=12)
+ggtsdisplay(tour_12, lag.max=48)
+```
+```{r}
+ndiffs(tour_12)
+```
+- 계절차분 결과, 추세그래프와 acf plot을 확인해보면 추세가 존재하고, acf가 천천히 감소하는 것을 확인할 수 있다.
+
+- 추가적인 일반차분을 고려
+
+`-` d=1, D=1
+```{r}
+tour_1_12 <- diff(tour_1, lag=12)
+ggtsdisplay(tour_1_12, lag.max = 48)
+```
+
+
+- 추세가 사라졌으며, 계절성 또한 사라진 것 확인할 수 있다.
+- 따라서 계절차분과 일반차분 (d=1, D=1)을 동시에 고려.
+
+
+```{r}
+Acf(tour_1_12, lag.max = 48)
+```
+
+
+```{r}
+Pacf(tour_1_12, lag.max=48)
+```
+
+**후보모형**
+- $ARIMA(0,1,1)(0,1,1)_{12}$
+- $ARIMA(0,1,1)(1,1,0)_{12}$
+- $ARIMA(2,1,0)(0,1,1)_{12}$
+- $ARIMA(2,1,0)(1,1,0)_{12}$
+
+```{r}
+fit1 <- Arima(lntour, order = c(0,1,1),
+              seasonal = list(order = c(0,1,1),period = 12))
+
+fit2 <- Arima(lntour, order = c(0,1,1),
+              seasonal = list(order = c(1,1,0), period = 12))
+
+fit3 <- Arima(lntour, order = c(2,1,0),
+              seasonal = list(order = c(0,1,1), period = 12))
+
+fit4 <- Arima(lntour, order = c(2,1,0),
+              seasonal = list(order = c(1,1,0), period = 12))
+```
+
+```{r}
+AIC(fit1, fit2, fit3)
+```
+
+```{r}
+BIC(fit1, fit2, fit3, fit4)
+
+```
+
+```{r}
+ confint(fit1)
+```
+
+```{r}
+checkresiduals(fit1)
+```
+
+- 오차 사이에 자기상관X
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

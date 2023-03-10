@@ -1,0 +1,1154 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.2.335">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+<meta name="author" content="jiyun Lim">
+<meta name="dcterms.date" content="2023-03-05">
+
+<title>myblog - Chap 12.2: Weakly Stationary Graph process</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1.6em;
+  vertical-align: middle;
+}
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code span.at { color: #7d9029; } /* Attribute */
+code span.bn { color: #40a070; } /* BaseN */
+code span.bu { color: #008000; } /* BuiltIn */
+code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code span.ch { color: #4070a0; } /* Char */
+code span.cn { color: #880000; } /* Constant */
+code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code span.dt { color: #902000; } /* DataType */
+code span.dv { color: #40a070; } /* DecVal */
+code span.er { color: #ff0000; font-weight: bold; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #40a070; } /* Float */
+code span.fu { color: #06287e; } /* Function */
+code span.im { color: #008000; font-weight: bold; } /* Import */
+code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code span.op { color: #666666; } /* Operator */
+code span.ot { color: #007020; } /* Other */
+code span.pp { color: #bc7a00; } /* Preprocessor */
+code span.sc { color: #4070a0; } /* SpecialChar */
+code span.ss { color: #bb6688; } /* SpecialString */
+code span.st { color: #4070a0; } /* String */
+code span.va { color: #19177c; } /* Variable */
+code span.vs { color: #4070a0; } /* VerbatimString */
+code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+</style>
+
+
+<script src="../../site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="../../site_libs/quarto-nav/headroom.min.js"></script>
+<script src="../../site_libs/clipboard/clipboard.min.js"></script>
+<script src="../../site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="../../site_libs/quarto-search/fuse.min.js"></script>
+<script src="../../site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="../../">
+<script src="../../site_libs/quarto-html/quarto.js"></script>
+<script src="../../site_libs/quarto-html/popper.min.js"></script>
+<script src="../../site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="../../site_libs/quarto-html/anchor.min.js"></script>
+<link href="../../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="../../site_libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="../../site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="../../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="../../site_libs/bootstrap/bootstrap.min.css" rel="stylesheet" id="quarto-bootstrap" data-mode="light">
+<script id="quarto-search-options" type="application/json">{
+  "location": "navbar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "end",
+  "type": "overlay",
+  "limit": 20,
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit"
+  }
+}</script>
+
+  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
+
+<link rel="stylesheet" href="../../styles.css">
+</head>
+
+<body class="nav-sidebar docked nav-fixed">
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top">
+    <nav class="navbar navbar-expand-lg navbar-dark ">
+      <div class="navbar-container container-fluid">
+      <div class="navbar-brand-container">
+    <a class="navbar-brand" href="../../index.html">
+    <span class="navbar-title">myblog</span>
+    </a>
+  </div>
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+  <span class="navbar-toggler-icon"></span>
+</button>
+          <div class="collapse navbar-collapse" id="navbarCollapse">
+            <ul class="navbar-nav navbar-nav-scroll ms-auto">
+  <li class="nav-item">
+    <a class="nav-link active" href="../../about.html" aria-current="page">
+ <span class="menu-text">About</span></a>
+  </li>  
+  <li class="nav-item compact">
+    <a class="nav-link" href="https://github.com/pinkocto"><i class="bi bi-github" role="img">
+</i> 
+ <span class="menu-text"></span></a>
+  </li>  
+</ul>
+              <div id="quarto-search" class="" title="Search"></div>
+          </div> <!-- /navcollapse -->
+      </div> <!-- /container-fluid -->
+    </nav>
+  <nav class="quarto-secondary-nav" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+    <div class="container-fluid d-flex justify-content-between">
+      <h1 class="quarto-secondary-nav-title">Chap 12.2: Weakly Stationary Graph process</h1>
+      <button type="button" class="quarto-btn-toggle btn" aria-label="Show secondary navigation">
+        <i class="bi bi-chevron-right"></i>
+      </button>
+    </div>
+  </nav>
+</header>
+<!-- content -->
+<header id="title-block-header" class="quarto-title-block default page-columns page-full">
+  <div class="quarto-title-banner page-columns page-full">
+    <div class="quarto-title column-body">
+      <h1 class="title d-none d-lg-block">Chap 12.2: Weakly Stationary Graph process</h1>
+                                <div class="quarto-categories">
+                <div class="quarto-category">CGSP</div>
+                <div class="quarto-category">study</div>
+              </div>
+                  </div>
+  </div>
+    
+  
+  <div class="quarto-title-meta">
+
+      <div>
+      <div class="quarto-title-meta-heading">Author</div>
+      <div class="quarto-title-meta-contents">
+               <p>jiyun Lim </p>
+            </div>
+    </div>
+      
+      <div>
+      <div class="quarto-title-meta-heading">Published</div>
+      <div class="quarto-title-meta-contents">
+        <p class="date">March 5, 2023</p>
+      </div>
+    </div>
+    
+      
+    </div>
+    
+  
+  </header><div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
+<!-- sidebar -->
+  <nav id="quarto-sidebar" class="sidebar collapse sidebar-navigation docked overflow-auto">
+      <div class="mt-2 flex-shrink-0 align-items-center">
+        <div class="sidebar-search">
+        <div id="quarto-search" class="" title="Search"></div>
+        </div>
+      </div>
+    <div class="sidebar-menu-container"> 
+    <ul class="list-unstyled mt-1">
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../about.html" class="sidebar-item-text sidebar-link">About</a>
+  </div>
+</li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" aria-expanded="true">Etc</a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" aria-expanded="true">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-1" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../etc/2023-02-20-memo.html" class="sidebar-item-text sidebar-link">메모장</a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../etc/2023-02-28.html" class="sidebar-item-text sidebar-link">클래스 암기</a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" aria-expanded="true">Posts</a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" aria-expanded="true">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-2" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-3" aria-expanded="false">DNN</a>
+          <a class="sidebar-item-toggle text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-3" aria-expanded="false">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-3" class="collapse list-unstyled sidebar-section depth2 ">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../posts/DNN/2023-03-01-dnn1.html" class="sidebar-item-text sidebar-link">딥러닝 기초 (1)</a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../posts/DNN/2023-03-01-dnn2.html" class="sidebar-item-text sidebar-link">딥러닝 기초 (2)</a>
+  </div>
+</li>
+      </ul>
+  </li>
+          <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-4" aria-expanded="false">GCN</a>
+          <a class="sidebar-item-toggle text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-4" aria-expanded="false">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-4" class="collapse list-unstyled sidebar-section depth2 ">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../posts/GCN/2023-02-27-gcn-prac.html" class="sidebar-item-text sidebar-link">GCN Implementation</a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../posts/GCN/2023-02-21-gcn1.html" class="sidebar-item-text sidebar-link">Graph Convolutional Network</a>
+  </div>
+</li>
+      </ul>
+  </li>
+          <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-5" aria-expanded="false">GNN</a>
+          <a class="sidebar-item-toggle text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-5" aria-expanded="false">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-5" class="collapse list-unstyled sidebar-section depth2 ">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../posts/GNN/2023-03-03-gnn1.html" class="sidebar-item-text sidebar-link">0 Introductino to GNN</a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../posts/GNN/2023-03-04-gnn-intro.html" class="sidebar-item-text sidebar-link">1 GNN tuto1</a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../posts/GNN/2023-03-04-gnn2.html" class="sidebar-item-text sidebar-link">2 GNN tuto2</a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../posts/GNN/2023-03-04-gnn2_guebin.html" class="sidebar-item-text sidebar-link">2 GNN tuto2</a>
+  </div>
+</li>
+      </ul>
+  </li>
+          <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-6" aria-expanded="false">RNN</a>
+          <a class="sidebar-item-toggle text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-6" aria-expanded="false">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-6" class="collapse list-unstyled sidebar-section depth2 ">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../posts/RNN/2023-02-25-rnn1.html" class="sidebar-item-text sidebar-link">순환신경망 (1)</a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../posts/RNN/2023-02-25-rnn2.html" class="sidebar-item-text sidebar-link">순환신경망 (2)</a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../posts/RNN/2023-02-28-rnn3.html" class="sidebar-item-text sidebar-link">순환신경망 (3)</a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../posts/RNN/2023-02-28-rnn4.html" class="sidebar-item-text sidebar-link">순환신경망 (4)</a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../posts/RNN/2023-03-01-rnn5.html" class="sidebar-item-text sidebar-link">순환신경망 (5)</a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../posts/RNN/2023-03-01-rnn6.html" class="sidebar-item-text sidebar-link">순환신경망 (6)</a>
+  </div>
+</li>
+      </ul>
+  </li>
+          <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-7" aria-expanded="false">STGCN</a>
+          <a class="sidebar-item-toggle text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-7" aria-expanded="false">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-7" class="collapse list-unstyled sidebar-section depth2 ">  
+          <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-8" aria-expanded="false">STGCN 공부</a>
+          <a class="sidebar-item-toggle text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-8" aria-expanded="false">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-8" class="collapse list-unstyled sidebar-section depth3 ">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../posts/STGCN/STGCN 공부/traffic_prediction.html" class="sidebar-item-text sidebar-link">Traffic Forecasting review</a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../posts/STGCN/STGCN 공부/Untitled.html" class="sidebar-item-text sidebar-link">Untitled</a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../posts/STGCN/STGCN 공부/2023-02-21-STGCN-tutorial1.html" class="sidebar-item-text sidebar-link">튜토리얼 따라가기1</a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../posts/STGCN/STGCN 공부/2023-02-23-stgcn-tutorial2.html" class="sidebar-item-text sidebar-link">튜토리얼 따라가기2</a>
+  </div>
+</li>
+      </ul>
+  </li>
+          <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-9" aria-expanded="false">튜토리얼</a>
+          <a class="sidebar-item-toggle text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-9" aria-expanded="false">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-9" class="collapse list-unstyled sidebar-section depth3 ">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../posts/STGCN/튜토리얼/2022-12-29-STGCN-tutorial.html" class="sidebar-item-text sidebar-link">STGCN 튜토리얼</a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../posts/STGCN/튜토리얼/2022-12-30-STGCN-Toy Example.html" class="sidebar-item-text sidebar-link">Toy Example</a>
+  </div>
+</li>
+      </ul>
+  </li>
+      </ul>
+  </li>
+          <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-10" aria-expanded="true">Study</a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-10" aria-expanded="true">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-10" class="collapse list-unstyled sidebar-section depth2 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../posts/study/2023-03-05-survey-review.html" class="sidebar-item-text sidebar-link">A Comprehensive Survey on Geometric Deep Learning</a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../posts/study/2023-02-25-chap12.2.html" class="sidebar-item-text sidebar-link">Chap 12.2: Weakly Stationary Graph process</a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../posts/study/2023-03-05-chap-12.2.1~12.3.1.html" class="sidebar-item-text sidebar-link active">Chap 12.2: Weakly Stationary Graph process</a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../posts/study/2023-02-24-Chap8.3.html" class="sidebar-item-text sidebar-link">Chap 8.3: Discrete Fourier Transform</a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../posts/study/2023-03-07-intro.html" class="sidebar-item-text sidebar-link">측도론 intro</a>
+  </div>
+</li>
+          <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-11" aria-expanded="false">ML</a>
+          <a class="sidebar-item-toggle text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-11" aria-expanded="false">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-11" class="collapse list-unstyled sidebar-section depth3 ">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../posts/study/ML/2023-03-03-arima.html" class="sidebar-item-text sidebar-link">ARIMA</a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../posts/study/ML/2023-03-09-penaly-regression.html" class="sidebar-item-text sidebar-link">Ridge, Lasso, Elastic Net</a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../posts/study/ML/2023-03-05-test27.html" class="sidebar-item-text sidebar-link">Test 27</a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../posts/study/ML/test-ts.html" class="sidebar-item-text sidebar-link">time series intro</a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../posts/study/ML/2023-03-07-train-valid.html" class="sidebar-item-text sidebar-link">Train/Valid</a>
+  </div>
+</li>
+      </ul>
+  </li>
+          <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-12" aria-expanded="false">Prof</a>
+          <a class="sidebar-item-toggle text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-12" aria-expanded="false">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-12" class="collapse list-unstyled sidebar-section depth3 ">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../posts/study/prof/2022-12-27-Chap-12.2.1~12.3.1.html" class="sidebar-item-text sidebar-link">Chap 12.2 ~ 3: Power Spectral Density and its Estimators</a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../posts/study/prof/2022-12-26-Chap-12.2.html" class="sidebar-item-text sidebar-link">Chap 12.2: Weakly Stationary Graph Processes</a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../posts/study/prof/2023-01-15-Chap-12.4.html" class="sidebar-item-text sidebar-link">Chap 12.4: Node Subsampling for PSD Estimation</a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../posts/study/prof/2022-12-24-Chap 8.3.html" class="sidebar-item-text sidebar-link">Chap 8.3: Discrete Fourier Transform</a>
+  </div>
+</li>
+      </ul>
+  </li>
+      </ul>
+  </li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-13" aria-expanded="true">Tip</a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-13" aria-expanded="true">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-13" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../Tip/2023-02-20-tips.html" class="sidebar-item-text sidebar-link">download files from Github</a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../Tip/2023-03-09-github-link.html" class="sidebar-item-text sidebar-link">github 연동</a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../Tip/2023-02-24-tips.html" class="sidebar-item-text sidebar-link">Julia 연동</a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../Tip/2023-02-28-link.html" class="sidebar-item-text sidebar-link">some links</a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../Tip/2023-03-09-linux.html" class="sidebar-item-text sidebar-link">리눅스 명령어</a>
+  </div>
+</li>
+      </ul>
+  </li>
+    </ul>
+    </div>
+</nav>
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">On this page</h2>
+   
+  <ul>
+  <li><a href="#vectorization-mathematics" id="toc-vectorization-mathematics" class="nav-link active" data-scroll-target="#vectorization-mathematics">Vectorization (mathematics)</a>
+  <ul class="collapse">
+  <li><a href="#kronecker-product" id="toc-kronecker-product" class="nav-link" data-scroll-target="#kronecker-product">Kronecker product</a></li>
+  <li><a href="#khatri-rao-product" id="toc-khatri-rao-product" class="nav-link" data-scroll-target="#khatri-rao-product">Khatri-Rao product</a></li>
+  <li><a href="#column-wise-kronecker-product" id="toc-column-wise-kronecker-product" class="nav-link" data-scroll-target="#column-wise-kronecker-product">Column-Wise Kronecker product</a></li>
+  <li><a href="#그래프-표현" id="toc-그래프-표현" class="nav-link" data-scroll-target="#그래프-표현">그래프 표현</a></li>
+  <li><a href="#gso-graph-shift-operator" id="toc-gso-graph-shift-operator" class="nav-link" data-scroll-target="#gso-graph-shift-operator">GSO (Graph Shift Operator)</a></li>
+  </ul></li>
+  <li><a href="#power-spectral-density" id="toc-power-spectral-density" class="nav-link" data-scroll-target="#power-spectral-density">12.2.1 Power Spectral Density</a></li>
+  <li><a href="#power-spectral-density-estimators" id="toc-power-spectral-density-estimators" class="nav-link" data-scroll-target="#power-spectral-density-estimators">12.2.3 Power Spectral Density Estimators</a></li>
+  <li><a href="#nonparametric-psd-estimators" id="toc-nonparametric-psd-estimators" class="nav-link" data-scroll-target="#nonparametric-psd-estimators">12.3.1 Nonparametric PSD estimators</a></li>
+  <li><a href="#summary" id="toc-summary" class="nav-link" data-scroll-target="#summary">Summary</a>
+  <ul class="collapse">
+  <li><a href="#정상시계열을-분석한흔-두-가지-흐름-acf와-psd" id="toc-정상시계열을-분석한흔-두-가지-흐름-acf와-psd" class="nav-link" data-scroll-target="#정상시계열을-분석한흔-두-가지-흐름-acf와-psd">정상시계열을 분석한흔 두 가지 흐름, ACF와 PSD</a>
+  <ul class="collapse">
+  <li><a href="#전통적인-분석방법" id="toc-전통적인-분석방법" class="nav-link" data-scroll-target="#전통적인-분석방법">전통적인 분석방법</a></li>
+  </ul></li>
+  </ul></li>
+  </ul>
+</nav>
+    </div>
+<!-- main -->
+<main class="content quarto-banner-title-block" id="quarto-document-content">
+
+
+
+
+<div class="cell" data-execution_count="2">
+<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode numberSource julia number-lines code-with-copy"><code class="sourceCode julia"><span id="cb1-1"><a href="#cb1-1"></a><span class="im">using</span> <span class="bu">LinearAlgebra</span>, <span class="bu">Plots</span>, <span class="bu">FFTW</span>, <span class="bu">Statistics</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<section id="vectorization-mathematics" class="level1">
+<h1>Vectorization (mathematics)</h1>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="2023-03-05-chap-12.2.1~12.3.1_files/figure-html/08cbf013-4b6a-414e-b0d0-4cc675618b4a-1-b886fce0-9a7f-4485-b668-5f574a568f4e.png" class="img-fluid figure-img"></p>
+<p></p><figcaption class="figure-caption">ref: Wiki</figcaption><p></p>
+</figure>
+</div>
+<p>(예제)</p>
+<div class="cell" data-execution_count="3">
+<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode numberSource julia number-lines code-with-copy"><code class="sourceCode julia"><span id="cb2-1"><a href="#cb2-1"></a>A <span class="op">=</span> [<span class="fl">1</span> <span class="fl">2</span></span>
+<span id="cb2-2"><a href="#cb2-2"></a>     <span class="fl">3</span> <span class="fl">4</span>]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="3">
+<pre><code>2×2 Matrix{Int64}:
+ 1  2
+ 3  4</code></pre>
+</div>
+</div>
+<div class="cell" data-execution_count="4">
+<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode numberSource julia number-lines code-with-copy"><code class="sourceCode julia"><span id="cb4-1"><a href="#cb4-1"></a><span class="fu">vec</span>(A)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="4">
+<pre><code>4-element Vector{Int64}:
+ 1
+ 3
+ 2
+ 4</code></pre>
+</div>
+</div>
+<ul>
+<li><span class="math inline">\(2\times2\)</span> matrix <span class="math inline">\(\bf{A}\)</span>가 <span class="math inline">\(4\times1\)</span>의 컬럼벡터로 변한 것을 확인할 수 있다.</li>
+</ul>
+<div class="cell" data-execution_count="5">
+<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode numberSource julia number-lines code-with-copy"><code class="sourceCode julia"><span id="cb6-1"><a href="#cb6-1"></a>B <span class="op">=</span> [<span class="fl">1</span> <span class="fl">2</span> <span class="fl">3</span></span>
+<span id="cb6-2"><a href="#cb6-2"></a>     <span class="fl">4</span> <span class="fl">5</span> <span class="fl">6</span>]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="5">
+<pre><code>2×3 Matrix{Int64}:
+ 1  2  3
+ 4  5  6</code></pre>
+</div>
+</div>
+<div class="cell" data-execution_count="6">
+<div class="sourceCode cell-code" id="cb8"><pre class="sourceCode numberSource julia number-lines code-with-copy"><code class="sourceCode julia"><span id="cb8-1"><a href="#cb8-1"></a><span class="fu">vec</span>(B)  <span class="co"># 6x1 column vector</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="6">
+<pre><code>6-element Vector{Int64}:
+ 1
+ 4
+ 2
+ 5
+ 3
+ 6</code></pre>
+</div>
+</div>
+<section id="kronecker-product" class="level2">
+<h2 class="anchored" data-anchor-id="kronecker-product">Kronecker product</h2>
+<p>크로네커곱의 정의는 아래와 같다.</p>
+<p><span class="math display">\[{\bf A} \otimes {\bf B}
+=\begin{bmatrix}
+a_{11}{\bf B} &amp; a_{12}{\bf B} &amp; \dots &amp; a_{1m}{\bf B} \\
+a_{21}{\bf B} &amp; a_{22}{\bf B} &amp; \dots &amp; a_{2m}{\bf B} \\
+\dots &amp; \dots &amp; \dots &amp; \dots \\
+a_{n1}{\bf B} &amp; a_{n2}{\bf B} &amp; \dots &amp; a_{nm}{\bf B} \\
+\end{bmatrix}\]</span></p>
+<p>두 행렬 <span class="math inline">\({\bf A}_{m\times n}\)</span>, <span class="math inline">\({\bf B}_{p\times q}\)</span>의 크로네커곱 <span class="math inline">\({\bf A}\otimes {\bf B}\)</span>의 차원은 <span class="math inline">\(mp \times nq\)</span> 가 된다. 계산예시는 아래와 같다.</p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="2023-03-05-chap-12.2.1~12.3.1_files/figure-html/48da7a8f-61ad-4890-bcd4-60fb9187d9f9-1-367fd5c9-44aa-418b-b030-eb29ae6b2db9.png" class="img-fluid figure-img"></p>
+<p></p><figcaption class="figure-caption">image.png</figcaption><p></p>
+</figure>
+</div>
+<p>크로네커곱에 대한 성질들이 위키에 많이 있으니 참고하면 좋다.</p>
+<p>(예제1)</p>
+<div class="cell" data-execution_count="7">
+<div class="sourceCode cell-code" id="cb10"><pre class="sourceCode numberSource julia number-lines code-with-copy"><code class="sourceCode julia"><span id="cb10-1"><a href="#cb10-1"></a>A <span class="op">=</span> [<span class="fl">1</span> <span class="fl">2</span></span>
+<span id="cb10-2"><a href="#cb10-2"></a>     <span class="fl">3</span> <span class="fl">4</span>]</span>
+<span id="cb10-3"><a href="#cb10-3"></a>B <span class="op">=</span> [<span class="fl">0</span> <span class="fl">5</span></span>
+<span id="cb10-4"><a href="#cb10-4"></a>     <span class="fl">6</span> <span class="fl">7</span>]</span>
+<span id="cb10-5"><a href="#cb10-5"></a>C <span class="op">=</span> <span class="fu">kron</span>(A,B)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="7">
+<pre><code>4×4 Matrix{Int64}:
+  0   5   0  10
+  6   7  12  14
+  0  15   0  20
+ 18  21  24  28</code></pre>
+</div>
+</div>
+<p>(예제2)</p>
+<div class="cell" data-execution_count="8">
+<div class="sourceCode cell-code" id="cb12"><pre class="sourceCode numberSource julia number-lines code-with-copy"><code class="sourceCode julia"><span id="cb12-1"><a href="#cb12-1"></a>A <span class="op">=</span> [<span class="fl">1</span> <span class="op">-</span><span class="fl">4</span> <span class="fl">7</span>; <span class="op">-</span><span class="fl">2</span> <span class="fl">3</span> <span class="fl">3</span>]</span>
+<span id="cb12-2"><a href="#cb12-2"></a>B <span class="op">=</span> [<span class="fl">8</span> <span class="op">-</span><span class="fl">9</span> <span class="op">-</span><span class="fl">6</span> <span class="op">-</span><span class="fl">5</span>; <span class="fl">1</span> <span class="op">-</span><span class="fl">3</span> <span class="op">-</span><span class="fl">4</span> <span class="fl">7</span>; <span class="fl">2</span> <span class="fl">8</span> <span class="op">-</span><span class="fl">8</span> <span class="op">-</span><span class="fl">3</span>; <span class="fl">1</span> <span class="fl">2</span> <span class="op">-</span><span class="fl">5</span> <span class="op">-</span><span class="fl">1</span>]</span>
+<span id="cb12-3"><a href="#cb12-3"></a>C <span class="op">=</span> <span class="fu">kron</span>(A, B)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="8">
+<pre><code>8×12 Matrix{Int64}:
+   8   -9  -6   -5  -32   36   24   20  56  -63  -42  -35
+   1   -3  -4    7   -4   12   16  -28   7  -21  -28   49
+   2    8  -8   -3   -8  -32   32   12  14   56  -56  -21
+   1    2  -5   -1   -4   -8   20    4   7   14  -35   -7
+ -16   18  12   10   24  -27  -18  -15  24  -27  -18  -15
+  -2    6   8  -14    3   -9  -12   21   3   -9  -12   21
+  -4  -16  16    6    6   24  -24   -9   6   24  -24   -9
+  -2   -4  10    2    3    6  -15   -3   3    6  -15   -3</code></pre>
+</div>
+</div>
+</section>
+<section id="khatri-rao-product" class="level2">
+<h2 class="anchored" data-anchor-id="khatri-rao-product">Khatri-Rao product</h2>
+<p>카트리-라오곱은 매트릭스 <span class="math inline">\(\bf{A}\)</span>와 <span class="math inline">\(\bf{B}\)</span>가 같은 차원의 <a href="https://en.wikipedia.org/wiki/Block_matrix">블락매트릭스</a>로 정의될 때 각 서브매트릭스의 크로네커 곱으로 정의된다. 정의와 계산예시는 아래와 같다.</p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="2023-03-05-chap-12.2.1~12.3.1_files/figure-html/56660e3d-ec59-4466-859e-9c06ad6d9a7a-1-b0186776-8559-4796-baf3-7076e9ce875e.png" class="img-fluid figure-img"></p>
+<p></p><figcaption class="figure-caption">image.png</figcaption><p></p>
+</figure>
+</div>
+<p>또 다른 계산예시는 아래와 같다. 이 예제는 중요하니까 직접 구현해보자.</p>
+</section>
+<section id="column-wise-kronecker-product" class="level2">
+<h2 class="anchored" data-anchor-id="column-wise-kronecker-product">Column-Wise Kronecker product</h2>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="2023-03-05-chap-12.2.1~12.3.1_files/figure-html/b889f870-f390-4c70-8df4-5bb1219c1fdc-1-276566bf-fa71-4e8b-848f-edac8a586b86.png" class="img-fluid figure-img"></p>
+<p></p><figcaption class="figure-caption">image.png</figcaption><p></p>
+</figure>
+</div>
+<p>(예제1)</p>
+<div class="cell" data-execution_count="18">
+<div class="sourceCode cell-code" id="cb14"><pre class="sourceCode numberSource julia number-lines code-with-copy"><code class="sourceCode julia"><span id="cb14-1"><a href="#cb14-1"></a>C <span class="op">=</span> [<span class="fl">1</span> <span class="fl">2</span> <span class="fl">3</span></span>
+<span id="cb14-2"><a href="#cb14-2"></a>     <span class="fl">4</span> <span class="fl">5</span> <span class="fl">6</span></span>
+<span id="cb14-3"><a href="#cb14-3"></a>     <span class="fl">7</span> <span class="fl">8</span> <span class="fl">9</span>]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="18">
+<pre><code>3×3 Matrix{Int64}:
+ 1  2  3
+ 4  5  6
+ 7  8  9</code></pre>
+</div>
+</div>
+<div class="cell" data-execution_count="19">
+<div class="sourceCode cell-code" id="cb16"><pre class="sourceCode numberSource julia number-lines code-with-copy"><code class="sourceCode julia"><span id="cb16-1"><a href="#cb16-1"></a>D <span class="op">=</span> [<span class="fl">1</span> <span class="fl">4</span> <span class="fl">7</span></span>
+<span id="cb16-2"><a href="#cb16-2"></a>     <span class="fl">2</span> <span class="fl">5</span> <span class="fl">8</span></span>
+<span id="cb16-3"><a href="#cb16-3"></a>     <span class="fl">3</span> <span class="fl">6</span> <span class="fl">9</span>]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="19">
+<pre><code>3×3 Matrix{Int64}:
+ 1  4  7
+ 2  5  8
+ 3  6  9</code></pre>
+</div>
+</div>
+<hr>
+<p><em>Julia 문법</em></p>
+<ul>
+<li><code>hcat</code> : The <strong>hcat()</strong> is inbuilt function in julia which is used to concatenate the given arrays along dimension 2.</li>
+</ul>
+<div class="cell" data-execution_count="14">
+<div class="sourceCode cell-code" id="cb18"><pre class="sourceCode numberSource julia number-lines code-with-copy"><code class="sourceCode julia"><span id="cb18-1"><a href="#cb18-1"></a><span class="co"># hcat exmple</span></span>
+<span id="cb18-2"><a href="#cb18-2"></a>a <span class="op">=</span> [<span class="fl">5</span>; <span class="fl">10</span>; <span class="fl">15</span>; <span class="fl">20</span>; <span class="fl">25</span>]</span>
+<span id="cb18-3"><a href="#cb18-3"></a>b <span class="op">=</span> [<span class="fl">1</span> <span class="fl">2</span>; <span class="fl">3</span> <span class="fl">4</span>; <span class="fl">5</span> <span class="fl">6</span>; <span class="fl">7</span> <span class="fl">8</span>; <span class="fl">9</span> <span class="fl">10</span>]</span>
+<span id="cb18-4"><a href="#cb18-4"></a><span class="fu">hcat</span>(a, b)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="14">
+<pre><code>5×3 Matrix{Int64}:
+  5  1   2
+ 10  3   4
+ 15  5   6
+ 20  7   8
+ 25  9  10</code></pre>
+</div>
+</div>
+<hr>
+<p><span class="math inline">\(\bf{C}*\bf{D} = [C_1\otimes D_1 | C_2 \otimes D_2 | C_3 \otimes D_3]\)</span></p>
+<div class="cell" data-execution_count="20">
+<div class="sourceCode cell-code" id="cb20"><pre class="sourceCode numberSource julia number-lines code-with-copy"><code class="sourceCode julia"><span id="cb20-1"><a href="#cb20-1"></a><span class="fu">hcat</span>([<span class="fu">kron</span>(C[<span class="op">:</span>,i],D[<span class="op">:</span>,i]) for i <span class="kw">in</span> <span class="fl">1</span><span class="op">:</span><span class="fl">3</span>]<span class="op">...</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="20">
+<pre><code>9×3 Matrix{Int64}:
+  1   8  21
+  2  10  24
+  3  12  27
+  4  20  42
+  8  25  48
+ 12  30  54
+  7  32  63
+ 14  40  72
+ 21  48  81</code></pre>
+</div>
+</div>
+<p>이건 자주 쓸일이 있을 것 같으니까 함수로 저장하자.</p>
+<div class="cell" data-execution_count="22">
+<div class="sourceCode cell-code" id="cb22"><pre class="sourceCode numberSource julia number-lines code-with-copy"><code class="sourceCode julia"><span id="cb22-1"><a href="#cb22-1"></a>columnwise_kron <span class="op">=</span> </span>
+<span id="cb22-2"><a href="#cb22-2"></a>(C,D) <span class="op">-&gt;</span> <span class="fu">hcat</span>([<span class="fu">kron</span>(C[<span class="op">:</span>,i],D[<span class="op">:</span>,i]) for i <span class="kw">in</span> <span class="fl">1</span><span class="op">:</span><span class="fu">size</span>(C)[<span class="fl">2</span>]]<span class="op">...</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="22">
+<pre><code>#3 (generic function with 1 method)</code></pre>
+</div>
+</div>
+<div class="cell" data-execution_count="31">
+<div class="sourceCode cell-code" id="cb24"><pre class="sourceCode numberSource julia number-lines code-with-copy"><code class="sourceCode julia"><span id="cb24-1"><a href="#cb24-1"></a><span class="fu">columnwise_kron</span>(C, D)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="31">
+<pre><code>9×3 Matrix{Int64}:
+  1   8  21
+  2  10  24
+  3  12  27
+  4  20  42
+  8  25  48
+ 12  30  54
+  7  32  63
+ 14  40  72
+ 21  48  81</code></pre>
+</div>
+</div>
+</section>
+<section id="그래프-표현" class="level2">
+<h2 class="anchored" data-anchor-id="그래프-표현">그래프 표현</h2>
+<p>아래의 그림을 살펴보자.</p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="2023-03-05-chap-12.2.1~12.3.1_files/figure-html/b5ceacbf-2ca2-4af2-ab83-73afa000ae08-1-04d70195-0011-45d3-a135-f7f49d7d236f.png" class="img-fluid figure-img"></p>
+<p></p><figcaption class="figure-caption">그래프의 개념을 이해하는데 필요한 그림</figcaption><p></p>
+</figure>
+</div>
+<p>오른쪽 <span class="math inline">\(\bf S\)</span>는 무시하고 왼쪽의 그래프만 살펴보자. 이 그림에는 <span class="math inline">\(6\)</span>개의 노드가 있고 각각의 노드에는 저 마다의 연결구조를 가진다. 이러한 연결구조는 <span class="math inline">\(\bf{G} = (\bf{N},\bf{E})\)</span>으로 표현할 수 있는데 여기에서 <span class="math inline">\(\bf{N}\)</span>은 노드들의 집합이고, <span class="math inline">\(\bf{E}\)</span>는 엣지<a href="#fn1" class="footnote-ref" id="fnref1" role="doc-noteref"><sup>1</sup></a>들의 집합니다. 보통 <span class="math inline">\(\cal E\)</span>는 복잡하므로 연결정보를 매트릭스 <span class="math inline">\(\bf{E}\)</span>로 표현하는데 이러한 <span class="math inline">\(\bf{E}\)</span>를 인접행렬이라고 부른다. 인접행렬의 각 원소는 <span class="math inline">\(E_{ij}= \begin{cases} 1 &amp; (i,j) \in {\cal E} \\ 0 &amp; o.w \end{cases}\)</span> 와 같이 정의한다. 이 그림의 경우 <span class="math inline">\({\cal N}\)</span> 와 <span class="math inline">\({\cal E}\)</span>, <span class="math inline">\({\bf E}\)</span> 는 아래와 같다.</p>
+<ul>
+<li><p><span class="math inline">\(\cal N = \{1, 2, 3, 4, 5, 6\}\)</span></p></li>
+<li><p><span class="math inline">\({\bf E}=\begin{bmatrix} 0 &amp; 1 &amp; 0 &amp; 0 &amp; 1 &amp; 0 \\ 1 &amp; 0 &amp; 1 &amp; 0 &amp; 1 &amp; 0\\ 0 &amp; 1 &amp; 0 &amp; 1 &amp; 0 &amp; 0 \\ 0 &amp; 0 &amp; 1 &amp; 0 &amp; 1 &amp; 1 \\ 1 &amp; 1 &amp; 0 &amp; 1 &amp; 0 &amp; 0 \\ 0 &amp; 0 &amp; 0 &amp; 1 &amp; 0 &amp; 0 \end{bmatrix}\)</span></p></li>
+<li><p><span class="math inline">\({\cal E} = \{(i,j) : E_{ij}=1 \}\)</span></p></li>
+</ul>
+</section>
+<section id="gso-graph-shift-operator" class="level2">
+<h2 class="anchored" data-anchor-id="gso-graph-shift-operator">GSO (Graph Shift Operator)</h2>
+<p>후에 자세히 서술하겠지만 전통적인 시계열분석기법을 그래프신호로 확장하기 위해서는 단지 퓨리에변환 대신에 그래프퓨리에 변환을 사용하면 된다. 즉 퓨리에변환을 일반화한 그래프퓨리에 변환을 잘 정의하면 된다.</p>
+<p>전통적인 신호처리 영역에서의 퓨리에변환은 시계열자료의 인접성을 의미하는 행렬 <span class="math inline">\(\bf{B}\)</span><a href="#fn2" class="footnote-ref" id="fnref2" role="doc-noteref"><sup>2</sup></a>의 고유행렬의 켤레전치로 정의할 수 있다. 이를 이용하면 그래프 퓨리에변환은 그래프자료의 인접성을 의미하는 행렬<a href="#fn3" class="footnote-ref" id="fnref3" role="doc-noteref"><sup>3</sup></a>의 고유행렬의 켤레전치로 정의할 수 있음을 유추할 수 있다. 즉, 비유클리드 자료에서도 <span class="math inline">\(\bf{B}\)</span>에 대응하는 어떠한 매트릭스가 정의되어야 하는데 (그리고 이 매트릭스는 그래프자료의 인접성에 대한 정보가 있어야 한다.) 이 매트릭스를 <span class="math inline">\(\bf{S}\)</span>라고 정의하고 <strong>graph shift operator (GSO)</strong> 라고 이름 붙인다.</p>
+<p>주어진 그래프 <span class="math inline">\(\cal{G} = (\cal{N}, \cal{E})\)</span>에 대하여 GSO <span class="math inline">\(\bf S\)</span>는 <span class="math inline">\(\bf{E} + \bf{I}\)</span>의 값이 1인 영역에만 값이 있는 어떠한 행렬이다. 다시 아래의 그림을 생각하여 보자.</p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="2023-03-05-chap-12.2.1~12.3.1_files/figure-html/add8bd84-1053-4f7d-82ef-bef63e767c6a-1-4dd8de02-2679-47b8-a723-034f6ad84409.png" class="img-fluid figure-img"></p>
+<p></p><figcaption class="figure-caption">GSO개념을 이해하는데 필요한 그림</figcaption><p></p>
+</figure>
+</div>
+<p>왼쪽 그래프의 GSO는 오른쪽과 같은 행렬 <span class="math inline">\(\bf S\)</span>가 된다. 이제 <span class="math inline">\(\bf S\)</span>의 고유벡터행렬을 구한 뒤에 그것의 켤레전치를 <span class="math inline">\(\bf{GFT}\)</span> 행렬로 정의하면 될 것 같다.문제는 “<span class="math inline">\(\bf{S}\)</span>의 고유벡터행렬이 항상 존재하는가?”인데, 사실 이게 항상 존재한다는 보장이 없다. 즉 <span class="math inline">\(\bf{S}\)</span>의 고유벡터 행렬이 존재 안할 수도 있다. 따라서 GSO <span class="math inline">\(\bf{S}\)</span>가 고유분해가능하다는 조건이 추가적으로 필요한데 이러한 조건을 만족하는 GSO를 normal GSO라고 부른다. 우리는 당연히 normal GSO에 대해서만 관심이 있으므로 앞으로 특별한 언급이 없는 한 GSO는 모두 normal GSO라고 가정한다.</p>
+</section>
+</section>
+<section id="power-spectral-density" class="level1">
+<h1>12.2.1 Power Spectral Density</h1>
+<p>(넘어가….)</p>
+</section>
+<section id="power-spectral-density-estimators" class="level1">
+<h1>12.2.3 Power Spectral Density Estimators</h1>
+<p>(일단 패스…)</p>
+</section>
+<section id="nonparametric-psd-estimators" class="level1">
+<h1>12.3.1 Nonparametric PSD estimators</h1>
+<p>(일단 패스…)</p>
+</section>
+<section id="summary" class="level1">
+<h1>Summary</h1>
+<section id="정상시계열을-분석한흔-두-가지-흐름-acf와-psd" class="level2">
+<h2 class="anchored" data-anchor-id="정상시계열을-분석한흔-두-가지-흐름-acf와-psd">정상시계열을 분석한흔 두 가지 흐름, ACF와 PSD</h2>
+<section id="전통적인-분석방법" class="level3">
+<h3 class="anchored" data-anchor-id="전통적인-분석방법">전통적인 분석방법</h3>
+<p>클래식한 정상시계열은 유한차수의 ARMA로 근사할 수 있음이 알려져 있다. 유한차수의 ARMA의 계수 <span class="math inline">\(p,q\)</span>를 적절하게 추정하기 위해서는 시계열 <span class="math inline">\(\bf x\)</span>를 SACF plot 혹은 SPACF plot을 이용하면 된다. 이때 SACF 혹은 SPACF의 그림을 살펴보고 적절한 모형을 선택하기 위해서는 유한차수 ARMA의 이론적 ACF의 모양을 알면 되는데, 이를 바꾸어서 말하면 결국 정상시계열 <span class="math inline">\(\bf x\)</span>의 모든 정보는 ACF에 들어가있다는 의미가 된다. 즉 정상시계열은 ACF만 잘 추정함녀 모든 것이 해결된다.</p>
+<p>그런데 ACF의 모든 정보는 다시 아래의 행렬에 들어있다.</p>
+<p><span class="math display">\[{\bf C}_{\bf x}=\mathbb{E}[{\bf x}{\bf x}^T]\]</span></p>
+<p>여기에는 <span class="math inline">\(\bf x\)</span>는 relization이 아니라 확률벡터를 의미함을 유의하자. 따라서 정상시계열의 경우 <span class="math inline">\(\bf{C}_x\)</span>를 잘 추정하면 모든것이 잘 해결된다고 생각하면 된다.</p>
+<blockquote class="blockquote">
+<p>참고: 정상시계열의 경우 ACF 만 정확하게 알아도 (반대로 PACF만 정확하게 알아도) 이론상 모든 모형을 특정할 수 있다. 즉 정상시계열의 모형을 특정하기 위해서는 ACF plot, PACF plot 하나만 있어도 충분하다. (Wold’s Thm은 떠올리면 모든 정상시계열은 무한MA로 유니크하게 표현할 수 있는데, 이는 PACF plot을 가지고 모든 정상시계열을 유니크하게 특정할 수 있다는 것을 의미한다) 다만 좀 더 모형을 특정하는 과정을 용이하게 하기 위해서 실전에서는 SACF plot 과 SPACF plot 을 함께 보는 것이 유리하다.</p>
+</blockquote>
+<p><strong>(예제) AR(1) 모형</strong></p>
+<p>왜 ACF의 모든 정보를 <span class="math inline">\(\bf{C}_x\)</span> 로부터 알 수 있는지 코드를 통하여 실습하여 보자.</p>
+<p>아래의 모형을 가정하자.</p>
+<p><span class="math display">\[x_t = 0.5x_{t-1} + \epsilon_t\]</span></p>
+<p>여기에서 <span class="math inline">\(\epsilon_t\)</span>는 서로 독립인 표준정규분포를 따른다. 이 모형에서 길이가 100인 시계열을 임으로 발생시키자.</p>
+<div class="cell" data-execution_count="85">
+<div class="sourceCode cell-code" id="cb26"><pre class="sourceCode numberSource julia number-lines code-with-copy"><code class="sourceCode julia"><span id="cb26-1"><a href="#cb26-1"></a>x <span class="op">=</span> <span class="fu">zeros</span>(<span class="fl">100</span><span class="op">*</span><span class="fl">1</span>)</span>
+<span id="cb26-2"><a href="#cb26-2"></a>x[<span class="fl">1</span>] <span class="op">=</span> <span class="fu">randn</span>()</span>
+<span id="cb26-3"><a href="#cb26-3"></a><span class="cf">for</span> t <span class="kw">in</span> <span class="fl">2</span><span class="op">:</span><span class="fl">100</span></span>
+<span id="cb26-4"><a href="#cb26-4"></a>    x[t] <span class="op">=</span> <span class="fl">0.5</span><span class="op">*</span>x[t<span class="op">-</span><span class="fl">1</span>] <span class="op">+</span> <span class="fu">randn</span>()</span>
+<span id="cb26-5"><a href="#cb26-5"></a><span class="cf">end</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>모형에서 생성된 하나의 시계열을 시각화하면 아래와 같다.</p>
+<div class="cell" data-execution_count="86">
+<div class="sourceCode cell-code" id="cb27"><pre class="sourceCode numberSource julia number-lines code-with-copy"><code class="sourceCode julia"><span id="cb27-1"><a href="#cb27-1"></a><span class="fu">plot</span>(x)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="86">
+<p><img src="2023-03-05-chap-12.2.1~12.3.1_files/figure-html/cell-16-output-1.svg" class="img-fluid"></p>
+</div>
+</div>
+<p><strong>lag=1일 경우 시계열의 SACF를 계산하면 아래와 같다.</strong></p>
+<div class="cell" data-execution_count="87">
+<div class="sourceCode cell-code" id="cb28"><pre class="sourceCode numberSource julia number-lines code-with-copy"><code class="sourceCode julia"><span id="cb28-1"><a href="#cb28-1"></a>x[<span class="fl">1</span><span class="op">:</span><span class="fl">99</span>] <span class="op">.*</span> x[<span class="fl">2</span><span class="op">:</span><span class="fl">100</span>]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="87">
+<pre><code>99-element Vector{Float64}:
+  2.763927872349466
+ -2.648382063879747
+  7.5560713885953215
+ 14.538881990615415
+  0.520289725235592
+ -0.02893028852363918
+ -0.08713887236919443
+  0.664714967484797
+  1.7558767596344267
+  0.8198605801110912
+  0.03431855113914528
+ -0.01819122449351602
+ -0.5411309265124012
+  ⋮
+  0.8627760724036734
+  1.4665215311182225
+ -0.11299501148861134
+  0.03195980896825844
+  0.0699424007664186
+  0.009424426205167391
+  0.07855903160522548
+ -0.8085731251113174
+ -0.17558999208627857
+ -0.4339226145863137
+  3.357684099650187
+  1.4577818358298857</code></pre>
+</div>
+</div>
+<ul>
+<li>이 계산결과는 각 <span class="math inline">\(t\)</span>에 대하여 <span class="math inline">\(x_{t-1}x_t\)</span>를 계산한 것과 같다.</li>
+</ul>
+<p>이 수열들의 평균은 아래와 같다.</p>
+<div class="cell" data-execution_count="88">
+<div class="sourceCode cell-code" id="cb30"><pre class="sourceCode numberSource julia number-lines code-with-copy"><code class="sourceCode julia"><span id="cb30-1"><a href="#cb30-1"></a>x[<span class="fl">1</span><span class="op">:</span><span class="fl">99</span>] <span class="op">.*</span> x[<span class="fl">2</span><span class="op">:</span><span class="fl">100</span>] <span class="op">|&gt;</span> mean</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="88">
+<pre><code>0.6460152065947437</code></pre>
+</div>
+</div>
+<ul>
+<li>이 계산결과는 <span class="math inline">\(\frac{1}{99}\sum_{t=2}^{100}x_{t-1}x_t\)</span>를 계산한 것과 같다.</li>
+</ul>
+<p>이론적인 값인 0.5 근처의 값이 잘 나옴을 알 수 있다???? 뭔가 잘못했나.. <span class="math inline">\(0.5\)</span>근처라고 해도 되나..?</p>
+<p><strong>lag=2일 경우도 마찬가지로 구할 수 있다.</strong></p>
+<div class="cell" data-execution_count="89">
+<div class="sourceCode cell-code" id="cb32"><pre class="sourceCode numberSource julia number-lines code-with-copy"><code class="sourceCode julia"><span id="cb32-1"><a href="#cb32-1"></a>x[<span class="fl">1</span><span class="op">:</span><span class="fl">98</span>] <span class="op">.*</span> x[<span class="fl">3</span><span class="op">:</span><span class="fl">100</span>] <span class="op">|&gt;</span> mean</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="89">
+<pre><code>0.017848962875704446</code></pre>
+</div>
+</div>
+<p>그런데 이러한 숫자들은 <span class="math inline">\(\bf{x}\bf{x}^\top\)</span>를 이용해서도 구할 수 있다.</p>
+<div class="cell" data-execution_count="90">
+<div class="sourceCode cell-code" id="cb34"><pre class="sourceCode numberSource julia number-lines code-with-copy"><code class="sourceCode julia"><span id="cb34-1"><a href="#cb34-1"></a>x<span class="op">*</span>x<span class="op">'</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="90">
+<pre><code>100×100 Matrix{Float64}:
+  4.51193    2.76393    -4.32331    …   3.01347     5.02729    1.30834
+  2.76393    1.69313    -2.64838        1.846       3.07963    0.801466
+ -4.32331   -2.64838     4.14257       -2.8875     -4.81713   -1.25364
+ -7.88573   -4.83066     7.55607       -5.26681    -8.78647   -2.28665
+ -8.31861   -5.09584     7.97085       -5.55593    -9.26879   -2.41218
+ -0.2822    -0.172871    0.270402   …  -0.188479   -0.314433  -0.0818304
+  0.46255    0.28335    -0.443213       0.308933    0.515384   0.134127
+ -0.849993  -0.520691    0.814459      -0.567703   -0.947083  -0.246476
+ -3.52843   -2.16146     3.38093       -2.35661    -3.93146   -1.02315
+ -2.2453    -1.37543     2.15143       -1.49961    -2.50176   -0.651077
+ -1.64751   -1.00924     1.57864    …  -1.10036    -1.83569   -0.477734
+ -0.093986  -0.0575742   0.0900569     -0.0627724  -0.104721  -0.0272534
+  0.873295   0.534965   -0.836787       0.583266    0.973046   0.253232
+  ⋮                                 ⋱                         
+  2.12852    1.3039     -2.03954        1.42162     2.37165    0.617215
+  3.10866    1.90431    -2.9787         2.07624     3.46374    0.901428
+ -0.164002  -0.100465    0.157146   …  -0.109535   -0.182735  -0.0475562
+ -0.87926   -0.53862     0.842503      -0.58725    -0.979692  -0.254962
+ -0.35891   -0.219862    0.343905      -0.239712   -0.399905  -0.104074
+ -0.118476  -0.0725766   0.113523      -0.0791293  -0.132009  -0.034355
+ -2.99176   -1.8327      2.86669       -1.99817    -3.33349   -0.86753
+  1.21942    0.746999   -1.16845    …   0.814443    1.35871    0.353601
+ -0.649691  -0.397989    0.622531      -0.433923   -0.723901  -0.188393
+  3.01347    1.846      -2.8875         2.01267     3.35768    0.873828
+  5.02729    3.07963    -4.81713        3.35768     5.60153    1.45778
+  1.30834    0.801466   -1.25364        0.873828    1.45778    0.379384</code></pre>
+</div>
+</div>
+<p>여기에서 각 원소들이 의미하는 바는 아래와 같다.</p>
+<ul>
+<li>대각선의 원소: <span class="math inline">\(x_t^2, \space t=1,2,\dots,100\)</span>을 의미</li>
+<li>대각선 한칸 위, 혹은 한칸 아래: <span class="math inline">\(x_{t-1}x_t,\space t=2,3,\dots,100\)</span>을 의미</li>
+<li>대각선 두칸 위, 혹은 두칸 아래: <span class="math inline">\(x_{t-1}x_t, \space t=3,4,\dots 100\)</span>을 의미</li>
+</ul>
+<div class="cell" data-execution_count="101">
+<div class="sourceCode cell-code" id="cb36"><pre class="sourceCode numberSource julia number-lines code-with-copy"><code class="sourceCode julia"><span id="cb36-1"><a href="#cb36-1"></a>x[<span class="fl">1</span><span class="op">:</span><span class="fl">5</span>]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="101">
+<pre><code>5-element Vector{Float64}:
+  2.1241294211140476
+  1.301205023044152
+ -2.0353303414736996
+ -3.712454550804897
+ -3.916245112674374</code></pre>
+</div>
+</div>
+<div class="cell" data-execution_count="103">
+<div class="sourceCode cell-code" id="cb38"><pre class="sourceCode numberSource julia number-lines code-with-copy"><code class="sourceCode julia"><span id="cb38-1"><a href="#cb38-1"></a>x<span class="op">'</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="103">
+<pre><code>1×100 adjoint(::Vector{Float64}) with eltype Float64:
+ 2.12413  1.30121  -2.03533  -3.71245  …  1.41869  2.36675  0.615941</code></pre>
+</div>
+</div>
+<p><span class="math inline">\(\begin{bmatrix} \end{bmatrix}\)</span></p>
+<div class="cell" data-execution_count="108">
+<div class="sourceCode cell-code" id="cb40"><pre class="sourceCode numberSource julia number-lines code-with-copy"><code class="sourceCode julia"><span id="cb40-1"><a href="#cb40-1"></a><span class="fl">2.1241294211140476</span><span class="op">^</span><span class="fl">2</span>, <span class="fl">1.301205023044152</span><span class="op">^</span><span class="fl">2</span>, (<span class="op">-</span><span class="fl">2.0353303414736996</span>)<span class="op">^</span><span class="fl">2</span> <span class="co">## 대각선 원소</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="108">
+<pre><code>(4.511925797642299, 1.6931345119953323, 4.142569598923447)</code></pre>
+</div>
+</div>
+<p><strong>lag1</strong></p>
+<div class="cell" data-execution_count="96">
+<div class="sourceCode cell-code" id="cb42"><pre class="sourceCode numberSource julia number-lines code-with-copy"><code class="sourceCode julia"><span id="cb42-1"><a href="#cb42-1"></a>(x[<span class="fl">1</span><span class="op">:</span><span class="fl">99</span>] <span class="op">.*</span> x[<span class="fl">2</span><span class="op">:</span><span class="fl">100</span>])[<span class="fl">1</span><span class="op">:</span><span class="fl">5</span>]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="96">
+<pre><code>5-element Vector{Float64}:
+  2.763927872349466
+ -2.648382063879747
+  7.5560713885953215
+ 14.538881990615415
+  0.520289725235592</code></pre>
+</div>
+</div>
+
+
+</section>
+</section>
+</section>
+
+
+<div id="quarto-appendix" class="default"><section id="footnotes" class="footnotes footnotes-end-of-document" role="doc-endnotes"><h2 class="anchored quarto-appendix-heading">Footnotes</h2>
+
+<ol>
+<li id="fn1"><p>노드 <span class="math inline">\(i\)</span>에서 노드 <span class="math inline">\(j\)</span>로 향하는 연결이 있다면 <span class="math inline">\((i,j)\in \cal{E}\)</span>이다.<a href="#fnref1" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn2"><p>원래는 평행이동을 의미하는 행렬이지만, 이걸 인접성을 의미하는 행ㅇ렬로 해석할 수도 있다. 어차피 인접한 곳으로 이동할 수 있으니까<a href="#fnref2" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn3"><p>예를들면 인접행렬 <span class="math inline">\(\bf{E}\)</span>와 같은 행렬<a href="#fnref3" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+</ol>
+</section></div></main> <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
+window.document.addEventListener("DOMContentLoaded", function (event) {
+  const toggleBodyColorMode = (bsSheetEl) => {
+    const mode = bsSheetEl.getAttribute("data-mode");
+    const bodyEl = window.document.querySelector("body");
+    if (mode === "dark") {
+      bodyEl.classList.add("quarto-dark");
+      bodyEl.classList.remove("quarto-light");
+    } else {
+      bodyEl.classList.add("quarto-light");
+      bodyEl.classList.remove("quarto-dark");
+    }
+  }
+  const toggleBodyColorPrimary = () => {
+    const bsSheetEl = window.document.querySelector("link#quarto-bootstrap");
+    if (bsSheetEl) {
+      toggleBodyColorMode(bsSheetEl);
+    }
+  }
+  toggleBodyColorPrimary();  
+  const icon = "";
+  const anchorJS = new window.AnchorJS();
+  anchorJS.options = {
+    placement: 'right',
+    icon: icon
+  };
+  anchorJS.add('.anchored');
+  const clipboard = new window.ClipboardJS('.code-copy-button', {
+    target: function(trigger) {
+      return trigger.previousElementSibling;
+    }
+  });
+  clipboard.on('success', function(e) {
+    // button target
+    const button = e.trigger;
+    // don't keep focus
+    button.blur();
+    // flash "checked"
+    button.classList.add('code-copy-button-checked');
+    var currentTitle = button.getAttribute("title");
+    button.setAttribute("title", "Copied!");
+    let tooltip;
+    if (window.bootstrap) {
+      button.setAttribute("data-bs-toggle", "tooltip");
+      button.setAttribute("data-bs-placement", "left");
+      button.setAttribute("data-bs-title", "Copied!");
+      tooltip = new bootstrap.Tooltip(button, 
+        { trigger: "manual", 
+          customClass: "code-copy-button-tooltip",
+          offset: [0, -8]});
+      tooltip.show();    
+    }
+    setTimeout(function() {
+      if (tooltip) {
+        tooltip.hide();
+        button.removeAttribute("data-bs-title");
+        button.removeAttribute("data-bs-toggle");
+        button.removeAttribute("data-bs-placement");
+      }
+      button.setAttribute("title", currentTitle);
+      button.classList.remove('code-copy-button-checked');
+    }, 1000);
+    // clear code selection
+    e.clearSelection();
+  });
+  function tippyHover(el, contentFn) {
+    const config = {
+      allowHTML: true,
+      content: contentFn,
+      maxWidth: 500,
+      delay: 100,
+      arrow: false,
+      appendTo: function(el) {
+          return el.parentElement;
+      },
+      interactive: true,
+      interactiveBorder: 10,
+      theme: 'quarto',
+      placement: 'bottom-start'
+    };
+    window.tippy(el, config); 
+  }
+  const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+  for (var i=0; i<noterefs.length; i++) {
+    const ref = noterefs[i];
+    tippyHover(ref, function() {
+      // use id or data attribute instead here
+      let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+      try { href = new URL(href).hash; } catch {}
+      const id = href.replace(/^#\/?/, "");
+      const note = window.document.getElementById(id);
+      return note.innerHTML;
+    });
+  }
+  const findCites = (el) => {
+    const parentEl = el.parentElement;
+    if (parentEl) {
+      const cites = parentEl.dataset.cites;
+      if (cites) {
+        return {
+          el,
+          cites: cites.split(' ')
+        };
+      } else {
+        return findCites(el.parentElement)
+      }
+    } else {
+      return undefined;
+    }
+  };
+  var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+  for (var i=0; i<bibliorefs.length; i++) {
+    const ref = bibliorefs[i];
+    const citeInfo = findCites(ref);
+    if (citeInfo) {
+      tippyHover(citeInfo.el, function() {
+        var popup = window.document.createElement('div');
+        citeInfo.cites.forEach(function(cite) {
+          var citeDiv = window.document.createElement('div');
+          citeDiv.classList.add('hanging-indent');
+          citeDiv.classList.add('csl-entry');
+          var biblioDiv = window.document.getElementById('ref-' + cite);
+          if (biblioDiv) {
+            citeDiv.innerHTML = biblioDiv.innerHTML;
+          }
+          popup.appendChild(citeDiv);
+        });
+        return popup.innerHTML;
+      });
+    }
+  }
+});
+</script>
+</div> <!-- /content -->
+
+
+
+</body></html>

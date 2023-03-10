@@ -3,17 +3,22 @@ project:
 
 website:
   title: "myblog"
+  sidebar:
+    style: "docked"
+    search: true
+    contents: auto
   navbar:
+    background: light
     right:
       - about.qmd
       - icon: github
-        href: https://github.com/
-      - icon: twitter
-        href: https://twitter.com
+        href: https://github.com/pinkocto
 format:
   html:
-    theme: cosmo
+    theme:
+      light: cosmo
     css: styles.css
-
-
-
+    toc: true
+    code-fold: false
+    code-line-numbers: true
+    code-copy: true

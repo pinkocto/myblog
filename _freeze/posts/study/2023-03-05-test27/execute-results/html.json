@@ -1,0 +1,14 @@
+{
+  "hash": "13c14e0af3e06cce1b35edc8de38ea64",
+  "result": {
+    "markdown": "---\ntitle: \"27_test\"\nformat:\n  html:\n    theme: default\n---\n\n::: {.cell}\n\n```{.r .cell-code}\nlibrary(tidyverse)\nlibrary(recipes)\nlibrary(caret)\nlibrary(rsample)\n```\n:::\n\n::: {.cell}\n\n```{.r .cell-code}\ndat <- read_csv('fraud.csv')\n```\n\n::: {.cell-output .cell-output-stderr}\n```\nRows: 1234 Columns: 20\n── Column specification ────────────────────────────────────────────────────────\nDelimiter: \",\"\ndbl (20): v1, v2, v3, v4, v5, v6, v7, v8, v9, v10, v11, v12, v13, v14, v15, ...\n\nℹ Use `spec()` to retrieve the full column specification for this data.\nℹ Specify the column types or set `show_col_types = FALSE` to quiet this message.\n```\n:::\n\n```{.r .cell-code}\ndat %>% head()\n```\n\n::: {.cell-output .cell-output-stdout}\n```\n# A tibble: 6 × 20\n      v1      v2      v3     v4     v5      v6      v7      v8     v9    v10\n   <dbl>   <dbl>   <dbl>  <dbl>  <dbl>   <dbl>   <dbl>   <dbl>  <dbl>  <dbl>\n1  1.92   0.0541 -1.65    1.44   0.373 -1.13    0.721  -0.436   0.191  0.231\n2  0.327  0.164  -2.82   -2.70   3.11   2.75    0.517   0.523  -1.49  -0.114\n3 -0.348  0.648   0.545  -2.53   1.17   0.0920  1.03   -0.126   0.515 -1.05 \n4  1.39  -0.250  -0.0641 -0.733 -0.576 -1.17   -0.0445 -0.344  -1.60   0.820\n5  1.54  -1.19    0.586  -1.42  -1.75  -0.568  -1.38   -0.0151 -1.31   1.48 \n6 -0.419  0.687   1.49   -0.109  0.519 -0.129   0.523  -0.0507  1.13  -0.245\n# … with 10 more variables: v11 <dbl>, v12 <dbl>, v13 <dbl>, v14 <dbl>,\n#   v15 <dbl>, v16 <dbl>, v17 <dbl>, time <dbl>, amount <dbl>, class <dbl>\n```\n:::\n:::\n",
+    "supporting": [],
+    "filters": [
+      "rmarkdown/pagebreak.lua"
+    ],
+    "includes": {},
+    "engineDependencies": {},
+    "preserve": {},
+    "postProcess": true
+  }
+}

@@ -1,0 +1,132 @@
+---
+title: "Ridge, Lasso, Elastic Net"
+author: 'jiyun Lim'
+date: '03/01/2023'
+categories: 
+  - R
+  - ML
+format:
+  html:
+    theme: default
+---
+
+
+`-` 손실함수 정의
+
+**벡터 Norm의 의미**
+$$||\beta||_1 = \sigma_{i=1}^n|\beta_i|$$
+$$||\beta||_2 = \sqrt{\sum_{i=1}^n \beta_i^2}$$
+
+**penalty가 붙어있는 손실함수 형태**
+
+
+ 
+$$PRSS(\beta,\lambda;X,y) = RSS(\beta;X,y) + \lambda J(\beta)
+=(y-X\beta)^\top (y-X\beta) + \lambda J(\beta)$$
+
+`-` Lasso Regression 손실함수 - ***$L_1$ norm***
+
+$$\underset{\beta}{min}\space (y-X\beta)^\top (y-X\beta) + \frac{\lambda}{2}||\beta||_1$$
+`-` Ridge regression 손실함수 - ***$L_2$ norm***
+
+$$\underset{\beta}{min}\space (y-X\beta)^\top (y-X\beta) + \frac{\lambda}{2}||\beta||^2_2$$
+
+
+`-` Elastic Net
+
+라쏘와 능선회귀를 하나의 모델로 합친 모델.
+
+$$\underset{\beta}{min}\space (y-X\beta)^\top (y-X\beta) + \frac{\lambda}{2}(\alpha ||\beta||_1 + (1-\alpha)||\beta||_2^2)$$
+
+- 손실함수를 두개의 파이퍼파라미터로 정의할 수 있다. $\to \lambda, \alpha$
+
+- $\lambda$는 패널티의 가중치를 조정
+- $\alpha$는 라쏘와 릿지의 가중치를 조정
+  - $\alpha = 1$, Lasso 회귀
+  - $\alpha = 0$, Ridge 회귀
+  
+  
+  
+`-` 예제
+
+```{r, message=FALSE}
+library(caret)
+library(tidyverse)
+library(glmnet)
+```
+
+```{r}
+data(QuickStartExample)
+data_X <- QuickStartExample$x
+y <- QuickStartExample$y
+data_X %>% dim()
+```
+  
+
+```{r}
+y %>% length()
+```
+  
+```{r}
+result <- glmnet(data_X, y, alpha = 1) 
+plot(result, label = TRUE)
+```
+  - 그래프의 각 선들이 람다값에 따른 각 변수의 계수의 변화를 나타낸다.
+  - 위쪽 숫자 의미: 현재 람다에 대응하는 계수가 0이 아닌 변수 갯수
+  - 계수 벡터의 $L_1$이 작다는 것은 ***람다값이 큰 상황*** 에 대응된다.
+  
+```{r}
+print(result)
+```
+  
+```{r}
+new_X <- matrix(rnorm(60), ncol = 20)
+predict(result, newx = new_X, s= 0.1)
+```
+## validation 셋을 통한 람다값 결정하기.
+- 데이터셋 나누기
+```{r}
+set.seed(2023)
+train_index <- createDataPartition(y, p =0.7, list = F)
+train_data_X <- data_X[train_index,]
+valid_data_X <- data_X[-train_index,]
+train_y <- y[train_index]
+valid_y <- y[-train_index]
+```
+
+**train과 valid에서 모델 성능 비교하기.**
+
+```{r}
+result <- glmnet(train_data_X, train_y)
+pred_train <- predict(result,
+                      newx = train_data_X,
+                      s = result$lambda)
+
+residual_set <- sweep(pred_train, 1, train_y, FUN = '-')
+preform_train <- colMeans(residual_set^2)
+
+pred_valid <- predict(result,
+                      newx = valid_data_X,
+                      s = result$lambda)
+residual_set <- sweep(pred_valid, 1, valid_y, FUN = '-')
+perform_valid <- colMeans(residual_set^2)
+```
+
+(참고) : `sweep()` 함수는 행렬이 주어졌을때 각 열에서 (MARGIN1) 혹은 각 행에서 (MARGIN2) 주어진 벡터를 사용하여 연산을 수행함.
+
+
+
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  

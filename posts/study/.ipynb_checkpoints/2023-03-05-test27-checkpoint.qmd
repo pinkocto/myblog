@@ -1,0 +1,19 @@
+---
+title: "27_test"
+format:
+  html:
+    theme: default
+---
+
+```{r,message=FALSE}
+library(tidyverse)
+library(recipes)
+library(caret)
+library(rsample)
+```
+
+
+```{r}
+dat <- read_csv('fraud.csv')
+dat %>% head()
+```

@@ -1,0 +1,1006 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.2.335">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+<meta name="author" content="jiyun Lim">
+<meta name="dcterms.date" content="2023-02-21">
+
+<title>myblog - Traffic Forecasting review</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1.6em;
+  vertical-align: middle;
+}
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code span.at { color: #7d9029; } /* Attribute */
+code span.bn { color: #40a070; } /* BaseN */
+code span.bu { color: #008000; } /* BuiltIn */
+code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code span.ch { color: #4070a0; } /* Char */
+code span.cn { color: #880000; } /* Constant */
+code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code span.dt { color: #902000; } /* DataType */
+code span.dv { color: #40a070; } /* DecVal */
+code span.er { color: #ff0000; font-weight: bold; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #40a070; } /* Float */
+code span.fu { color: #06287e; } /* Function */
+code span.im { color: #008000; font-weight: bold; } /* Import */
+code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code span.op { color: #666666; } /* Operator */
+code span.ot { color: #007020; } /* Other */
+code span.pp { color: #bc7a00; } /* Preprocessor */
+code span.sc { color: #4070a0; } /* SpecialChar */
+code span.ss { color: #bb6688; } /* SpecialString */
+code span.st { color: #4070a0; } /* String */
+code span.va { color: #19177c; } /* Variable */
+code span.vs { color: #4070a0; } /* VerbatimString */
+code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+</style>
+
+
+<script src="../../../site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="../../../site_libs/quarto-nav/headroom.min.js"></script>
+<script src="../../../site_libs/clipboard/clipboard.min.js"></script>
+<script src="../../../site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="../../../site_libs/quarto-search/fuse.min.js"></script>
+<script src="../../../site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="../../../">
+<script src="../../../site_libs/quarto-html/quarto.js"></script>
+<script src="../../../site_libs/quarto-html/popper.min.js"></script>
+<script src="../../../site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="../../../site_libs/quarto-html/anchor.min.js"></script>
+<link href="../../../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="../../../site_libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="../../../site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="../../../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="../../../site_libs/bootstrap/bootstrap.min.css" rel="stylesheet" id="quarto-bootstrap" data-mode="light">
+<script id="quarto-search-options" type="application/json">{
+  "location": "navbar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "end",
+  "type": "overlay",
+  "limit": 20,
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit"
+  }
+}</script>
+
+
+<link rel="stylesheet" href="../../../styles.css">
+</head>
+
+<body class="nav-sidebar docked nav-fixed">
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top">
+    <nav class="navbar navbar-expand-lg navbar-dark ">
+      <div class="navbar-container container-fluid">
+      <div class="navbar-brand-container">
+    <a class="navbar-brand" href="../../../index.html">
+    <span class="navbar-title">myblog</span>
+    </a>
+  </div>
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+  <span class="navbar-toggler-icon"></span>
+</button>
+          <div class="collapse navbar-collapse" id="navbarCollapse">
+            <ul class="navbar-nav navbar-nav-scroll ms-auto">
+  <li class="nav-item">
+    <a class="nav-link active" href="../../../about.html" aria-current="page">
+ <span class="menu-text">About</span></a>
+  </li>  
+  <li class="nav-item compact">
+    <a class="nav-link" href="https://github.com/pinkocto"><i class="bi bi-github" role="img">
+</i> 
+ <span class="menu-text"></span></a>
+  </li>  
+</ul>
+              <div id="quarto-search" class="" title="Search"></div>
+          </div> <!-- /navcollapse -->
+      </div> <!-- /container-fluid -->
+    </nav>
+  <nav class="quarto-secondary-nav" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+    <div class="container-fluid d-flex justify-content-between">
+      <h1 class="quarto-secondary-nav-title">Traffic Forecasting review</h1>
+      <button type="button" class="quarto-btn-toggle btn" aria-label="Show secondary navigation">
+        <i class="bi bi-chevron-right"></i>
+      </button>
+    </div>
+  </nav>
+</header>
+<!-- content -->
+<header id="title-block-header" class="quarto-title-block default page-columns page-full">
+  <div class="quarto-title-banner page-columns page-full">
+    <div class="quarto-title column-body">
+      <h1 class="title d-none d-lg-block">Traffic Forecasting review</h1>
+                      </div>
+  </div>
+    
+  
+  <div class="quarto-title-meta">
+
+      <div>
+      <div class="quarto-title-meta-heading">Author</div>
+      <div class="quarto-title-meta-contents">
+               <p>jiyun Lim </p>
+            </div>
+    </div>
+      
+      <div>
+      <div class="quarto-title-meta-heading">Published</div>
+      <div class="quarto-title-meta-contents">
+        <p class="date">February 21, 2023</p>
+      </div>
+    </div>
+    
+      
+    </div>
+    
+  
+  </header><div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
+<!-- sidebar -->
+  <nav id="quarto-sidebar" class="sidebar collapse sidebar-navigation docked overflow-auto">
+      <div class="mt-2 flex-shrink-0 align-items-center">
+        <div class="sidebar-search">
+        <div id="quarto-search" class="" title="Search"></div>
+        </div>
+      </div>
+    <div class="sidebar-menu-container"> 
+    <ul class="list-unstyled mt-1">
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../../about.html" class="sidebar-item-text sidebar-link">About</a>
+  </div>
+</li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" aria-expanded="true">Etc</a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" aria-expanded="true">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-1" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../../etc/2023-02-20-memo.html" class="sidebar-item-text sidebar-link">메모장</a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../../etc/2023-02-28.html" class="sidebar-item-text sidebar-link">클래스 암기</a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" aria-expanded="true">Posts</a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" aria-expanded="true">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-2" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-3" aria-expanded="false">DNN</a>
+          <a class="sidebar-item-toggle text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-3" aria-expanded="false">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-3" class="collapse list-unstyled sidebar-section depth2 ">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../../posts/DNN/2023-03-01-dnn1.html" class="sidebar-item-text sidebar-link">딥러닝 기초 (1)</a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../../posts/DNN/2023-03-01-dnn2.html" class="sidebar-item-text sidebar-link">딥러닝 기초 (2)</a>
+  </div>
+</li>
+      </ul>
+  </li>
+          <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-4" aria-expanded="false">GCN</a>
+          <a class="sidebar-item-toggle text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-4" aria-expanded="false">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-4" class="collapse list-unstyled sidebar-section depth2 ">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../../posts/GCN/2023-02-27-gcn-prac.html" class="sidebar-item-text sidebar-link">GCN Implementation</a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../../posts/GCN/2023-02-21-gcn1.html" class="sidebar-item-text sidebar-link">Graph Convolutional Network</a>
+  </div>
+</li>
+      </ul>
+  </li>
+          <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-5" aria-expanded="false">GNN</a>
+          <a class="sidebar-item-toggle text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-5" aria-expanded="false">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-5" class="collapse list-unstyled sidebar-section depth2 ">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../../posts/GNN/2023-03-03-gnn1.html" class="sidebar-item-text sidebar-link">0 Introductino to GNN</a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../../posts/GNN/2023-03-04-gnn-intro.html" class="sidebar-item-text sidebar-link">1 GNN tuto1</a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../../posts/GNN/2023-03-04-gnn2.html" class="sidebar-item-text sidebar-link">2 GNN tuto2</a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../../posts/GNN/2023-03-04-gnn2_guebin.html" class="sidebar-item-text sidebar-link">2 GNN tuto2</a>
+  </div>
+</li>
+      </ul>
+  </li>
+          <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-6" aria-expanded="false">RNN</a>
+          <a class="sidebar-item-toggle text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-6" aria-expanded="false">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-6" class="collapse list-unstyled sidebar-section depth2 ">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../../posts/RNN/2023-02-25-rnn1.html" class="sidebar-item-text sidebar-link">순환신경망 (1)</a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../../posts/RNN/2023-02-25-rnn2.html" class="sidebar-item-text sidebar-link">순환신경망 (2)</a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../../posts/RNN/2023-02-28-rnn3.html" class="sidebar-item-text sidebar-link">순환신경망 (3)</a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../../posts/RNN/2023-02-28-rnn4.html" class="sidebar-item-text sidebar-link">순환신경망 (4)</a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../../posts/RNN/2023-03-01-rnn5.html" class="sidebar-item-text sidebar-link">순환신경망 (5)</a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../../posts/RNN/2023-03-01-rnn6.html" class="sidebar-item-text sidebar-link">순환신경망 (6)</a>
+  </div>
+</li>
+      </ul>
+  </li>
+          <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-7" aria-expanded="true">STGCN</a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-7" aria-expanded="true">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-7" class="collapse list-unstyled sidebar-section depth2 show">  
+          <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-8" aria-expanded="true">STGCN 공부</a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-8" aria-expanded="true">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-8" class="collapse list-unstyled sidebar-section depth3 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../../posts/STGCN/STGCN 공부/traffic_prediction.html" class="sidebar-item-text sidebar-link active">Traffic Forecasting review</a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../../posts/STGCN/STGCN 공부/Untitled.html" class="sidebar-item-text sidebar-link">Untitled</a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../../posts/STGCN/STGCN 공부/2023-02-21-STGCN-tutorial1.html" class="sidebar-item-text sidebar-link">튜토리얼 따라가기1</a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../../posts/STGCN/STGCN 공부/2023-02-23-stgcn-tutorial2.html" class="sidebar-item-text sidebar-link">튜토리얼 따라가기2</a>
+  </div>
+</li>
+      </ul>
+  </li>
+          <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-9" aria-expanded="false">튜토리얼</a>
+          <a class="sidebar-item-toggle text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-9" aria-expanded="false">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-9" class="collapse list-unstyled sidebar-section depth3 ">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../../posts/STGCN/튜토리얼/2022-12-29-STGCN-tutorial.html" class="sidebar-item-text sidebar-link">STGCN 튜토리얼</a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../../posts/STGCN/튜토리얼/2022-12-30-STGCN-Toy Example.html" class="sidebar-item-text sidebar-link">Toy Example</a>
+  </div>
+</li>
+      </ul>
+  </li>
+      </ul>
+  </li>
+          <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-10" aria-expanded="false">Study</a>
+          <a class="sidebar-item-toggle text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-10" aria-expanded="false">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-10" class="collapse list-unstyled sidebar-section depth2 ">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../../posts/study/2023-03-05-survey-review.html" class="sidebar-item-text sidebar-link">A Comprehensive Survey on Geometric Deep Learning</a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../../posts/study/2023-02-25-chap12.2.html" class="sidebar-item-text sidebar-link">Chap 12.2: Weakly Stationary Graph process</a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../../posts/study/2023-03-05-chap-12.2.1~12.3.1.html" class="sidebar-item-text sidebar-link">Chap 12.2: Weakly Stationary Graph process</a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../../posts/study/2023-02-24-Chap8.3.html" class="sidebar-item-text sidebar-link">Chap 8.3: Discrete Fourier Transform</a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../../posts/study/2023-03-07-intro.html" class="sidebar-item-text sidebar-link">측도론 intro</a>
+  </div>
+</li>
+          <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-11" aria-expanded="false">ML</a>
+          <a class="sidebar-item-toggle text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-11" aria-expanded="false">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-11" class="collapse list-unstyled sidebar-section depth3 ">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../../posts/study/ML/2023-03-03-arima.html" class="sidebar-item-text sidebar-link">ARIMA</a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../../posts/study/ML/2023-03-09-penaly-regression.html" class="sidebar-item-text sidebar-link">Ridge, Lasso, Elastic Net</a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../../posts/study/ML/2023-03-05-test27.html" class="sidebar-item-text sidebar-link">Test 27</a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../../posts/study/ML/test-ts.html" class="sidebar-item-text sidebar-link">time series intro</a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../../posts/study/ML/2023-03-07-train-valid.html" class="sidebar-item-text sidebar-link">Train/Valid</a>
+  </div>
+</li>
+      </ul>
+  </li>
+          <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-12" aria-expanded="false">Prof</a>
+          <a class="sidebar-item-toggle text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-12" aria-expanded="false">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-12" class="collapse list-unstyled sidebar-section depth3 ">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../../posts/study/prof/2022-12-27-Chap-12.2.1~12.3.1.html" class="sidebar-item-text sidebar-link">Chap 12.2 ~ 3: Power Spectral Density and its Estimators</a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../../posts/study/prof/2022-12-26-Chap-12.2.html" class="sidebar-item-text sidebar-link">Chap 12.2: Weakly Stationary Graph Processes</a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../../posts/study/prof/2023-01-15-Chap-12.4.html" class="sidebar-item-text sidebar-link">Chap 12.4: Node Subsampling for PSD Estimation</a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../../posts/study/prof/2022-12-24-Chap 8.3.html" class="sidebar-item-text sidebar-link">Chap 8.3: Discrete Fourier Transform</a>
+  </div>
+</li>
+      </ul>
+  </li>
+      </ul>
+  </li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-13" aria-expanded="true">Tip</a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-13" aria-expanded="true">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-13" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../../Tip/2023-02-20-tips.html" class="sidebar-item-text sidebar-link">download files from Github</a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../../Tip/2023-03-09-github-link.html" class="sidebar-item-text sidebar-link">github 연동</a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../../Tip/2023-02-24-tips.html" class="sidebar-item-text sidebar-link">Julia 연동</a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../../Tip/2023-02-28-link.html" class="sidebar-item-text sidebar-link">some links</a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../../Tip/2023-03-09-linux.html" class="sidebar-item-text sidebar-link">리눅스 명령어</a>
+  </div>
+</li>
+      </ul>
+  </li>
+    </ul>
+    </div>
+</nav>
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">On this page</h2>
+   
+  <ul>
+  <li><a href="#traffic-forecasting-with-pytorch-geometric-temporal" id="toc-traffic-forecasting-with-pytorch-geometric-temporal" class="nav-link active" data-scroll-target="#traffic-forecasting-with-pytorch-geometric-temporal">Traffic Forecasting with Pytorch Geometric Temporal</a>
+  <ul class="collapse">
+  <li><a href="#installation" id="toc-installation" class="nav-link" data-scroll-target="#installation">Installation</a></li>
+  <li><a href="#dataset" id="toc-dataset" class="nav-link" data-scroll-target="#dataset">Dataset</a></li>
+  <li><a href="#model" id="toc-model" class="nav-link" data-scroll-target="#model">Model</a></li>
+  <li><a href="#training" id="toc-training" class="nav-link" data-scroll-target="#training">Training</a></li>
+  <li><a href="#evaluation" id="toc-evaluation" class="nav-link" data-scroll-target="#evaluation">Evaluation</a>
+  <ul class="collapse">
+  <li><a href="#visualization" id="toc-visualization" class="nav-link" data-scroll-target="#visualization">Visualization</a></li>
+  </ul></li>
+  </ul></li>
+  </ul>
+</nav>
+    </div>
+<!-- main -->
+<main class="content quarto-banner-title-block" id="quarto-document-content">
+
+
+
+
+<section id="traffic-forecasting-with-pytorch-geometric-temporal" class="level1">
+<h1>Traffic Forecasting with Pytorch Geometric Temporal</h1>
+<blockquote class="blockquote">
+<p>https://www.youtube.com/watch?v=Rws9mf1aWUs</p>
+</blockquote>
+<section id="installation" class="level2">
+<h2 class="anchored" data-anchor-id="installation">Installation</h2>
+<div class="cell" data-outputid="1b153ac9-add4-4b35-97ef-6312885d3d37">
+<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1"></a><span class="im">import</span> torch</span>
+<span id="cb1-2"><a href="#cb1-2"></a><span class="im">from</span> IPython.display <span class="im">import</span> clear_output</span>
+<span id="cb1-3"><a href="#cb1-3"></a>pt_version <span class="op">=</span> torch.__version__</span>
+<span id="cb1-4"><a href="#cb1-4"></a><span class="bu">print</span>(pt_version)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>1.11.0+cu113</code></pre>
+</div>
+</div>
+<p>This took some time for me, so be patient :)</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1"></a><span class="op">!</span>pip install torch<span class="op">-</span>scatter <span class="op">-</span>f https:<span class="op">//</span>pytorch<span class="op">-</span>geometric.com<span class="op">/</span>whl<span class="op">/</span>torch<span class="op">-</span>${pt_version}.html</span>
+<span id="cb3-2"><a href="#cb3-2"></a><span class="op">!</span>pip install torch<span class="op">-</span>sparse <span class="op">-</span>f https:<span class="op">//</span>pytorch<span class="op">-</span>geometric.com<span class="op">/</span>whl<span class="op">/</span>torch<span class="op">-</span>${pt_version}.html</span>
+<span id="cb3-3"><a href="#cb3-3"></a><span class="op">!</span>pip install torch<span class="op">-</span>cluster <span class="op">-</span>f https:<span class="op">//</span>pytorch<span class="op">-</span>geometric.com<span class="op">/</span>whl<span class="op">/</span>torch<span class="op">-</span>${pt_version}.html</span>
+<span id="cb3-4"><a href="#cb3-4"></a><span class="op">!</span>pip install torch<span class="op">-</span>spline<span class="op">-</span>conv <span class="op">-</span>f https:<span class="op">//</span>pytorch<span class="op">-</span>geometric.com<span class="op">/</span>whl<span class="op">/</span>torch<span class="op">-</span>${pt_version}.html</span>
+<span id="cb3-5"><a href="#cb3-5"></a><span class="op">!</span>pip install torch<span class="op">-</span>geometric</span>
+<span id="cb3-6"><a href="#cb3-6"></a><span class="op">!</span>pip install torch<span class="op">-</span>geometric<span class="op">-</span>temporal</span>
+<span id="cb3-7"><a href="#cb3-7"></a>clear_output()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</section>
+<section id="dataset" class="level2">
+<h2 class="anchored" data-anchor-id="dataset">Dataset</h2>
+<ul>
+<li>Traffic forecasting dataset based on Los Angeles Metropolitan traffic</li>
+<li>207 loop detectors on highways</li>
+<li>March 2012 - June 2012</li>
+<li>From the paper: Diffusion Convolutional Recurrent Neural Network</li>
+</ul>
+<div class="cell" data-outputid="81e9bc1f-704a-486d-8ddc-fd6dc0ee479f">
+<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb4-1"><a href="#cb4-1"></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
+<span id="cb4-2"><a href="#cb4-2"></a><span class="im">from</span> torch_geometric_temporal.dataset <span class="im">import</span> METRLADatasetLoader</span>
+<span id="cb4-3"><a href="#cb4-3"></a><span class="im">from</span> torch_geometric_temporal.signal <span class="im">import</span> StaticGraphTemporalSignal</span>
+<span id="cb4-4"><a href="#cb4-4"></a></span>
+<span id="cb4-5"><a href="#cb4-5"></a>loader <span class="op">=</span> METRLADatasetLoader()</span>
+<span id="cb4-6"><a href="#cb4-6"></a>dataset <span class="op">=</span> loader.get_dataset(num_timesteps_in<span class="op">=</span><span class="dv">12</span>, num_timesteps_out<span class="op">=</span><span class="dv">12</span>)</span>
+<span id="cb4-7"><a href="#cb4-7"></a></span>
+<span id="cb4-8"><a href="#cb4-8"></a><span class="bu">print</span>(<span class="st">"Dataset type:  "</span>, dataset)</span>
+<span id="cb4-9"><a href="#cb4-9"></a><span class="bu">print</span>(<span class="st">"Number of samples / sequences: "</span>,  <span class="bu">len</span>(<span class="bu">set</span>(dataset)))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Dataset type:   &lt;torch_geometric_temporal.signal.static_graph_temporal_signal.StaticGraphTemporalSignal object at 0x7f455e5315d0&gt;
+Number of samples / sequences:  34249</code></pre>
+</div>
+</div>
+<section id="data-sample" class="level4">
+<h4 class="anchored" data-anchor-id="data-sample">Data Sample</h4>
+<ul>
+<li>207 nodes</li>
+<li>2 features per node (speed, time)</li>
+<li>12 timesteps per bucket (12 x 5 min = 60 min)</li>
+<li>Labels for 12 future timesteps (normalized speed) –&gt; node regression</li>
+<li>Edge_attr is build based on the distances between sensors + threshold</li>
+<li>Further details: https://pytorch-geometric-temporal.readthedocs.io/en/latest/_modules/torch_geometric_temporal/dataset/metr_la.html#METRLADatasetLoader</li>
+<li>Raw data: https://graphmining.ai/temporal_datasets/METR-LA.zip</li>
+</ul>
+<div class="cell" data-outputid="58cb2583-0294-4cdf-cd54-a9959fb212b9">
+<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb6-1"><a href="#cb6-1"></a><span class="co"># Show first sample</span></span>
+<span id="cb6-2"><a href="#cb6-2"></a><span class="bu">next</span>(<span class="bu">iter</span>(dataset))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="13">
+<pre><code>Data(x=[207, 2, 12], edge_index=[2, 1722], edge_attr=[1722], y=[207, 12])</code></pre>
+</div>
+</div>
+<div class="cell" data-outputid="b7974f42-e3d5-45d5-d0f2-ae55edcd03ef">
+<div class="sourceCode cell-code" id="cb8"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb8-1"><a href="#cb8-1"></a><span class="co"># Important: It is not always like that!</span></span>
+<span id="cb8-2"><a href="#cb8-2"></a><span class="im">from</span> torch_geometric_temporal.dataset <span class="im">import</span> ChickenpoxDatasetLoader</span>
+<span id="cb8-3"><a href="#cb8-3"></a>d <span class="op">=</span> ChickenpoxDatasetLoader().get_dataset(lags<span class="op">=</span><span class="dv">4</span>)</span>
+<span id="cb8-4"><a href="#cb8-4"></a><span class="bu">next</span>(<span class="bu">iter</span>(d))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="14">
+<pre><code>Data(x=[20, 4], edge_index=[2, 102], edge_attr=[102], y=[20])</code></pre>
+</div>
+</div>
+<p>You can always have a look at the source-code to see how a dataset is constructed. Chickenpox would be a classical “predict-next-timestep” dataset (the label is one step later than the features).<br>
+METR-LA would be a sequence-to-sequence prediction dataset that predicts further into the future than just the next timestep. You can also see, that the features are used as label as well.</p>
+<pre><code># &gt;&gt;&gt; From the ChickenpoxDatasetLoader &lt;&lt;&lt;
+self.features = [
+            stacked_target[i : i + self.lags, :].T
+            for i in range(stacked_target.shape[0] - self.lags)
+        ]
+self.targets = [
+            stacked_target[i + self.lags, :].T  
+            for i in range(stacked_target.shape[0] - self.lags)
+        ]
+
+# &gt;&gt;&gt; From METRLADatasetLoader &lt;&lt;&lt;
+indices = [
+            (i, i + (num_timesteps_in + num_timesteps_out))
+            for i in range(self.X.shape[2] - (num_timesteps_in + num_timesteps_out) + 1)
+        ]
+for i, j in indices:
+            features.append((self.X[:, :, i : i + num_timesteps_in]).numpy())
+            target.append((self.X[:, 0, i + num_timesteps_in : j]).numpy())</code></pre>
+<div class="cell" data-outputid="ab0d29d3-88e2-4fc6-8ad3-7f8a0b0ab773">
+<div class="sourceCode cell-code" id="cb11"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb11-1"><a href="#cb11-1"></a><span class="im">import</span> seaborn <span class="im">as</span> sns</span>
+<span id="cb11-2"><a href="#cb11-2"></a><span class="co"># Visualize traffic over time</span></span>
+<span id="cb11-3"><a href="#cb11-3"></a>sensor_number <span class="op">=</span> <span class="dv">1</span></span>
+<span id="cb11-4"><a href="#cb11-4"></a>hours <span class="op">=</span> <span class="dv">24</span></span>
+<span id="cb11-5"><a href="#cb11-5"></a>sensor_labels <span class="op">=</span> [bucket.y[sensor_number][<span class="dv">0</span>].item() <span class="cf">for</span> bucket <span class="kw">in</span> <span class="bu">list</span>(dataset)[:hours]]</span>
+<span id="cb11-6"><a href="#cb11-6"></a>sns.lineplot(data<span class="op">=</span>sensor_labels)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="15">
+<pre><code>&lt;matplotlib.axes._subplots.AxesSubplot at 0x7f455d15d310&gt;</code></pre>
+</div>
+<div class="cell-output cell-output-display">
+<p><img src="traffic_prediction_files/figure-html/cell-7-output-2.png" class="img-fluid"></p>
+</div>
+</div>
+</section>
+<section id="test-train-split" class="level4">
+<h4 class="anchored" data-anchor-id="test-train-split">Test Train Split</h4>
+<div class="cell" data-outputid="63e79780-f848-4024-8d58-787557665ee0">
+<div class="sourceCode cell-code" id="cb13"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb13-1"><a href="#cb13-1"></a><span class="im">from</span> torch_geometric_temporal.signal <span class="im">import</span> temporal_signal_split</span>
+<span id="cb13-2"><a href="#cb13-2"></a>train_dataset, test_dataset <span class="op">=</span> temporal_signal_split(dataset, train_ratio<span class="op">=</span><span class="fl">0.8</span>)</span>
+<span id="cb13-3"><a href="#cb13-3"></a></span>
+<span id="cb13-4"><a href="#cb13-4"></a><span class="bu">print</span>(<span class="st">"Number of train buckets: "</span>, <span class="bu">len</span>(<span class="bu">set</span>(train_dataset)))</span>
+<span id="cb13-5"><a href="#cb13-5"></a><span class="bu">print</span>(<span class="st">"Number of test buckets: "</span>, <span class="bu">len</span>(<span class="bu">set</span>(test_dataset)))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Number of train buckets:  27399
+Number of test buckets:  6850</code></pre>
+</div>
+</div>
+</section>
+</section>
+<section id="model" class="level2">
+<h2 class="anchored" data-anchor-id="model">Model</h2>
+<p>Which model to choose depends on which time-series task you work on.</p>
+<ul>
+<li>A3TGCN is an extension of TGCN that uses attention</li>
+<li>The spatial aggregation uses GCN, the temporal aggregation a GRU</li>
+<li>We can pass in periods to get an embedding for several timesteps</li>
+<li>This embedding can be used to predict several steps into the future = output dimension</li>
+<li>We could also do this in a loop and feed it again into the model (would be autoregressive)</li>
+<li>There is only one block here. Other layers also allow stacking???</li>
+</ul>
+<div class="cell" data-outputid="b730dbee-4464-456e-8e87-889efd9d98fb">
+<div class="sourceCode cell-code" id="cb15"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb15-1"><a href="#cb15-1"></a><span class="im">import</span> torch</span>
+<span id="cb15-2"><a href="#cb15-2"></a><span class="im">import</span> torch.nn.functional <span class="im">as</span> F</span>
+<span id="cb15-3"><a href="#cb15-3"></a><span class="im">from</span> torch_geometric_temporal.nn.recurrent <span class="im">import</span> A3TGCN</span>
+<span id="cb15-4"><a href="#cb15-4"></a></span>
+<span id="cb15-5"><a href="#cb15-5"></a><span class="kw">class</span> TemporalGNN(torch.nn.Module):</span>
+<span id="cb15-6"><a href="#cb15-6"></a>    <span class="kw">def</span> <span class="fu">__init__</span>(<span class="va">self</span>, node_features, periods):</span>
+<span id="cb15-7"><a href="#cb15-7"></a>        <span class="bu">super</span>(TemporalGNN, <span class="va">self</span>).<span class="fu">__init__</span>()</span>
+<span id="cb15-8"><a href="#cb15-8"></a>        <span class="co"># Attention Temporal Graph Convolutional Cell</span></span>
+<span id="cb15-9"><a href="#cb15-9"></a>        <span class="va">self</span>.tgnn <span class="op">=</span> A3TGCN(in_channels<span class="op">=</span>node_features, </span>
+<span id="cb15-10"><a href="#cb15-10"></a>                           out_channels<span class="op">=</span><span class="dv">32</span>, </span>
+<span id="cb15-11"><a href="#cb15-11"></a>                           periods<span class="op">=</span>periods)</span>
+<span id="cb15-12"><a href="#cb15-12"></a>        <span class="co"># Equals single-shot prediction</span></span>
+<span id="cb15-13"><a href="#cb15-13"></a>        <span class="va">self</span>.linear <span class="op">=</span> torch.nn.Linear(<span class="dv">32</span>, periods)</span>
+<span id="cb15-14"><a href="#cb15-14"></a></span>
+<span id="cb15-15"><a href="#cb15-15"></a>    <span class="kw">def</span> forward(<span class="va">self</span>, x, edge_index):</span>
+<span id="cb15-16"><a href="#cb15-16"></a>        <span class="co">"""</span></span>
+<span id="cb15-17"><a href="#cb15-17"></a><span class="co">        x = Node features for T time steps</span></span>
+<span id="cb15-18"><a href="#cb15-18"></a><span class="co">        edge_index = Graph edge indices</span></span>
+<span id="cb15-19"><a href="#cb15-19"></a><span class="co">        """</span></span>
+<span id="cb15-20"><a href="#cb15-20"></a>        h <span class="op">=</span> <span class="va">self</span>.tgnn(x, edge_index)</span>
+<span id="cb15-21"><a href="#cb15-21"></a>        h <span class="op">=</span> F.relu(h)</span>
+<span id="cb15-22"><a href="#cb15-22"></a>        h <span class="op">=</span> <span class="va">self</span>.linear(h)</span>
+<span id="cb15-23"><a href="#cb15-23"></a>        <span class="cf">return</span> h</span>
+<span id="cb15-24"><a href="#cb15-24"></a></span>
+<span id="cb15-25"><a href="#cb15-25"></a>TemporalGNN(node_features<span class="op">=</span><span class="dv">2</span>, periods<span class="op">=</span><span class="dv">12</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="25">
+<pre><code>TemporalGNN(
+  (tgnn): A3TGCN(
+    (_base_tgcn): TGCN(
+      (conv_z): GCNConv(2, 32)
+      (linear_z): Linear(in_features=64, out_features=32, bias=True)
+      (conv_r): GCNConv(2, 32)
+      (linear_r): Linear(in_features=64, out_features=32, bias=True)
+      (conv_h): GCNConv(2, 32)
+      (linear_h): Linear(in_features=64, out_features=32, bias=True)
+    )
+  )
+  (linear): Linear(in_features=32, out_features=12, bias=True)
+)</code></pre>
+</div>
+</div>
+</section>
+<section id="training" class="level2">
+<h2 class="anchored" data-anchor-id="training">Training</h2>
+<ul>
+<li>Training on GPU didn’t bring much speed-up</li>
+<li>I ran into RAM issues, why I only train on a smaller subset of the data</li>
+</ul>
+<div class="cell" data-outputid="056663e4-c4b7-47eb-f4e9-fec088272fe7">
+<div class="sourceCode cell-code" id="cb17"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb17-1"><a href="#cb17-1"></a><span class="co"># GPU support</span></span>
+<span id="cb17-2"><a href="#cb17-2"></a>device <span class="op">=</span> torch.device(<span class="st">'cpu'</span>) <span class="co"># cuda</span></span>
+<span id="cb17-3"><a href="#cb17-3"></a>subset <span class="op">=</span> <span class="dv">2000</span></span>
+<span id="cb17-4"><a href="#cb17-4"></a></span>
+<span id="cb17-5"><a href="#cb17-5"></a><span class="co"># Create model and optimizers</span></span>
+<span id="cb17-6"><a href="#cb17-6"></a>model <span class="op">=</span> TemporalGNN(node_features<span class="op">=</span><span class="dv">2</span>, periods<span class="op">=</span><span class="dv">12</span>).to(device)</span>
+<span id="cb17-7"><a href="#cb17-7"></a>optimizer <span class="op">=</span> torch.optim.Adam(model.parameters(), lr<span class="op">=</span><span class="fl">0.01</span>)</span>
+<span id="cb17-8"><a href="#cb17-8"></a>model.train()</span>
+<span id="cb17-9"><a href="#cb17-9"></a></span>
+<span id="cb17-10"><a href="#cb17-10"></a><span class="bu">print</span>(<span class="st">"Running training..."</span>)</span>
+<span id="cb17-11"><a href="#cb17-11"></a><span class="cf">for</span> epoch <span class="kw">in</span> <span class="bu">range</span>(<span class="dv">10</span>): </span>
+<span id="cb17-12"><a href="#cb17-12"></a>    loss <span class="op">=</span> <span class="dv">0</span></span>
+<span id="cb17-13"><a href="#cb17-13"></a>    step <span class="op">=</span> <span class="dv">0</span></span>
+<span id="cb17-14"><a href="#cb17-14"></a>    <span class="cf">for</span> snapshot <span class="kw">in</span> train_dataset:</span>
+<span id="cb17-15"><a href="#cb17-15"></a>        snapshot <span class="op">=</span> snapshot.to(device)</span>
+<span id="cb17-16"><a href="#cb17-16"></a>        <span class="co"># Get model predictions</span></span>
+<span id="cb17-17"><a href="#cb17-17"></a>        y_hat <span class="op">=</span> model(snapshot.x, snapshot.edge_index)</span>
+<span id="cb17-18"><a href="#cb17-18"></a>        <span class="co"># Mean squared error</span></span>
+<span id="cb17-19"><a href="#cb17-19"></a>        loss <span class="op">=</span> loss <span class="op">+</span> torch.mean((y_hat<span class="op">-</span>snapshot.y)<span class="op">**</span><span class="dv">2</span>) </span>
+<span id="cb17-20"><a href="#cb17-20"></a>        step <span class="op">+=</span> <span class="dv">1</span></span>
+<span id="cb17-21"><a href="#cb17-21"></a>        <span class="cf">if</span> step <span class="op">&gt;</span> subset:</span>
+<span id="cb17-22"><a href="#cb17-22"></a>          <span class="cf">break</span></span>
+<span id="cb17-23"><a href="#cb17-23"></a></span>
+<span id="cb17-24"><a href="#cb17-24"></a>    loss <span class="op">=</span> loss <span class="op">/</span> (step <span class="op">+</span> <span class="dv">1</span>)</span>
+<span id="cb17-25"><a href="#cb17-25"></a>    loss.backward()</span>
+<span id="cb17-26"><a href="#cb17-26"></a>    optimizer.step()</span>
+<span id="cb17-27"><a href="#cb17-27"></a>    optimizer.zero_grad()</span>
+<span id="cb17-28"><a href="#cb17-28"></a>    <span class="bu">print</span>(<span class="st">"Epoch </span><span class="sc">{}</span><span class="st"> train MSE: </span><span class="sc">{:.4f}</span><span class="st">"</span>.<span class="bu">format</span>(epoch, loss.item()))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Running training...</code></pre>
+</div>
+</div>
+</section>
+<section id="evaluation" class="level2">
+<h2 class="anchored" data-anchor-id="evaluation">Evaluation</h2>
+<ul>
+<li>Lets get some sample predictions for a specific horizon (e.g.&nbsp;288/12 = 24 hours)</li>
+<li>The model always gets one hour and needs to predict the next hour</li>
+</ul>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb19"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb19-1"><a href="#cb19-1"></a>model.<span class="bu">eval</span>()</span>
+<span id="cb19-2"><a href="#cb19-2"></a>loss <span class="op">=</span> <span class="dv">0</span></span>
+<span id="cb19-3"><a href="#cb19-3"></a>step <span class="op">=</span> <span class="dv">0</span></span>
+<span id="cb19-4"><a href="#cb19-4"></a>horizon <span class="op">=</span> <span class="dv">288</span></span>
+<span id="cb19-5"><a href="#cb19-5"></a></span>
+<span id="cb19-6"><a href="#cb19-6"></a><span class="co"># Store for analysis</span></span>
+<span id="cb19-7"><a href="#cb19-7"></a>predictions <span class="op">=</span> []</span>
+<span id="cb19-8"><a href="#cb19-8"></a>labels <span class="op">=</span> []</span>
+<span id="cb19-9"><a href="#cb19-9"></a></span>
+<span id="cb19-10"><a href="#cb19-10"></a><span class="cf">for</span> snapshot <span class="kw">in</span> test_dataset:</span>
+<span id="cb19-11"><a href="#cb19-11"></a>    snapshot <span class="op">=</span> snapshot.to(device)</span>
+<span id="cb19-12"><a href="#cb19-12"></a>    <span class="co"># Get predictions</span></span>
+<span id="cb19-13"><a href="#cb19-13"></a>    y_hat <span class="op">=</span> model(snapshot.x, snapshot.edge_index)</span>
+<span id="cb19-14"><a href="#cb19-14"></a>    <span class="co"># Mean squared error</span></span>
+<span id="cb19-15"><a href="#cb19-15"></a>    loss <span class="op">=</span> loss <span class="op">+</span> torch.mean((y_hat<span class="op">-</span>snapshot.y)<span class="op">**</span><span class="dv">2</span>)</span>
+<span id="cb19-16"><a href="#cb19-16"></a>    <span class="co"># Store for analysis below</span></span>
+<span id="cb19-17"><a href="#cb19-17"></a>    labels.append(snapshot.y)</span>
+<span id="cb19-18"><a href="#cb19-18"></a>    predictions.append(y_hat)</span>
+<span id="cb19-19"><a href="#cb19-19"></a>    step <span class="op">+=</span> <span class="dv">1</span></span>
+<span id="cb19-20"><a href="#cb19-20"></a>    <span class="cf">if</span> step <span class="op">&gt;</span> horizon:</span>
+<span id="cb19-21"><a href="#cb19-21"></a>          <span class="cf">break</span></span>
+<span id="cb19-22"><a href="#cb19-22"></a></span>
+<span id="cb19-23"><a href="#cb19-23"></a>loss <span class="op">=</span> loss <span class="op">/</span> (step<span class="op">+</span><span class="dv">1</span>)</span>
+<span id="cb19-24"><a href="#cb19-24"></a>loss <span class="op">=</span> loss.item()</span>
+<span id="cb19-25"><a href="#cb19-25"></a><span class="bu">print</span>(<span class="st">"Test MSE: </span><span class="sc">{:.4f}</span><span class="st">"</span>.<span class="bu">format</span>(loss))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<section id="visualization" class="level3">
+<h3 class="anchored" data-anchor-id="visualization">Visualization</h3>
+<ul>
+<li>The further away the point in time is, the worse the predictions get</li>
+<li>Predictions shape: [num_data_points, num_sensors, num_timesteps]</li>
+</ul>
+<div class="cell" data-outputid="97e74597-a5d9-42d6-b31f-e4dcfb61e7f7">
+<div class="sourceCode cell-code" id="cb20"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb20-1"><a href="#cb20-1"></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
+<span id="cb20-2"><a href="#cb20-2"></a></span>
+<span id="cb20-3"><a href="#cb20-3"></a>sensor <span class="op">=</span> <span class="dv">123</span></span>
+<span id="cb20-4"><a href="#cb20-4"></a>timestep <span class="op">=</span> <span class="dv">11</span> </span>
+<span id="cb20-5"><a href="#cb20-5"></a>preds <span class="op">=</span> np.asarray([pred[sensor][timestep].detach().cpu().numpy() <span class="cf">for</span> pred <span class="kw">in</span> predictions])</span>
+<span id="cb20-6"><a href="#cb20-6"></a>labs  <span class="op">=</span> np.asarray([label[sensor][timestep].cpu().numpy() <span class="cf">for</span> label <span class="kw">in</span> labels])</span>
+<span id="cb20-7"><a href="#cb20-7"></a><span class="bu">print</span>(<span class="st">"Data points:,"</span>, preds.shape)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Data points:, (289,)</code></pre>
+</div>
+</div>
+<div class="cell" data-outputid="320807bf-8403-4dbf-d43b-4e1575d51f69">
+<div class="sourceCode cell-code" id="cb22"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb22-1"><a href="#cb22-1"></a><span class="im">import</span> matplotlib.pyplot <span class="im">as</span> plt </span>
+<span id="cb22-2"><a href="#cb22-2"></a>plt.figure(figsize<span class="op">=</span>(<span class="dv">20</span>,<span class="dv">5</span>))</span>
+<span id="cb22-3"><a href="#cb22-3"></a>sns.lineplot(data<span class="op">=</span>preds, label<span class="op">=</span><span class="st">"pred"</span>)</span>
+<span id="cb22-4"><a href="#cb22-4"></a>sns.lineplot(data<span class="op">=</span>labs, label<span class="op">=</span><span class="st">"true"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="38">
+<pre><code>&lt;matplotlib.axes._subplots.AxesSubplot at 0x7f7b14858950&gt;</code></pre>
+</div>
+<div class="cell-output cell-output-display">
+<p><img src="traffic_prediction_files/figure-html/cell-13-output-2.png" class="img-fluid"></p>
+</div>
+</div>
+
+
+</section>
+</section>
+</section>
+
+</main> <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
+window.document.addEventListener("DOMContentLoaded", function (event) {
+  const toggleBodyColorMode = (bsSheetEl) => {
+    const mode = bsSheetEl.getAttribute("data-mode");
+    const bodyEl = window.document.querySelector("body");
+    if (mode === "dark") {
+      bodyEl.classList.add("quarto-dark");
+      bodyEl.classList.remove("quarto-light");
+    } else {
+      bodyEl.classList.add("quarto-light");
+      bodyEl.classList.remove("quarto-dark");
+    }
+  }
+  const toggleBodyColorPrimary = () => {
+    const bsSheetEl = window.document.querySelector("link#quarto-bootstrap");
+    if (bsSheetEl) {
+      toggleBodyColorMode(bsSheetEl);
+    }
+  }
+  toggleBodyColorPrimary();  
+  const icon = "";
+  const anchorJS = new window.AnchorJS();
+  anchorJS.options = {
+    placement: 'right',
+    icon: icon
+  };
+  anchorJS.add('.anchored');
+  const clipboard = new window.ClipboardJS('.code-copy-button', {
+    target: function(trigger) {
+      return trigger.previousElementSibling;
+    }
+  });
+  clipboard.on('success', function(e) {
+    // button target
+    const button = e.trigger;
+    // don't keep focus
+    button.blur();
+    // flash "checked"
+    button.classList.add('code-copy-button-checked');
+    var currentTitle = button.getAttribute("title");
+    button.setAttribute("title", "Copied!");
+    let tooltip;
+    if (window.bootstrap) {
+      button.setAttribute("data-bs-toggle", "tooltip");
+      button.setAttribute("data-bs-placement", "left");
+      button.setAttribute("data-bs-title", "Copied!");
+      tooltip = new bootstrap.Tooltip(button, 
+        { trigger: "manual", 
+          customClass: "code-copy-button-tooltip",
+          offset: [0, -8]});
+      tooltip.show();    
+    }
+    setTimeout(function() {
+      if (tooltip) {
+        tooltip.hide();
+        button.removeAttribute("data-bs-title");
+        button.removeAttribute("data-bs-toggle");
+        button.removeAttribute("data-bs-placement");
+      }
+      button.setAttribute("title", currentTitle);
+      button.classList.remove('code-copy-button-checked');
+    }, 1000);
+    // clear code selection
+    e.clearSelection();
+  });
+  function tippyHover(el, contentFn) {
+    const config = {
+      allowHTML: true,
+      content: contentFn,
+      maxWidth: 500,
+      delay: 100,
+      arrow: false,
+      appendTo: function(el) {
+          return el.parentElement;
+      },
+      interactive: true,
+      interactiveBorder: 10,
+      theme: 'quarto',
+      placement: 'bottom-start'
+    };
+    window.tippy(el, config); 
+  }
+  const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+  for (var i=0; i<noterefs.length; i++) {
+    const ref = noterefs[i];
+    tippyHover(ref, function() {
+      // use id or data attribute instead here
+      let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+      try { href = new URL(href).hash; } catch {}
+      const id = href.replace(/^#\/?/, "");
+      const note = window.document.getElementById(id);
+      return note.innerHTML;
+    });
+  }
+  const findCites = (el) => {
+    const parentEl = el.parentElement;
+    if (parentEl) {
+      const cites = parentEl.dataset.cites;
+      if (cites) {
+        return {
+          el,
+          cites: cites.split(' ')
+        };
+      } else {
+        return findCites(el.parentElement)
+      }
+    } else {
+      return undefined;
+    }
+  };
+  var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+  for (var i=0; i<bibliorefs.length; i++) {
+    const ref = bibliorefs[i];
+    const citeInfo = findCites(ref);
+    if (citeInfo) {
+      tippyHover(citeInfo.el, function() {
+        var popup = window.document.createElement('div');
+        citeInfo.cites.forEach(function(cite) {
+          var citeDiv = window.document.createElement('div');
+          citeDiv.classList.add('hanging-indent');
+          citeDiv.classList.add('csl-entry');
+          var biblioDiv = window.document.getElementById('ref-' + cite);
+          if (biblioDiv) {
+            citeDiv.innerHTML = biblioDiv.innerHTML;
+          }
+          popup.appendChild(citeDiv);
+        });
+        return popup.innerHTML;
+      });
+    }
+  }
+});
+</script>
+</div> <!-- /content -->
+
+
+
+</body></html>
